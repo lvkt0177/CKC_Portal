@@ -29,13 +29,21 @@ class LopController extends Controller
         $this->middleware('permission:' . Acl::PERMISSION_CLASS_STUDENT_LIST, ['only' => ['list']]);
         $this->middleware('permission:' . Acl::PERMISSION_CLASS_INPUT_CONDUCT_SCORE, ['only' => ['nhapDiemRL','capNhatDiemRL','capNhatDiemChecked']]);
     }
-    public function index()
+    public function index(Request $request)
     {
+        $nienKhoas = NienKhoa::all();
+        $nienKhoa  = NienKhoa::where('id', $request->id_nien_khoa)->first();
+        
+        if(!$nienKhoa){
+            $nienKhoa = $nienKhoas->where('nam_ket_thuc', '>', now()->year)->first();
+        }
+        
         $lops = Lop::with('giangVien.hoSo', 'nienKhoa','chuyenNganh')
+            ->where('id_nien_khoa', $nienKhoa->id)
             ->where('id_gvcn', auth()->user()->id)
             ->orderBy('id', 'desc')
             ->get();
-        return view('admin.class.index', compact('lops'));
+        return view('admin.class.index', compact('lops', 'nienKhoa', 'nienKhoas'));
     }
     public function list(Lop $lop)
     {

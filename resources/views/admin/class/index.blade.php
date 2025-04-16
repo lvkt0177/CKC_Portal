@@ -24,6 +24,21 @@
                     </div>
 
                     <div class="card-body p-2">
+                        <div class="row">
+                            <form action="{{ route('giangvien.lop.index') }}" method="GET" class="col-md-3 m-3">
+                                <label for="">Chọn niên khóa:</label>
+                                <select name="id_nien_khoa" id="" class="form-select"
+                                    onchange="this.form.submit()">
+                                    @foreach ($nienKhoas as $nk)
+                                        <option value="{{ $nk->id }}"
+                                            {{ $nienKhoa->id == $nk->id ? 'selected' : '' }}>
+                                            {{ $nk->nam_bat_dau }} -
+                                            {{ $nk->nam_ket_thuc }}
+                                        </option>
+                                    @endforeach
+                                </select>
+                            </form>
+                        </div>
                         <div class="row justify-content-start g-4">
                             @if ($lops->count() > 0)
                                 @foreach ($lops as $lop)

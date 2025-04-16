@@ -29,7 +29,7 @@
                     <h3>Lịch thi lớp {{ $lop->ten_lop }} </h3>
                     <a href="{{ route('giangvien.lichthi.index') }}" class="btn btn-primary">Quay lại</a>
                 </div>
-                @if ($lichThi->count() > 0)
+                @if ($tuanDaCoLich->count() > 0)
                     <form action="{{ route('giangvien.lichthi.show', $lop) }}" method="GET"
                         class="form-inline mb-3 d-flex">
                         <div class="form-group me-2 col-6">
@@ -42,9 +42,9 @@
                                     @if ($tuanModel)
                                         <option value="{{ $tuanModel->id }}"
                                             {{ $tuanModel->id == $idTuan ? 'selected' : '' }}>
-                                            Tuần {{ $loop->iteration }}
-                                            ({{ \Carbon\Carbon::parse($tuanModel->ngay_bat_dau)->format('d/m') }} -
-                                            {{ \Carbon\Carbon::parse($tuanModel->ngay_ket_thuc)->format('d/m') }})
+                                            Tuần {{ $tuanModel->tuan }}
+                                            ({{ \Carbon\Carbon::parse($tuanModel->ngay_bat_dau)->format('d/m/Y') }} -
+                                            {{ \Carbon\Carbon::parse($tuanModel->ngay_ket_thuc)->format('d/m/Y') }})
                                         </option>
                                     @endif
                                 @endforeach
@@ -54,14 +54,16 @@
                             <label for="id_tuan" class="me-2">Chọn lần thi:</label>
                             <select name="lanthi" class="form-control" onchange="this.form.submit()">
                                 @foreach ($lanThiDaCoLich as $lanThiItem)
-                                    <option value="{{ $lanThiItem->lan_thi }}">
+                                    <option value="{{ $lanThiItem->lan_thi }}"
+                                        {{ $lanThiItem->lan_thi == $lanthi ? 'selected' : '' }}>
                                         Lần thi {{ $lanThiItem->lan_thi }}
                                     </option>
                                 @endforeach
                             </select>
                         </div>
                     </form>
-
+                @endif
+                @if ($lichThi->count() > 0)
                     @foreach ($dsNgay as $ngay => $dsLich)
                         <div class="schedule-day">
                             <h3 class="date-header">
@@ -107,16 +109,17 @@
                                     </table>
                                 </div>
                             </div>
+                        </div>
                     @endforeach
                 @else
                     <div class="card-body">
-                        <p class="text-center">{{ $lop->ten_lop }} chưa có lịch thi nào!</p>
+                        <p class="text-center">Khoảng thời gian không có lịch thi nào!</p>
                     </div>
                 @endif
             </div>
         </div>
-    </div>
 
+    </div>
 @endsection
 
 @section('js')

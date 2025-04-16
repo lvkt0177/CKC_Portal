@@ -179,7 +179,7 @@ class LichThiController extends Controller
             'tuanDaCoLich',
             'idTuan',
             'lanthi',
-            'lanThiDaCoLich'
+            'lanThiDaCoLich',
         ));
     }
     
