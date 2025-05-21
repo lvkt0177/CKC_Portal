@@ -17,5 +17,7 @@ Route::prefix('admin')->name('admin.')->group(function () {
     Route::get('/roles', function () {
         return view('admin.roles.index');
     })->name('roles.index');
+
+    
     
 });
