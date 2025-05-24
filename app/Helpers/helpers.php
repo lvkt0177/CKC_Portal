@@ -1,5 +1,8 @@
 <?php
 
+use App\Models\User;
+use App\Acl\Acl;
+
 if (!function_exists('isActiveRoute')) {
     function isActiveRoute($patterns, $activeClass = 'active') {
         if (!is_array($patterns)) {
@@ -14,4 +17,17 @@ if (!function_exists('isActiveRoute')) {
 
         return '';
     }
+}
+
+
+
+function hasPermission(string $permission): bool
+{
+    $user = auth()->user();
+    return $user && $user->hasPermission($permission);
+}
+
+function Acl()
+{
+    return \App\Acl\Acl::class;
 }
