@@ -5,6 +5,5 @@
 @section('content')
     <div class="container-fluid">
         <h1>Bảng điều khiển</h1>
-
     </div>
 @endsection
