@@ -26,8 +26,8 @@ class UserSeeder extends Seeder
                 'trang_thai' => 1,
             ],
             [
-                'tai_khoan' => 'mt',
-                'password' => bcrypt('1'),
+                'tai_khoan' => 'nv1',
+                'password' => bcrypt('Thinh3988@'),
                 'trang_thai' => 1,
             ],
         ]);

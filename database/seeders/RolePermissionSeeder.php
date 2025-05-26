@@ -34,6 +34,14 @@ class RolePermissionSeeder extends Seeder
             $admin->syncPermissions(Acl::permissions());
         }
 
+        $staff = Role::where('name', Acl::ROLE_STAFF)->first();
+        if ($staff) {
+            $staff->givePermissionTo([
+                Acl::PERMISSION_VIEW_MENU_DASHBOARD,
+                Acl::PERMISSION_VIEW_STUDENT,
+            ]);
+        }
+
         $user = User::find(1);
         if ($user) {
             $user->assignRole(Acl::ROLE_SUPER_ADMIN);
