@@ -12,17 +12,19 @@ final class Acl
 
     const ROLE_ADMIN = 'trưởng khoa';
 
+    const ROLE_ADMIN_DEPARTMENT = 'trưởng bộ môn';
+
+    //Head of Student Political Affairs Department
+    const ROLE_ADMIN_STUDENT_POLITICAL_AFFAIRS = 'trưởng phòng công tác sinh viên';
+
     const ROLE_STAFF = 'giảng viên';
 
+    //--------------------------------------------------------------------------
     //Quy tắt: PERMISSION_
     const PERMISSION_ASSIGNEE = 'gán vai trò';
 
     const PERMISSION_VIEW_MENU_DASHBOARD = 'xem menu bảng điều khiển';
-
-    const PERMISSION_VIEW_STUDENT = 'xem sinh viên';
-
-    const PERMISSION_VIEW_TEACHER = 'xem giáo viên';
-
+    
     // Roles
     const PERMISSION_ROLE_LIST = 'danh sách vai trò';
 
@@ -31,6 +33,42 @@ final class Acl
     const PERMISSION_ROLE_EDIT = 'chỉnh sửa vai trò';
     
     const PERMISSION_ROLE_DELETE = 'xóa vai trò';
+
+    //Chương trình đào tạo
+    const PERMISSION_TRAINING_PROGRAM_LIST = 'danh sách chương trình đào tạo';
+
+    // const PERMISSION_TRAINING_PROGRAM_CREATE = 'tạo chương trình đào tạo';
+
+    // const PERMISSION_TRAINING_PROGRAM_EDIT = 'chỉnh sửa chương trình đào tạo';
+
+    // const PERMISSION_TRAINING_PROGRAM_DELETE = 'xóa chương trình đào tạo';
+
+    //SINH VIÊN
+    const PERMISSION_STUDENT_LIST = 'danh sách sinh viên';
+
+    //Giảng viên
+    const PERMISSION_TEACHER_LIST = 'danh sách giảng viên';
+    
+    //Lớp
+    const PERMISSION_CLASS_LIST = 'danh sách lớp học';
+
+    const PERMISSION_CLASS_CREATE = 'tạo lớp học';
+
+    const PERMISSION_CLASS_EDIT = 'chỉnh sửa lớp học';
+
+    // const PERMISSION_CLASS_DELETE = 'xóa lớp học';
+
+    //Phòng học
+    const PERMISSION_ROOM_LIST = 'danh sách phòng học';
+
+    const PERMISSION_ROOM_CREATE = 'tạo phòng học';
+
+    const PERMISSION_ROOM_EDIT = 'chỉnh sửa phòng học';
+
+    // const PERMISSION_ROOM_DELETE = 'xóa phòng học';
+
+
+    //....
 
 
     /**
