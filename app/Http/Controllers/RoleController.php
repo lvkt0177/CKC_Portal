@@ -12,8 +12,9 @@ use \Spatie\Permission\Models\Role;
 class RoleController extends Controller
 {
     //
-    public function __contruct()
+    public function __construct()
     {
+
        $this->middleware('permission:' . Acl::PERMISSION_ROLE_LIST, ['only' => ['index']]);
        $this->middleware('permission:' . Acl::PERMISSION_ROLE_CREATE, ['only' => ['create', 'store']]);
        $this->middleware('permission:' . Acl::PERMISSION_ROLE_EDIT, ['only' => ['edit', 'update']]);

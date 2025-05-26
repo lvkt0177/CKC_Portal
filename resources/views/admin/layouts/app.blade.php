@@ -166,12 +166,16 @@
                     
 					<ul class="nav">
 
+						@haspermission(Acl()::PERMISSION_VIEW_MENU_DASHBOARD)
+						{{-- Bảng điều khiển --}}
 						<li class="nav-item {{ isActiveRoute('admin/dashboard') }}">
 							<a href="{{ route('admin.dashboard') }}">
 								<i class="la la-dashboard"></i>
 								<p>Bảng điều khiển</p>
 							</a>
 						</li>
+						@endhaspermission
+						
                         {{-- Quản lý người dùng --}}
                         <li class="nav-item">
                             <h6 class="fw-bold mx-4 mb-1 mt-4 danhMuc">Quản lý người dùng</h6>
@@ -188,12 +192,14 @@
 								<p>Giảng viên</p>
 							</a>
 						</li>
+						@haspermission(Acl()::PERMISSION_ROLE_LIST)
 						<li class="nav-item {{ isActiveRoute('admin/roles*') }}">
 							<a href="{{ route('admin.roles.index') }}">
 								<i class="la la-th"></i>
 								<p>Phân quyền và vai trò</p>
 							</a>
 						</li>
+						@endhaspermission
 
                         {{-- Đào tạo --}}
                         <li class="nav-item">
