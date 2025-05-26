@@ -28,9 +28,9 @@ Route::prefix('admin')->name('admin.')->group(function () {
 
 Route::group(['middleware' => 'web'], function () {
     Route::prefix('admin')->name('admin.')->group(function () {
-        
+
         include('admin/auth.php');
-        
+
         //--------------------------------------
         //Route chức năng
         Route::middleware(['auth.admin', 'role_or_permission:' . Acl::ROLE_SUPER_ADMIN . '|' . Acl::ROLE_ADMIN . '|' . Acl::ROLE_STAFF])->group(function () {
@@ -38,15 +38,15 @@ Route::group(['middleware' => 'web'], function () {
             Route::get('/dashboard', function () {
                 return view('admin.dashboard.index');
             })->name('dashboard');
-            
+
             include('admin/role.php');
-            
+
         });
 
-        
+
     });
 
 
-    
+
 
 });
