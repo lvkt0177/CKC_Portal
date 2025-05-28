@@ -31,13 +31,14 @@
                                         <td>{{ $role->name }}</td>
                                         <td>
                                             @foreach ($role->permissions as $permission)
-                                                <span class="badge badge-info">{{ $permission->name }}</span>
+                                                <span class="badge badge-info my-1">{{ $permission->name }}</span>
                                             @endforeach
                                         </td>
-                                        <td>
+                                        <td class="d-flex justify-content-center align-items-center">
                                             @if($role->name !== Acl()::ROLE_SUPER_ADMIN)
                                                 
                                                 <a href="" class="btn btn-warning btn-sm">Sửa</a>
+                                                <div class="mx-1"></div>
                                                 <form action="" method="POST" style="display:inline;">
                                                     @csrf
                                                     @method('DELETE')

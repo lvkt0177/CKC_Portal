@@ -13,6 +13,8 @@ return new class extends Migration
     {
         Schema::create('users', function (Blueprint $table) {
             $table->id();
+            //id hồ sơ
+            $table->foreignId('id_ho_so')->nullable()->constrained('ho_so')->onDelete('cascade');
             $table->string('tai_khoan')->unique();
             $table->string('password');
             $table->integer('trang_thai')->default(0);
