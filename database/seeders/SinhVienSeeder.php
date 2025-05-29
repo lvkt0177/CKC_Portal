@@ -1,0 +1,45 @@
+<?php
+
+namespace Database\Seeders;
+
+use Illuminate\Database\Console\Seeds\WithoutModelEvents;
+use Illuminate\Database\Seeder;
+use App\Models\SinhVien;
+class SinhVienSeeder extends Seeder
+{
+    /**
+     * Run the database seeds.
+     */
+    public function run(): void
+    {
+        SinhVien::insert([
+            [
+                "ma_sv" => "0306221",
+                "id_lop" => 1,
+                "id_ho_so" => 4,
+                "id_nien_khoa" => 1,
+                "chuc_vu" => 0,
+                "mat_khau" => bcrypt('1a@'),
+                "trang_thai" => 0,
+            ],
+            [
+                "ma_sv" => "0306222",
+                "id_lop" => 1,
+                "id_ho_so" => 5,
+                "id_nien_khoa" => 1,
+                "chuc_vu" => 0,
+                "mat_khau" => bcrypt('1a@'),
+                "trang_thai" => 0,
+            ],
+            [
+                "ma_sv" => "0306231",
+                "id_lop" => 1,
+                "id_ho_so" => 6,
+                "id_nien_khoa" => 2,
+                "chuc_vu" => 0,
+                "mat_khau" => bcrypt('1a@'),
+                "trang_thai" => 0,
+            ],
+        ]);
+    }
+}

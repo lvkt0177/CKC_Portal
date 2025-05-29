@@ -1,6 +1,8 @@
 <?php
 
 use Illuminate\Support\Facades\Route;
+use App\Http\Controllers\SinhVien\SinhVienController;
+use App\Http\Controllers\GiangVien\GiangVienController;
 use App\Acl\Acl;
 //Controller
 
@@ -49,4 +51,9 @@ Route::group(['middleware' => 'web'], function () {
 
 
 
+});
+
+
+Route::prefix('admin')->name('admin.')->group(function () {
+    Route::get('/student', [SinhVienController::class, 'index'])->name('student');
 });
