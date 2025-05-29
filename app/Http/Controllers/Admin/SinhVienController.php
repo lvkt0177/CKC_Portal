@@ -12,15 +12,20 @@ use App\Models\NienKhoa;
 
 class SinhVienController extends Controller
 {
-    public function index()
+    public function index(Request $request)
     {
+        $id_lop = $request->input('id_lop');
+
+        $lops = Lop::orderBy('id', 'desc')->get();
+
         $sinhviens = SinhVien::with(['hoSo', 'lop', 'lop.nienKhoa'])
+            ->when($id_lop, function ($query) use ($id_lop) {
+                $query->where('id_lop', $id_lop);
+            })
             ->orderBy('id', 'desc')
             ->get();
 
-        // dd($sinhviens);
-
-        return view('admin.student.index', compact('sinhviens'));
+        return view('admin.student.index', compact('lops', 'sinhviens', 'id_lop'));
 
     }
 

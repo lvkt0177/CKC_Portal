@@ -16,17 +16,35 @@
                     </div>
 
                     <div class="card-body">
-                        
+
                         <div class="table-responsive">
                             <table class="table table-bordered align-middle mb-0">
                                 <thead class="table-light">
                                     <tr>
-                                        
+                                       <th>No.1</th>
+                                       <th>Họ Tên</th>
+                                       <th>Giới tính</th>
+                                       <th>Email</th>  
+                                       <th>Số điện thoại</th>  
+                                       <th>Địa chỉ</th> 
+                                       <th>Bộ Môn</th>
+                                       <th>Khoa</th> 
                                     </tr>
                                 </thead>
                                 <tbody>
-                                    
-
+                                        @foreach ($users as $gv)
+                                                <tr>
+                                                <td>{{ $loop->index + 1 }}</td>
+                                                <td>{{ $gv->hoSo->ho_ten }}</td>
+                                                <td>{{ $gv->hoSo->gioi_tinh }}</td>
+                                                <td>{{ $gv->hoSo->email }}</td>
+                                                <td>{{ $gv->hoSo->dia_chi }}</td>
+                                                <td>{{ $gv->hoSo->so_dien_thoai }}</td>
+                                                <td>{{ $gv->boMon->ten_bo_mon }}</td>
+                                                <td>{{ $gv->boMon->nganhHoc->khoa->ten_khoa }}</td>
+                                                
+                                            </tr>
+                                        @endforeach
                                 </tbody>
                             </table>
                         </div>

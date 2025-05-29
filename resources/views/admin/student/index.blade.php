@@ -18,18 +18,18 @@
                     <div class="card-body">
                         
                         <div class="my-2">
-                            {{-- <form method="GET" action="{{ route('admin.student.index') }}">
+                            <form method="GET" action="{{ route('admin.student.index') }}">
                                 <label for="id_lop">Lọc theo lớp:</label>
                                 <select class="btn" name="id_lop" id="id_lop">
                                     <option value="">-- Tất cả lớp --</option>
                                     @foreach ($lops as $lop)
-                                        <option value="{{ $lop->id }}" {{ $id_lop == $lop->id ? 'selected' : '' }}>
+                                        <option value="{{ $lop }}" {{ $id_lop == $lop->id ? 'selected' : '' }}>
                                             {{ $lop->ten_lop }}
                                         </option>
                                     @endforeach
                                 </select>
                                 <button class="btn btn-primary" type="submit">Lọc</button>
-                            </form> --}}
+                            </form>
                         </div>
 
                         <div class="table-responsive">
