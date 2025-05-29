@@ -20,7 +20,6 @@ class HoSo extends Model
         'anh'
     ];
 
-    // Define the relationship with the NguoiDung model
     // User 1-1 HoSo
     public function user()
     {

@@ -10,7 +10,11 @@
                 <div class="card shadow-sm">
                     <div class="card-header d-flex justify-content-between align-items-center">
                         <h3 class="card-title mb-0">Phân quyền và vai trò</h3>
-                        <a href="" class="btn btn-primary">Thêm quyền</a>
+                        <a href="{{ route('admin.permissions.index') }}" class="btn btn-primary">Danh sách các quyền</a>
+                    </div>
+
+                    <div class="card-header d-flex justify-content-between align-items-center">
+                        <a href="" class="btn btn-primary">Thêm mới vai trò</a>
                     </div>
                     
                     <div class="card-body">
@@ -47,7 +51,9 @@
                                             <td class="d-flex justify-content-center align-items-center gap-1">
                                                 @if($role->name !== Acl()::ROLE_SUPER_ADMIN)
                                                     <a href="" class="btn btn-warning btn-sm"><i class="bi bi-pencil"></i></a>
+
                                                     <div class="mx-1"></div>
+
                                                     <form action="" method="POST" style="display:inline;">
                                                         @csrf
                                                         @method('DELETE')

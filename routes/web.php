@@ -35,6 +35,8 @@ Route::group(['middleware' => 'web'], function () {
             include('admin/sinhvien.php');
 
             include('admin/giangvien.php');
+
+            include('admin/permission.php');
             
         });
 

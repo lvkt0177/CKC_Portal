@@ -1,9 +1,10 @@
 <?php
 
-namespace App\Http\Controllers;
+namespace App\Http\Controllers\Admin;
 
 use Illuminate\Http\Request;
 
+use App\Http\Controllers\Controller;
 use App\Acl\Acl;
 use App\Http\Requests;
 use \Spatie\Permission\Models\Role;

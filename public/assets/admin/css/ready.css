@@ -41,6 +41,10 @@
   background: #ff646d !important;
 }
 
+.text-h1{
+  color: #1d62f0;
+}
+
 *:focus {
   outline: 0 !important;
   -webkit-box-shadow: none !important;

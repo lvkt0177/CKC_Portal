@@ -21,6 +21,7 @@ class DatabaseSeeder extends Seeder
             LopSeeder::class,
             SinhVienSeeder::class,
             RolePermissionSeeder::class,
+            BienBanSHCNSeeder::class,
         ]);
         
     }

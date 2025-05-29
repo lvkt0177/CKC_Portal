@@ -26,4 +26,10 @@ class Lop extends Model
         return $this->belongsTo(NienKhoa::class, 'id_nien_khoa', 'id');
     }
 
+    // Biên Bản Sinh Hoạt Chủ Nhiệm
+    public function bienBanSHCN()
+    {
+        return $this->hasMany(BienBanSHCN::class, 'id_lop', 'id');
+    }
+
 }

@@ -34,6 +34,17 @@ final class Acl
     
     const PERMISSION_ROLE_DELETE = 'xóa vai trò';
 
+    //Permissions
+    const PERMISSION_PERMISSION_LIST = 'danh sách quyền';
+    
+    const PERMISSION_PERMISSION_CREATE = 'tạo quyền';
+    
+    const PERMISSION_PERMISSION_EDIT = 'chỉnh sửa quyền';
+    
+    const PERMISSION_PERMISSION_DELETE = 'xóa quyền';
+
+    const PERMISSION_PERMISSION_ASSIGN = 'gán quyền';
+
     //Chương trình đào tạo
     const PERMISSION_TRAINING_PROGRAM_LIST = 'danh sách chương trình đào tạo';
 
@@ -66,7 +77,6 @@ final class Acl
     const PERMISSION_ROOM_EDIT = 'chỉnh sửa phòng học';
 
     // const PERMISSION_ROOM_DELETE = 'xóa phòng học';
-
 
     //....
 
@@ -118,4 +128,50 @@ final class Acl
             return [];
         }
     }
+
+    // Danh mục Các quyền
+    public static array $groupedPermissions = [
+        'Hệ thống' => [
+            self::PERMISSION_ASSIGNEE,
+            self::PERMISSION_VIEW_MENU_DASHBOARD,
+        ],
+        'Vai trò' => [
+            self::PERMISSION_ROLE_LIST,
+            self::PERMISSION_ROLE_CREATE,
+            self::PERMISSION_ROLE_EDIT,
+            self::PERMISSION_ROLE_DELETE,
+        ],
+        'Quyền' => [
+            self::PERMISSION_PERMISSION_LIST,
+            self::PERMISSION_PERMISSION_CREATE,
+            self::PERMISSION_PERMISSION_EDIT,
+            self::PERMISSION_PERMISSION_DELETE,
+            self::PERMISSION_PERMISSION_ASSIGN,
+        ],
+        'Chương trình đào tạo' => [
+            self::PERMISSION_TRAINING_PROGRAM_LIST,
+        ],
+        'Sinh viên' => [
+            self::PERMISSION_STUDENT_LIST,
+        ],
+        'Giảng viên' => [
+            self::PERMISSION_TEACHER_LIST,
+        ],
+        'Lớp học' => [
+            self::PERMISSION_CLASS_LIST,
+            self::PERMISSION_CLASS_CREATE,
+            self::PERMISSION_CLASS_EDIT,
+        ],
+        'Phòng học' => [
+            self::PERMISSION_ROOM_LIST,
+            self::PERMISSION_ROOM_CREATE,
+            self::PERMISSION_ROOM_EDIT,
+        ],
+    ];
+
+    public static function groupedPermissions(): array
+    {
+        return self::$groupedPermissions;
+    }
+
 }
