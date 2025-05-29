@@ -14,12 +14,11 @@ class SinhVienController extends Controller
 {
     public function index()
     {
-        $sinhviens = SinhVien::with(['hoSo','lop','lop.nienKhoa'])
+        $sinhviens = SinhVien::with(['hoSo', 'lop', 'lop.nienKhoa'])
             ->orderBy('id', 'desc')
             ->get();
 
         // dd($sinhviens);
-
 
         return view('admin.student.index', compact('sinhviens'));
 
