@@ -36,9 +36,10 @@
                             <table class="table table-bordered align-middle mb-0">
                                 <thead class="table-light">
                                     <tr>
+                                        <th>No.1</th>
+                                        <th>Họ tên</th>
                                         <th>Mã SV</th>
                                         <th>Tên lớp</th>
-                                        <th>Họ tên</th>
                                         <th>Email</th>
                                         <th>SĐT</th>
                                         <th>Niên khóa</th>
@@ -47,9 +48,10 @@
                                 <tbody>
                                     @forelse ($sinhviens as $sv)
                                         <tr>
+                                            <td>{{ $loop->index + 1 }}</td>
+                                            <td>{{ $sv->hoSo->ho_ten }}</td>
                                             <td>{{ $sv->ma_sv }}</td>
                                             <td>{{ $sv->lop->ten_lop }}</td>
-                                            <td>{{ $sv->hoSo->ho_ten }}</td>
                                             <td>{{ $sv->hoSo->email }}</td>
                                             <td>{{ $sv->hoSo->so_dien_thoai }}</td>
                                             {{-- <td>{{ $sv->hoSo-> }}</td> --}}
