@@ -66,7 +66,7 @@ class HoSoSeeder extends Seeder
             ],
             [
                 'ho_ten' => 'Sinh Viên 3',
-                'email' => 'sv_2@fe.edu.vn',
+                'email' => 'sv_3@fe.edu.vn',
                 'so_dien_thoai' => '0123456703',
                 'ngay_sinh' => '2000-01-01',
                 'gioi_tinh' => 'Nam',

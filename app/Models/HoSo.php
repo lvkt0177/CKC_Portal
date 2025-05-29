@@ -26,4 +26,9 @@ class HoSo extends Model
     {
         return $this->hasOne(User::class, 'id_ho_so', 'id');
     }
+
+    public function sinhVien()
+    {
+        return $this->hasOne(SinhVien::class, 'id_ho_so', 'id');
+    }
 }

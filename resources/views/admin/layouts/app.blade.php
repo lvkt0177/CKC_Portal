@@ -191,13 +191,13 @@
                             <h6 class="fw-bold mx-4 mb-1 mt-4 danhMuc">Quản lý người dùng</h6>
 						</li>
 						<li class="nav-item">
-							<a href="">
+							<a href="{{ route('admin.student.index') }}">
 								<i class="bi bi-person"></i>
 								<p>Sinh viên</p>
 							</a>
 						</li>
 						<li class="nav-item">
-							<a href="">
+							<a href="{{ route('admin.giangvien.index') }}">
 								<i class="bi bi-people-fill"></i>
 								<p>Giảng viên</p>
 							</a>

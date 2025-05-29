@@ -14,17 +14,6 @@ Route::get('/login', function () {
 })->name('login');
 
 
-Route::prefix('admin')->name('admin.')->group(function () {
-    Route::get('/dashboard', function () {
-        return view('admin.dashboard.index');
-    })->name('dashboard');
-
-    // Route::get('/roles', function () {
-    //     return view('admin.roles.index');
-    // })->name('roles.index');
-
-});
-
 
 Route::group(['middleware' => 'web'], function () {
     Route::prefix('admin')->name('admin.')->group(function () {
@@ -42,13 +31,16 @@ Route::group(['middleware' => 'web'], function () {
             include('admin/role.php');
 
             include('admin/profile.php');
+
+            include('admin/sinhvien.php');
+
+            include('admin/giangvien.php');
             
         });
 
 
     });
 
-
-
-
 });
+
+
