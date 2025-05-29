@@ -14,7 +14,7 @@ return new class extends Migration
         Schema::create('chuong_trinh_dao_tao', function (Blueprint $table) {
             $table->id();
 
-            $table->foreignId('id_chuyen_nganh')->constrained('chuyen_nghanh')->onDelete('cascade');
+            $table->foreignId('id_chuyen_nganh')->constrained('chuyen_nganh')->onDelete('cascade');
 
             $table->string('ten_chuong_trinh_dao_tao', 100);
 

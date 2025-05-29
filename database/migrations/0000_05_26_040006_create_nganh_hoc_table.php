@@ -11,15 +11,15 @@ return new class extends Migration
      */
     public function up(): void
     {
-        Schema::create('chuyen_nghanh', function (Blueprint $table) {
+        Schema::create('nganh_hoc', function (Blueprint $table) {
             $table->id();
 
-            $table->string('ten_chuyen_nghanh', 100);
+            //id khoa
+            $table->foreignId('id_khoa')->constrained('khoa')->onDelete('cascade');
+
+            //tên ngành học
+            $table->string('ten_nganh', 100);
             
-            $table->foreignId('id_bo_mon')->constrained('bo_mon')->onDelete('cascade');
-
-            $table->integer('trang_thai')->default(0);
-
             $table->timestamps();
         });
     }
@@ -29,6 +29,6 @@ return new class extends Migration
      */
     public function down(): void
     {
-        Schema::dropIfExists('chuyen_nghanh');
+        Schema::dropIfExists('nganh_hoc');
     }
 };

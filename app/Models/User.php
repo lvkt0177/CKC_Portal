@@ -63,6 +63,6 @@ class User extends Authenticatable
     // Bo Mon
     public function boMon()
     {
-        return $this->belongsTo(boMon::class, 'id_bo_mon', 'id');
+        return $this->belongsTo(BoMon::class, 'id_bo_mon', 'id');
     }
 }
