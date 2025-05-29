@@ -38,6 +38,8 @@ Route::group(['middleware' => 'web'], function () {
             })->name('dashboard');
             
             include('admin/role.php');
+
+            include('admin/profile.php');
             
         });
 

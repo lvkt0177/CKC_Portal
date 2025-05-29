@@ -136,7 +136,7 @@
 										</div>
 									</li>
 									<div class="dropdown-divider"></div>
-									<a class="dropdown-item" href="#"><i class="ti-user"></i>Xem hồ sơ</a>
+									<a class="dropdown-item" href="{{ route('admin.profile.index') }}"><i class="ti-user"></i>Xem hồ sơ</a>
 									<div class="dropdown-divider"></div>
 									<a class="dropdown-item" href="{{ route('admin.logout') }}"><i class="fa fa-power-off"></i>Đăng xuất</a>
 								</ul>
@@ -149,10 +149,10 @@
 			<!-- End Navbar -->
 
 			<!-- Sidebar -->
-			<div class="sidebar">
+			<div class="sidebar" style="box-shadow: 5px 0 10px rgba(0, 0, 0, 0.205);">
 				<div class="scrollbar-inner sidebar-wrapper">
 
-					<div class="user">
+					<div class="user" style="">
 						<div class="photo">
 							{{-- Auth Image --}}
 							<img src="{{ asset('' . auth()->user()->hoSo->anh) }}" alt="User Image">
