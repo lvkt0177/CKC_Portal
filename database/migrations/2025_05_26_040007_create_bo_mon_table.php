@@ -14,7 +14,7 @@ return new class extends Migration
         Schema::create('bo_mon', function (Blueprint $table) {
             $table->id();
             //ID Ngành học
-            $table->foreignId('id_nganh_hoc')
+            $table->foreignId('id_nghanh_hoc')
                 ->constrained('nghanh_hoc')
                 ->onDelete('cascade');
             $table->string('ten_bo_mon')->unique();

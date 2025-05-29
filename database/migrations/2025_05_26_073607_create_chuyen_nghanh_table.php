@@ -14,7 +14,7 @@ return new class extends Migration
         Schema::create('chuyen_nghanh', function (Blueprint $table) {
             $table->id();
 
-            $table->string('ten_chuyen_nganh', 100);
+            $table->string('ten_chuyen_nghanh', 100);
             
             $table->foreignId('id_bo_mon')->constrained('bo_mon')->onDelete('cascade');
 

@@ -18,7 +18,7 @@ return new class extends Migration
             $table->foreignId('id_khoa')->constrained('khoa')->onDelete('cascade');
 
             //tên ngành học
-            $table->string('ten_nganh', 100);
+            $table->string('ten_nghanh', 100);
             
             $table->timestamps();
         });

@@ -15,6 +15,8 @@ return new class extends Migration
             $table->id();
             //id hồ sơ
             $table->foreignId('id_ho_so')->nullable()->constrained('ho_so')->onDelete('cascade');
+            //id bộ môn
+            $table->foreignId('id_bo_mon')->nullable()->constrained('bo_mon')->onDelete('cascade');
             $table->string('tai_khoan')->unique();
             $table->string('password');
             $table->integer('trang_thai')->default(0);

@@ -52,7 +52,7 @@ class User extends Authenticatable
     {
         return $this->role === $permission;
     }
-
+    
 
     // Ho So
     public function hoSo()
