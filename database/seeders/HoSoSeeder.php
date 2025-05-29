@@ -43,7 +43,39 @@ class HoSoSeeder extends Seeder
                 'cccd' => '0690123456',
                 'dia_chi' => '999 Vo Nguyen Giap, Hanoi',
                 'anh' => 'assets/admin/images/ho_so/user_image.jpg',
-            ]
+            ],
+            [
+                'ho_ten' => 'Sinh Viên 1',
+                'email' => 'sv_1@fe.edu.vn',
+                'so_dien_thoai' => '0123456700',
+                'ngay_sinh' => '2000-01-01',
+                'gioi_tinh' => 'Nam',
+                'cccd' => '06901234001',
+                'dia_chi' => '999 Vo Nguyen Giap, Hanoi',
+                'anh' => 'assets/fe/images/ho_so/profile.jpg',
+            ],
+            [
+                'ho_ten' => 'Sinh Viên 2',
+                'email' => 'sv_2@fe.edu.vn',
+                'so_dien_thoai' => '0123456701',
+                'ngay_sinh' => '2000-01-01',
+                'gioi_tinh' => 'Nam',
+                'cccd' => '06901234002',
+                'dia_chi' => '999 Nguyễn Tất Thành, Hanoi',
+                'anh' => 'assets/fe/images/ho_so/profile.jpg',
+            ],
+            [
+                'ho_ten' => 'Sinh Viên 3',
+                'email' => 'sv_2@fe.edu.vn',
+                'so_dien_thoai' => '0123456703',
+                'ngay_sinh' => '2000-01-01',
+                'gioi_tinh' => 'Nam',
+                'cccd' => '06901234003',
+                'dia_chi' => '9 Nguyễn Tất Thành, Hanoi',
+                'anh' => 'assets/fe/images/ho_so/profile.jpg',
+            ],
+            
+
         ]);
     }
 }
