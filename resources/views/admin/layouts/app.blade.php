@@ -15,20 +15,33 @@
 <body>
 	<div class="wrapper">
 		<div class="main-header">
-			<div class="logo-header">
-				<div class="">
-                        <div class="d-flex align-items-center my-2">
-                            <img src="https://cdn.haitrieu.com/wp-content/uploads/2023/01/Logo-Truong-Cao-dang-Ky-thuat-Cao-Thang.png" alt="Logo" style="height: 40px; width: auto;">
-                            <div class="mx-1"></div>
-                            <h6 class="ms-3 mb-0">Cao đẳng Kỹ thuật Cao Thắng</h6>
-                        </div>
-                        
-                </div>
-                <button class="navbar-toggler sidenav-toggler ml-auto" type="button" data-toggle="collapse" data-target="collapse" aria-controls="sidebar" aria-expanded="false" aria-label="Toggle navigation">
-					<i class="bi bi-list" style="font-size: 25px;color:white"></i>
-				</button>
-				<button class="topbar-toggler more"><i class="la la-ellipsis-v" style="font-size: 25px;color:white"></i></button>
+			<div class="logo-header d-flex justify-content-between align-items-center px-3 py-2 bg-primary text-white">
+				<!-- Nút toggle trái (chỉ hiển thị ở mobile) -->
+				<div class="d-flex align-items-center d-none" id="mobileButtonsLeft">
+					<button class="navbar-toggler sidenav-toggler btn btn-sm text-white p-0 m-0" type="button"
+							data-bs-toggle="collapse" data-bs-target="#sidebar" aria-controls="sidebar"
+							aria-expanded="false" aria-label="Toggle navigation">
+						<i class="bi bi-list" style="font-size: 25px;"></i>
+					</button>
+				</div>
+			
+				<!-- Logo và tên trường -->
+				<div class="d-flex justify-content-between align-items-center">
+					{{-- Logo --}}
+					<img src="https://cdn.haitrieu.com/wp-content/uploads/2023/01/Logo-Truong-Cao-dang-Ky-thuat-Cao-Thang.png"
+						 alt="Logo" style="height: 40px; width: auto;">
+
+					<p class="ms-3 mx-1 mb-0 fw-bold">Cao đẳng Kỹ thuật Cao Thắng</p>
+				</div>
+			
+				<!-- Nút more bên phải (chỉ hiển thị ở mobile) -->
+				<div class="d-flex align-items-center d-none" id="mobileButtonsRight">
+					<button class="topbar-toggler more btn btn-sm text-white p-0 m-0">
+						<i class="la la-ellipsis-v" style="font-size: 25px;"></i>
+					</button>
+				</div>
 			</div>
+			
 
 			<!-- Navbar -->
 			<nav class="navbar navbar-header navbar-expand-lg" >
@@ -113,24 +126,19 @@
 							</ul>
 						</li>
 						<li class="nav-item dropdown">
-							<a class="dropdown-toggle profile-pic" data-toggle="dropdown" href="#" aria-expanded="false"> <img src="{{ asset('assets/admin/images/profile.jpg') }}" alt="user-img" width="36" class="img-circle"><span >Hizrian</span></span> </a>
+							<a class="dropdown-toggle profile-pic" data-toggle="dropdown" href="#" aria-expanded="false"> <img src="{{ asset(''. auth()->user()->hoSo->anh) }}" alt="user-img" width="36" height="36" class="img-circle"><span >{{ auth()->user()->hoSo->ho_ten }}</span></span> </a>
 							<ul class="dropdown-menu dropdown-user">
 								<li>
 									<div class="user-box">
-										<div class="u-img"><img src="{{ asset('assets/admin/images/profile.jpg') }} " alt="user"></div>
+										<div class="u-img"><img src="{{ asset(''. auth()->user()->hoSo->anh) }} " alt="user"></div>
 										<div class="u-text">
-											<h4>Hizrian</h4>
-											<p class="text-muted">hello@themekita.com</p><a href="" class="btn btn-rounded btn-danger btn-sm">View Profile</a></div>
+											<h4>{{ auth()->user()->hoSo->ho_ten }}</h4>
 										</div>
 									</li>
 									<div class="dropdown-divider"></div>
-									<a class="dropdown-item" href="#"><i class="ti-user"></i> My Profile</a>
-									<a class="dropdown-item" href="#"></i> My Balance</a>
-									<a class="dropdown-item" href="#"><i class="ti-email"></i> Inbox</a>
+									<a class="dropdown-item" href="{{ route('admin.profile.index') }}"><i class="ti-user"></i>Xem hồ sơ</a>
 									<div class="dropdown-divider"></div>
-									<a class="dropdown-item" href="#"><i class="ti-settings"></i> Account Setting</a>
-									<div class="dropdown-divider"></div>
-									<a class="dropdown-item" href="{{ route('admin.logout') }}"><i class="fa fa-power-off"></i> Logout</a>
+									<a class="dropdown-item" href="{{ route('admin.logout') }}"><i class="fa fa-power-off"></i>Đăng xuất</a>
 								</ul>
 								<!-- /.dropdown-user -->
 							</li>
@@ -141,21 +149,23 @@
 			<!-- End Navbar -->
 
 			<!-- Sidebar -->
-			<div class="sidebar">
+			<div class="sidebar" style="box-shadow: 5px 0 10px rgba(0, 0, 0, 0.205);">
 				<div class="scrollbar-inner sidebar-wrapper">
 
-					<div class="user">
+					<div class="user" style="">
 						<div class="photo">
-							<img src="{{ asset('assets/admin/images/profile.jpg') }}">
+							{{-- Auth Image --}}
+							<img src="{{ asset('' . auth()->user()->hoSo->anh) }}" alt="User Image">
 						</div>
 						<div class="info">
-							<a class="" data-toggle="" href="#" aria-expanded="">
+							<a class="" data-toggle="" href="{{ route('admin.dashboard') }}" aria-expanded="">
 								<span>
                                     {{-- User Name --}}
-									Hizrian
-									<span class="user-level">
+									{{ auth()->user()->hoSo->ho_ten ?? 'Người dùng' }}
+									<span class="user-level text-uppercase">
                                         {{-- User Role --}}
-                                        Administrator</span>
+                                        {{ auth()->user()->getRoleNames()->first() ?? 'Người dùng' }}
+									</span>
 								</span>
 							</a>
 							<div class="clearfix"></div>
@@ -260,6 +270,26 @@
 	<!-- Modal -->
 	
 </body>
+
+<script>
+	function toggleMobileButtons() {
+        const isMobile = window.innerWidth < 768; 
+        const left = document.getElementById('mobileButtonsLeft');
+        const right = document.getElementById('mobileButtonsRight');
+
+        if (isMobile) {
+            left.classList.remove('d-none');
+            right.classList.remove('d-none');
+        } else {
+            left.classList.add('d-none');
+            right.classList.add('d-none');
+        }
+    }
+
+    toggleMobileButtons();
+
+    window.addEventListener('resize', toggleMobileButtons);
+</script>
 
 <script src="{{ asset('assets/admin/js/core/jquery.3.2.1.min.js') }}"></script>
 <script src="{{ asset('assets/admin/js/plugin/jquery-ui-1.12.1.custom/jquery-ui.min.js') }}"></script>

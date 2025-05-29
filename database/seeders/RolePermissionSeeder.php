@@ -38,7 +38,7 @@ class RolePermissionSeeder extends Seeder
         if ($staff) {
             $staff->givePermissionTo([
                 Acl::PERMISSION_VIEW_MENU_DASHBOARD,
-                Acl::PERMISSION_VIEW_STUDENT,
+                Acl::PERMISSION_STUDENT_LIST,
             ]);
         }
 

@@ -41,6 +41,8 @@ Route::group(['middleware' => 'web'], function () {
 
             include('admin/role.php');
 
+            include('admin/profile.php');
+            
         });
 
 

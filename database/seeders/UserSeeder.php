@@ -16,16 +16,19 @@ class UserSeeder extends Seeder
         //
         User::insert([
             [
+                'id_ho_so' => 1,
                 'tai_khoan' => 'lvkt0177',
                 'password' => bcrypt('Thinh3988@'),
                 'trang_thai' => 1,
             ],
             [
+                'id_ho_so' => 2,
                 'tai_khoan' => 'mdt0177',
                 'password' => bcrypt('Thinh3988@'),
                 'trang_thai' => 1,
             ],
             [
+                'id_ho_so' => 3,
                 'tai_khoan' => 'nv1',
                 'password' => bcrypt('Thinh3988@'),
                 'trang_thai' => 1,

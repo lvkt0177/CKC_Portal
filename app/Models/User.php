@@ -19,6 +19,7 @@ class User extends Authenticatable
      * @var list<string>
      */
     protected $fillable = [
+        'id_ho_so',
         'tai_khoan',
         'password',
         'trang_thai',
@@ -50,5 +51,12 @@ class User extends Authenticatable
     public function hasPermission(string $permission): bool
     {
         return $this->role === $permission;
+    }
+
+
+    // Ho So
+    public function hoSo()
+    {
+        return $this->belongsTo(HoSo::class, 'id_ho_so', 'id');
     }
 }
