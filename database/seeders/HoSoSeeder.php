@@ -81,7 +81,30 @@ class HoSoSeeder extends Seeder
                 'dia_chi' => '9 Nguyễn Tất Thành, Hanoi',
                 'anh' => 'assets/fe/images/ho_so/profile.jpg',
             ],
-            
+            [
+                'ho_ten' => 'Giảng Viên 1',
+                'email' => 'gv_1@fe.edu.vn',
+                'password' => bcrypt('12345678'),
+                'so_dien_thoai' => '012345673333',
+                'ngay_sinh' => '2000-01-01',
+                'gioi_tinh' => 'Nam',
+                'cccd' => '06901234009',
+                'dia_chi' => '9 Hội An, Đà Nẵng',
+                'anh' => 'assets/fe/images/ho_so/profile.jpg',
+            ],
+            [
+                'ho_ten' => 'Giảng Viên 2',
+                'email' => 'gv_2@fe.edu.vn',
+                'password' => bcrypt('12345678'),
+                'so_dien_thoai' => '01234569904',
+                'ngay_sinh' => '2000-01-01',
+                'gioi_tinh' => 'Nam',
+                'cccd' => '06901234008',
+                'dia_chi' => '9 Yên Lãng, Hanoi',
+                'anh' => 'assets/fe/images/ho_so/profile.jpg',
+            ],
+
+
 
         ]);
     }

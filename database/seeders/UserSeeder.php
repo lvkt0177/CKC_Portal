@@ -36,6 +36,20 @@ class UserSeeder extends Seeder
                 'password' => bcrypt('Thinh3988@'),
                 'trang_thai' => 1,
             ],
+            [
+                'id_ho_so' => 8,
+                'id_bo_mon' => 3,
+                'tai_khoan' => 'gv1',
+                'password' => bcrypt('Thinh3988@'),
+                'trang_thai' => 1,
+            ],
+            [
+                'id_ho_so' => 7,
+                'id_bo_mon' => 4,
+                'tai_khoan' => 'gv2',
+                'password' => bcrypt('Thinh3988@'),
+                'trang_thai' => 1,
+            ],
         ]);
     }
 }

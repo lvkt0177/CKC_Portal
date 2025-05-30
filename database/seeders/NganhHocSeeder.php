@@ -20,12 +20,16 @@ class NganhHocSeeder extends Seeder
                 "ten_nganh" => "Tin Học"
             ],
             [
-                "id_khoa" => "3",
-                "ten_nganh" => "Công Nghệ Kỹ Thuật Cơ Khí"
+                "id_khoa" => "5",
+                "ten_nganh" => "Công Nghệ Kỹ Thuật Điện, Điện Tử"
+            ],
+            [
+                "id_khoa" => "5",
+                "ten_nganh" => "Công Nghệ Kỹ Thuật Điện Tử, Viễn Thông"
             ],
             [
                 "id_khoa" => "3",
-                "ten_nganh" => "Công Nghệ Kỹ Thuật Cơ Điện Tử"
+                "ten_nganh" => "Công Nghệ Kỹ Thuật Cơ Khí"
             ],
         ]);
     }
