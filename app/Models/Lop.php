@@ -31,5 +31,8 @@ class Lop extends Model
     {
         return $this->hasMany(BienBanSHCN::class, 'id_lop', 'id');
     }
-
+    public function giangVien()
+    {
+        return $this->belongsTo(User::class, 'id_gvcn', 'id');
+    }
 }

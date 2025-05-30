@@ -7,8 +7,4 @@ use App\Acl\Acl;
 use App\Http\Controllers\Admin\SinhVienController;
 
 Route::get('/student', [SinhVienController::class, 'index'])->name('student.index');
-
-
-
-
-
+Route::get('/student/list/{id?}', [SinhVienController::class, 'showlist'])->name('student.list');
