@@ -17,6 +17,8 @@ class HoSoSeeder extends Seeder
             [
                 'ho_ten' => 'Le Van Khanh Thinh',
                 'email' => 'lvkt@fe.edu.vn',
+                //password
+                'password' => bcrypt('12345678'),
                 'so_dien_thoai' => '0857853419',
                 'ngay_sinh' => '2000-01-01',
                 'gioi_tinh' => 'Nam',
@@ -27,6 +29,7 @@ class HoSoSeeder extends Seeder
             [
                 'ho_ten' => 'Nguyen Thi Mai',
                 'email' => 'ntm@fe.edu.vn',
+                'password' => bcrypt('12345678'),
                 'so_dien_thoai' => '0987654321',
                 'ngay_sinh' => '2000-01-01',
                 'gioi_tinh' => 'Nu',
@@ -37,6 +40,7 @@ class HoSoSeeder extends Seeder
             [
                 'ho_ten' => 'Tran Van An',
                 'email' => 'tva@fe.edu.vn',
+                'password' => bcrypt('12345678'),
                 'so_dien_thoai' => '0123456789',
                 'ngay_sinh' => '2000-01-01',
                 'gioi_tinh' => 'Nam',
@@ -47,6 +51,7 @@ class HoSoSeeder extends Seeder
             [
                 'ho_ten' => 'Sinh Viên 1',
                 'email' => 'sv_1@fe.edu.vn',
+                'password' => bcrypt('12345678'),
                 'so_dien_thoai' => '0123456700',
                 'ngay_sinh' => '2000-01-01',
                 'gioi_tinh' => 'Nam',
@@ -57,6 +62,7 @@ class HoSoSeeder extends Seeder
             [
                 'ho_ten' => 'Sinh Viên 2',
                 'email' => 'sv_2@fe.edu.vn',
+                'password' => bcrypt('12345678'),
                 'so_dien_thoai' => '0123456701',
                 'ngay_sinh' => '2000-01-01',
                 'gioi_tinh' => 'Nam',
@@ -67,6 +73,7 @@ class HoSoSeeder extends Seeder
             [
                 'ho_ten' => 'Sinh Viên 3',
                 'email' => 'sv_3@fe.edu.vn',
+                'password' => bcrypt('12345678'),
                 'so_dien_thoai' => '0123456703',
                 'ngay_sinh' => '2000-01-01',
                 'gioi_tinh' => 'Nam',

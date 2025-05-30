@@ -24,11 +24,9 @@ return new class extends Migration
             // bình luận cha
             $table->foreignId('id_binh_luan_cha')->nullable()->constrained('binh_luan')->onDelete('cascade');
 
-            // id_reply
-            $table->foreignId('id_sv_tra_loi')->nullable()->constrained('binh_luan')->onDelete('cascade');
-
             // trạng thái bình luận
             $table->integer('trang_thai')->default(1); // 0: đã khoá, 1: không khoá
+            
             $table->timestamps();
         });
     }

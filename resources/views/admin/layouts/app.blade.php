@@ -213,12 +213,12 @@
 
                         {{-- Đào tạo --}}
                         <li class="nav-item">
-                            <p class="fw-bold mx-4 mb-1 mt-4 danhMuc">Đào tạo</p>
+                            <p class="fw-bold mx-4 mb-1 mt-4 danhMuc">Cơ sở vật chất</p>
 						</li>
-						<li class="nav-item">
-							<a href="">
-								<i class="la la-bell"></i>
-								<p>Notifications</p>
+						<li class="nav-item {{ isActiveRoute('admin/room*') }}">
+							<a href="{{ route('admin.room.index') }}">
+								<i class="la la-building"></i>
+								<p>Phòng học</p>
 							</a>
 						</li>
 

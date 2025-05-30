@@ -19,8 +19,11 @@ return new class extends Migration
             //id_sinh_vien
             $table->foreignId('id_sinh_vien')->constrained('sinhvien')->onDelete('cascade');
 
-            //lý do
-            $table->integer('ly_do')->default(0); // 0: có phép, 1: không phép
+            //lý do - string
+            $table->string('ly_do', 255)->nullable();
+
+            //loai
+            $table->integer('loai')->default(0); // 0: có phép, 1: không phép 
 
             $table->timestamps();
         });

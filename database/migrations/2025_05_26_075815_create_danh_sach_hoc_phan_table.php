@@ -22,14 +22,21 @@ return new class extends Migration
                 ->constrained('lop_hoc_phan')
                 ->onDelete('cascade');
 
+            //DIEM_MD_THUC_HANH = null
+            $table->float('diem_md_thuc_hanh')->nullable();
+            
+            //DIEM_MD_LY_THUYET
+            $table->float('diem_md_ly_thuyet')->nullable();
+            
+
             //điểm chuyên cần
-            $table->float('diem_chuyen_can')->default(0);
+            $table->float('diem_chuyen_can')->nullable();
 
             //điểm quá trình
-            $table->float('diem_qua_trinh')->default(0);
+            $table->float('diem_qua_trinh')->nullable();
 
             //điểm thi
-            $table->float('diem_thi')->default(0);
+            $table->float('diem_thi')->nullable();
 
             //điểm tổng kết
             $table->float('diem_tong_ket')->default(0);

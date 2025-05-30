@@ -16,6 +16,9 @@ return new class extends Migration
             //id_user
             $table->foreignId('id_gv')->constrained('users')->onDelete('cascade');
 
+            //id_file
+            $table->foreignId('id_file')->nullable()->constrained('file')->onDelete('set null');
+
             //từ ai - integer
             $table->integer('tu_ai')->default(0);
 

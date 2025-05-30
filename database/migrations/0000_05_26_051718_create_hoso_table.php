@@ -15,6 +15,8 @@ return new class extends Migration
             $table->id();
             $table->string('ho_ten', 100);
             $table->string('email', 100)->unique();
+            //password
+            $table->string('password', 255);
             $table->string('so_dien_thoai', 15)->nullable();
             $table->date('ngay_sinh')->nullable();
             $table->enum('gioi_tinh', ['Nam', 'Nữ', 'Khác']);

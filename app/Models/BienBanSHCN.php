@@ -11,8 +11,10 @@ class BienBanSHCN extends Model
 
     
     protected $fillable = [
-        'id',
         'id_lop',
+        'id_gvcn',
+        'id_sv',
+        'id_tuan',
         'tieu_de',
         'noi_dung',
         'ngay_bat_dau',

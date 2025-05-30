@@ -15,20 +15,20 @@ return new class extends Migration
             $table->id();
             //id_lop
             $table->foreignId('id_lop')->constrained('lop')->onDelete('cascade');
+
+            //id_sinh_vien
+            $table->foreignId('id_sv')->constrained('sinhvien')->onDelete('cascade');
+
+            //id_giang_vien
+            $table->foreignId('id_gvcn')->constrained('users')->onDelete('cascade');
+
+            //id_tuan
+            $table->foreignId('id_tuan')->constrained('tuan')->onDelete('cascade');
             //tiêu đề
             $table->string('tieu_de', 255);
 
             //nội dung
             $table->longText('noi_dung');
-
-            //ngày bắt đầu
-            $table->date('ngay_bat_dau');
-
-            //tuần
-            $table->integer('tuan')->default(0);
-
-            //năm học - year
-            $table->year('nam_hoc');
 
             //thời gian bắt đầu
             $table->time('thoi_gian_bat_dau');
