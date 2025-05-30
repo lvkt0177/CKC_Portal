@@ -22,6 +22,7 @@
                                 </ul>
                             </div>
                         @endif
+                        
                         <form action="{{ route('admin.room.store') }}" method="POST">
                             @csrf
                             <div class="mb-3">
@@ -42,6 +43,7 @@
                             </div>
                             <button type="submit" class="btn btn-primary">Tạo phòng học</button>
                         </form>
+
                     </div>
                 </div>
             </div>
