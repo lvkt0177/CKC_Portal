@@ -21,6 +21,7 @@ class User extends Authenticatable
      */
     protected $fillable = [
         'id_ho_so',
+        'id_bo_mon',
         'tai_khoan',
         'password',
         'trang_thai',
@@ -53,7 +54,7 @@ class User extends Authenticatable
     {
         return $this->role === $permission;
     }
-    
+
 
     // Ho So
     public function hoSo()
@@ -64,5 +65,9 @@ class User extends Authenticatable
     public function boMon()
     {
         return $this->belongsTo(BoMon::class, 'id_bo_mon', 'id');
+    }
+    public function lopChuNhiem()
+    {
+        return $this->hasOne(User::class, 'id_gvcn', 'id');
     }
 }
