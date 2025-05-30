@@ -23,7 +23,7 @@ class SinhVienController extends Controller
 
         // Nếu không chọn thì lấy id niên khóa mới nhất
         $id_nien_khoa = $request->input('id_nien_khoa') ?? $nienKhoas->first()->id;
-
+        
         // Lấy danh sách lớp theo niên khóa
         $lops = Lop::with(['nienKhoa', 'giangVien'])
             ->where('id_nien_khoa', $id_nien_khoa)
