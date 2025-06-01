@@ -15,6 +15,7 @@ class DatabaseSeeder extends Seeder
     {
         // User::factory(10)->create();
         $this->call([
+
             NamSeeder::class,
             TuanSeeder::class,
             PhongSeeder::class,
@@ -27,6 +28,8 @@ class DatabaseSeeder extends Seeder
             NienKhoaSeeder::class,
             LopSeeder::class,
             SinhVienSeeder::class,
+            LoaiGiaySeeder::class,
+            DangKytGiaySeeder::class,
             RolePermissionSeeder::class,
             BienBanSHCNSeeder::class,
         ]);

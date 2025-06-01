@@ -70,4 +70,8 @@ class User extends Authenticatable
     {
         return $this->hasOne(User::class, 'id_gvcn', 'id');
     }
+    public function dangKyGiay()
+    {
+        return $this->hasMany(DangKyGiay::class, 'id_giang_vien', 'id');
+    }
 }
