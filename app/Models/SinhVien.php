@@ -27,5 +27,8 @@ class SinhVien extends Model
     {
         return $this->belongsTo(Lop::class, 'id_lop', 'id');
     }
-    
+    public function dangKyGiay()
+    {
+        return $this->hasMany(DangKyGiay::class, 'id_sinh_vien', 'id');
+    }
 }
