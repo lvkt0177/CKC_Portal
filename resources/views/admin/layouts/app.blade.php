@@ -9,6 +9,7 @@
 	<link rel="stylesheet" href="https://fonts.googleapis.com/css?family=Nunito:200,200i,300,300i,400,400i,600,600i,700,700i,800,800i,900,900i">
     <link rel="stylesheet" href="{{ asset('assets/admin/css/demo.css') }}"> 
 	<link rel="stylesheet" href="{{ asset('assets/admin/css/ready.css') }}">
+	@yield('css')
 	{{-- logo --}}
     <link rel="icon" type="image/png" href="https://cdn.haitrieu.com/wp-content/uploads/2023/01/Logo-Truong-Cao-dang-Ky-thuat-Cao-Thang.png">
 </head>
@@ -271,6 +272,7 @@
 	
 </body>
 
+@yield('js')
 <script>
 	function toggleMobileButtons() {
         const isMobile = window.innerWidth < 768; 

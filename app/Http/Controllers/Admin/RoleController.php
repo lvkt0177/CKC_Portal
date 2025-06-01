@@ -28,4 +28,6 @@ class RoleController extends Controller
         return view('admin.roles.index', compact('roles'));
     }
 
+    // public function addRoleForUser()
+
 }
