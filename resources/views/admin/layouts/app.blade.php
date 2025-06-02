@@ -224,13 +224,13 @@
 						</li>
 
                         <li class="nav-item">
-                            <p class="fw-bold mx-4 mb-1 mt-4 danhMuc">Tương tác - Góp ý</p>
+                            <p class="fw-bold mx-4 mb-1 mt-4 danhMuc">Công Tác - Chính Trị Học Sinh, Sinh viên</p>
 						</li>
 
-						<li class="nav-item">
-							<a href="">
+						<li class="nav-item {{ isActiveRoute('admin/testimonial*') }}">
+							<a href="{{ route('admin.testimonial.index') }}">
 								<i class="la la-font"></i>
-								<p>Typography</p>
+								<p>Quản lý sinh viên đăng ký giấy</p>
 							</a>
 						</li>
 
