@@ -19,4 +19,5 @@ class BoMon extends Model
     {
         return $this->belongsTo(NganhHoc::class, 'id_nganh_hoc', 'id');
     }
+
 }

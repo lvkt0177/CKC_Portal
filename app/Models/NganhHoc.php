@@ -19,4 +19,8 @@ class NganhHoc extends Model
     {
         return $this->belongsTo(Khoa::class, 'id_khoa', 'id');
     }
+    public function chuyenNganh()
+    {
+        return $this->hasMany(ChuyenNganh::class, 'id_nganh_hoc', 'id');
+    }
 }
