@@ -18,6 +18,7 @@ class TeacherLoginController extends Controller
         return view('auth.login');
     }
 
+
     public function login(TeacherLoginRequest $request)
     {
         $credentials = $request->only('tai_khoan', 'password');
