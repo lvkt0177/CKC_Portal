@@ -16,7 +16,7 @@ return new class extends Migration
 
             $table->string('ten_chuyen_nganh', 100);
             
-            $table->foreignId('id_bo_mon')->constrained('bo_mon')->onDelete('cascade');
+            $table->foreignId('id_nganh_hoc')->constrained('nganh_hoc')->onDelete('cascade');
 
             $table->integer('trang_thai')->default(0);
 

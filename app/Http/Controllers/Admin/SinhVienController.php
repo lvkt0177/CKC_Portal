@@ -45,6 +45,9 @@ class SinhVienController extends Controller
             ->where('id_lop', $id)
             ->orderBy('ma_sv', 'asc')
             ->get();
-        return view('admin.student.list', compact('sinhviens'));
+
+        $lop = Lop::find($id);
+
+        return view('admin.student.list', compact('sinhviens', 'lop'));
     }
 }
