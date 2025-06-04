@@ -14,6 +14,8 @@ class UserSeeder extends Seeder
     public function run(): void
     {
         //
+        //factory
+       
         User::insert([
             [
                 'id_ho_so' => 1,
@@ -50,6 +52,42 @@ class UserSeeder extends Seeder
                 'password' => bcrypt('Thinh3988@'),
                 'trang_thai' => 1,
             ],
+            [
+                'id_ho_so' => 9,
+                'id_bo_mon' => 2,
+                'tai_khoan' => 'gv3',
+                'password' => bcrypt('Thinh3988@'),
+                'trang_thai' => 1,
+            ],
+            [
+                'id_ho_so' => 10,
+                'id_bo_mon' => 1,
+                'tai_khoan' => 'gv4',
+                'password' => bcrypt('Thinh3988@'),
+                'trang_thai' => 1,
+            ],
+            [
+                'id_ho_so' => 11,
+                'id_bo_mon' => 3,
+                'tai_khoan' => 'gv5',
+                'password' => bcrypt('Thinh3988@'),
+                'trang_thai' => 1,
+            ],
+            [
+                'id_ho_so' => 12,
+                'id_bo_mon' => 2,
+                'tai_khoan' => 'gv6',
+                'password' => bcrypt('Thinh3988@'),
+                'trang_thai' => 1,
+            ],
+            [
+                'id_ho_so' => 13,
+                'id_bo_mon' => 2,
+                'tai_khoan' => 'gv7',
+                'password' => bcrypt('Thinh3988@'),
+                'trang_thai' => 1,
+            ],
+            
         ]);
     }
 }
