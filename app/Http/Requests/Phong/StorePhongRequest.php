@@ -4,14 +4,14 @@ namespace App\Http\Requests\Phong;
 
 use Illuminate\Foundation\Http\FormRequest;
 
-class PhongRequest extends FormRequest
+class StorePhongRequest extends FormRequest
 {
     /**
      * Determine if the user is authorized to make this request.
      */
     public function authorize(): bool
     {
-        return true;
+        return checkPermissions(Acl()::PERMISSION_ROOM_CREATE);
     }
 
     /**

@@ -24,7 +24,7 @@ class AdminLoginController extends Controller
 
         $user = User::with('hoSo')->where('tai_khoan', $request->tai_khoan)->first();
 
-
+        
         return response()->json([
             'token' => $token,
             'user' => $user,

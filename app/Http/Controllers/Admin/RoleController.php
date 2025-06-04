@@ -8,6 +8,9 @@ use App\Http\Controllers\Controller;
 use App\Acl\Acl;
 use App\Http\Requests;
 use \Spatie\Permission\Models\Role;
+use \Spatie\Permission\Models\Permission;
+use App\Models\User;
+use App\Http\Requests\Role\RoleRequest;
 
 
 class RoleController extends Controller
@@ -28,6 +31,22 @@ class RoleController extends Controller
         return view('admin.roles.index', compact('roles'));
     }
 
-    // public function addRoleForUser()
+    public function addRoleForUser(RoleRequest $request, User $user)
+    {
+        $role = Role::where('name', $request->validated())->first();
+
+        if ($role) {
+            $user->assignRole($role);
+            return redirect()->back()->with('success', 'Vai trò đã được gán cho người dùng này');
+        }
+
+    }
+
+    public function removeRoleForUser(RoleRequest $request, User $user)
+    {
+        $role = Role::where('name', $request->validated())->first();
+        $user->removeRole($role);
+        return redirect()->back()->with('success', 'Vai trò đã được hóa khỏi người dùng này');
+    }
 
 }

@@ -46,15 +46,6 @@ class RolePermissionSeeder extends Seeder
         if ($user) {
             $user->assignRole(Acl::ROLE_SUPER_ADMIN);
         }
-
-        $user = User::find(2);
-        if ($user) {
-            $user->assignRole(Acl::ROLE_ADMIN);
-        }
-
-        $user = User::find(3);
-        if ($user) {
-            $user->assignRole(Acl::ROLE_STAFF);
-        }
+        
     }
 }

@@ -39,29 +39,70 @@
                                             @if ($user->getRoleNames()->isEmpty())
                                                 <p class="text-secondary text-center">Chưa có vai trò nào</p>
                                             @else
-                                            <div class="">
-                                                <h6 class="text-secondary text-center text-capitalize fs-1">{{ $user->getRoleNames()->first() }}</h6>
-                                                
-                                            </div>
+                                                <div class="d-flex flex-wrap gap-2 mt-3">
+                                                    <div class="d-flex flex-wrap gap-2 mt-3 my-3">
+                                                        @foreach ($user->getRoleNames() as $role)
+                                                            <div class="d-flex align-items-center px-4 py-2 shadow-sm m-1"
+                                                                style="
+                                                                background-color: #0d6efd;
+                                                                border-radius: 2rem;
+                                                                font-size: 1.1rem;
+                                                                font-weight: 500;
+                                                                color: white;
+                                                            ">
+                                                                <span class="me-3">{{ $role }}</span>
+
+                                                                <form
+                                                                    action="{{ route('admin.roles.removeRoleForUser', $user) }}"
+                                                                    method="POST" class="m-0 p-0">
+                                                                    @csrf
+                                                                    <input type="hidden" name="name" value="{{ $role }}">
+                                                                    <button type="submit"
+                                                                        class="btn p-0 px-2 text-white fw-bold"
+                                                                        style="
+                                                                        font-size: 1.2rem; 
+                                                                        line-height: 1;
+                                                                        background: transparent; 
+                                                                        border: none;
+                                                                    "
+                                                                        title="Xoá vai trò {{ $role }}"
+                                                                        onclick="return confirm('Bạn có chắc muốn xoá vai trò {{ $role }}?')">
+                                                                        &times;
+                                                                    </button>
+                                                                </form>
+                                                            </div>
+                                                        @endforeach
+                                                    </div>
+
+                                                </div>
+
                                             @endif
 
                                             @if ($user->getRoleNames()->first() != Acl()::ROLE_SUPER_ADMIN)
 
-                                                <form action="" method="post" class="text-capitalize">
+                                                <form action="{{ route('admin.roles.addRoleForUser', $user) }}"
+                                                    method="post" class="text-capitalize">
                                                     @csrf
                                                     <label class="form-label text-secondary">Chọn vai trò</label>
-                                                    <select name="role" class="form-control">
-                                                        <option value="" class="text-capitalize" selected disabled>Chọn vai trò</option>
+                                                    <select name="name" class="form-control">
+                                                        <option value="" class="text-capitalize" selected disabled>
+                                                            Chọn vai trò
+                                                        </option>
+                                                    
                                                         @foreach ($roles as $role)
-                                                            @if($role->name != Acl()::ROLE_SUPER_ADMIN)
-                                                                <option value="{{ $role->name }}" class="text-capitalize"
-                                                                    {{ $user->hasRole($role->name) ? 'selected' : '' }}>
+                                                            @if ($role->name != Acl()::ROLE_SUPER_ADMIN && ! $user->hasRole($role->name))
+                                                                <option value="{{ $role->name }}" class="text-capitalize">
                                                                     {{ $role->name }}
                                                                 </option>
                                                             @endif
                                                         @endforeach
                                                     </select>
-                                                    <button class="btn btn-primary w-100 mt-3">Gắn Vai Trò</button>
+
+                                                    @error('name')
+                                                        <span class="text-danger">{{ $message }}</span>
+                                                    @enderror
+
+                                                    <button onclick="return confirm(`Bạn có chắc muốn gắn vai trò cho người dùng này? `)" class="btn btn-primary w-100 mt-3">Gắn Vai Trò</button>
                                                 </form>
                                             @endif
 

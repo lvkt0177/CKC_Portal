@@ -90,36 +90,38 @@
                                     <div class="card-body">
                                         <div class="row g-4">
                                             @foreach ($users as $gv)
-                                                <div class="col-lg-3 col-md-3 mb-4">
-                                                    <a href="{{ route('admin.giangvien.show', $gv->id) }}" class="text-decoration-none"   
-                                                        style="text-decoration: none;">
-                                                        <div class="card h-100 border-0 position-relative bg-white transition-all"
-                                                            style="border-radius: 12px; box-shadow: 0 1rem 2rem rgba(0, 0, 0, 0.075) !important; transition: all 0.3s ease-in-out;"
-                                                            onmouseover="this.style.transform='translateY(-5px)'; this.style.boxShadow='0 0 25px rgba(54, 107, 214, 0.6)'"
-                                                            onmouseout="this.style.transform='translateY(0)'; this.style.boxShadow='0 1rem 2rem rgba(0, 0, 0, 0.075)'">
-                                                            <div class="position-absolute top-0 start-0 p-3">
-                                                                <i class="fas fa-heart text-danger fs-5"></i>
+                                                @if($gv->getRoleNames()->first() != Acl()::ROLE_SUPER_ADMIN)
+                                                    <div class="col-lg-3 col-md-3 mb-4">
+                                                        <a href="{{ route('admin.giangvien.show', $gv->id) }}" class="text-decoration-none"   
+                                                            style="text-decoration: none;">
+                                                            <div class="card h-100 border-0 position-relative bg-white transition-all"
+                                                                style="border-radius: 12px; box-shadow: 0 1rem 2rem rgba(0, 0, 0, 0.075) !important; transition: all 0.3s ease-in-out;"
+                                                                onmouseover="this.style.transform='translateY(-5px)'; this.style.boxShadow='0 0 25px rgba(54, 107, 214, 0.6)'"
+                                                                onmouseout="this.style.transform='translateY(0)'; this.style.boxShadow='0 1rem 2rem rgba(0, 0, 0, 0.075)'">
+                                                                <div class="position-absolute top-0 start-0 p-3">
+                                                                    <i class="fas fa-heart text-danger fs-5"></i>
+                                                                </div>
+                                                                <div class="position-absolute top-0 end-0 p-3">
+                                                                    <i class="fas fa-ellipsis-vertical text-muted"></i>
+                                                                </div>
+                                                                <div class="card-body text-center pt-5">
+                                                                    <img src="{{ asset('' . $gv->hoSo->anh) }}"
+                                                                        class="rounded-circle mb-3"
+                                                                        style="width: 80px; height: 80px; object-fit: cover;"
+                                                                        alt="Ảnh GV">
+                                                                    <h6 class="card-title fw-semibold mb-1 text-dark">
+                                                                        {{ $gv->hoSo->ho_ten }}</h6>
+                                                                    <p class="text-muted mb-1">{{ $gv->hoSo->email }}</p>
+                                                                    <p class="text-muted text-primary mb-0">
+                                                                        {{ $gv->hoSo->so_dien_thoai }}</p>
+                                                                    <hr class="my-3">
+                                                                    <p class="mb-0 text-dark" style="font-size: 18px">
+                                                                        {{ $gv->boMon->nganhHoc->khoa->ten_khoa }}</p>
+                                                                </div>
                                                             </div>
-                                                            <div class="position-absolute top-0 end-0 p-3">
-                                                                <i class="fas fa-ellipsis-vertical text-muted"></i>
-                                                            </div>
-                                                            <div class="card-body text-center pt-5">
-                                                                <img src="{{ asset('' . $gv->hoSo->anh) }}"
-                                                                    class="rounded-circle mb-3"
-                                                                    style="width: 80px; height: 80px; object-fit: cover;"
-                                                                    alt="Ảnh GV">
-                                                                <h6 class="card-title fw-semibold mb-1 text-dark">
-                                                                    {{ $gv->hoSo->ho_ten }}</h6>
-                                                                <p class="text-muted mb-1">{{ $gv->hoSo->email }}</p>
-                                                                <p class="text-muted text-primary mb-0">
-                                                                    {{ $gv->hoSo->so_dien_thoai }}</p>
-                                                                <hr class="my-3">
-                                                                <p class="mb-0 text-dark">
-                                                                    {{ $gv->boMon->nganhHoc->khoa->ten_khoa }}</p>
-                                                            </div>
-                                                        </div>
-                                                    </a>
-                                                </div>
+                                                        </a>
+                                                    </div>
+                                                @endif
                                             @endforeach
 
                                         </div>

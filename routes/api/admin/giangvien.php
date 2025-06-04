@@ -8,9 +8,3 @@ use App\Acl\Acl;
 use App\Http\Controllers\API\Admin\GiangVienController;
 
 Route::resource('giangvien', GiangVienController::class)->only(['index', 'show']);
-
-/*
-    Route:
-    1. /api/admin/giangvien
-
-*/

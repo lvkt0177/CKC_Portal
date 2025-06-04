@@ -6,7 +6,7 @@ use App\Http\Controllers\Controller;
 use Illuminate\Http\Request;
 use App\Acl\Acl;
 use App\Models\Phong;
-use App\Http\Requests\Phong\PhongRequest;
+use App\Http\Requests\Phong\StorePhongRequest;
 
 class RoomController extends Controller
 {
@@ -22,7 +22,7 @@ class RoomController extends Controller
         return view('admin.room.create');
     }
 
-    public function store(PhongRequest $request)
+    public function store(StorePhongRequest $request)
     {
         $phong = Phong::create($request->validated());
 
@@ -32,7 +32,7 @@ class RoomController extends Controller
 
         return redirect()->route('admin.room.index')->with('success', 'Phòng đã được tạo thành công.');
     }
-
+    
 
     
 }

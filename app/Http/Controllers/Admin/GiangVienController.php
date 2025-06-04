@@ -37,7 +37,6 @@ class GiangVienController extends Controller
 
         $user = $data[0];
         $roles = Role::all();
-        // dd($user);
 
         return view('admin.teacher.show', compact('user', 'roles'));
     }

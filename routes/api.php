@@ -16,8 +16,9 @@ Route::prefix('admin')->group(function () {
 
         Route::post('/logout', [AdminLoginController::class, 'logout']);
 
-        Route::resource('giangvien', GiangVienController::class)->only(['index', 'show']);
-
-    
+        
+        
+      });
    });
-});
+   
+   include('api/admin/giangvien.php');
