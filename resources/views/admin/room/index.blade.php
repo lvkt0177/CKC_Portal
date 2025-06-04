@@ -9,7 +9,7 @@
                 <div class="card shadow-sm">
                     <div class="card-header d-flex justify-content-between align-items-center">
                         <h3 class="card-title mb-0"> Quản lý phòng học </h3>
-                        <a href="{{ route('admin.room.create') }}" class="btn btn-primary">Thêm phòng học</a>
+                        <a href="{{ route('admin.phong.create') }}" class="btn btn-primary">Thêm phòng học</a>
                     </div>
                     
                     <div class="card-body">
@@ -32,8 +32,11 @@
                                         <td>{{ $room->so_luong }}</td>
                                         <td>{{ $room->loai_phong == 0 ? 'Phòng lý thuyết' : 'Phòng thực hành' }}</td>
                                         <td class="d-flex justify-content-start">
-                                            <a href="" class="btn btn-warning btn-sm">Sửa</a>
+
+                                            <a href="{{ route('admin.phong.show', $room) }}" class="btn btn-warning btn-sm">Sửa</a>
+
                                             <div class="mx-1"></div>
+
                                             <form action="" method="POST" style="display:inline;">
                                                 @csrf
                                                 @method('DELETE')

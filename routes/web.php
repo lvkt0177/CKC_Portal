@@ -38,7 +38,7 @@ Route::group(['middleware' => 'web'], function () {
 
             include('admin/permission.php');
 
-            include('admin/room.php');
+            include('admin/phong.php');
 
             include('admin/giayxacnhan.php');
 

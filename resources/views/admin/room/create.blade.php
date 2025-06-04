@@ -9,37 +9,42 @@
                 <div class="card shadow-sm">
                     <div class="card-header d-flex justify-content-between align-items-center">
                         <h3 class="card-title mb-0">Tạo phòng học mới</h3>
-                        <a href="{{ route('admin.room.index') }}" class="btn btn-secondary">Quay lại</a>
+                        <a href="{{ route('admin.phong.index') }}" class="btn btn-primary">Quay lại</a>
                     </div>
                     <div class="card-body">
                         {{-- Show error --}}
-                        @if ($errors->any())
-                            <div class="alert alert-danger">
-                                <ul>
-                                    @foreach ($errors->all() as $error)
-                                        <li>{{ $error }}</li>
-                                    @endforeach
-                                </ul>
-                            </div>
-                        @endif
                         
-                        <form action="{{ route('admin.room.store') }}" method="POST">
+                        <form action="{{ route('admin.phong.store') }}" method="POST">
                             @csrf
                             <div class="mb-3">
                                 <label for="ten" class="form-label">Tên phòng học</label>
-                                <input type="text" class="form-control" id="ten" name="ten" required>
+                                <input type="text" class="form-control @error('ten') is-invalid bg-danger text-white @enderror" value="{{ old('ten') }}" id="ten" name="ten" >
+                                @error('ten')
+                                    <div class="text-danger">Thông báo lỗi: {{ $message }}</div>
+                                @enderror
                             </div>
+
+
                             <div class="mb-3">
                                 <label for="so_luong" class="form-label">Số lượng</label>
-                                <input type="number" class="form-control" id="so_luong" name="so_luong" required>
+                                <input type="number" class="form-control @error('ten') is-invalid bg-danger text-white @enderror" value="{{ old('so_luong') }}"  id="so_luong" name="so_luong" >
+                                @error('so_luong')
+                                    <div class="text-danger">Thông báo lỗi: {{ $message }}</div>
+                                @enderror
                             </div>
+
+
                             <div class="mb-3">
                                 <label for="loai_phong" class="form-label ">Loại phòng</label>
-                                <select class="form-control" id="loai_phong" name="loai_phong" required>
-                                    <option value="0">Phòng lý thuyết</option>
-                                    <option value="1">Phòng thực hành</option>
-                                    <option value="2">Phòng học online</option>
+                                <select class="form-control @error('loai_phong') is-invalid bg-danger text-white @enderror" id="loai_phong" name="loai_phong" >
+                                    <option class="bg-white text-dark" value="">-- Chọn loại phòng --</option>
+                                    <option class="bg-white text-dark" value="0">Phòng lý thuyết</option>
+                                    <option class="bg-white text-dark" value="1">Phòng thực hành</option>
+                                    <option class="bg-white text-dark" value="2">Phòng học online</option>
                                 </select>
+                                @error('loai_phong')
+                                    <div class="text-danger">Thông báo lỗi: {{ $message }}</div>
+                                @enderror
                             </div>
                             <button type="submit" class="btn btn-primary">Tạo phòng học</button>
                         </form>

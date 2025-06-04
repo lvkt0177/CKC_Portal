@@ -3,15 +3,17 @@
 namespace App\Http\Requests\Phong;
 
 use Illuminate\Foundation\Http\FormRequest;
+use Illuminate\Validation\Rule;
 
-class StorePhongRequest extends FormRequest
+
+class UpdatePhongRequest extends FormRequest
 {
     /**
      * Determine if the user is authorized to make this request.
      */
     public function authorize(): bool
     {
-        return checkPermissions(Acl()::PERMISSION_ROOM_CREATE);
+        return checkPermissions(Acl()::PERMISSION_ROOM_EDIT);
     }
 
     /**
@@ -23,17 +25,17 @@ class StorePhongRequest extends FormRequest
     {
         return [
             //
-            'ten' => 'required|string|unique:phong,ten,null,id|max:100',
+            'ten' => [
+                'required',
+                'string',
+                'max:255',
+                Rule::unique('phong', 'ten')->ignore($this->phong),
+            ],
             'so_luong' => 'required|integer|min:1',
             'loai_phong' => 'required|integer|in:0,1,2', 
         ];
     }
 
-    /**
-     * Get the custom messages for the validation rules.
-     *
-     * @return array<string, string>
-     */
     public function messages(): array
     {
         return [
@@ -46,5 +48,4 @@ class StorePhongRequest extends FormRequest
             'loai_phong.required' => 'Loại phòng không được để trống',
         ];
     }
-
 }

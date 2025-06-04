@@ -37,7 +37,7 @@ class RoleController extends Controller
 
         if ($role) {
             $user->assignRole($role);
-            return redirect()->back()->with('success', 'Vai trò đã được gán cho người dùng này');
+            return redirect()->back()->with('success', 'Vai trò đã được gán cho người dùng '.$user->hoSo->ho_ten);
         }
 
     }
@@ -46,7 +46,7 @@ class RoleController extends Controller
     {
         $role = Role::where('name', $request->validated())->first();
         $user->removeRole($role);
-        return redirect()->back()->with('success', 'Vai trò đã được hóa khỏi người dùng này');
+        return redirect()->back()->with('success', 'Vai trò đã được xóa khỏi người dùng '.$user->hoSo->ho_ten);
     }
 
 }
