@@ -3,8 +3,6 @@
 @section('title', 'Trang hồ sơ')
 
 @php
-    $gioiTinh = (int) auth()->user()->hoSo->gioi_tinh;
-
     $cccd = auth()->user()->hoSo->cccd;
     $maskedCccd = substr($cccd, 0, 6) . str_repeat('*', strlen($cccd) - 6);
 @endphp
@@ -75,12 +73,7 @@
                             <label class="form-label text-dark fw-medium mb-2">Giới tính</label>
                             <input type="text" class="form-control border-0 bg-light"
                                 style="padding: 12px 16px; border-radius: 12px; color: black"
-                                value="@switch($gioiTinh)
-                                                @case(0) Nam @break
-                                                @case(1) Nữ @break
-                                                @case(2) Khác @break
-                                                @default Chưa xác định
-                                            @endswitch"
+                                value="{{ auth()->user()->hoSo->gioi_tinh->getLabel() }}"
                                 disabled>
                         </div>
 

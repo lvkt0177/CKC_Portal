@@ -6,7 +6,9 @@
     <title>CKC Portal - @yield('title')</title>
     <meta content='width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=0, shrink-to-fit=no'
         name='viewport' />
-    <link rel="stylesheet" href="{{ asset('assets/admin/css/bootstrap.min.css') }} ">
+    {{-- <link rel="stylesheet" href="{{ asset('assets/admin/css/bootstrap.min.css') }} "> --}}
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/twitter-bootstrap/5.1.0/css/bootstrap.min.css">
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/5.15.4/css/all.min.css">
     <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/bootstrap-icons@1.13.1/font/bootstrap-icons.min.css">
     <link rel="stylesheet"
         href="https://fonts.googleapis.com/css?family=Nunito:200,200i,300,300i,400,400i,600,600i,700,700i,800,800i,900,900i">
@@ -140,7 +142,7 @@
                             </ul>
                         </li>
                         <li class="nav-item dropdown">
-                            <a class="dropdown-toggle profile-pic" data-toggle="dropdown" href="#"
+                            <a class="dropdown-toggle profile-pic nav-link" data-toggle="dropdown" href="#"
                                 aria-expanded="false"> <img src="{{ asset('' . auth()->user()->hoSo->anh) }}"
                                     alt="user-img" width="36" height="36"
                                     class="img-circle"><span>{{ auth()->user()->hoSo->ho_ten }}</span></span> </a>
@@ -195,36 +197,63 @@
                 </div>
 
                 <ul class="nav">
-
-                    @haspermission(Acl()::PERMISSION_VIEW_MENU_DASHBOARD)
+                    {{-- @haspermission(Acl()::PERMISSION_VIEW_MENU_DASHBOARD) --}}
                         {{-- Bảng điều khiển --}}
                         <li class="nav-item {{ isActiveRoute('admin/dashboard') }}">
-                            <a href="{{ route('admin.dashboard') }}">
+                            <a class="nav-link" href="{{ route('admin.dashboard') }}">
                                 <i class="la la-dashboard"></i>
                                 <p>Bảng điều khiển</p>
                             </a>
                         </li>
-                    @endhaspermission
+                    {{-- @endhaspermission --}}
+
+
+                    {{-- Công tác chủ nhiệm --}}
+                    <li class="nav-item">
+                        <h6 class="fw-bold mx-4 mb-1 mt-4 danhMuc">Công tác chủ nhiệm</h6>
+                    </li>
+
+                    <li class="nav-item {{ isActiveRoute('admin/lop*') }}">
+                        <a class="nav-link" href="{{ route('admin.lop.index') }}">
+                            <i class="bi bi-person-workspace"></i>
+                            <p>Quản lý lớp</p>
+                        </a>
+                    </li>
+
+                    <li class="nav-item {{ isActiveRoute('admin/student*') }}">
+                        <a class="nav-link" href="">
+                            <i class="bi bi-person"></i>
+                            <p>Biên bản sinh hoạt chủ nhiệm</p>
+                        </a>
+                    </li>
+
+                    {{-- END: Công tác chủ nhiệm --}}
 
                     {{-- Quản lý người dùng --}}
-                    <li class="nav-item">
-                        <h6 class="fw-bold mx-4 mb-1 mt-4 danhMuc">Quản lý người dùng</h6>
-                    </li>
-                    <li class="nav-item {{ isActiveRoute('admin/student*') }}">
-                        <a href="{{ route('admin.student.index') }}">
-                            <i class="bi bi-person"></i>
-                            <p>Sinh viên</p>
-                        </a>
-                    </li>
-                    <li class="nav-item {{ isActiveRoute('admin/giangvien*') }}">
-                        <a href="{{ route('admin.giangvien.index') }}">
-                            <i class="bi bi-people-fill"></i>
-                            <p>Giảng viên</p>
-                        </a>
-                    </li>
+                    @haspermission(Acl()::PERMISSION_STUDENT_LIST)
+                        <li class="nav-item">
+                            <h6 class="fw-bold mx-4 mb-1 mt-4 danhMuc">Quản lý người dùng</h6>
+                        </li>
+                        <li class="nav-item {{ isActiveRoute('admin/student*') }}">
+                            <a class="nav-link" href="{{ route('admin.student.index') }}">
+                                <i class="bi bi-person"></i>
+                                <p>Sinh viên</p>
+                            </a>
+                        </li>
+                    @endhaspermission
+
+                    @haspermission(Acl()::PERMISSION_USER_LIST)
+                        <li class="nav-item {{ isActiveRoute('admin/giangvien*') }}">
+                            <a class="nav-link" href="{{ route('admin.giangvien.index') }}">
+                                <i class="bi bi-people-fill"></i>
+                                <p>Giảng viên</p>
+                            </a>
+                        </li>
+                    @endhaspermission
+                    
                     @haspermission(Acl()::PERMISSION_ROLE_LIST)
                         <li class="nav-item {{ isActiveRoute('admin/roles*') }}">
-                            <a href="{{ route('admin.roles.index') }}">
+                            <a class="nav-link" href="{{ route('admin.roles.index') }}">
                                 <i class="la la-th"></i>
                                 <p>Phân quyền và vai trò</p>
                             </a>
@@ -232,22 +261,24 @@
                     @endhaspermission
 
                     {{-- Đào tạo --}}
-                    <li class="nav-item">
-                        <p class="fw-bold mx-4 mb-1 mt-4 danhMuc">Cơ sở vật chất</p>
-                    </li>
-                    <li class="nav-item {{ isActiveRoute('admin/phong*') }}">
-                        <a href="{{ route('admin.phong.index') }}">
-                            <i class="la la-building"></i>
-                            <p>Phòng học</p>
-                        </a>
-                    </li>
+                    @haspermission(Acl()::PERMISSION_ROOM_LIST)
+                        <li class="nav-item">
+                            <p class="fw-bold mx-4 mb-1 mt-4 danhMuc">Cơ sở vật chất</p>
+                        </li>
+                        <li class="nav-item {{ isActiveRoute('admin/phong*') }}">
+                            <a class="nav-link" href="{{ route('admin.phong.index') }}">
+                                <i class="la la-building"></i>
+                                <p>Phòng học</p>
+                            </a>
+                        </li>
+                    @endhaspermission
 
                     <li class="nav-item">
                         <p class="fw-bold mx-4 mb-1 mt-4 danhMuc">Công Tác - Chính Trị Học Sinh, Sinh viên</p>
                     </li>
 
                     <li class="nav-item {{ isActiveRoute('admin/testimonial*') }}">
-                        <a href="{{ route('admin.testimonial.index') }}">
+                        <a class="nav-link" href="{{ route('admin.testimonial.index') }}">
                             <i class="la la-font"></i>
                             <p>Quản lý sinh viên đăng ký giấy</p>
                         </a>
@@ -258,7 +289,7 @@
                         <p class="fw-bold mx-4 mb-1 mt-4 danhMuc">Quản lý người dùng</p>
                     </li>
                     <li class="nav-item">
-                        <a href="">
+                        <a class="nav-link" href="">
                             <i class="la la-fonticons"></i>
                             <p>Icons</p>
                         </a>
@@ -301,13 +332,14 @@
 <script src="{{ asset('assets/admin/js/core/popper.min.js') }}"></script>
 <script src="{{ asset('assets/admin/js/core/bootstrap.min.js') }}"></script>
 <script src="{{ asset('assets/admin/js/plugin/chartist/chartist.min.js') }}"></script>
-<script src="{{ asset('assets/admin/js/plugin/chartist/plugin/chartist-plugin-tooltip.min.js') }}"></script>
 <script src="{{ asset('assets/admin/js/plugin/bootstrap-notify/bootstrap-notify.min.js') }}"></script>
 <script src="{{ asset('assets/admin/js/plugin/bootstrap-toggle/bootstrap-toggle.min.js') }}"></script>
 <script src="{{ asset('assets/admin/js/plugin/jquery-mapael/jquery.mapael.min.js') }}"></script>
 <script src="{{ asset('assets/admin/js/plugin/jquery-mapael/maps/world_countries.min.js') }}"></script>
 <script src="{{ asset('assets/admin/js/plugin/chart-circle/circles.min.js') }}"></script>
 <script src="{{ asset('assets/admin/js/plugin/jquery-scrollbar/jquery.scrollbar.min.js') }}"></script>
+<script src="https://cdnjs.cloudflare.com/ajax/libs/popper.js/2.9.2/umd/popper.min.js"></script>
+<script src="https://cdnjs.cloudflare.com/ajax/libs/twitter-bootstrap/5.1.0/js/bootstrap.min.js"></script>
 <script src="{{ asset('assets/admin/js/ready.min.js') }}"></script>
 <script src="{{ asset('assets/admin/js/demo.js') }}"></script>
 

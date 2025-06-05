@@ -98,9 +98,7 @@
                                                                 style="border-radius: 12px; box-shadow: 0 1rem 2rem rgba(0, 0, 0, 0.075) !important; transition: all 0.3s ease-in-out;"
                                                                 onmouseover="this.style.transform='translateY(-5px)'; this.style.boxShadow='0 0 25px rgba(54, 107, 214, 0.6)'"
                                                                 onmouseout="this.style.transform='translateY(0)'; this.style.boxShadow='0 1rem 2rem rgba(0, 0, 0, 0.075)'">
-                                                                <div class="position-absolute top-0 start-0 p-3">
-                                                                    <i class="fas fa-heart text-danger fs-5"></i>
-                                                                </div>
+                                                                
                                                                 <div class="position-absolute top-0 end-0 p-3">
                                                                     <i class="fas fa-ellipsis-vertical text-muted"></i>
                                                                 </div>

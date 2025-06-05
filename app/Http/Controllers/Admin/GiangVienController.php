@@ -11,9 +11,16 @@ use App\Models\BoMon;
 use App\Models\NganhHoc;
 use App\Models\Khoa;
 use \Spatie\Permission\Models\Role;
+use \Spatie\Permission\Models\Permission;
+use App\Acl\Acl;
 
 class GiangVienController extends Controller
 {
+    public function __construct()
+    {
+        $this->middleware('permission:' . Acl::PERMISSION_USER_LIST, ['only' => ['index', 'show']]);
+        
+    }
     public function index()
     {
         $users = User::with('hoSo', 'boMon', 'boMon.nganhHoc.khoa')

@@ -58,7 +58,7 @@ final class Acl
     const PERMISSION_STUDENT_LIST = 'danh sách sinh viên';
 
     //Giảng viên
-    const PERMISSION_TEACHER_LIST = 'danh sách giảng viên';
+    const PERMISSION_USER_LIST = 'danh sách người dùng';
     
     //Lớp
     const PERMISSION_CLASS_LIST = 'danh sách lớp học';
@@ -155,7 +155,7 @@ final class Acl
             self::PERMISSION_STUDENT_LIST,
         ],
         'Giảng viên' => [
-            self::PERMISSION_TEACHER_LIST,
+            self::PERMISSION_USER_LIST,
         ],
         'Lớp học' => [
             self::PERMISSION_CLASS_LIST,

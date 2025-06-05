@@ -10,7 +10,7 @@ use App\Models\HoSo;
 use App\Models\Lop;
 use App\Models\BoMon;
 use App\Models\NienKhoa;
-
+use App\Http\Requests\SinhVien\ChucVuRequest;
 
 class SinhVienController extends Controller
 {
@@ -49,5 +49,34 @@ class SinhVienController extends Controller
         $lop = Lop::find($id);
 
         return view('admin.student.list', compact('sinhviens', 'lop'));
+    }
+
+    public function doiChucVu(ChucVuRequest $request, SinhVien $sinhVien)
+    {
+        if($sinhVien->update($request->validated()))
+            return redirect()->back()->with('success', 'Cập nhật chức vụ cho sinh viên '. $sinhVien->hoSo->ho_ten.' thành công');
+
+        return redirect()->back()->with('error', 'Đổi chức vụ không thành công');
+    }
+
+    public function khoaSinhVien(SinhVien $sinhVien)
+    {   
+        logger("Before: " . $sinhVien->trang_thai->value);
+        
+        $sinhVien->trang_thai = $sinhVien->trang_thai->value == 0 ? 1 : 0;
+
+        logger("After: " . $sinhVien->trang_thai->value);
+
+        if ($sinhVien->save()) {
+            return response()->json([
+                'success' => true,
+                'message' => 'Thay đổi trạng thái sinh viên thành công'
+            ]);
+        }
+
+        return response()->json([
+            'success' => false,
+            'message' => 'Khoá sinh viên không thành công'
+        ]);
     }
 }

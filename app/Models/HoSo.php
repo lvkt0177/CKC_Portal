@@ -3,6 +3,7 @@
 namespace App\Models;
 
 use Illuminate\Database\Eloquent\Model;
+use App\Enum\Gender;
 
 class HoSo extends Model
 {
@@ -18,6 +19,10 @@ class HoSo extends Model
         'cccd',
         'dia_chi',
         'anh'
+    ];
+
+    protected $casts = [
+        'gioi_tinh' => Gender::class,
     ];
 
     // User 1-1 HoSo

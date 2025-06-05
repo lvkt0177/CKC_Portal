@@ -15,14 +15,13 @@ use App\Http\Requests\Role\RoleRequest;
 
 class RoleController extends Controller
 {
-    //
     public function __construct()
     {
         $this->middleware('permission:' . Acl::PERMISSION_ROLE_LIST, ['only' => ['index']]);
         $this->middleware('permission:' . Acl::PERMISSION_ROLE_CREATE, ['only' => ['create', 'store']]);
         $this->middleware('permission:' . Acl::PERMISSION_ROLE_EDIT, ['only' => ['edit', 'update']]);
         $this->middleware('permission:' . Acl::PERMISSION_ROLE_DELETE, ['only' => ['destroy']]);
-
+        $this->middleware('permission:' . Acl::PERMISSION_ASSIGNEE, ['only' => ['addRoleForUser', 'removeRoleForUser']]);
     }
 
     public function index()
@@ -39,7 +38,6 @@ class RoleController extends Controller
             $user->assignRole($role);
             return redirect()->back()->with('success', 'Vai trò đã được gán cho người dùng '.$user->hoSo->ho_ten);
         }
-
     }
 
     public function removeRoleForUser(RoleRequest $request, User $user)
@@ -48,5 +46,4 @@ class RoleController extends Controller
         $user->removeRole($role);
         return redirect()->back()->with('success', 'Vai trò đã được xóa khỏi người dùng '.$user->hoSo->ho_ten);
     }
-
 }

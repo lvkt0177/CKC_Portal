@@ -19,18 +19,19 @@ Route::group(['middleware' => 'web'], function () {
     Route::prefix('admin')->name('admin.')->group(function () {
 
         include('admin/auth.php');
+        
+        include('admin/profile.php');
 
+        Route::get('/dashboard', function () {
+            return view('admin.dashboard.index');
+        })->name('dashboard');
         //--------------------------------------
         //Route chức năng
         Route::middleware(['auth.admin', 'role_or_permission:' . Acl::ROLE_SUPER_ADMIN . '|' . Acl::ROLE_ADMIN . '|' . Acl::ROLE_STAFF])->group(function () {
 
-            Route::get('/dashboard', function () {
-                return view('admin.dashboard.index');
-            })->name('dashboard');
 
             include('admin/role.php');
 
-            include('admin/profile.php');
 
             include('admin/sinhvien.php');
 
@@ -41,6 +42,8 @@ Route::group(['middleware' => 'web'], function () {
             include('admin/phong.php');
 
             include('admin/giayxacnhan.php');
+
+            include('admin/lop.php');
 
         });
 

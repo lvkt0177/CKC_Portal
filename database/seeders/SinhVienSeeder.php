@@ -37,6 +37,22 @@ class SinhVienSeeder extends Seeder
                 "mat_khau" => bcrypt('1a@'),
                 "trang_thai" => 0,
             ],
+            [
+                "ma_sv" => "0306232",
+                "id_lop" => 3,
+                "id_ho_so" => 7,
+                "chuc_vu" => 0,
+                "mat_khau" => bcrypt('1a@'),
+                "trang_thai" => 0,
+            ],
+            [
+                "ma_sv" => "0306233",
+                "id_lop" => 3,
+                "id_ho_so" => 8,
+                "chuc_vu" => 0,
+                "mat_khau" => bcrypt('1a@'),
+                "trang_thai" => 0,
+            ],
         ]);
     }
 }

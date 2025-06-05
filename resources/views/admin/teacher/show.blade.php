@@ -56,7 +56,8 @@
                                                                     action="{{ route('admin.roles.removeRoleForUser', $user) }}"
                                                                     method="POST" class="m-0 p-0">
                                                                     @csrf
-                                                                    <input type="hidden" name="name" value="{{ $role }}">
+                                                                    <input type="hidden" name="name"
+                                                                        value="{{ $role }}">
                                                                     <button type="submit"
                                                                         class="btn p-0 px-2 text-white fw-bold"
                                                                         style="
@@ -73,10 +74,9 @@
                                                             </div>
                                                         @endforeach
                                                     </div>
-
                                                 </div>
-
                                             @endif
+
 
                                             @if ($user->getRoleNames()->first() != Acl()::ROLE_SUPER_ADMIN)
 
@@ -88,9 +88,9 @@
                                                         <option value="" class="text-capitalize" selected disabled>
                                                             Chọn vai trò
                                                         </option>
-                                                    
+
                                                         @foreach ($roles as $role)
-                                                            @if ($role->name != Acl()::ROLE_SUPER_ADMIN && ! $user->hasRole($role->name))
+                                                            @if ($role->name != Acl()::ROLE_SUPER_ADMIN && !$user->hasRole($role->name))
                                                                 <option value="{{ $role->name }}" class="text-capitalize">
                                                                     {{ $role->name }}
                                                                 </option>
@@ -102,7 +102,9 @@
                                                         <span class="text-danger">{{ $message }}</span>
                                                     @enderror
 
-                                                    <button onclick="return confirm(`Bạn có chắc muốn gắn vai trò cho người dùng này? `)" class="btn btn-primary w-100 mt-3">Gắn Vai Trò</button>
+                                                    <button
+                                                        onclick="return confirm(`Bạn có chắc muốn gắn vai trò cho người dùng này? `)"
+                                                        class="btn btn-primary w-100 mt-3">Gắn Vai Trò</button>
                                                 </form>
                                             @endif
 
@@ -134,7 +136,7 @@
                                                 <div class="mb-3">
                                                     <label class="form-label text-secondary">Giới tính</label>
                                                     <input type="text" class="form-control"
-                                                        value="{{ $user->hoSo->gioi_tinh }}" style="pointer-events: none">
+                                                        value="{{ $user->hoSo->gioi_tinh->getLabel()}}" style="pointer-events: none">
                                                 </div>
 
                                                 <div class="mb-3">
@@ -181,7 +183,51 @@
 
                                     </div>
                                 </div>
+                                {{-- Danh sách các quyền  --}}
+                                @if($user->roles->first())
+                                <div class="col-md-12">
+                                    <div class="card shadow-sm border-0 rounded-3">
+                                        <div class="card-body">
+                                            <h4 class="card-title mb-4 text-primary">
+                                                <i class="fas fa-user-shield me-2"></i>Danh sách các quyền của vai trò
+                                            </h4>
+                                
+                                            <div class="row">
+                                                @php
+                                                    $permissions = $user->roles->first()->permissions->values();
+                                                    $half = ceil($permissions->count() / 2);
+                                                @endphp
+                                
+                                                <div class="col-md-6">
+                                                    <ul class="list-group list-group-flush">
+                                                        @foreach ($permissions->slice(0, $half) as $permission)
+                                                            <li class="list-group-item d-flex align-items-center py-2">
+                                                                <i class="fas fa-check-circle text-success me-2"></i>
+                                                                <span>{{ $permission->name }}</span>
+                                                            </li>
+                                                        @endforeach
+                                                    </ul>
+                                                </div>
+                                
+                                                <div class="col-md-6">
+                                                    <ul class="list-group list-group-flush">
+                                                        @foreach ($permissions->slice($half) as $permission)
+                                                            <li class="list-group-item d-flex align-items-center py-2">
+                                                                <i class="fas fa-check-circle text-success me-2"></i>
+                                                                <span>{{ $permission->name }}</span>
+                                                            </li>
+                                                        @endforeach
+                                                    </ul>
+                                                </div>
+                                            </div>
+                                        </div>
+                                    </div>
+                                </div>
+                                
+                                @endif
+
                             </div>
+
                         </div>
                     </div>
 

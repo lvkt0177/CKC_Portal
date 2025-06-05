@@ -3,6 +3,8 @@
 namespace App\Models;
 
 use Illuminate\Database\Eloquent\Model;
+use App\Enum\RoleStudent;
+use App\Enum\ActiveOrNotStatus;
 
 class SinhVien extends Model
 {
@@ -15,6 +17,12 @@ class SinhVien extends Model
         'chuc_vu',
         'mat_khau',
         'trang_thai'
+    ];
+
+    protected $casts = [
+        'chuc_vu' => RoleStudent::class,
+        'trang_thai' => ActiveOrNotStatus::class
+
     ];
 
     public function hoSo()
