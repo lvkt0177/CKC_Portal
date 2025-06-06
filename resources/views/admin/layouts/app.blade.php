@@ -127,11 +127,11 @@
 							</ul>
 						</li>
 						<li class="nav-item dropdown">
-							<a class="dropdown-toggle profile-pic" data-toggle="dropdown" href="#" aria-expanded="false"> <img src="{{ asset(''. auth()->user()->hoSo->anh) }}" alt="user-img" width="36" height="36" class="img-circle"><span >{{ auth()->user()->hoSo->ho_ten }}</span></span> </a>
+							<a class="dropdown-toggle profile-pic" data-toggle="dropdown" href="#" aria-expanded="false"> <img src="{{ asset('' . auth()->user()->hoSo->anh) }}" alt="user-img" width="36" height="36" class="img-circle"><span >{{ auth()->user()->hoSo->ho_ten }}</span></span> </a>
 							<ul class="dropdown-menu dropdown-user">
 								<li>
 									<div class="user-box">
-										<div class="u-img"><img src="{{ asset(''. auth()->user()->hoSo->anh) }} " alt="user"></div>
+										<div class="u-img"><img src="{{ asset('' . auth()->user()->hoSo->anh) }} " alt="user"></div>
 										<div class="u-text">
 											<h4>{{ auth()->user()->hoSo->ho_ten }}</h4>
 										</div>
@@ -307,5 +307,7 @@
 <script src="{{ asset('assets/admin/js/plugin/jquery-scrollbar/jquery.scrollbar.min.js') }}"></script>
 <script src="{{ asset('assets/admin/js/ready.min.js') }}"></script>
 <script src="{{ asset('assets/admin/js/demo.js') }}"></script>
+<script src="{{ asset('https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/js/bootstrap.bundle.min.js')}}"></script>
+
 
 </html>

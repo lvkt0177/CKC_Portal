@@ -31,4 +31,9 @@ class SinhVien extends Model
     {
         return $this->hasMany(DangKyGiay::class, 'id_sinh_vien', 'id');
     }
+    //danhsachhocphan
+    public function danhSachHocPhans()
+    {
+        return $this->hasMany(DanhSachHocPhan::class, 'id_sinh_vien', 'id');
+    }
 }

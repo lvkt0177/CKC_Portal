@@ -19,4 +19,9 @@ class NienKhoa extends Model
     {
         return $this->hasMany(Lop::class, 'id_nien_khoa', 'id');
     }
+    // Hoc Ky 1 - N
+    public function hocKys()
+    {
+        return $this->hasMany(HocKy::class, 'id_nien_khoa', 'id');
+    }
 }

@@ -35,4 +35,8 @@ class Lop extends Model
     {
         return $this->belongsTo(User::class, 'id_gvcn', 'id');
     }
+    public function lopHocPhans()
+    {
+        return $this->hasMany(LopHocPhan::class, 'id_lop', 'id');
+    }
 }

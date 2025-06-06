@@ -75,4 +75,8 @@ class User extends Authenticatable
     {
         return $this->hasMany(DangKyGiay::class, 'id_giang_vien', 'id');
     }
+    public function lopHocPhans()
+    {
+        return $this->hasMany(LopHocPhan::class, 'id_giang_vien', 'id');
+    }
 }

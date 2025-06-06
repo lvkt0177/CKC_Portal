@@ -24,4 +24,8 @@ class ChuongTrinhDaoTao extends Model
     {
         return $this->hasMany(ChiTietChuongTrinhDaoTao::class, 'id_chuong_trinh_dao_tao', 'id');
     }
+    public function lopHocPhans()
+    {
+        return $this->hasMany(LopHocPhan::class, 'id_chuong_trinh_dao_tao', 'id');
+    }
 }
