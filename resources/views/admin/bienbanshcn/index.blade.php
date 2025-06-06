@@ -4,32 +4,32 @@
 
 @section('content')
 
-<div class="container-fluid">
-	<div class="row">
-            <div class="col-md-12">
-                <div class="card shadow-sm">
-                    <div class="card-header d-flex justify-content-between align-items-center">
-                        <h3 class="card-title mb-0"> Danh sách biên bản sinh hoạt chủ nhiệm - Lớp {{ $lop->ten_lop }} </h3>
-                        <a href="" class="btn btn-primary">Lập biên bản SHCN</a>
-                    </div>
-                    
-                    <div class="card-body">
-                        <div class="table-responsive">
-                            <table class="table table-bordered align-middle mb-0">
-                                <thead class="table-light">
-                                    <tr class="text-center">
-                                        <th>No.1</th>
-                                        <th>Tiêu đề</th>
-                                        <th>Giáo viên chủ nhiệm</th>
-                                        <th>Thư ký</th>
-                                        <th>Tuần</th>
-                                        <th>Ngày tạo</th>
-                                        <th>Trạng thái</th>
-                                        <th>Hành động</th>
-                                    </tr>
-                                </thead>
-                                <tbody>
-                                    @foreach ($bienBanSHCN as $bb)
+<div class="container-fluid teams-section">
+
+    <div class="row">
+        <div class="col-md-12">
+            <div class="card shadow-sm teams-section">
+                <div class="card-header d-flex justify-content-between align-items-center">
+                    <h3 class="card-title mb-0"> Danh sách biên bản sinh hoạt chủ nhiệm - Lớp {{ $lop->ten_lop }} </h3>
+                    <a href="{{ route('admin.phong.create') }}" class="btn btn-primary">Lập biên bản SHCN</a>
+                </div>
+
+                <div class="teams-section">
+                    <table class="team-table">
+                        <thead>
+                            <tr class="text-center">
+                                <th>No.1</th>
+                                <th>Tiêu đề</th>
+                                <th>Giáo viên chủ nhiệm</th>
+                                <th>Thư ký</th>
+                                <th>Tuần</th>
+                                <th>Ngày tạo</th>
+                                <th>Trạng thái</th>
+                                <th>Hành động</th>
+                            </tr>
+                        </thead>
+                        <tbody>
+                            @foreach ($bienBanSHCN as $bb)
 
                                         <tr class="text-center">
                                             <td>{{ $loop->index + 1 }}</td>
@@ -40,19 +40,84 @@
                                             <td>{{ $bb->created_at }}</td>
                                             <td>{{ $bb->trang_thai->getLabel() }}</td>
                                             <td>
-                                                <a href="" class="btn btn-warning"><i class="la la-eye"></i></a>
+                                                <a href="" class="btn btn-warning"><i class="fa-solid fa-eye"></i></a>
+                                                {{-- Duyệt --}}
+                                                <a href="" class="btn btn-success"><i class="fa-solid fa-check"></i></a>
+                                                {{-- Huy --}}
+                                                <a href="" class="btn btn-danger"><i class="fa-solid fa-xmark"></i></a>
                                             </td>
                                         </tr>
                                         
                                     @endforeach
-                                   
-                                </tbody>
-                            </table>
-                        </div>
-                    </div> 
-                </div> 
-            </div>
+                            
+                        </tbody>
+                    </table>
+                </div>
+                
+            </div> 
         </div>
-</div>
+    </div>
 
-    @endsection
+	
+
+@endsection
+
+@section('js')
+    <script>
+        document.getElementById('checkAll').addEventListener('change', function() {
+            const checkboxes = document.querySelectorAll('.student-checkbox');
+            checkboxes.forEach(cb => cb.checked = this.checked);
+        });
+
+        document.addEventListener('DOMContentLoaded', function() {
+            document.querySelectorAll('a.change-role').forEach(function(el) {
+                el.addEventListener('click', function(e) {
+                    e.preventDefault();
+                    const studentId = this.dataset.studentId;
+                    const roleValue = this.dataset.roleValue;
+                    const roleLabel = this.dataset.roleLabel;
+                    const studentName = this.dataset.studentName;
+
+                    if (confirm(
+                            `Bạn có chắc muốn gán chức vụ "${roleLabel}" cho sinh viên "${studentName}"?`
+                        )) {
+                        const input = document.getElementById(`chucVuInput${studentId}`);
+                        input.value = roleValue;
+
+                        this.closest('form').submit();
+                    }
+                });
+            });
+        });
+
+        // btn-lock ajax
+        document.querySelectorAll('.btn-lock').forEach(function(el) {
+            el.addEventListener('click', function(e) {
+                e.preventDefault();
+
+                const studentId = this.dataset.id;
+
+                //ajax
+                $.ajax({
+                    url: `/admin/student/khoa-sinh-vien/${studentId}`,
+                    type: 'POST',
+                    data: {
+                        _token: '{{ csrf_token() }}',
+                        student_id: studentId
+                    },
+                    success: function(response) {
+                        if (response.success) {
+                            location.reload();
+                            alert(response.message);
+                        } else {
+                            alert(response.message);
+                        }
+                    },
+                    error: function(xhr, status, error) {
+                        console.error(error);
+                    }
+                });
+            });
+        });
+    </script>
+@endsection
