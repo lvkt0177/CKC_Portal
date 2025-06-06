@@ -12,6 +12,7 @@ use App\Models\HoSo;
 use App\Models\DanhSachHocPhan;
 use Illuminate\Support\Facades\Auth;
 use Illuminate\Support\Facades\Log;
+use App\Http\Requests\GiangVien\NhapDiemRequest;
 
 class NhapDiemController extends Controller
 {
@@ -53,32 +54,28 @@ class NhapDiemController extends Controller
         $lop_HP = LopHocPhan::find($id);
         return view('admin.enterpoint.list', compact('sinhviens', 'lop_HP'));
     }
-    public function capNhat(Request $request)
+    public function capNhat(NhapDiemRequest $request)
     {
-        $id_sinh_vien = $request->input('id_sinh_vien');
-        //$id_lop_hoc_phan = $request->input('id_lop_hoc_phan');
-        $dshp = DanhSachHocPhan::where('id_sinh_vien', $id_sinh_vien)
-            ->first();
-        dd($dshp);
-        if ($dshp) {
 
-            $dshp->diem_chuyen_can = $request->input('diem_chuyen_can');
-            $dshp->diem_qua_trinh = $request->input('diem_qua_trinh');
-            $dshp->diem_thi = $request->input('diem_thi');
+        $id_sinh_vien = $request->validated('id_sinh_vien');
+        $id_lop_hoc_phan = $request->validated('id_lop_hoc_phan');
 
-            // Tính điểm tổng kết nếu muốn
-            $dshp->diem_tong_ket = $this->tinhDiemTongKet($dshp);
-
-            $dshp->save();
-        } else {
-            dd("Chua tim thay");
+        if (!$id_sinh_vien) {
+            return back()->with('error', 'Không nhận được ID sinh viên!');
         }
+
+        $data = array_intersect_key(
+            $request->validated(),
+            array_flip(['diem_chuyen_can', 'diem_qua_trinh', 'diem_thi'])
+        );
+
+
+        $data['diem_tong_ket'] = $request->validated('diem_chuyen_can') * 0.1
+            + $request->validated('diem_qua_trinh') * 0.4
+            + $request->validated('diem_thi') * 0.5;
+        DanhSachHocPhan::where('id_sinh_vien', $id_sinh_vien)
+            ->where('id_lop_hoc_phan', $id_lop_hoc_phan)
+            ->update($data);
         return back()->with('success', 'Cập nhật điểm thành công!');
     }
-
-    private function tinhDiemTongKet($dshp)
-    {
-        return round(($dshp->diem_chuyen_can * 0.1) + ($dshp->diem_qua_trinh * 0.4) + ($dshp->diem_thi * 0.5), 2);
-    }
-
 }

@@ -26,14 +26,13 @@ class RoomController extends Controller
     public function store(StorePhongRequest $request)
     {
         $phong = Phong::create($request->validated());
-
-        if(!$phong) {
+        if (!$phong) {
             return redirect()->back()->with('error', 'Không thể tạo phòng. Vui lòng thử lại.');
         }
 
         return redirect()->route('admin.phong.index')->with('success', 'Phòng đã được tạo thành công.');
     }
-    
+
 
 
     public function show(Phong $phong)
@@ -43,13 +42,13 @@ class RoomController extends Controller
 
     public function update(UpdatePhongRequest $request, Phong $phong)
     {
-        if($phong->update($request->validated())) {
-            return redirect()->route('admin.phong.index')->with('success', 'Phòng '.$phong->ten.' đã được cập nhật thành công.');
+        if ($phong->update($request->validated())) {
+            return redirect()->route('admin.phong.index')->with('success', 'Phòng ' . $phong->ten . ' đã được cập nhật thành công.');
         }
 
         return redirect()->back()->with('error', 'Không thể cập nhật phòng. Vui lòng thử lại.');
 
     }
 
-    
+
 }
