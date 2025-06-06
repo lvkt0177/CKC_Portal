@@ -2,7 +2,7 @@
 
 namespace App\Enum;
 
-enum ActiveOrNotStatus:int
+enum BienBanStatus:int
 {
     case ACTIVE = 1;
     case INACTIVE = 0;
@@ -10,8 +10,8 @@ enum ActiveOrNotStatus:int
     public function getLabel(): string
     {
         return match ($this) {
-            self::ACTIVE => 'Hoạt động',
-            self::INACTIVE => 'Không hoạt động',
+            self::ACTIVE => 'Đã gửi',
+            self::INACTIVE => 'Chưa gửi',
         };
     }
 

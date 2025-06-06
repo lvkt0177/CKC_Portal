@@ -3,6 +3,7 @@
 namespace App\Models;
 
 use Illuminate\Database\Eloquent\Model;
+use App\Enum\BienBanStatus;
 
 class BienBanSHCN extends Model
 {
@@ -29,9 +30,28 @@ class BienBanSHCN extends Model
         'updated_at'
     ];
 
+    protected $casts = [
+        'trang_thai' => BienBanStatus::class
+    ];
+
     public function lop()
     {
         return $this->belongsTo(Lop::class, 'id_lop', 'id');
+    }
+
+    public function tuan()
+    {
+        return $this->belongsTo(Tuan::class, 'id_tuan', 'id');
+    }
+
+    public function gvcn()
+    {
+        return $this->belongsTo(User::class, 'id_gvcn', 'id');
+    }
+
+    public function sv()
+    {
+        return $this->belongsTo(SinhVien::class, 'id_sv', 'id');
     }
     
 }

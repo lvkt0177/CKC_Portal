@@ -75,4 +75,9 @@ class User extends Authenticatable
     {
         return $this->hasMany(DangKyGiay::class, 'id_giang_vien', 'id');
     }
+
+    public function bienBanSHCN()
+    {
+        return $this->hasMany(BienBanSHCN::class, 'id_gvcn', 'id');
+    }
 }

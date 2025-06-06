@@ -220,8 +220,8 @@
                         </a>
                     </li>
 
-                    <li class="nav-item {{ isActiveRoute('admin/student*') }}">
-                        <a class="nav-link" href="">
+                    <li class="nav-item {{ isActiveRoute('admin/bienbanshcn*') }}">
+                        <a class="nav-link" href="{{ route('admin.bienbanshcn.index') }}">
                             <i class="bi bi-person"></i>
                             <p>Biên bản sinh hoạt chủ nhiệm</p>
                         </a>

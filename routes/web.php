@@ -45,6 +45,8 @@ Route::group(['middleware' => 'web'], function () {
 
             include('admin/lop.php');
 
+            include('admin/bienbanshcn.php');
+
         });
 
 

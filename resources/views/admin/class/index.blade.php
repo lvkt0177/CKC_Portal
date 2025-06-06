@@ -20,7 +20,7 @@
             <div class="col-md-12">
                 <div class="card shadow-sm">
                     <div class="card-header d-flex justify-content-between align-items-center">
-                        <h3 class="card-title mb-0">Quản lý lớp {{ $lop->ten_lop }}</h3>
+                        <h3 class="card-title mb-0">Danh sách Sinh viên - Lớp {{ $lop->ten_lop }}</h3>
                     </div>
 
                     <div class="card-body">
