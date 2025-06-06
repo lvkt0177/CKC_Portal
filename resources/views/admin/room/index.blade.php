@@ -34,14 +34,6 @@
                                         <td class="d-flex justify-content-start">
 
                                             <a href="{{ route('admin.phong.show', $room) }}" class="btn btn-warning btn-sm">Sửa</a>
-
-                                            <div class="mx-1"></div>
-
-                                            <form action="" method="POST" style="display:inline;">
-                                                @csrf
-                                                @method('DELETE')
-                                                <button type="submit" class="btn btn-danger btn-sm">Xóa</button>
-                                            </form>
                                         </td>
                                     </tr>
                                     @endforeach

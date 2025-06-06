@@ -47,5 +47,5 @@ class GiangVienController extends Controller
 
         return view('admin.teacher.show', compact('user', 'roles'));
     }
-        
+
 }

@@ -46,7 +46,7 @@
                                         <div class="table-responsive">
                                             <table class="table table-bordered align-middle mb-0">
                                                 <thead class="table-light">
-                                                    <tr>
+                                                    <tr class="text-center">
                                                         <th>No.1</th>
                                                         <th>Họ Tên</th>
                                                         <th>Giới tính</th>
@@ -55,11 +55,12 @@
                                                         <th>Địa chỉ</th>
                                                         <th>Bộ Môn</th>
                                                         <th>Khoa</th>
+                                                        <th>Hành động</th>
                                                     </tr>
                                                 </thead>
                                                 <tbody>
                                                     @foreach ($users as $gv)
-                                                        <tr>
+                                                        <tr class="text-center">
                                                             <td>{{ $loop->index + 1 }}</td>
                                                             <td>{{ $gv->hoSo->ho_ten }}</td>
                                                             <td>{{ $gv->hoSo->gioi_tinh }}</td>
@@ -68,6 +69,10 @@
                                                             <td>{{ $gv->hoSo->so_dien_thoai }}</td>
                                                             <td>{{ $gv->boMon->ten_bo_mon }}</td>
                                                             <td>{{ $gv->boMon->nganhHoc->khoa->ten_khoa }}</td>
+                                                            <td>
+                                                                <a href="{{ route('admin.giangvien.show', $gv->id) }}"
+                                                                    class="btn btn-warning"><i class="la la-eye"></i></a>
+                                                            </td>
 
                                                         </tr>
                                                     @endforeach

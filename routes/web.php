@@ -43,6 +43,8 @@ Route::group(['middleware' => 'web'], function () {
 
             include('admin/giayxacnhan.php');
 
+            include('admin/enterpoint.php');
+
             include('admin/lop.php');
 
             include('admin/bienbanshcn.php');
