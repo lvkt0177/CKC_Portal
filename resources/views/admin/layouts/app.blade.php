@@ -119,7 +119,7 @@
                             <li><a class="dropdown-item" href="{{ route('admin.profile.index') }}"><i class="fas fa-book me-2"></i>Thông tin cá
                                     nhân</a>
                             </li>
-                            <li><a class="dropdown-item" href=""><i class="fas fa-sign-out-alt me-2"></i>Đăng
+                            <li><a class="dropdown-item" href="{{ route('admin.logout') }}"><i class="fas fa-sign-out-alt me-2"></i>Đăng
                                     xuất</a>
                             </li>
                         </ul>
