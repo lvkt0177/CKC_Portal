@@ -24,12 +24,17 @@
                     <div class="card-header">
                         <div x-data="{ view: 'grid' }">
                             <div class="mb-3  d-flex justify-content-end align-items-center">
-                                <button class="btn btn-outline-primary" @click="view = 'grid'">
-                                    <i style="font-size: 17px" class="la la-th"></i>
+                                <button class="btn" :class="view === 'grid' ? 'btn-primary' : 'btn-outline-primary'"
+                                    @click="view = 'grid'">
+                                    <i class="fa fa-th" style="font-size: 17px"></i>
                                 </button>
+
                                 <div class="mx-1"></div>
-                                <button class="btn btn-outline-primary" @click="view = 'list'">
-                                    <i style="font-size: 17px" class="la la-list"></i>
+
+                                <!-- Nút LIST -->
+                                <button class="btn" :class="view === 'list' ? 'btn-primary' : 'btn-outline-primary'"
+                                    @click="view = 'list'">
+                                    <i class="fa fa-list" style="font-size: 17px"></i>
                                 </button>
                             </div>
 
@@ -41,7 +46,7 @@
                                 x-transition:leave-start="opacity-100 translate-y-0"
                                 x-transition:leave-end="opacity-0 translate-y-2" class="">
 
-                                <div class="">
+                                <div class="teams-section">
                                     <div class="card-body">
                                         <div class="table-responsive">
                                             <table class="table table-bordered align-middle mb-0">
@@ -86,19 +91,19 @@
                                 x-transition:leave-start="opacity-100 translate-y-0"
                                 x-transition:leave-end="opacity-0 translate-y-2" class="">
                                 <!-- Nội dung  -->
-                                <div class="">
+                                <div class="teams-section">
                                     <div class="card-body">
                                         <div class="row g-4">
                                             @foreach ($users as $gv)
-                                                @if($gv->getRoleNames()->first() != Acl()::ROLE_SUPER_ADMIN)
+                                                @if ($gv->getRoleNames()->first() != Acl()::ROLE_SUPER_ADMIN)
                                                     <div class="col-lg-3 col-md-3 mb-4">
-                                                        <a href="{{ route('admin.giangvien.show', $gv->id) }}" class="text-decoration-none"   
-                                                            style="text-decoration: none;">
+                                                        <a href="{{ route('admin.giangvien.show', $gv->id) }}"
+                                                            class="text-decoration-none" style="text-decoration: none;">
                                                             <div class="card h-100 border-0 position-relative bg-white transition-all"
                                                                 style="border-radius: 12px; box-shadow: 0 1rem 2rem rgba(0, 0, 0, 0.075) !important; transition: all 0.3s ease-in-out;"
                                                                 onmouseover="this.style.transform='translateY(-5px)'; this.style.boxShadow='0 0 25px rgba(54, 107, 214, 0.6)'"
                                                                 onmouseout="this.style.transform='translateY(0)'; this.style.boxShadow='0 1rem 2rem rgba(0, 0, 0, 0.075)'">
-                                                                
+
                                                                 <div class="position-absolute top-0 end-0 p-3">
                                                                     <i class="fas fa-ellipsis-vertical text-muted"></i>
                                                                 </div>

@@ -89,12 +89,12 @@
                                                 </div>
 
                                                 <!-- Footer -->
-                                                <div class="card-footer d-flex justify-content-between gap-2"
-                                                    style="background-color: #f8f9fa; border-top: 1.5px solid #ced4da !important; padding-top: 12px;">
+                                                <div class="card-footer d-flex justify-content-between gap-2 align-items-center"
+                                                    style="background-color: #f8f9fa; border-top: 1.5px solid #ced4da !important;">
                                                     <p><b>Ngành:</b> {{ $l->giangVien->boMon->nganhHoc->ten_nganh }}</p>
                                                     <a href="{{ route('admin.student.list', ['id' => $l->id]) }}"
-                                                        class="btn btn-outline-primary btn-sm">
-                                                        <i class="la la-eye"></i>
+                                                        class="btn btn-warning btn-sm">
+                                                        <i class="fas fa-solid fa-eye"></i>
                                                     </a>
                                                 </div>
                                             </div>

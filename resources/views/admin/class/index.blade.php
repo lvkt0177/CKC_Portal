@@ -15,22 +15,19 @@
 @endsection
 
 @section('content')
-    <div class="container-fluid">
+    <div class="container-fluid teams-section">
         <div class="row">
             <div class="col-md-12">
-                <div class="card shadow-sm">
+                <div class="card shadow-sm teams-section">
                     <div class="card-header d-flex justify-content-between align-items-center">
                         <h3 class="card-title mb-0">Danh sách Sinh viên - Lớp {{ $lop->ten_lop }}</h3>
                     </div>
 
-                    <div class="card-body">
-                        <h3 class="card-title">Danh sách sinh viên</h3>
-
-                        <div class="table-responsive">
-                            <table class="table table-bordered align-middle mb-0">
-                                <thead class="table-light">
-                                    <tr class="text-center">
-                                        <th><input type="checkbox" id="checkAll" style="left: 0"></th>
+                    <div class="teams-section">
+                        <table class="team-table">
+                            <thead class="table-center">
+                                <tr class="text-center">
+                                    <th><input type="checkbox" id="checkAll" style="left: 0"></th>
                                         <th>No.</th>
                                         <th>MSSV</th>
                                         <th>Họ tên sinh viên</th>
@@ -41,10 +38,11 @@
                                         <th>Chức vụ</th>
                                         <th>Trạng thái</th>
                                         <th>Hành động</th>
-                                    </tr>
-                                </thead>
-                                <tbody>
-                                    @foreach ($sinhViens as $sv)
+                                    
+                                </tr>
+                            </thead>
+                            <tbody>
+                                @foreach ($sinhViens as $sv)
                                         <tr class="text-center">
                                             <td>
                                                 <input type="checkbox" class="student-checkbox" name="selected_students[]"
@@ -68,7 +66,7 @@
                                                             data-bs-toggle="dropdown" aria-expanded="false">
                                                             {{ $sv->chuc_vu->getLabel() }}
                                                         </button>
-                                                        <ul class="dropdown-menu"
+                                                        <ul class="dropdown-menu" 
                                                             aria-labelledby="dropdownMenuButton{{ $sv->id }}">
                                                             @foreach (App\Enum\RoleStudent::cases() as $role)
                                                                 @if ($sv->chuc_vu->value != $role->value)
@@ -94,19 +92,21 @@
                                             <td>{{ $sv->trang_thai->getLabel() }}</td>
 
                                             <td>
-                                                <a href="" class="btn btn-warning"><i class="la la-eye"></i></a>
-                                                <button class="btn btn-danger btn-lock" data-id="{{ $sv->id }}"><i class="la la-lock"></i></button>
+                                                <a href="" class="btn btn-warning"><i class="fa-solid fa-eye"></i></a>
+                                                <button class="btn btn-danger btn-lock" data-id="{{ $sv->id }}">{!! $sv->trang_thai->value == 0 ? '<i class="fa-solid fa-lock"></i>' : '<i class="fa-solid fa-lock-open"></i>' !!}
+                                                </button>
                                             </td>
                                         </tr>
                                     @endforeach
-
-                                </tbody>
-                            </table>
-                        </div>
+                                
+                            </tbody>
+                        </table>
                     </div>
-                </div>
+                    
+                </div> 
             </div>
         </div>
+       
     </div>
 
 @endsection
