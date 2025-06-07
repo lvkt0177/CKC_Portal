@@ -215,7 +215,7 @@
 
     .team-table tbody tr:hover {
         background: rgba(79, 70, 229, 0.02);
-        z-index: 0; 
+        z-index: 0;
     }
 
     .team-name {
@@ -552,7 +552,7 @@
     .team-table tbody tr:hover {
         background: linear-gradient(135deg, rgba(79, 70, 229, 0.03), rgba(79, 70, 229, 0.01));
         box-shadow: 0 4px 12px rgba(0, 0, 0, 0.05);
-        z-index: 0; 
+        z-index: 0;
     }
 
     /* Mobile Navigation */
@@ -934,15 +934,18 @@
     /* Dark mode support */
     @media (prefers-color-scheme: dark) {
         :root {
-            --primary-color: #6366F1;
-            --secondary-color: #1E293B;
-            --text-primary: #F1F5F9;
-            --text-secondary: #94A3B8;
-            --border-color: #334155;
+            --primary-color: #4F46E5;
+            --secondary-color: #F8FAFC;
+            --text-primary: #1E293B;
+            --text-secondary: #64748B;
+            --border-color: #E2E8F0;
+            --success-color: #10B981;
+            --danger-color: #EF4444;
+            --bg-color: #F8FAFC;
         }
 
         body {
-            background: #0F172A;
+            background: var(--bg-color);
             color: var(--text-primary);
         }
 
@@ -951,11 +954,11 @@
         .teams-section,
         .highlights-card,
         .block-list-card {
-            background: #1E293B;
+            background: var(--bg-color);
         }
 
         .dropdown-menu {
-            background: rgba(30, 41, 59, 0.95);
+            background: var(--bg-color);
         }
     }
 
