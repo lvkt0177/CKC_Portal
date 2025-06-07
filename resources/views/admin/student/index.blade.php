@@ -51,7 +51,7 @@
 
 
 
-                    <div class="card-bod p-2">
+                    <div class="card-body p-2">
                         <div class="row justify-content-start g-4">
 
                             @foreach ($nganhHocs as $nh)
@@ -93,7 +93,7 @@
                                                     style="background-color: #f8f9fa; border-top: 1.5px solid #ced4da !important;">
                                                     <p><b>Ngành:</b> {{ $l->giangVien->boMon->nganhHoc->ten_nganh }}</p>
                                                     <a href="{{ route('admin.student.list', ['id' => $l->id]) }}"
-                                                        class="btn btn-warning btn-sm">
+                                                        class="btn btn-dark text-white btn-sm">
                                                         <i class="fas fa-solid fa-eye"></i>
                                                     </a>
                                                 </div>
