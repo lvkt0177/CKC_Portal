@@ -20,13 +20,22 @@ class LopController extends Controller
 
         $lop = Lop::where('id_gvcn', auth()->user()->id)->first();
 
-        $sinhViens = SinhVien::with(['hoSo', 'lop', 'lop.nienKhoa','lop.giangVien'])
-        ->where('id_lop', $lop->id)
-        ->orderBy('ma_sv', 'asc')->get();
+        $sinhViens = SinhVien::with(['hoSo', 'lop', 'lop.nienKhoa', 'lop.giangVien'])
+            ->where('id_lop', $lop->id)
+            ->orderBy('ma_sv', 'asc')->get();
 
         return view('admin.class.index', compact('sinhViens', 'lop'));
     }
+    public function nhapDiemRL(int $id)
+    {
+        $sinhviens = SinhVien::with(['hoSo', 'lop', 'lop.nienKhoa'])
+            ->where('id_lop', $id)
+            ->orderBy('ma_sv', 'asc')
+            ->get();
 
+        $lop = Lop::find($id);
+        return view('admin.student.enter_point_rl', compact('sinhviens', 'lop'));
+    }
     /**
      * Show the form for creating a new resource.
      */

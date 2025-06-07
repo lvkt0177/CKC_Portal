@@ -31,7 +31,7 @@
                 </div>
 
 
-                <a href="#" class="logo logo-menu">
+                <a href="{{ route('admin.dashboard') }}" class="logo logo-menu">
                     <img src="https://cdn.haitrieu.com/wp-content/uploads/2023/01/Logo-Truong-Cao-dang-Ky-thuat-Cao-Thang.png"
                         width="50" height="70" alt="">
                 </a>

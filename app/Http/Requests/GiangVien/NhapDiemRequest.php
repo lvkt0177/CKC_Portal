@@ -23,9 +23,9 @@ class NhapDiemRequest extends FormRequest
     {
         return [
             //
-            'diem_chuyen_can' => 'numeric|min:0|max:10',
-            'diem_qua_trinh' => 'numeric|min:0|max:10',
-            'diem_thi' => 'numeric|min:0|max:10',
+            'diem_chuyen_can' => 'min:0|max:10',
+            'diem_qua_trinh' => 'min:0|max:10',
+            'diem_thi' => 'min:0|max:10',
             'id_sinh_vien' => 'numeric',
             'id_lop_hoc_phan' => 'numeric',
         ];
@@ -33,10 +33,6 @@ class NhapDiemRequest extends FormRequest
     public function messages(): array
     {
         return [
-
-            'diem_chuyen_can.numeric' => 'Phải là số',
-            'diem_qua_trinh.mumeric' => 'Phải là số',
-            'diem_thi.numeric' => 'Phải là số',
             'diem_chuyen_can.min' => 'Phải lớn hơn 0',
             'diem_qua_trinh.min' => 'Phải lớn hơn 0',
             'diem_thi.min' => 'Phải lớn hơn 0',
