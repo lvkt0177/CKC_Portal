@@ -11,7 +11,10 @@
             <div class="card shadow-sm teams-section">
                 <div class="card-header d-flex justify-content-between align-items-center">
                     <h3 class="card-title mb-0"> Danh sách biên bản sinh hoạt chủ nhiệm - Lớp {{ $lop->ten_lop }} </h3>
-                    <a href="{{ route('admin.phong.create') }}" class="btn btn-primary">Lập biên bản SHCN</a>
+                    <div class="">
+                        <a href="" class="btn btn-primary">Lập biên bản SHCN</a>
+                        <a href="{{ route('admin.lop.index') }}" class="btn btn-primary">Quay lại</a>
+                    </div>
                 </div>
 
                 <div class="teams-section">
