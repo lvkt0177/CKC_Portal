@@ -15,159 +15,69 @@
 @endsection
 
 @section('content')
-    <div class="container-fluid teams-section">
-        <div class="row">
-            <div class="col-md-12">
-                <div class="card shadow-sm teams-section">
-                    <div class="card-header d-flex justify-content-between align-items-center">
-                        <h3 class="card-title mb-0">Danh sách Sinh viên - Lớp {{ $lop->ten_lop }}</h3>
+<div class="container-fluid">
+    <div class="row">
+        <div class="col-md-12">
+            <div class="card shadow-sm">
+                <div class="card-header d-flex justify-content-between align-items-center">
+                    <h3 class="card-title mb-0">Danh sách các lớp chủ nhiệm</h3>
+                </div>
+
+                <div class="card-body p-2">
+                    <div class="row justify-content-start g-4">
+
+                            @foreach ($lops as $lop)
+                                    <div class="col-md-6 col-lg-4 col-sm-6 mb-4">
+                                        <div class="card h-100 shadow-sm"
+                                            style="border-radius: 15px; overflow: hidden; border: 1.5px solid #ced4da;">
+
+                                            <!-- Header -->
+                                            <div
+                                                style="background: #007ACC url('https://img.tripi.vn/cdn-cgi/image/width=700,height=700/https://gcs.tripi.vn/public-tripi/tripi-feed/img/482601ikZ/anh-mo-ta.png') no-repeat right center; background-size: cover; height: 100px; position: relative;">
+
+                                                <!-- Overlay đen nhẹ -->
+                                                <div
+                                                    style="background-color: rgba(0, 0, 0, 0.4); position: absolute; inset: 0; z-index: 1;">
+                                                </div>
+
+                                                <!-- Nội dung -->
+                                                <div style="position: relative; z-index: 2;">
+                                                    <h4 class="text-white fw-bold px-3 pt-3 mb-1">{{ $lop->ten_lop }} ( {{  $lop->nienKhoa->nam_bat_dau }} - {{  $lop->nienKhoa->nam_ket_thuc }})
+                                                    </h4>
+                                                    <p class="text-white px-3 mb-2 fw-bold">
+                                                        {{ $lop->giangVien->hoSo->ho_ten }}</p>
+                                                </div>
+
+                                                <!-- Avatar -->
+                                                <img src="{{ asset('' . $lop->giangVien->hoSo->anh) }}" alt="Avatar"
+                                                    style="width: 70px; height: 70px; object-fit: cover; border-radius: 50%; position: absolute; bottom: -20px; right: 15px; border: 1px solid white; z-index: 3;">
+                                            </div>
+
+                                            <!-- Body -->
+                                            <div class="card-body pt-4" style="background-color: #f8f9fa;">
+                                                {{-- Nội dung khác nếu có --}}
+                                            </div>
+
+                                            <!-- Footer -->
+                                            <div class="card-footer d-flex justify-content-between gap-2 align-items-center"
+                                                style="background-color: #f8f9fa; border-top: 1.5px solid #ced4da !important;">
+                                                <p><b>Ngành:</b> {{ $lop->giangVien->boMon->nganhHoc->ten_nganh }}</p>
+                                                <a href="{{ route('admin.lop.sinhvien', $lop) }}"
+                                                    class="btn btn-dark text-white btn-sm">
+                                                    <i class="fas fa-solid fa-eye"></i>
+                                                </a>
+                                            </div>
+                                        </div>
+                                    </div>
+                            @endforeach
                     </div>
-
-                    <div class="teams-section">
-                        <table class="team-table">
-                            <thead class="table-center">
-                                <tr class="text-center">
-                                    <th><input type="checkbox" id="checkAll" style="left: 0"></th>
-                                        <th>No.</th>
-                                        <th>MSSV</th>
-                                        <th>Họ tên sinh viên</th>
-                                        <th>Giới tính</th>
-                                        <th>Ngày sinh</th>
-                                        <th>Email</th>
-                                        <th>Số diện thoại</th>
-                                        <th>Chức vụ</th>
-                                        <th>Trạng thái</th>
-                                        <th>Hành động</th>
-                                    
-                                </tr>
-                            </thead>
-                            <tbody>
-                                @foreach ($sinhViens as $sv)
-                                        <tr class="text-center">
-                                            <td>
-                                                <input type="checkbox" class="student-checkbox" name="selected_students[]"
-                                                    value="{{ $sv->id }}">
-                                            </td>
-                                            <td>{{ $loop->index + 1 }}</td>
-                                            <td>{{ $sv->ma_sv }}</td>
-                                            <td>{{ $sv->hoSo->ho_ten }}</td>
-                                            <td>{{ $sv->hoSo->gioi_tinh->getLabel() }}</td>
-                                            <td>{{ $sv->hoSo->ngay_sinh }}</td>
-                                            <td>{{ $sv->hoSo->email }}</td>
-                                            <td>{{ $sv->hoSo->so_dien_thoai }}</td>
-                                            <td>
-                                                <form method="POST" action="{{ route('admin.student.doi-chuc-vu', $sv) }}">
-                                                    @csrf
-                                                    <div class="dropdown">
-                                                        <button
-                                                            class="btn btn-sm btn-{{ $sv->chuc_vu->getBadge() }} dropdown-toggle"
-                                                            style="color: black !important;" type="button"
-                                                            id="dropdownMenuButton{{ $sv->id }}"
-                                                            data-bs-toggle="dropdown" aria-expanded="false">
-                                                            {{ $sv->chuc_vu->getLabel() }}
-                                                        </button>
-                                                        <ul class="dropdown-menu" 
-                                                            aria-labelledby="dropdownMenuButton{{ $sv->id }}">
-                                                            @foreach (App\Enum\RoleStudent::cases() as $role)
-                                                                @if ($sv->chuc_vu->value != $role->value)
-                                                                    <li>
-                                                                        <a href="#" class="dropdown-item change-role"
-                                                                            data-student-id="{{ $sv->id }}"
-                                                                            data-role-value="{{ $role->value }}"
-                                                                            data-role-label="{{ $role->getLabel() }}"
-                                                                            data-student-name="{{ addslashes($sv->hoSo->ho_ten) }}">
-                                                                            {{ $role->getLabel() }}
-                                                                        </a>
-                                                                    </li>
-                                                                @endif
-                                                            @endforeach
-                                                        </ul>
-                                                        <input type="hidden" name="chuc_vu"
-                                                            id="chucVuInput{{ $sv->id }}"
-                                                            value="{{ $sv->chuc_vu->value }}">
-                                                    </div>
-                                                </form>
-
-                                            </td>
-                                            <td>{{ $sv->trang_thai->getLabel() }}</td>
-
-                                            <td>
-                                                <a href="" class="btn btn-warning"><i class="fa-solid fa-eye"></i></a>
-                                                <button class="btn btn-danger btn-lock" data-id="{{ $sv->id }}">{!! $sv->trang_thai->value == 0 ? '<i class="fa-solid fa-lock"></i>' : '<i class="fa-solid fa-lock-open"></i>' !!}
-                                                </button>
-                                            </td>
-                                        </tr>
-                                    @endforeach
-                                
-                            </tbody>
-                        </table>
-                    </div>
-                    
-                </div> 
+                </div>
             </div>
         </div>
-       
     </div>
+</div>
 
 @endsection
 
 
-@section('js')
-    <script>
-        document.getElementById('checkAll').addEventListener('change', function() {
-            const checkboxes = document.querySelectorAll('.student-checkbox');
-            checkboxes.forEach(cb => cb.checked = this.checked);
-        });
 
-        document.addEventListener('DOMContentLoaded', function() {
-            document.querySelectorAll('a.change-role').forEach(function(el) {
-                el.addEventListener('click', function(e) {
-                    e.preventDefault();
-                    const studentId = this.dataset.studentId;
-                    const roleValue = this.dataset.roleValue;
-                    const roleLabel = this.dataset.roleLabel;
-                    const studentName = this.dataset.studentName;
-
-                    if (confirm(
-                            `Bạn có chắc muốn gán chức vụ "${roleLabel}" cho sinh viên "${studentName}"?`
-                        )) {
-                        const input = document.getElementById(`chucVuInput${studentId}`);
-                        input.value = roleValue;
-
-                        this.closest('form').submit();
-                    }
-                });
-            });
-        });
-
-        // btn-lock ajax
-        document.querySelectorAll('.btn-lock').forEach(function(el) {
-            el.addEventListener('click', function(e) {
-                e.preventDefault();
-
-                const studentId = this.dataset.id;
-
-                //ajax
-                $.ajax({
-                    url: `/admin/student/khoa-sinh-vien/${studentId}`,
-                    type: 'POST',
-                    data: {
-                        _token: '{{ csrf_token() }}',
-                        student_id: studentId
-                    },
-                    success: function(response) {
-                        if (response.success) {
-                            location.reload();
-                            alert(response.message);
-                        } else {
-                            alert(response.message);
-                        }
-                    },
-                    error: function(xhr, status, error) {
-                        console.error(error);
-                    }
-                });
-            });
-        });
-    </script>
-@endsection
