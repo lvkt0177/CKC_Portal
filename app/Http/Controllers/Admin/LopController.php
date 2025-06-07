@@ -17,14 +17,19 @@ class LopController extends Controller
      */
     public function index()
     {
+        $lops = Lop::with('giangVien', 'nienKhoa', 'giangVien.boMon.nganhHoc')
+        ->where('id_gvcn', auth()->user()->id)
+        ->orderBy('id', 'desc')
+        ->get();
 
-        $lop = Lop::where('id_gvcn', auth()->user()->id)->first();
+        return view('admin.class.index', compact('lops'));
+    }
 
-        $sinhViens = SinhVien::with(['hoSo', 'lop', 'lop.nienKhoa', 'lop.giangVien'])
-            ->where('id_lop', $lop->id)
-            ->orderBy('ma_sv', 'asc')->get();
+        $sinhViens = SinhVien::with(['hoSo', 'lop', 'lop.nienKhoa','lop.giangVien'])
+        ->where('id_lop', $lop->id)
+        ->orderBy('ma_sv', 'asc')->get();
 
-        return view('admin.class.index', compact('sinhViens', 'lop'));
+        return view('admin.class.list', compact('sinhViens', 'lop'));
     }
     public function nhapDiemRL(int $id)
     {

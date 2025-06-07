@@ -8,3 +8,5 @@ use App\Acl\Acl;
 use App\Http\Controllers\Admin\LopController;
 
 Route::resource('lop', LopController::class)->only(['index']);
+
+Route::get('/lop/sinhvien/{lop}', [LopController::class, 'list'])->name('lop.sinhvien');
