@@ -215,7 +215,7 @@
 
     .team-table tbody tr:hover {
         background: rgba(79, 70, 229, 0.02);
-        z-index: 0; 
+        z-index: 0;
     }
 
     .team-name {
@@ -552,7 +552,7 @@
     .team-table tbody tr:hover {
         background: linear-gradient(135deg, rgba(79, 70, 229, 0.03), rgba(79, 70, 229, 0.01));
         box-shadow: 0 4px 12px rgba(0, 0, 0, 0.05);
-        z-index: 0; 
+        z-index: 0;
     }
 
     /* Mobile Navigation */
@@ -942,7 +942,7 @@
         }
 
         body {
-            background: #0F172A;
+            background: #F8FAFC;
             color: var(--text-primary);
         }
 
@@ -951,11 +951,11 @@
         .teams-section,
         .highlights-card,
         .block-list-card {
-            background: #1E293B;
+            background: #F8FAFC;
         }
 
         .dropdown-menu {
-            background: rgba(30, 41, 59, 0.95);
+            background: #F8FAFC;
         }
     }
 

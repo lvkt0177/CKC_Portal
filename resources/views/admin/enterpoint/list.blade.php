@@ -29,7 +29,6 @@
                                         <th>Điểm thi</th>
                                         <th>Điểm trung bình</th>
                                         <th>Loại sinh viên</th>
-                                        <th>Tùy chọn</th>
                                     </tr>
                                 </thead>
                                 <tbody>
@@ -47,12 +46,12 @@
                                                 <td>{{ $dshp->loai_sinh_vien == 0 ? 'Chính quy' : 'Học ghép' }}</td>
                                                 <td>
                                                     <button class="btn btn-primary btn-sm"
-                                                        onclick="showEditRow({{ $dshp->id_sinh_vien }})">Sửa</button>
+                                                        onclick="showEditRow({{ $dshp->id_sinh_vien }})"><i class="bi bi-pencil-square"></i></button>
                                                 </td>
                                             </tr>     
                                                 <!-- Modal sửa điểm -->
                                                 <tr id="edit-row-{{ $dshp->id_sinh_vien }}" style="display: none;">
-                                                    <form action="{{ route('admin.enterpoint.cap-nhat-diem') }}" method="POST">
+                                                    <form action="{{ route('admin.enterpoint.cap-nhat-diem') }}" method="POST" onsubmit="return confirmSubmit();">
                                                         @csrf
                                                         <input type="hidden" name="id_sinh_vien" value="{{ $dshp->id_sinh_vien }}">
                                                         <input type="hidden" name="id_lop_hoc_phan" value="{{ $dshp->id_lop_hoc_phan }}">
@@ -127,15 +126,9 @@
             document.getElementById('edit-row-' + id).style.display = 'none';
             document.getElementById('view-row-' + id).style.display = '';
         }
-        function lamTronDiem(input) {
-            let value = parseFloat(input.value);
-            if (!isNaN(value)) {
-                value = Math.round(value * 10) / 10; // Làm tròn 1 chữ số thập phân
-                if (value < 0) value = 0;
-                if (value > 10) value = 10;
-                input.value = value.toFixed(1);
-            }
-        }
 
+        function confirmSubmit() {
+        return confirm('Bạn có chắc chắn muốn nhập điểm không?');
+        }
     </script>
 @endsection

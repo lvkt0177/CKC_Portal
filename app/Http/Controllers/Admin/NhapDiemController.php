@@ -57,11 +57,23 @@ class NhapDiemController extends Controller
     public function capNhat(NhapDiemRequest $request)
     {
 
+        $dsHocPhan = DanhSachHocPhan::get();
         $id_sinh_vien = $request->validated('id_sinh_vien');
         $id_lop_hoc_phan = $request->validated('id_lop_hoc_phan');
 
         if (!$id_sinh_vien) {
             return back()->with('error', 'Không nhận được ID sinh viên!');
+        }
+        if (!is_null($request->validated('diem_chuyen_can'))) {
+            $dsHocPhan->diem_chuyen_can = $request->diem_chuyen_can;
+        }
+
+        if (!is_null($request->validated('diem_qua_trinh'))) {
+            $dsHocPhan->diem_qua_trinh = $request->diem_qua_trinh;
+        }
+
+        if (!is_null($request->validated('diem_thi'))) {
+            $dsHocPhan->diem_thi = $request->diem_thi;
         }
 
         $data = array_intersect_key(

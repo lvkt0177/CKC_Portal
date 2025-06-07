@@ -57,8 +57,8 @@
                                                         style="background-color: #f8f9fa; border-top: 1.5px solid #ced4da !important; padding-top: 12px;">
                                                         <p><b>Lớp:</b> {{ $lhp->lop->ten_lop }}</p>
                                                         <a href="{{ route('admin.enterpoint.list', ['id' => $lhp->id]) }}"
-                                                            class="btn btn-outline-primary btn-sm">
-                                                            <i class="la la-eye"></i>
+                                                            class="btn  btn-sm">
+                                                            Xem danh sách
                                                         </a>
                                                     </div>
                                                 </div>
