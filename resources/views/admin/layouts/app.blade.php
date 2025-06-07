@@ -49,8 +49,6 @@
                             <li><a class="dropdown-item"
                                     href="{{ route('admin.lop.index') }}"><i class="fas fa-cog me-2"></i>Quản lý lớp</a>
                             </li>
-                            <li><a class="dropdown-item" href="{{ route('admin.bienbanshcn.index') }}"><i
-                                        class="fas fa-user me-2"></i>Biên bản SHCN</a></li>
                         </ul>
                     </div>
 

@@ -6,4 +6,6 @@ use App\Acl\Acl;
 
 use App\Http\Controllers\Admin\BienBanController;
 
-Route::resource('bienbanshcn', BienBanController::class);
+
+Route::get('/bienbanshcn/{lop}', [BienBanController::class, 'index'])->name('bienbanshcn.index');
+Route::resource('bienbanshcn', BienBanController::class)->except(['index']);

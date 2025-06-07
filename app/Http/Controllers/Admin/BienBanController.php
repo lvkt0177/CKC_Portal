@@ -16,13 +16,8 @@ class BienBanController extends Controller
     /**
      * Display a listing of the resource.
      */
-    public function index()
+    public function index(Lop $lop)
     {   
-        $lop = Lop::where('id_gvcn', auth()->user()->id)->first();
-
-        //ông A chủ nhiệm lớp A -> idLop = A -> bbSHCN == lớp A
-        //ông B chủ nhiệm lớp A -> idLop = A -> bbSHCN == lớp A
-
         $bienBanSHCN = BienBanSHCN::with('lop','sv','tuan','gvcn','sv.hoSo')
         ->where('id_lop', $lop->id)
         ->orderBy('id', 'asc')
@@ -31,6 +26,7 @@ class BienBanController extends Controller
         return view('admin.bienbanshcn.index', compact('bienBanSHCN', 'lop'));
     }
 
+    
     /**
      * Show the form for creating a new resource.
      */

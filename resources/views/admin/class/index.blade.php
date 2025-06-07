@@ -62,10 +62,14 @@
                                             <div class="card-footer d-flex justify-content-between gap-2 align-items-center"
                                                 style="background-color: #f8f9fa; border-top: 1.5px solid #ced4da !important;">
                                                 <p><b>Ngành:</b> {{ $lop->giangVien->boMon->nganhHoc->ten_nganh }}</p>
-                                                <a href="{{ route('admin.lop.sinhvien', $lop) }}"
-                                                    class="btn btn-dark text-white btn-sm">
-                                                    <i class="fas fa-solid fa-eye"></i>
-                                                </a>
+                                                <div class="">
+                                                    <a href="{{ route('admin.lop.sinhvien', $lop) }}"
+                                                        class="btn btn-dark text-white btn-sm">
+                                                        <i class="fas fa-solid fa-eye"></i> Thông tin lớp
+                                                    </a>
+                                                    <a href="{{ route('admin.bienbanshcn.index', $lop) }}" class="btn btn-success btn-sm text-white"><i class="fa-solid fa-file-lines"></i> Biên bản SHCN</a>
+                                                </div>
+
                                             </div>
                                         </div>
                                     </div>
