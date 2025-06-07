@@ -55,3 +55,5 @@ Route::group(['middleware' => 'web'], function () {
     });
 
 });
+
+include('ckeditor/ckeditor.php');

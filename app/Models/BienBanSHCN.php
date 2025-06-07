@@ -31,7 +31,9 @@ class BienBanSHCN extends Model
     ];
 
     protected $casts = [
-        'trang_thai' => BienBanStatus::class
+        'trang_thai' => BienBanStatus::class,
+        'thoi_gian_bat_dau' => 'datetime',
+        'thoi_gian_ket_thuc' => 'datetime',
     ];
 
     public function lop()
@@ -52,6 +54,11 @@ class BienBanSHCN extends Model
     public function sv()
     {
         return $this->belongsTo(SinhVien::class, 'id_sv', 'id');
+    }
+
+    public function chiTietBienBanSHCN()
+    {
+        return $this->hasMany(ChiTietBienBanSHCN::class, 'id_bien_ban_shcn', 'id');
     }
     
 }

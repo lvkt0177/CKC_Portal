@@ -31,10 +31,10 @@ return new class extends Migration
             $table->longText('noi_dung');
 
             //thời gian bắt đầu
-            $table->time('thoi_gian_bat_dau');
+            $table->datetime('thoi_gian_bat_dau');
 
             //thời gian kết thúc
-            $table->time('thoi_gian_ket_thuc');
+            $table->datetime('thoi_gian_ket_thuc');
 
             //số lượng sinh viên
             $table->integer('so_luong_sinh_vien')->default(0);

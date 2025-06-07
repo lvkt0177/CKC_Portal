@@ -9,10 +9,20 @@ if (!function_exists('isActiveRoute')) {
             $patterns = [$patterns];
         }
 
+        $currentPath = request()->path(); 
+        $currentFullUrl = url()->full();  
+        $baseUrl = url('/');           
+
         foreach ($patterns as $pattern) {
             if (request()->is($pattern)) {
                 return $activeClass;
-            }   
+            }
+
+            $patternUrl = $baseUrl . '/' . ltrim($pattern, '/');
+
+            if (Str::startsWith($currentFullUrl, $patternUrl)) {
+                return $activeClass;
+            }
         }
 
         return '';

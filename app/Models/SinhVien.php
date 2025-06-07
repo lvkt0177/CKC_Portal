@@ -44,4 +44,9 @@ class SinhVien extends Model
     {
         return $this->hasMany(DanhSachHocPhan::class, 'id_sinh_vien', 'id');
     }
+
+    public function chiTietBienBanSHCN()
+    {
+        return $this->hasMany(ChiTietBienBanSHCN::class, 'id_sinh_vien', 'id');
+    }
 }

@@ -12,7 +12,7 @@
                 <div class="card-header d-flex justify-content-between align-items-center">
                     <h3 class="card-title mb-0"> Danh sách biên bản sinh hoạt chủ nhiệm - Lớp {{ $lop->ten_lop }} </h3>
                     <div class="">
-                        <a href="" class="btn btn-primary">Lập biên bản SHCN</a>
+                        <a href="{{ route('admin.bienbanshcn.create', $lop) }}" target="_blank" class="btn btn-success"><i class="fa fa-plus" aria-hidden="true"></i> Lập biên bản SHCN</a>
                         <a href="{{ route('admin.lop.index') }}" class="btn btn-primary">Quay lại</a>
                     </div>
                 </div>
@@ -43,11 +43,10 @@
                                             <td>{{ $bb->created_at }}</td>
                                             <td>{{ $bb->trang_thai->getLabel() }}</td>
                                             <td>
-                                                <a href="" class="btn btn-warning"><i class="fa-solid fa-eye"></i></a>
+                                                <a href="{{ route('admin.bienbanshcn.show', $bb) }}" target="_blank" class="btn btn-warning"><i class="fa-solid fa-eye"></i></a>
                                                 {{-- Duyệt --}}
-                                                <a href="" class="btn btn-success"><i class="fa-solid fa-check"></i></a>
-                                                {{-- Huy --}}
-                                                <a href="" class="btn btn-danger"><i class="fa-solid fa-xmark"></i></a>
+                                                <a href="" class="btn btn-success"><i class="fa-solid fa-share"></i></a>
+                                                
                                             </td>
                                         </tr>
                                         

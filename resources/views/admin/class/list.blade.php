@@ -25,7 +25,7 @@
                     </div>
 
                     <div class="teams-section">
-                        <table class="team-table">
+                        <table class="team-table table-reponsive">
                             <thead class="table-center">
                                 <tr class="text-center">
                                     <th><input type="checkbox" id="checkAll" style="left: 0"></th>
@@ -92,8 +92,9 @@
                                             </td>
                                             <td>{{ $sv->trang_thai->getLabel() }}</td>
 
-                                            <td>
+                                            <td class="d-flex">
                                                 <a href="" class="btn btn-warning"><i class="fa-solid fa-eye"></i></a>
+                                                <span class="mx-1"></span>
                                                 <button class="btn btn-danger btn-lock" data-id="{{ $sv->id }}">{!! $sv->trang_thai->value == 0 ? '<i class="fa-solid fa-lock"></i>' : '<i class="fa-solid fa-lock-open"></i>' !!}
                                                 </button>
                                             </td>
