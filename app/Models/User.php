@@ -85,4 +85,9 @@ class User extends Authenticatable
     {
         return $this->hasMany(BienBanSHCN::class, 'id_gvcn', 'id');
     }
+    //DiemRenLuyen
+    public function diemRenLuyens()
+    {
+        return $this->hasMany(DiemRenLuyen::class, 'id_giang_vien', 'id');
+    }
 }

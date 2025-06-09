@@ -18,22 +18,36 @@ class LopController extends Controller
     public function index()
     {
         $lops = Lop::with('giangVien', 'nienKhoa', 'giangVien.boMon.nganhHoc')
-        ->where('id_gvcn', auth()->user()->id)
-        ->orderBy('id', 'desc')
-        ->get();
+            ->where('id_gvcn', auth()->user()->id)
+            ->orderBy('id', 'desc')
+            ->get();
 
         return view('admin.class.index', compact('lops'));
     }
-
     public function list(Lop $lop)
     {
-        $sinhViens = SinhVien::with(['hoSo', 'lop', 'lop.nienKhoa','lop.giangVien'])
-        ->where('id_lop', $lop->id)
-        ->orderBy('ma_sv', 'asc')->get();
+        $sinhViens = SinhVien::with(['hoSo', 'lop', 'lop.nienKhoa', 'lop.giangVien'])
+            ->where('id_lop', $lop->id)
+            ->orderBy('ma_sv', 'asc')->get();
 
         return view('admin.class.list', compact('sinhViens', 'lop'));
     }
+    public function nhapDiemRL(Lop $lop)
+    {
+        $sinhViens = SinhVien::with(['hoSo', 'lop', 'lop.nienKhoa', 'lop.giangVien','diemRenLuyens'])
+            ->where('id_lop', $lop->id)
+            ->orderBy('ma_sv', 'asc')->get();
 
+        return view('admin.class.enter_point_rl', compact('sinhViens', 'lop'));
+    }
+
+    public function capNhatDiemRL(SinhVien $sv,NhapDiemRequest $request)
+    {
+        $id_sinh_vien = $request->validated($sv->id);
+        $data = $request->validated('xep_loai');
+        DiemRenLuyen::where('id_sinh_vien', $id_sinh_vien)->update($data);
+        return back()->with('success', 'Cập nhật điểm thành công!');
+    }
     /**
      * Show the form for creating a new resource.
      */

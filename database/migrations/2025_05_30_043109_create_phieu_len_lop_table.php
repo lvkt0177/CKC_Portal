@@ -23,6 +23,8 @@ return new class extends Migration
                 ->constrained('phong')
                 ->onDelete('cascade');
 
+            //id_tuan
+            $table->foreignId('id_tuan')->constrained('tuan')->onDelete('cascade');
             //tiet_bat_dau - integer
             $table->integer('tiet_bat_dau')->default(0);
 

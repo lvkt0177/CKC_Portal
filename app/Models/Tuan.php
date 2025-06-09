@@ -15,4 +15,9 @@ class Tuan extends Model
         'ngay_bat_dau',
         'ngay_ket_thuc',
     ];
+    //phieu len lop
+    public function phieuLenLop()
+    {
+        return $this->hasMany(PhieuLenLop::class, 'id_tuan', 'id');
+    }
 }

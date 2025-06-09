@@ -10,3 +10,5 @@ use App\Http\Controllers\Admin\LopController;
 Route::resource('lop', LopController::class)->only(['index']);
 
 Route::get('/lop/sinhvien/{lop}', [LopController::class, 'list'])->name('lop.sinhvien');
+Route::get('/lop/nhap-diem_rl/{lop}', [LopController::class, 'nhapDiemRL'])->name('lop.nhap-diem_rl');
+Route::get('/lop/cap-nhat-diem_rl/{sv}', [LopController::class, 'capNhatDiemRL'])->name('lop.cap-nhat-diem_rl');

@@ -14,5 +14,10 @@ class Phong extends Model
         'so_luong',
         'loai_phong',
     ];
+    //phieu_len_lop
+    public function phieuLenLop()
+    {
+        return $this->hasMany(PhieuLenLop::class, 'id_phong', 'id');
+    }
 
 }

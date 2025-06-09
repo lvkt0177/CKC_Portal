@@ -5,6 +5,8 @@ namespace Database\Seeders;
 use Illuminate\Database\Console\Seeds\WithoutModelEvents;
 use Illuminate\Database\Seeder;
 use App\Models\Tuan;
+use Carbon\Carbon;
+
 
 class TuanSeeder extends Seeder
 {
@@ -15,9 +17,30 @@ class TuanSeeder extends Seeder
     {
         //
         Tuan::insert([
-            ['id_nam' => 1, 'tuan' => 1, 'ngay_bat_dau' => '2023-08-04', 'ngay_ket_thuc' => '2023-12-10'],
-            ['id_nam' => 2, 'tuan' => 2, 'ngay_bat_dau' => '2024-01-11', 'ngay_ket_thuc' => '2024-04-17'],
-            ['id_nam' => 3, 'tuan' => 3, 'ngay_bat_dau' => '2025-08-18', 'ngay_ket_thuc' => '2025-12-24'],
-        ]);
+    [
+        'id_nam' => 3,
+        'tuan' => 1,
+        'ngay_bat_dau' => Carbon::create(2025, 6, 2),
+        'ngay_ket_thuc' => Carbon::create(2025, 6, 8),
+    ],
+    [
+        'id_nam' => 3,
+        'tuan' => 2,
+        'ngay_bat_dau' => Carbon::create(2025, 6, 9),
+        'ngay_ket_thuc' => Carbon::create(2025, 6, 15),
+    ],
+    [
+        'id_nam' => 3,
+        'tuan' => 3,
+        'ngay_bat_dau' => Carbon::create(2025, 6, 16),
+        'ngay_ket_thuc' => Carbon::create(2025, 6, 22),
+    ],
+    [
+        'id_nam' => 3,
+        'tuan' => 4,
+        'ngay_bat_dau' => Carbon::create(2025, 6, 23),
+        'ngay_ket_thuc' => Carbon::create(2025, 6, 29),
+    ],
+    ]);
     }
 }

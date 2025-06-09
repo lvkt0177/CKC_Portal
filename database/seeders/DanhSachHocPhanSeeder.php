@@ -25,6 +25,17 @@ class DanhSachHocPhanSeeder extends Seeder
                 "diem_tong_ket" => 0,
                 "loai_hoc" => 0,
             ],
+            [
+                "id_sinh_vien" => 2,
+                "id_lop_hoc_phan" => 1,
+                "diem_md_thuc_hanh" => null,
+                "diem_md_ly_thuyet" => null,
+                "diem_chuyen_can" => null,
+                "diem_qua_trinh" => null,
+                "diem_thi" => null,
+                "diem_tong_ket" => 0,
+                "loai_hoc" => 0,
+            ],
         ]);
     }
 }
