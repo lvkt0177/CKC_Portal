@@ -13,7 +13,6 @@ class AdminLoginController extends Controller
 
     public function login(Request $request)
     {
-
         $user = User::where('tai_khoan', $request->tai_khoan)->first();
 
         if (!$user || !Hash::check($request->password, $user->password)) {
@@ -23,7 +22,6 @@ class AdminLoginController extends Controller
         $token = $user->createToken('api-token')->plainTextToken;
 
         $user = User::with('hoSo')->where('tai_khoan', $request->tai_khoan)->first();
-
         
         return response()->json([
             'token' => $token,

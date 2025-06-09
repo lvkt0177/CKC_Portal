@@ -24,11 +24,13 @@
                     <div class="card-header d-flex justify-content-between align-items-center">
                         <h3 class="card-title mb-0">Chỉnh sửa biên bản sinh hoạt chủ nhiệm - Lớp
                             {{ $thongTin->lop->ten_lop }}</h3>
-                        <a href="javascript:void(0);" class="btn btn-danger btn-sm" onclick="window.close();">Huỷ</a>
                     </div>
                     <div class="card-body">
-                        <form action="" method="POST" enctype="multipart/form-data">
+                        <form action="{{ route('admin.bienbanshcn.update', $thongTin) }}" method="POST"
+                            onsubmit="return confirm('Bạn có chắc muốn sửa đổi biên bản này?')"
+                            enctype="multipart/form-data">
                             @csrf
+                            @method('PUT')
                             <div class="row g-3">
                                 <div class="col-12">
                                     <label for="tieu_de" class="form-label">Tiêu đề</label>
@@ -45,7 +47,6 @@
                                     <label for="id_lop" class="form-label">Lớp</label>
                                     <input type="text" class="form-control" id="id_lop" name="id_lop"
                                         value="{{ $thongTin->lop->ten_lop }}" readonly>
-
                                 </div>
 
                                 <div class="col-md-4">
@@ -55,9 +56,19 @@
                                 </div>
 
                                 <div class="col-md-4">
-                                    <label class="form-label">Thư ký lớp</label>
-                                    <input type="text" class="form-control" name="thuky"
-                                        value="{{ $thongTin->thuky->hoSo->ho_ten ?? '' }}" readonly>
+                                    <label class="form-label">Thư ký đại diện</label>
+
+                                    <select name="id_sv" id="id_sv"
+                                        class="form-control @error('id_sv') is-invalid border-danger text-dark @enderror">
+                                        <option value="">-- Chọn thư ký đại diện --</option>
+                                        @foreach ($thuKy as $tk)
+                                            <option value="{{ $tk->id }}"
+                                                {{ old('id_sv') == $tk->id ? 'selected' : '' }}
+                                                {{ $thongTin->id_sv == $tk->id ? 'selected' : '' }}>
+                                                {{ $tk->hoSo->ho_ten }}
+                                            </option>
+                                        @endforeach
+                                    </select>
                                 </div>
 
                                 <div class="col-md-4">
@@ -66,10 +77,10 @@
                                     <select name="id_tuan" id="id_tuan"
                                         class="form-control @error('id_tuan') is-invalid border-danger text-dark @enderror">
                                         <option value="">-- Chọn tuần --</option>
-                                        @foreach ($thongTin->tuan as $tuan)
-                                            <option value="{{ $thongTin->tuan->id }}"
-                                                {{ old('id_tuan') == $thongTin->tuan->id ? 'selected' : '' }}>
-                                                {{ $thongTin->tuan->tuan }}
+                                        @foreach ($tuans as $tuan)
+                                            <option value="{{ $tuan->id }}"
+                                                {{ $thongTin->id_tuan == $tuan->id ? 'selected' : '' }}>
+                                                Tuần {{ $tuan->tuan }}
                                             </option>
                                         @endforeach
                                     </select>
@@ -80,7 +91,7 @@
                                     <input type="datetime-local"
                                         class="form-control @error('thoi_gian_bat_dau') is-invalid border-danger text-dark @enderror"
                                         id="thoi_gian_bat_dau" name="thoi_gian_bat_dau"
-                                        value="{{ old('thoi_gian_bat_dau') }}">
+                                        value="{{ old('thoi_gian_bat_dau', $thongTin->thoi_gian_bat_dau) }}">
                                 </div>
 
                                 <div class="col-md-4">
@@ -88,7 +99,7 @@
                                     <input type="datetime-local"
                                         class="form-control @error('thoi_gian_ket_thuc') is-invalid border-danger text-dark @enderror"
                                         id="thoi_gian_ket_thuc" name="thoi_gian_ket_thuc"
-                                        value="{{ old('thoi_gian_ket_thuc') }}">
+                                        value="{{ old('thoi_gian_ket_thuc', $thongTin->thoi_gian_ket_thuc) }}">
                                 </div>
 
                                 <div class="col-md-6">
@@ -110,65 +121,33 @@
                                 {{-- Sinh viên vắng mặt --}}
 
                                 <div class="col-md-12">
+                                    @php
+                                        $sinhVienVang = $thongTin->chiTietBienBanSHCN->pluck('id_sinh_vien')->toArray();
+                                    @endphp
                                     <label for="sinhvien-select" class="form-label">Chọn sinh viên vắng mặt</label>
                                     <select id="sinhvien-select" class="form-control" multiple>
                                         @foreach ($thongTin->lop->sinhViens as $sv)
                                             <option value="{{ $sv->id }}"
-                                                data-name="{{ $sv->ma_sv }} - {{ $sv->hoSo->ho_ten }}">
+                                                data-name="{{ $sv->ma_sv }} - {{ $sv->hoSo->ho_ten }}"
+                                                {{ in_array($sv->id, $sinhVienVang) ? 'selected' : '' }}>
                                                 {{ $sv->ma_sv }} - {{ $sv->hoSo->ho_ten }}
                                             </option>
                                         @endforeach
                                     </select>
-
+                                    <meta name="csrf-token" content="{{ csrf_token() }}">
                                     <div id="sinhvien-details-container" class="mt-3">
-                                        @foreach ($thongTin->chiTietBienBanSHCN as $chiTietBienBanSHCN)
-                                            @php
-                                                $sv = $chiTietBienBanSHCN->sinhVien;
-                                                $id = $sv->id;
-                                                $name = $sv->ma_sv . ' - ' . ($sv->hoSo->ho_ten);
-                                                $lyDo = $chiTietBienBanSHCN->ly_do;
-                                                $loai = $chiTietBienBanSHCN->loai;
-                                            @endphp
-
-                                            <div class="sinhvien-item row mb-3" id="sinhvien-{{ $id }}">
-                                                <div class="col-md-2">
-                                                    <input type="hidden" name="sinh_vien_vang[{{ $id }}][id]"
-                                                        value="{{ $id }}">
-                                                    <label>Thông tin sinh viên</label>
-                                                    <input type="text" value="{{ $name }}"
-                                                        class="form-control mb-2" readonly>
-                                                </div>
-
-                                                <div class="col-md-8">
-                                                    <label>Lý do:</label>
-                                                    <input type="text"
-                                                        name="sinh_vien_vang[{{ $id }}][ly_do]"
-                                                        value="{{ $lyDo }}" class="form-control mb-2" required>
-                                                </div>
-
-                                                <div class="col-md-2">
-                                                    <label>Loại:</label>
-                                                    <select name="sinh_vien_vang[{{ $id }}][loai]"
-                                                        class="form-control" required>
-                                                        <option value="1" {{ $loai == 1 ? 'selected' : '' }}>Có phép
-                                                        </option>
-                                                        <option value="0" {{ $loai == 0 ? 'selected' : '' }}>Không
-                                                            phép</option>
-                                                    </select>
-                                                </div>
-                                            </div>
-                                        @endforeach
                                     </div>
                                 </div>
 
                                 <div class="col-12">
                                     <label for="noi_dung" class="form-label">Nội dung</label>
-                                    <textarea id="noi_dung" name="noi_dung" class="form-control">{{ old('noi_dung') }}</textarea>
+                                    <textarea id="noi_dung" name="noi_dung" class="form-control">{{ old('noi_dung', $thongTin->noi_dung) }}</textarea>
                                 </div>
                             </div>
 
-                            <div class="mt-4 d-flex">
+                            <div class="mt-4 d-flex justify-content-between">
                                 <button type="submit" class="btn btn-success px-4">Lưu biên bản</button>
+                                <a href="javascript:void(0);" class="btn btn-danger btn-sm" onclick="window.close();">Huỷ</a>
                             </div>
                         </form>
                     </div>
@@ -182,21 +161,15 @@
 
 @section('js')
 
-    <!-- jQuery -->
     <script src="https://cdnjs.cloudflare.com/ajax/libs/jquery/3.6.0/jquery.min.js"></script>
-
-    <!-- Select2 JS -->
     <script src="https://cdn.jsdelivr.net/npm/select2@4.1.0-rc.0/dist/js/select2.min.js"></script>
 
     <script>
-        const oldValues = @json(old('sinh_vien_vang', []));
+        const oldValues = @json($thongTin->chiTietBienBanSHCN->keyBy('id_sinh_vien')->toArray() ?? old('sinh_vien_vang', []));
     </script>
 
     <script>
         $(document).ready(function() {
-            console.log('jQuery:', $.fn.jquery);
-            console.log('Select2 exists:', typeof $.fn.select2);
-
             const $select = $('#sinhvien-select');
             const $container = $('#sinhvien-details-container');
             let currentSelected = [];
@@ -218,7 +191,6 @@
                 isFormChanged = false;
             });
 
-            // ✅ Khởi tạo select2
             $select.select2({
                 placeholder: "Tìm và chọn sinh viên",
                 width: '100%'
@@ -227,31 +199,85 @@
             function renderSinhVien(id, name) {
                 const lyDo = oldValues?.[id]?.ly_do || '';
                 const loai = oldValues?.[id]?.loai || '';
+                const chiTietId = oldValues?.[id]?.id;
+                const csrfToken = document.querySelector('meta[name="csrf-token"]').getAttribute('content');
+                const deleteUrl = `/admin/bienbanshcn/sinhvienvang/${chiTietId}`;
+
+                const deleteForm = chiTietId
+                    ? `
+                    <button type="button" class="btn btn-danger btn-sm btn-delete-sinhvien" 
+                        data-id="${id}" 
+                        data-url="${deleteUrl}">
+                        <i class="fas fa-trash-alt"></i>
+                    </button>`
+                    : '';
 
                 const html = `
                     <div class="sinhvien-item row mb-3" id="sinhvien-${id}">
+                        <hr class="w-100">
+
+                        <!-- Thông tin sinh viên -->
                         <div class="col-md-2">
                             <input type="hidden" name="sinh_vien_vang[${id}][id]" value="${id}">
                             <label>Thông tin sinh viên</label>
                             <input type="text" value="${name}" class="form-control mb-2" readonly>
                         </div>
 
+                        <!-- Lý do vắng -->
                         <div class="col-md-8">
                             <label>Lý do:</label>
                             <input type="text" name="sinh_vien_vang[${id}][ly_do]" value="${lyDo}" class="form-control mb-2" required>
                         </div>
 
+                        <!-- Loại và nút xoá -->
                         <div class="col-md-2">
-                            <label>Loại:</label>
-                            <select name="sinh_vien_vang[${id}][loai]" class="form-control" required>
-                                <option value="1" ${loai === 'co_phep' ? 'selected' : ''}>Có phép</option>
-                                <option value="0" ${loai === 'khong_phep' ? 'selected' : ''}>Không phép</option>
-                            </select>
+                            <div class="w-100 d-flex">
+                                <!-- Loại -->
+                                <div class="flex-grow-1 me-2">
+                                    <label>Loại:</label>
+                                    <select name="sinh_vien_vang[${id}][loai]" class="form-control" required>
+                                        <option value="1" ${loai == 1 ? 'selected' : ''}>Có phép</option>
+                                        <option value="0" ${loai == 0 ? 'selected' : ''}>Không phép</option>
+                                    </select>
+                                </div>
+
+                                <!-- Nút xóa -->
+                                <div class="d-flex align-items-end">
+                                   ${deleteForm}
+                                </div>
+                            </div>
                         </div>
                     </div>
+
                 `;
                 $container.append(html);
             }
+
+            $container.on('click', '.btn-delete-sinhvien', function () {
+            const button = $(this);
+            const id = button.data('id');
+            const url = button.data('url');
+            const csrfToken = $('meta[name="csrf-token"]').attr('content');
+
+            if (confirm('Dữ liệu này sau khi xoá sẽ không khôi phục được.Bạn có chắc chắn muốn xóa sinh viên vắng này khỏi biên bản?')) {
+                $.ajax({
+                    url: url,
+                    method: 'POST',
+                    data: {
+                        _token: csrfToken,
+                        _method: 'DELETE'
+                    },
+                    success: function () {
+                        $(`#sinhvien-${id}`).remove();
+                        $(`#sinhvien-select option[value="${id}"]`).prop('selected', false).trigger('change');
+                        delete oldValues[id];
+                    },
+                    error: function () {
+                        alert('Xoá thất bại. Sinh viên này chưa được lưu trong biên bản Sinh Hoạt Chủ Nhiệm');
+                    }
+                });
+            }
+        });
 
             const initial = $select.val() || [];
             initial.forEach(id => {
@@ -279,13 +305,12 @@
                 currentSelected = selected;
             });
         });
+
+
+        
+
     </script>
 
-
-
-
-
-    <!-- Dùng CKEditor 5 bản Classic từ CDN -->
     <script src="https://cdn.ckeditor.com/ckeditor5/38.1.1/classic/ckeditor.js"></script>
 
     <script>

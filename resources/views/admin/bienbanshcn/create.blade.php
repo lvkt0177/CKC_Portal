@@ -55,9 +55,18 @@
                                 </div>
 
                                 <div class="col-md-4">
-                                    <label class="form-label">Thư ký lớp</label>
-                                    <input type="text" class="form-control" name="thuky"
-                                        value="{{ $thuKy->hoSo->ho_ten ?? '' }}" readonly>
+                                    <label class="form-label">Thư ký đại diện</label>
+                                    
+                                    <select name="id_sv" id="thuky"
+                                        class="form-control @error('id_sv') is-invalid border-danger text-dark @enderror">
+                                        <option value="">-- Chọn thư ký đại diện --</option>
+                                        @foreach ($thuKy as $tk)
+                                            <option value="{{ $tk->id }}"
+                                                {{ old('id_sv') == $tk->id ? 'selected' : '' }}>
+                                                {{ $tk->hoSo->ho_ten}}
+                                            </option>
+                                        @endforeach
+                                    </select>
                                 </div>
 
                                 <div class="col-md-4">
@@ -69,7 +78,7 @@
                                         @foreach ($tuans as $tuan)
                                             <option value="{{ $tuan->id }}"
                                                 {{ old('id_tuan') == $tuan->id ? 'selected' : '' }}>
-                                                {{ $tuan->tuan }}
+                                                Tuần {{ $tuan->tuan }}
                                             </option>
                                         @endforeach
                                     </select>
@@ -108,7 +117,7 @@
 
                                 {{-- Sinh viên vắng mặt --}}
                                 <div class="col-md-12">
-                                    <label for="sinhvien-select" class="form-label">Chọn sinh viên vắng mặt</label>
+                                    <label for="sinhvien-select" class="form-label">Thông tin sinh viên vắng mặt (Tìm kiếm và chọn)</label>
 
                                     <select id="sinhvien-select" class="form-control" multiple>
                                         @foreach ($sinhViens as $sv)

@@ -9,7 +9,6 @@ class BienBanSHCN extends Model
 {
     //
     protected $table = 'bien_ban_shcn';
-
     
     protected $fillable = [
         'id_lop',

@@ -18,7 +18,7 @@
                 </div>
 
                 <div class="teams-section">
-                    <table class="team-table">
+                    <table class="team-table table-reponsive">
                         <thead>
                             <tr class="text-center">
                                 <th>No.1</th>
@@ -42,12 +42,24 @@
                                             <td>Tuần {{ $bb->tuan->tuan }}</td>
                                             <td>{{ $bb->created_at }}</td>
                                             <td>{{ $bb->trang_thai->getLabel() }}</td>
-                                            <td>
+                                            <td class="d-flex justify-content-center">
                                                 <a href="{{ route('admin.bienbanshcn.show', $bb) }}" target="_blank" class="btn btn-dark"><i class="fa-solid fa-eye"></i></a>
-                                                {{-- Sửa --}}
-                                                <a href="{{ route('admin.bienbanshcn.edit', $bb) }}" class="btn btn-warning" target="_blank"><i class="fa fa-pencil" aria-hidden="true"></i></a>
-                                                {{-- Duyệt --}}
-                                                <a href="" class="btn btn-success"><i class="fa-solid fa-share"></i></a>
+                                                @if($bb->trang_thai->value == 0)
+                                                    <a href="{{ route('admin.bienbanshcn.edit', $bb) }}" class="btn btn-warning mx-1" target="_blank"><i class="fa fa-pencil" aria-hidden="true"></i></a>
+                                                    {{-- Duyệt --}}
+                                                    <form action="{{ route('admin.bienbanshcn.confirm', $bb) }}" method="POST">
+                                                        @csrf
+                                                        <button type="submit" class="btn btn-success"><i class="fa fa-check" aria-hidden="true"></i></button>
+                                                    </form>
+
+                                                    {{-- Huy --}}
+                                                    <form action="{{ route('admin.bienbanshcn.destroy', $bb) }}" method="POST">
+                                                        @csrf
+                                                        @method('DELETE')
+                                                        <button type="submit" class="btn btn-danger ms-1"><i class="fa fa-trash" aria-hidden="true"></i></button>
+                                                    </form>
+
+                                                @endif
                                                 
                                             </td>
                                         </tr>

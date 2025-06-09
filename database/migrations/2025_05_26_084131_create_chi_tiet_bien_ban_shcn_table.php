@@ -12,12 +12,14 @@ return new class extends Migration
     public function up(): void
     {
         Schema::create('chi_tiet_bien_ban_shcn', function (Blueprint $table) {
+
+            $table->id();
             
             //id_bien_ban_shcn
             $table->foreignId('id_bien_ban_shcn')->constrained('bien_ban_shcn')->onDelete('cascade');
 
             //id_sinh_vien
-            $table->foreignId('id_sinh_vien')->constrained('sinhvien')->onDelete('cascade');
+            $table->foreignId('id_sinh_vien')->constrained('sinhvien')->onDelete('cascade')->nullable();
 
             //lý do - string
             $table->string('ly_do', 255)->nullable();
