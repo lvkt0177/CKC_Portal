@@ -48,7 +48,7 @@
                     <ul class="content-list">
                         <li>Thời gian bắt đầu sinh hoạt lúc: <span class="">{{ $thongTin->thoi_gian_bat_dau->format('H:i') }}, ngày {{ $thongTin->thoi_gian_bat_dau->format('d') }} tháng {{ $thongTin->thoi_gian_bat_dau->format('m') }} năm {{ $thongTin->thoi_gian_bat_dau->format('Y') }}</span></li>
                         <li>Giáo viên chủ nhiệm: <span class="text-uppercase">{{ $thongTin->gvcn->hoSo->ho_ten }}</span></li>
-                        <li>Thư ký: <span class="text-uppercase">{{ $thongTin->sv->hoSo->ho_ten }}</span></li>
+                        <li>Thư ký: <span class="text-uppercase">{{ $thongTin->thuky->hoSo->ho_ten }}</span></li>
                         <li>Sỉ số: <span>{{ $thongTin->so_luong_sinh_vien }}</span></li>
                         <li>Hiện diện: <span>{{ $thongTin->so_luong_sinh_vien - $thongTin->vang_mat }}</span></li>
                         <li>Vắng mặt: <span>{{ $thongTin->vang_mat }}</span></li>
@@ -111,7 +111,7 @@
                     <ul class="content-list">
                         <li>Buổi sinh hoạt kết thúc lúc: <span class="">{{ $thongTin->thoi_gian_ket_thuc->format('H:i') }}, ngày {{ $thongTin->thoi_gian_ket_thuc->format('d') }} tháng {{ $thongTin->thoi_gian_ket_thuc->format('m') }} năm {{ $thongTin->thoi_gian_ket_thuc->format('Y') }}</span></li>
                         <li>Giáo viên chủ nhiệm: <span class="text-uppercase">{{ $thongTin->gvcn->hoSo->ho_ten }}</span></li>
-                        <li>Thư ký: <span class="text-uppercase">{{ $thongTin->sv->hoSo->ho_ten }}</span></li>
+                        <li>Thư ký: <span class="text-uppercase">{{ $thongTin->thuky->hoSo->ho_ten }}</span></li>
                     </ul>
                 </div>
 

@@ -38,12 +38,14 @@
                                             <td>{{ $loop->index + 1 }}</td>
                                             <td>{{ $bb->tieu_de }}</td>
                                             <td>{{ $bb->gvcn->hoSo->ho_ten }}</td>
-                                            <td>{{ $bb->sv->hoSo->ho_ten }}</td>
+                                            <td>{{ $bb->thuky->hoSo->ho_ten }}</td>
                                             <td>Tuần {{ $bb->tuan->tuan }}</td>
                                             <td>{{ $bb->created_at }}</td>
                                             <td>{{ $bb->trang_thai->getLabel() }}</td>
                                             <td>
-                                                <a href="{{ route('admin.bienbanshcn.show', $bb) }}" target="_blank" class="btn btn-warning"><i class="fa-solid fa-eye"></i></a>
+                                                <a href="{{ route('admin.bienbanshcn.show', $bb) }}" target="_blank" class="btn btn-dark"><i class="fa-solid fa-eye"></i></a>
+                                                {{-- Sửa --}}
+                                                <a href="{{ route('admin.bienbanshcn.edit', $bb) }}" class="btn btn-warning" target="_blank"><i class="fa fa-pencil" aria-hidden="true"></i></a>
                                                 {{-- Duyệt --}}
                                                 <a href="" class="btn btn-success"><i class="fa-solid fa-share"></i></a>
                                                 

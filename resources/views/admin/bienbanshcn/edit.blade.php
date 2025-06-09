@@ -22,12 +22,12 @@
             <div class="col-lg-10 col-md-10">
                 <div class="card shadow-sm">
                     <div class="card-header d-flex justify-content-between align-items-center">
-                        <h3 class="card-title mb-0">Lập biên bản sinh hoạt chủ nhiệm - Lớp {{ $lop->ten_lop }}</h3>
+                        <h3 class="card-title mb-0">Chỉnh sửa biên bản sinh hoạt chủ nhiệm - Lớp
+                            {{ $thongTin->lop->ten_lop }}</h3>
                         <a href="javascript:void(0);" class="btn btn-danger btn-sm" onclick="window.close();">Huỷ</a>
                     </div>
                     <div class="card-body">
-                        <form action="{{ route('admin.bienbanshcn.store', $lop) }}" method="POST"
-                            enctype="multipart/form-data">
+                        <form action="" method="POST" enctype="multipart/form-data">
                             @csrf
                             <div class="row g-3">
                                 <div class="col-12">
@@ -44,20 +44,20 @@
                                 <div class="col-md-4">
                                     <label for="id_lop" class="form-label">Lớp</label>
                                     <input type="text" class="form-control" id="id_lop" name="id_lop"
-                                        value="{{ $lop->ten_lop }}" readonly>
+                                        value="{{ $thongTin->lop->ten_lop }}" readonly>
 
                                 </div>
 
                                 <div class="col-md-4">
                                     <label class="form-label">Giáo viên chủ nhiệm</label>
                                     <input type="text" class="form-control" name="gvcn"
-                                        value="{{ $lop->giangVien->hoSo->ho_ten }}" readonly>
+                                        value="{{ $thongTin->lop->giangVien->hoSo->ho_ten }}" readonly>
                                 </div>
 
                                 <div class="col-md-4">
                                     <label class="form-label">Thư ký lớp</label>
                                     <input type="text" class="form-control" name="thuky"
-                                        value="{{ $thuKy->hoSo->ho_ten ?? '' }}" readonly>
+                                        value="{{ $thongTin->thuky->hoSo->ho_ten ?? '' }}" readonly>
                                 </div>
 
                                 <div class="col-md-4">
@@ -66,10 +66,10 @@
                                     <select name="id_tuan" id="id_tuan"
                                         class="form-control @error('id_tuan') is-invalid border-danger text-dark @enderror">
                                         <option value="">-- Chọn tuần --</option>
-                                        @foreach ($tuans as $tuan)
-                                            <option value="{{ $tuan->id }}"
-                                                {{ old('id_tuan') == $tuan->id ? 'selected' : '' }}>
-                                                {{ $tuan->tuan }}
+                                        @foreach ($thongTin->tuan as $tuan)
+                                            <option value="{{ $thongTin->tuan->id }}"
+                                                {{ old('id_tuan') == $thongTin->tuan->id ? 'selected' : '' }}>
+                                                {{ $thongTin->tuan->tuan }}
                                             </option>
                                         @endforeach
                                     </select>
@@ -96,22 +96,23 @@
                                     <input type="number"
                                         class="form-control @error('so_luong_sinh_vien') is-invalid border-danger text-dark @enderror"
                                         id="so_luong_sinh_vien" name="so_luong_sinh_vien" min="0"
-                                        value="{{ $lop->sinhViens->count() }}" readonly>
+                                        value="{{ $thongTin->lop->sinhViens->count() }}" readonly>
                                 </div>
 
                                 <div class="col-md-6">
                                     <label for="vang_mat" class="form-label">Số lượng sinh viên vắng mặt</label>
                                     <input type="number"
                                         class="form-control @error('vang_mat') is-invalid border-danger text-dark @enderror"
-                                        id="vang_mat" name="vang_mat" min="0" value="{{ old('vang_mat') }}">
+                                        id="vang_mat" name="vang_mat" min="0"
+                                        value="{{ old('vang_mat', $thongTin->vang_mat) }}">
                                 </div>
 
                                 {{-- Sinh viên vắng mặt --}}
+
                                 <div class="col-md-12">
                                     <label for="sinhvien-select" class="form-label">Chọn sinh viên vắng mặt</label>
-
                                     <select id="sinhvien-select" class="form-control" multiple>
-                                        @foreach ($sinhViens as $sv)
+                                        @foreach ($thongTin->lop->sinhViens as $sv)
                                             <option value="{{ $sv->id }}"
                                                 data-name="{{ $sv->ma_sv }} - {{ $sv->hoSo->ho_ten }}">
                                                 {{ $sv->ma_sv }} - {{ $sv->hoSo->ho_ten }}
@@ -119,7 +120,45 @@
                                         @endforeach
                                     </select>
 
-                                    <div id="sinhvien-details-container" class="mt-3"></div>
+                                    <div id="sinhvien-details-container" class="mt-3">
+                                        @foreach ($thongTin->chiTietBienBanSHCN as $chiTietBienBanSHCN)
+                                            @php
+                                                $sv = $chiTietBienBanSHCN->sinhVien;
+                                                $id = $sv->id;
+                                                $name = $sv->ma_sv . ' - ' . ($sv->hoSo->ho_ten);
+                                                $lyDo = $chiTietBienBanSHCN->ly_do;
+                                                $loai = $chiTietBienBanSHCN->loai;
+                                            @endphp
+
+                                            <div class="sinhvien-item row mb-3" id="sinhvien-{{ $id }}">
+                                                <div class="col-md-2">
+                                                    <input type="hidden" name="sinh_vien_vang[{{ $id }}][id]"
+                                                        value="{{ $id }}">
+                                                    <label>Thông tin sinh viên</label>
+                                                    <input type="text" value="{{ $name }}"
+                                                        class="form-control mb-2" readonly>
+                                                </div>
+
+                                                <div class="col-md-8">
+                                                    <label>Lý do:</label>
+                                                    <input type="text"
+                                                        name="sinh_vien_vang[{{ $id }}][ly_do]"
+                                                        value="{{ $lyDo }}" class="form-control mb-2" required>
+                                                </div>
+
+                                                <div class="col-md-2">
+                                                    <label>Loại:</label>
+                                                    <select name="sinh_vien_vang[{{ $id }}][loai]"
+                                                        class="form-control" required>
+                                                        <option value="1" {{ $loai == 1 ? 'selected' : '' }}>Có phép
+                                                        </option>
+                                                        <option value="0" {{ $loai == 0 ? 'selected' : '' }}>Không
+                                                            phép</option>
+                                                    </select>
+                                                </div>
+                                            </div>
+                                        @endforeach
+                                    </div>
                                 </div>
 
                                 <div class="col-12">
@@ -162,7 +201,6 @@
             const $container = $('#sinhvien-details-container');
             let currentSelected = [];
 
-            // ✅ Cảnh báo nếu rời trang khi form thay đổi
             let isFormChanged = false;
 
             $('form').on('change input', function() {
@@ -186,14 +224,12 @@
                 width: '100%'
             });
 
-            // ✅ Hàm render sinh viên
             function renderSinhVien(id, name) {
                 const lyDo = oldValues?.[id]?.ly_do || '';
                 const loai = oldValues?.[id]?.loai || '';
 
                 const html = `
-                <div class="sinhvien-item row mb-3" id="sinhvien-${id}">
-                    <hr>
+                    <div class="sinhvien-item row mb-3" id="sinhvien-${id}">
                         <div class="col-md-2">
                             <input type="hidden" name="sinh_vien_vang[${id}][id]" value="${id}">
                             <label>Thông tin sinh viên</label>
@@ -213,7 +249,7 @@
                             </select>
                         </div>
                     </div>
-            `;
+                `;
                 $container.append(html);
             }
 

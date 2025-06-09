@@ -51,7 +51,7 @@ class BienBanSHCN extends Model
         return $this->belongsTo(User::class, 'id_gvcn', 'id');
     }
 
-    public function sv()
+    public function thuky()
     {
         return $this->belongsTo(SinhVien::class, 'id_sv', 'id');
     }

@@ -22,7 +22,7 @@ class BienBanController extends Controller
      */
     public function index(Lop $lop)
     {   
-        $bienBanSHCN = BienBanSHCN::with('lop','sv','tuan','gvcn','sv.hoSo')
+        $bienBanSHCN = BienBanSHCN::with('lop','thuky.hoSo','tuan','gvcn')
         ->where('id_lop', $lop->id)
         ->orderBy('id', 'asc')
         ->get();
@@ -79,8 +79,6 @@ class BienBanController extends Controller
 
             return redirect()->route('admin.bienbanshcn.index', $bienBan->id_lop)->with('success', 'Biến bản tạo thành công.');
         }
-        
-
         return redirect()->back()->with('error', 'Biến bản không tạo.');
     }
 
@@ -89,17 +87,21 @@ class BienBanController extends Controller
      */
     public function show(BienBanSHCN $bienBanSHCN)
     {
-        $thongTin = BienBanSHCN::with('lop','tuan','sv.hoSo','gvcn.hoSo','chiTietBienBanSHCN.sinhVien.hoSo')->find($bienBanSHCN->id);
+        $bienBanSHCN->load('lop', 'tuan', 'thuky.hoSo', 'gvcn.hoSo', 'chiTietBienBanSHCN.sinhVien.hoSo');
 
-        return view('admin.bienbanshcn.show', compact('thongTin'));
+        return view('admin.bienbanshcn.show', ['thongTin' => $bienBanSHCN]);
     }
 
     /**
      * Show the form for editing the specified resource.
      */
-    public function edit(string $id)
+    public function edit(BienBanSHCN $bienbanshcn)
     {
-        //
+        $bienbanshcn->load('lop.sinhViens.hoSo','thuky.hoSo', 'tuan', 'gvcn.hoSo', 'chiTietBienBanSHCN.sinhVien.hoSo');
+
+        // dd($bienbanshcn);
+        
+        return view('admin.bienbanshcn.edit', ['thongTin' => $bienbanshcn]);
     }
 
     /**
