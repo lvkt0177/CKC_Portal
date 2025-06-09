@@ -14,7 +14,7 @@ use Illuminate\Support\Facades\Auth;
 use Illuminate\Support\Facades\Log;
 use App\Http\Requests\GiangVien\NhapDiemRequest;
 
-class NhapDiemController extends Controller
+class DiemMonHocController extends Controller
 {
     public function index()
     {
@@ -32,7 +32,7 @@ class NhapDiemController extends Controller
 
         $danh_sach_HP = DanhSachHocPhan::with(['lopHocPhan', 'sinhVien', 'sinhVien.hoSo'])
             ->get();
-        return view('admin.enterpoint.index', compact('danh_sach_HP', 'lop_hoc_phan'));
+        return view('admin.diemmonhoc.index', compact('danh_sach_HP', 'lop_hoc_phan'));
 
     }
     public function list(int $id)
@@ -52,7 +52,7 @@ class NhapDiemController extends Controller
 
 
         $lop_HP = LopHocPhan::find($id);
-        return view('admin.enterpoint.list', compact('sinhviens', 'lop_HP'));
+        return view('admin.diemmonhoc.list', compact('sinhviens', 'lop_HP'));
     }
     public function capNhat(NhapDiemRequest $request)
     {

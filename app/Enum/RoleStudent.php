@@ -5,7 +5,7 @@ namespace App\Enum;
 use App\Traits\EnumValues;
 use App\Traits\EnumOptions;
 
-enum RoleStudent:int
+enum RoleStudent: int
 {
     use EnumValues, EnumOptions;
 
@@ -15,8 +15,8 @@ enum RoleStudent:int
     public function getLabel(): string
     {
         return match ($this) {
-            self::MEMBER => 'Thành viên', 
-            self::SECRETARY => 'Thư ký', 
+            self::MEMBER => 'Thành viên',
+            self::SECRETARY => 'Thư ký',
         };
     }
 

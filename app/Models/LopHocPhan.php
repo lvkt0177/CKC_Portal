@@ -3,7 +3,7 @@
 namespace App\Models;
 
 use Illuminate\Database\Eloquent\Model;
-
+use App\Enum\LoaiMonHoc;
 class LopHocPhan extends Model
 {
     protected $table = "lop_hoc_phan";
@@ -16,6 +16,9 @@ class LopHocPhan extends Model
         'so_luong_dang_ky',
         'loai_mon',
         'trang_thai',
+    ];
+    protected $casts = [
+        'loai_mon' => LoaiMonHoc::class
     ];
     public function giangVien()
     {
@@ -34,5 +37,10 @@ class LopHocPhan extends Model
     public function danhSachHocPhan()
     {
         return $this->hasMany(DanhSachHocPhan::class, 'id_lop_hoc_phan', 'id');
+    }
+    //phieu_len_lop
+    public function phieuLenLop()
+    {
+        return $this->hasMany(PhieuLenLop::class, 'id_lop_hoc_phan', 'id');
     }
 }

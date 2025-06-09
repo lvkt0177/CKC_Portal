@@ -28,11 +28,13 @@ class NhapDiemRequest extends FormRequest
             'diem_thi' => 'min:0|max:10',
             'id_sinh_vien' => 'numeric',
             'id_lop_hoc_phan' => 'numeric',
+            'xep_loai'=>'in:A,B,C,D'
         ];
     }
     public function messages(): array
     {
         return [
+            'xep_loai.in' => 'Xep loai khong hop le',
             'diem_chuyen_can.min' => 'Phải lớn hơn 0',
             'diem_qua_trinh.min' => 'Phải lớn hơn 0',
             'diem_thi.min' => 'Phải lớn hơn 0',
