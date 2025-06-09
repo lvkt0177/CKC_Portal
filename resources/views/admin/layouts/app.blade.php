@@ -40,13 +40,13 @@
                         href="{{ route('admin.dashboard') }}">Portal</a>
 
                     <div class="dropdown">
-                        <a class="nav-link dropdown-toggle {{ isActiveRoute('admin/lop')}} {{ isActiveRoute('admin/bienbanshcn') }} {{ isActiveRoute('admin/lop/sinhvien/?id=') }} }}"
+                        <a class="nav-link dropdown-toggle {{ isActiveRoute('admin/lop') }} {{ isActiveRoute('admin/bienbanshcn') }} {{ isActiveRoute('admin/lop/sinhvien/?id=') }} }}"
                             href="#" data-bs-toggle="dropdown" aria-expanded="false">
                             Công tác chủ nhiệm
                         </a>
                         <ul class="dropdown-menu">
-                            <li><a class="dropdown-item"
-                                    href="{{ route('admin.lop.index') }}"><i class="fas fa-cog me-2"></i>Quản lý lớp</a>
+                            <li><a class="dropdown-item" href="{{ route('admin.lop.index') }}"><i
+                                        class="fas fa-cog me-2"></i>Quản lý lớp</a>
                             </li>
                         </ul>
                     </div>
@@ -93,12 +93,13 @@
                     </div>
 
                     <div class="dropdown">
-                        <a class="nav-link dropdown-toggle {{ isActiveRoute('admin/testimonial') }}" href="#" data-bs-toggle="dropdown"
-                            aria-expanded="false">
+                        <a class="nav-link dropdown-toggle {{ isActiveRoute('admin/testimonial') }}" href="#"
+                            data-bs-toggle="dropdown" aria-expanded="false">
                             Công tác Chính trị HS - SV
                         </a>
                         <ul class="dropdown-menu">
-                            <li><a class="dropdown-item" href="{{ route('admin.testimonial.index') }}"><i class="fas fa-users me-2"></i>Quản lý sinh
+                            <li><a class="dropdown-item" href="{{ route('admin.testimonial.index') }}"><i
+                                        class="fas fa-users me-2"></i>Quản lý sinh
                                     viên đăng ký giấy</a></li>
                         </ul>
                     </div>
@@ -123,14 +124,16 @@
                     <div class="dropdown">
                         <a class="nav-link dropdown-toggle" href="#" data-bs-toggle="dropdown"
                             aria-expanded="false">
-                            <img src="https://upload.wikimedia.org/wikipedia/vi/3/3c/Captainamerica.jpeg" width="50"
-                                height="50" alt="">
+                            <img src="https://upload.wikimedia.org/wikipedia/vi/3/3c/Captainamerica.jpeg"
+                                width="50" height="50" alt="">
                         </a>
                         <ul class="dropdown-menu">
-                            <li><a class="dropdown-item" href="{{ route('admin.profile.index') }}"><i class="fas fa-book me-2"></i>Thông tin cá
+                            <li><a class="dropdown-item" href="{{ route('admin.profile.index') }}"><i
+                                        class="fas fa-book me-2"></i>Thông tin cá
                                     nhân</a>
                             </li>
-                            <li><a class="dropdown-item" href="{{ route('admin.logout') }}"><i class="fas fa-sign-out-alt me-2"></i>Đăng
+                            <li><a class="dropdown-item" href="{{ route('admin.logout') }}"><i
+                                        class="fas fa-sign-out-alt me-2"></i>Đăng
                                     xuất</a>
                             </li>
                         </ul>
@@ -171,7 +174,7 @@
 
     </div>
 
-    
+
 
     <!-- Main Content -->
     <main class="main-content teams-section">
@@ -181,15 +184,57 @@
     <footer class="footer">
         <div class="container-fluid d-flex justify-content-end">
             <div class="copyright ml-auto">
-                2025, made with <i class="fa fa-heart text-danger" aria-hidden="true"></i> 
-            </div>				
+                2025, made with <i class="fa fa-heart text-danger" aria-hidden="true"></i>
+            </div>
         </div>
     </footer>
+
+    <!-- Dialog xác nhận -->
+    <div id="custom-confirm">
+        <div class="confirm-box">
+            <h2>Xác nhận</h2>
+            <p>Bạn có chắc chắn muốn thực hiện thao tác này?</p>
+            <div class="confirm-buttons">
+                <button id="confirm-cancel">Hủy</button>
+                <button id="confirm-ok">OK</button>
+            </div>
+        </div>
+    </div>
+
+    <script>
+        let currentForm = null;
+
+        document.addEventListener('DOMContentLoaded', function() {
+            document.querySelectorAll('form[data-confirm]').forEach(form => {
+                form.addEventListener('submit', function(e) {
+                    e.preventDefault(); 
+                    currentForm = form;
+                    showConfirm(); 
+                });
+            });
+
+            document.getElementById('confirm-ok').addEventListener('click', function() {
+                document.getElementById('custom-confirm').style.display = 'none';
+                if (currentForm) currentForm.submit();
+            });
+
+            document.getElementById('confirm-cancel').addEventListener('click', function() {
+                document.getElementById('custom-confirm').style.display = 'none';
+                currentForm = null;
+            });
+        });
+
+        function showConfirm() {
+            document.getElementById('custom-confirm').style.display = 'flex';
+        }
+    </script>
+
+
 
     <script src="https://cdnjs.cloudflare.com/ajax/libs/jquery/3.6.0/jquery.min.js"></script>
     <script src="https://cdnjs.cloudflare.com/ajax/libs/bootstrap/5.3.0/js/bootstrap.bundle.min.js"></script>
     <script src="{{ asset('assets/admin/js/plugin/bootstrap-notify/bootstrap-notify.min.js') }}"></script>
-    
+
     @yield('js')
 
     <script>

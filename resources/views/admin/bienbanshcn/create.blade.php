@@ -138,7 +138,7 @@
                             </div>
 
                             <div class="mt-4 d-flex">
-                                <button type="submit" class="btn btn-success px-4">Lưu biên bản</button>
+                                <button type="submit" class="btn btn-add px-4">Lưu biên bản</button>
                             </div>
                         </form>
                     </div>

@@ -15,8 +15,8 @@
 
                     <div class="card-body">
 
-                        <div class="table-responsive">
-                            <table class="table table-bordered align-middle mb-0">
+                        <div class="">
+                            <table class="team-table align-middle" id="room-table">
                                 <thead class="table-light">
                                     <tr>
                                         <th>No.1</th>
@@ -56,4 +56,31 @@
         </div>
     </div>
 
+@endsection
+
+@section('js')
+    <script src="https://cdn.datatables.net/1.13.6/js/jquery.dataTables.min.js"></script>
+    <script>
+        $(document).ready(function() {
+            $.fn.dataTable.ext.errMode = 'none';
+            $('#room-table').DataTable({
+                responsive: true,
+                ordering: false,
+                language: {
+                    search: "Tìm kiếm thông tin phòng:",
+                    lengthMenu: "Hiển thị _MENU_ dòng",
+                    info: "Hiển thị _START_ đến _END_ trong _TOTAL_ dòng",
+                    paginate: {
+                        previous: '<i class="fa-solid fa-arrow-left"></i>',
+                        next: '<i class="fa-solid fa-arrow-right"></i>'
+                    }
+                },
+                dom: '<"top"lf>rt<"bottom"ip><"clear">'
+            });
+        });
+
+        $('#room-table').on('error.dt', function(e, settings, techNote, message) {
+            alert('Đã có lỗi khi tải danh sách sinh viên của lớp này. '); 
+        });
+    </script>
 @endsection

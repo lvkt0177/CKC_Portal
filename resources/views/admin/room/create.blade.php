@@ -9,12 +9,12 @@
                 <div class="card shadow-sm">
                     <div class="card-header d-flex justify-content-between align-items-center">
                         <h3 class="card-title mb-0">Tạo phòng học mới</h3>
-                        <a href="{{ route('admin.phong.index') }}" class="btn btn-primary">Quay lại</a>
+                        <a href="{{ route('admin.phong.index') }}" class="btn btn-back">Quay lại</a>
                     </div>
                     <div class="card-body">
                         {{-- Show error --}}
                         
-                        <form action="{{ route('admin.phong.store') }}" method="POST">
+                        <form action="{{ route('admin.phong.store') }}" method="POST" data-confirm>
                             @csrf
                             <div class="mb-3">
                                 <label for="ten" class="form-label">Tên phòng học</label>
@@ -46,7 +46,7 @@
                                     <div class="text-danger">Thông báo lỗi: {{ $message }}</div>
                                 @enderror
                             </div>
-                            <button type="submit" class="btn btn-primary">Tạo phòng học</button>
+                            <button type="submit" class="btn btn-add">Tạo phòng học</button>
                         </form>
 
                     </div>
