@@ -19,36 +19,73 @@
                                     <div class="col-md-6">
                                         <h4 class="mb-0 text-primary">
                                             <i class="fas fa-calendar-alt me-2"></i>
-                                            Phiếu lên lớp theo tuần
+                                            Sổ lên lớp tuần {{ $tuan->tuan }} ({{ $tuan->ngay_bat_dau->format('d/m/Y') }}
+                                            -
+                                            {{ $tuan->ngay_ket_thuc->format('d/m/Y') }})</h3>
+
                                         </h4>
                                     </div>
                                     <div class="col-md-6">
                                         <div class="d-flex justify-content-end align-items-center">
                                             <div class="btn-group me-3">
+                                                <form method="GET" action="{{ route('admin.phieulenlop.index') }}"
+                                                    id="week-form">
+                                                    <input type="hidden" name="id_tuan" value="{{ $tuan->id }}">
+                                                    <input type="hidden" name="action" id="week-action">
 
-                                                <button class="btn btn-outline-primary btn-sm">
-                                                    <i class="fas fa-arrow-left"></i> tuần trước
-                                                </button>
-                                                <button class="btn btn-outline-primary btn-sm active">
-                                                    <i class="fas fa-calendar"></i> Hiện tại
-                                                </button>
+                                                    <button type="submit" class="btn btn-outline-primary btn-sm"
+                                                        onclick="event.preventDefault(); document.getElementById('week-action').value='prev'; document.getElementById('week-form').submit();">
+                                                        <i class="fas fa-arrow-left"></i> Tuần trước
+                                                    </button>
+
+                                                    <button type="submit" class="btn btn-outline-primary btn-sm"
+                                                        onclick="event.preventDefault(); document.getElementById('week-action').value='current'; document.getElementById('week-form').submit();">
+                                                        <i class="fas fa-calendar"></i> Hiện tại
+                                                    </button>
+                                                </form>
                                             </div>
                                             <div class="nav-buttons">
-                                                <input type="date" class="form-control w-auto" value="2025-06-07">
-                                                <div class="btn-group ms-2">
+                                                <form method="GET" action="{{ route('admin.phieulenlop.index') }}">
+                                                    {{-- Chọn Năm --}}
+                                                    <select class="form-control" name="id_nam"
+                                                        onchange="this.form.submit()">
+                                                        @foreach ($dsNam as $n)
+                                                            <option value="{{ $n->id }}"
+                                                                {{ request('id_nam', $nam->id) == $n->id ? 'selected' : '' }}>
+                                                                Năm {{ $n->nam_bat_dau }}
+                                                            </option>
+                                                        @endforeach
+                                                    </select>
 
-                                                    <button class="btn btn-info btn-sm">
-                                                        <i class="fas fa-print"></i> In lịch
+                                                    {{-- Chọn Tuần (theo năm đã chọn) --}}
+                                                    <select class="form-control" name="id_tuan"
+                                                        onchange="this.form.submit()">
+
+                                                        @foreach ($dsTuan as $t)
+                                                            <option value="{{ $t->id }}"
+                                                                {{ request('id_tuan', $tuan->id) == $t->id ? 'selected' : '' }}>
+                                                                Tuần {{ $t->tuan }}
+                                                                ({{ $t->ngay_bat_dau->format('d/m/Y') }} -
+                                                                {{ $t->ngay_ket_thuc->format('d/m/Y') }})
+                                                            </option>
+                                                        @endforeach
+                                                    </select>
+                                                </form>
+
+                                                <div class="btn-group ms-2">
+                                                    <button class="btn btn-info btn-sm d-flex align-items-center ">
+                                                        <i class="fas fa-print"></i>
                                                     </button>
-                                                    <button class="btn btn-success btn-sm">
-                                                        <i class="fas fa-download"></i> Tải về
+                                                    <button class="btn btn-success btn-sm d-flex align-items-center">
+                                                        <i class="fas fa-download"></i>
                                                     </button>
-                                                    <button class="btn btn-secondary btn-sm">
-                                                        <i class="fas fa-question"></i> Trợ giúp
+                                                    <button class="btn btn-secondary btn-sm d-flex align-items-center">
+                                                        <i class="fas fa-question"></i>
                                                     </button>
-                                                    <button class="btn btn-dark btn-sm">
+                                                    <a href="{{ route('admin.phieulenlop.create') }}"
+                                                        class="btn btn-dark btn-sm d-flex align-items-center">
                                                         <i class="fas fa-edit"></i>
-                                                    </button>
+                                                    </a>
                                                 </div>
                                             </div>
                                         </div>
@@ -106,7 +143,8 @@
                                                                             Phòng: {{ $pll->phong->ten }}<br>
                                                                             GV:
                                                                             {{ $pll->lopHocPhan->giangVien->hoSo->ho_ten }}<br>
-                                                                            Ngày: {{ $pll->ngay }}
+                                                                            Ngày:
+                                                                            {{ \Carbon\Carbon::parse($pll->ngay)->format('d/m/Y') }}
                                                                         </div>
                                                                     </div>
                                                                     @php
@@ -163,7 +201,8 @@
                                                                             Phòng: {{ $pll->phong->ten }}<br>
                                                                             GV:
                                                                             {{ $pll->lopHocPhan->giangVien->hoSo->ho_ten }}<br>
-                                                                            Ngày: {{ $pll->ngay }}
+                                                                            Ngày:
+                                                                            {{ \Carbon\Carbon::parse($pll->ngay)->format('d/m/Y') }}
                                                                         </div>
                                                                     </div>
                                                                     @php
@@ -220,7 +259,8 @@
                                                                             Phòng: {{ $pll->phong->ten }}<br>
                                                                             GV:
                                                                             {{ $pll->lopHocPhan->giangVien->hoSo->ho_ten }}<br>
-                                                                            Ngày: {{ $pll->ngay }}
+                                                                            Ngày:
+                                                                            {{ \Carbon\Carbon::parse($pll->ngay)->format('d/m/Y') }}
                                                                         </div>
                                                                     </div>
                                                                     @php
@@ -332,5 +372,12 @@
         function printSchedule() {
             window.print();
         }
+
+        $(document).ready(function() {
+            $('#select-tuan').select2({
+                placeholder: "Chọn tuần...",
+                allowClear: true
+            });
+        });
     </script>
 @endsection

@@ -12,4 +12,9 @@ class Nam extends Model
     protected $fillable = [
         'nam_bat_dau',
     ];
+    //tuan
+    public function tuan()
+    {
+        return $this->hasMany(Tuan::class, 'id_nam', 'id');
+    }
 }
