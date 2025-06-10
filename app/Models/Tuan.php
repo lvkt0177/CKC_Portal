@@ -15,9 +15,18 @@ class Tuan extends Model
         'ngay_bat_dau',
         'ngay_ket_thuc',
     ];
+    protected $casts = [
+    'ngay_bat_dau' => 'date',
+    'ngay_ket_thuc' => 'date',
+];
     //phieu len lop
     public function phieuLenLop()
     {
         return $this->hasMany(PhieuLenLop::class, 'id_tuan', 'id');
+    }
+    //nam
+    public function nam()
+    {
+        return $this->belongsTo(Nam::class, 'id_nam', 'id');
     }
 }
