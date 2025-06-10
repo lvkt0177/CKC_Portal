@@ -193,7 +193,7 @@
     <div id="custom-confirm">
         <div class="confirm-box">
             <h2>Xác nhận</h2>
-            <p>Bạn có chắc chắn muốn thực hiện thao tác này?</p>
+            <p>Dữ liệu hiện tại sẽ bị thay đổi. Bạn có chắc chắn muốn thực hiện thao tác này?</p>
             <div class="confirm-buttons">
                 <button id="confirm-cancel">Hủy</button>
                 <button id="confirm-ok">OK</button>
@@ -203,13 +203,13 @@
 
     <script>
         let currentForm = null;
-
+        let confirmCallback = null;
         document.addEventListener('DOMContentLoaded', function() {
             document.querySelectorAll('form[data-confirm]').forEach(form => {
                 form.addEventListener('submit', function(e) {
                     e.preventDefault(); 
                     currentForm = form;
-                    showConfirm(); 
+                    showConfirm(() => form.submit());
                 });
             });
 
@@ -224,8 +224,9 @@
             });
         });
 
-        function showConfirm() {
+        function showConfirm(callback = null) {
             document.getElementById('custom-confirm').style.display = 'flex';
+            confirmCallback = callback;
         }
     </script>
 

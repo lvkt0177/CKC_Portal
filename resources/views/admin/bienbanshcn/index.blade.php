@@ -50,7 +50,7 @@
                                                     class="btn btn-warning mx-1" target="_blank"><i class="fa fa-pencil"
                                                         aria-hidden="true"></i></a>
                                                 {{-- Duyệt --}}
-                                                <form action="{{ route('admin.bienbanshcn.confirm', $bb) }}"
+                                                <form action="{{ route('admin.bienbanshcn.confirm', $bb) }}" data-confirm
                                                     method="POST">
                                                     @csrf
                                                     <button type="submit" class="btn btn-success"><i class="fa fa-check"
@@ -58,7 +58,7 @@
                                                 </form>
 
                                                 {{-- Huy --}}
-                                                <form action="{{ route('admin.bienbanshcn.destroy', $bb) }}"
+                                                <form action="{{ route('admin.bienbanshcn.destroy', $bb) }}" data-confirm
                                                     method="POST">
                                                     @csrf
                                                     @method('DELETE')

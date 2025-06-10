@@ -26,8 +26,7 @@
                             {{ $thongTin->lop->ten_lop }}</h3>
                     </div>
                     <div class="card-body">
-                        <form action="{{ route('admin.bienbanshcn.update', $thongTin) }}" method="POST"
-                            onsubmit="return confirm('Bạn có chắc muốn sửa đổi biên bản này?')"
+                        <form action="{{ route('admin.bienbanshcn.update', $thongTin) }}" method="POST" data-confirm
                             enctype="multipart/form-data">
                             @csrf
                             @method('PUT')
@@ -259,7 +258,7 @@
             const url = button.data('url');
             const csrfToken = $('meta[name="csrf-token"]').attr('content');
 
-            if (confirm('Dữ liệu này sau khi xoá sẽ không khôi phục được.Bạn có chắc chắn muốn xóa sinh viên vắng này khỏi biên bản?')) {
+            showConfirm(() => {
                 $.ajax({
                     url: url,
                     method: 'POST',
@@ -276,7 +275,7 @@
                         alert('Xoá thất bại. Sinh viên này chưa được lưu trong biên bản Sinh Hoạt Chủ Nhiệm');
                     }
                 });
-            }
+            });
         });
 
             const initial = $select.val() || [];

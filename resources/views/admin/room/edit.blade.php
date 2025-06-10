@@ -36,11 +36,11 @@
                                     <div class="form-group">
                                         <label for="loai_phong">Loại phòng</label>
                                         <select class="form-control" id="loai_phong" name="loai_phong" required>
-                                            <option value="0" {{ $phong->loai_phong == 0 ? 'selected' : '' }}>Phòng lý
+                                            <option value="0" {{ $phong->loai_phong->value == 0 ? 'selected' : '' }}>Phòng lý
                                                 thuyết</option>
-                                            <option value="1" {{ $phong->loai_phong == 1 ? 'selected' : '' }}>Phòng thực
+                                            <option value="1" {{ $phong->loai_phong->value == 1 ? 'selected' : '' }}>Phòng thực
                                                 hành</option>
-                                            <option value="2" {{ $phong->loai_phong == 2 ? 'selected' : '' }}>Phòng học
+                                            <option value="2" {{ $phong->loai_phong->value == 2 ? 'selected' : '' }}>Phòng học
                                                 online</option>
                                         </select>
                                     </div>

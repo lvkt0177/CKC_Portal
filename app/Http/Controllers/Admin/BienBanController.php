@@ -93,11 +93,11 @@ class BienBanController extends Controller
         $result = $bienBanService->updateBienBanVaChiTiet($request->validated(), $bienbanshcn);
 
         if ($result) {
-            return redirect()->route('admin.bienbanshcn.show', $bienbanshcn->id)
+            return redirect()->route('admin.bienbanshcn.index', $bienbanshcn->lop->id)
                 ->with('success', 'Cập nhật biên bản thành công');
         }
 
-        return redirect()->route('admin.bienbanshcn.show', $bienbanshcn->id)
+        return redirect()->route('admin.bienbanshcn.index', $bienbanshcn->lop->id)
             ->with('error', 'Cập nhật biên bản thất bại');
     }
 
@@ -115,7 +115,7 @@ class BienBanController extends Controller
         $sinhVien = ChiTietBienBanSHCN::find($id);
         $sinhVien->delete();
 
-        return redirect()->back()->with('success', 'Xóa sinh vien vang thanh cong');
+        return redirect()->back()->with('success', 'Xóa sinh viên vắng thành công');
     }
 
     public function confirmBienBan(BienBanSHCN $bienBanSHCN)
@@ -123,6 +123,6 @@ class BienBanController extends Controller
         $bienBanSHCN->trang_thai = BienBanStatus::ACTIVE;
         $bienBanSHCN->save();
 
-        return redirect()->back()->with('success', 'Xác nhận bình luận thành công');
+        return redirect()->back()->with('success', 'Gửi biên bản Sinh hoạt chủ nhiệm thành công!');
     }
 }
