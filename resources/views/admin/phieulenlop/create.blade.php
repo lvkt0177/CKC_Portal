@@ -17,11 +17,11 @@
                             <i class="fas fa-calendar-alt me-2"></i>
                             Sổ lên lớp
                         </h4>
-                        <a href="{{ route('admin.phieulenlop.index') }}" class="btn btn-primary">Quay lại</a>
+                        <a href="{{ route('admin.phieulenlop.index') }}" class="btn btn-back">Quay lại</a>
                     </div>
 
                     <div class="card-body">
-                        <form id="phieu-len-lop-form" method="POST" action="{{ route('admin.phieulenlop.store') }}">
+                        <form id="phieu-len-lop-form" method="POST" action="{{ route('admin.phieulenlop.store') }}" data-confirm>
                             @csrf <!-- Đừng quên thêm CSRF token -->
 
                             <!-- Học phần -->
@@ -93,13 +93,13 @@
                                 {{-- Sỉ số  --}}
                                 <div class="col-md-4 mb-3">
                                     <label for="si_so" class="form-label">Sỉ số</label>
-                                    <input type="number" id="si_so" name="si_so" class="form-control" readonly>
+                                    <input type="number" id="si_so" value="{{ old('si_so') }}" name="si_so" class="form-control" readonly>
 
                                 </div>
                                 {{-- Hiện diện --}}
                                 <div class="col-md-4 mb-3">
                                     <label for="hien_dien" class="form-label">Hiện diện</label>
-                                    <input type="number" id="hien_dien" name="hien_dien" class="form-control">
+                                    <input type="number" id="hien_dien" value="{{ old('hien_dien') }}" name="hien_dien" class="form-control">
                                     @error('hien_dien')
                                         <span class="text-danger">{{ $message }}</span>
                                     @enderror
@@ -115,7 +115,7 @@
                             </div>
 
                             <div class="text-end">
-                                <button class="btn btn-success">Lưu phiếu</button>
+                                <button class="btn btn-edit">Lưu phiếu</button>
                             </div>
                         </form>
                     </div>

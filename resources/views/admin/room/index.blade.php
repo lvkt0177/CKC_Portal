@@ -75,7 +75,7 @@
 
         $('#room-table').on('error.dt', function(e, settings, techNote, message) {
             console.error('DataTables Lỗi:', message);
-            alert('Đã có lỗi khi tải bảng: ' + message); // hoặc bạn có thể hiển thị theo giao diện riêng
+            alert('Đã có lỗi khi tải bảng: ' + message); 
         });
     </script>
 @endsection

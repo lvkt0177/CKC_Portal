@@ -13,7 +13,7 @@
                         </div>
 
                         <div class="teams-section">
-                            <table class="team-table">
+                            <table class="team-table align-middle" id="room-table">
                                 <thead>
                                     <tr>
                                         <th>No.1</th>
@@ -39,7 +39,7 @@
                                             <td>{{ $dkg->giangVien?->hoSo?->ho_ten ?? 'N/A' }}</td>
                                             <td>{{ $dkg->trang_thai == 0 ? 'Chưa duyệt' : 'Đã duyệt' }}</td>
                                             <td>
-                                                <form action="{{ route('admin.testimonial.update', $dkg->id) }}" method="POST" onsubmit="return confirmSubmit();">
+                                                <form action="{{ route('admin.testimonial.update', $dkg->id) }}" method="POST" data-confirm>
                                                     @csrf
                                                     {!! $dkg->trang_thai == 0 ? '<button class="btn btn-warning">Duyệt</button>' : '' !!}
                                                 </form>
@@ -55,9 +55,31 @@
                 </div>
             </div>
         </div>
+@endsection
+
+@section('js')
+    <script src="https://cdn.datatables.net/1.13.6/js/jquery.dataTables.min.js"></script>
     <script>
-            function confirmSubmit() {
-                return confirm('Bạn có chắc chắn muốn duyệt không?');
-            }
+        $(document).ready(function() {
+            $('#room-table').DataTable({
+                responsive: true,
+                ordering: false,
+                language: {
+                    search: "Tìm kiếm sinh viên:",
+                    lengthMenu: "Hiển thị _MENU_ dòng",
+                    info: "Hiển thị _START_ đến _END_ trong _TOTAL_ dòng",
+                    paginate: {
+                        previous: '<i class="fa-solid fa-arrow-left"></i>',
+                        next: '<i class="fa-solid fa-arrow-right"></i>'
+                    }
+                },
+                dom: '<"top"lf>rt<"bottom"ip><"clear">'
+            });
+        });
+
+        $('#room-table').on('error.dt', function(e, settings, techNote, message) {
+            console.error('DataTables Lỗi:', message);
+            alert('Đã có lỗi khi tải bảng: ' + message); 
+        });
     </script>
 @endsection

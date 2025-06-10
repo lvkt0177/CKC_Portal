@@ -10,7 +10,7 @@
                 <div class="card shadow-sm">
                     <div class="card-header d-flex justify-content-between align-items-center">
                         <h3 class="card-title mb-0"> Danh sách Sinh Viên Lớp {{ $lop_HP->ten_hoc_phan ?? '' }} </h3>
-                        <a class="btn btn-primary" href="{{ route('admin.diemmonhoc.index') }}">Quay lại</a>
+                        <a class="btn btn-back" href="{{ route('admin.diemmonhoc.index') }}">Quay lại</a>
 
                     </div>
 
@@ -52,8 +52,8 @@
                                             </tr>
                                             <!-- Modal sửa điểm -->
                                             <tr id="edit-row-{{ $dshp->id_sinh_vien }}" style="display: none;">
-                                                <form action="{{ route('admin.diemmonhoc.cap-nhat-diem') }}" method="POST"
-                                                    onsubmit="return confirmSubmit();">
+                                                <form action="{{ route('admin.diemmonhoc.cap-nhat-diem') }}" method="POST" data-confirm
+                                                   >
                                                     @csrf
                                                     <input type="hidden" name="id_sinh_vien"
                                                         value="{{ $dshp->id_sinh_vien }}">
@@ -127,10 +127,6 @@
         function hideEditRow(id) {
             document.getElementById('edit-row-' + id).style.display = 'none';
             document.getElementById('view-row-' + id).style.display = '';
-        }
-
-        function confirmSubmit() {
-            return confirm('Bạn có chắc chắn muốn nhập điểm không?');
         }
     </script>
 @endsection
