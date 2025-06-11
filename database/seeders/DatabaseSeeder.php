@@ -41,6 +41,7 @@ class DatabaseSeeder extends Seeder
             DangKytGiaySeeder::class,
             RolePermissionSeeder::class,
             BienBanSHCNSeeder::class,
+            ThongBaoSeeder::class
         ]);
 
     }

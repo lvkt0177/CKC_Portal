@@ -25,7 +25,7 @@ class TeacherLoginController extends Controller
         // dd($credentials);
         if (Auth::attempt($credentials)) {
 
-            return redirect()->intended('admin/dashboard');
+            return redirect()->intended('admin/portal');
 
         }
         

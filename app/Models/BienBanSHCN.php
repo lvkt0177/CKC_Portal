@@ -25,8 +25,6 @@ class BienBanSHCN extends Model
         'so_luong_sinh_vien',
         'vang_mat',
         'trang_thai',
-        'created_at',
-        'updated_at'
     ];
 
     protected $casts = [

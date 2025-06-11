@@ -13,25 +13,17 @@ return new class extends Migration
     {
         Schema::create('thong_bao', function (Blueprint $table) {
             $table->id();
-            //id_user
+            
             $table->foreignId('id_gv')->constrained('users')->onDelete('cascade');
 
-            //id_file
-            $table->foreignId('id_file')->nullable()->constrained('file')->onDelete('set null');
+            $table->text('tu_ai');
 
-            //từ ai - integer
-            $table->integer('tu_ai')->default(0);
-
-            //ngày gửi
             $table->date('ngay_gui');
 
-            //tiêu đề
             $table->string('tieu_de', 255);
             
-            //nội dung
             $table->longText('noi_dung');
 
-            //trạng thái
             $table->integer('trang_thai')->default(0); 
 
             $table->timestamps();

@@ -30,14 +30,14 @@
                 </div>
 
 
-                <a href="{{ route('admin.dashboard') }}" class="logo logo-menu">
+                <a href="{{ route('admin.portal.index') }}" class="logo logo-menu">
                     <img src="https://cdn.haitrieu.com/wp-content/uploads/2023/01/Logo-Truong-Cao-dang-Ky-thuat-Cao-Thang.png"
                         width="50" height="70" alt="">
                 </a>
 
                 <nav class="nav nav-pills">
-                    <a class="nav-link {{ isActiveRoute('admin/dashboard') }}"
-                        href="{{ route('admin.dashboard') }}">Portal</a>
+                    <a class="nav-link {{ isActiveRoute('admin/portal') }}"
+                        href="{{ route('admin.portal.index') }}">Portal</a>
 
                     <div class="dropdown">
                         <a class="nav-link dropdown-toggle {{ isActiveRoute('admin/lop') }} {{ isActiveRoute('admin/bienbanshcn') }} {{ isActiveRoute('admin/lop/sinhvien/?id=') }} }}"
@@ -52,16 +52,17 @@
                     </div>
 
                     <div class="dropdown">
-                        <a class="nav-link dropdown-toggle {{ isActiveRoute('admin/diemmonhoc') }} {{ isActiveRoute('admin/phieulenlop') }}"
+                        <a class="nav-link dropdown-toggle {{ isActiveRoute('admin/diemmonhoc') }} {{ isActiveRoute('admin/phieulenlop') }} {{ isActiveRoute('admin/thongbao') }}"
                             href="#" data-bs-toggle="dropdown" aria-expanded="false">
                             Công tác giảng dạy
                         </a>
                         <ul class="dropdown-menu">
                             <li><a class="dropdown-item" href="{{ route('admin.diemmonhoc.index') }}"><i
-                                        class="fas fa-file-invoice me-2"></i>Nhập điểm môn học</a>
-                            </li>
+                                        class="fas fa-file-invoice me-2"></i>Nhập điểm môn học</a></li>
                             <li><a class="dropdown-item" href="{{ route('admin.phieulenlop.index') }}"><i
                                         class="fas fa-credit-card me-2"></i>Phiếu lên lớp</a></li>
+                            <li><a class="dropdown-item" href="{{ route('admin.thongbao.index') }}"><i
+                                        class="fas fa-credit-card me-2"></i>Thông báo cho sinh viên</a></li>
                         </ul>
                     </div>
 
@@ -207,7 +208,7 @@
         document.addEventListener('DOMContentLoaded', function() {
             document.querySelectorAll('form[data-confirm]').forEach(form => {
                 form.addEventListener('submit', function(e) {
-                    e.preventDefault(); 
+                    e.preventDefault();
                     currentForm = form;
                     showConfirm(() => form.submit());
                 });

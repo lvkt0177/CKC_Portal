@@ -7,6 +7,8 @@ use App\Repositories\BienBan\BienBanRepositoryInterface;
 use App\Repositories\BienBan\BienBanRepository;
 use App\Repositories\ChiTietBienBan\ChiTietBienBanRepositoryInterface;
 use App\Repositories\ChiTietBienBan\ChiTietBienBanRepository;
+use App\Repositories\ThongBao\ThongBaoRepositoryInterface;
+use App\Repositories\ThongBao\ThongBaoRepository;
 
 class RepositoryServiceProvider extends ServiceProvider
 {
@@ -17,6 +19,7 @@ class RepositoryServiceProvider extends ServiceProvider
     {
         $this->app->bind(BienBanRepositoryInterface::class, BienBanRepository::class);
         $this->app->bind(ChiTietBienBanRepositoryInterface::class, ChiTietBienBanRepository::class);
+        $this->app->bind(ThongBaoRepositoryInterface::class, ThongBaoRepository::class);
     }
 
     /**
