@@ -6,12 +6,11 @@ use App\Acl\Acl;
 
 Route::prefix('admin')->name('admin.')->group(function () {
 
-    include('auth.php');
     include('profile.php');
-    include('portal.php');
     //--------------------------------------
     Route::middleware(['auth.admin', 'role_or_permission:' . Acl::ROLE_SUPER_ADMIN . '|' . Acl::ROLE_ADMIN . '|' . Acl::ROLE_STAFF])->group(function () {
-
+        
+        include('portal.php');
         include('role.php');
         include('sinhvien.php');
         include('giangvien.php');

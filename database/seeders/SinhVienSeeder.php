@@ -5,6 +5,8 @@ namespace Database\Seeders;
 use Illuminate\Database\Console\Seeds\WithoutModelEvents;
 use Illuminate\Database\Seeder;
 use App\Models\SinhVien;
+use Illuminate\Support\Facades\Hash;
+
 class SinhVienSeeder extends Seeder
 {
     /**
@@ -18,7 +20,7 @@ class SinhVienSeeder extends Seeder
                 "id_lop" => 1,
                 "id_ho_so" => 4,
                 "chuc_vu" => 0,
-                "mat_khau" => bcrypt('1a@'),
+                'password' => Hash::make('Thinh3988@'),
                 "trang_thai" => 0,
             ],
             [
@@ -26,7 +28,7 @@ class SinhVienSeeder extends Seeder
                 "id_lop" => 2,
                 "id_ho_so" => 5,
                 "chuc_vu" => 0,
-                "mat_khau" => bcrypt('1a@'),
+                'password' => Hash::make('Thinh3988@'),
                 "trang_thai" => 0,
             ],
             [
@@ -34,7 +36,7 @@ class SinhVienSeeder extends Seeder
                 "id_lop" => 3,
                 "id_ho_so" => 6,
                 "chuc_vu" => 0,
-                "mat_khau" => bcrypt('1a@'),
+                'password' => Hash::make('Thinh3988@'),
                 "trang_thai" => 0,
             ],
             [
@@ -42,7 +44,7 @@ class SinhVienSeeder extends Seeder
                 "id_lop" => 3,
                 "id_ho_so" => 7,
                 "chuc_vu" => 0,
-                "mat_khau" => bcrypt('1a@'),
+                'password' => Hash::make('Thinh3988@'),
                 "trang_thai" => 0,
             ],
             [
@@ -50,7 +52,7 @@ class SinhVienSeeder extends Seeder
                 "id_lop" => 3,
                 "id_ho_so" => 8,
                 "chuc_vu" => 0,
-                "mat_khau" => bcrypt('1a@'),
+                'password' => Hash::make('Thinh3988@'),
                 "trang_thai" => 0,
             ],
         ]);
