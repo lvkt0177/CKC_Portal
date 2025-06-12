@@ -4,13 +4,13 @@
 
 use Illuminate\Support\Facades\Route;
 use App\Acl\Acl;
-use App\Http\Controllers\Api\Auth\AdminLoginController;
+use App\Http\Controllers\Api\Auth\AuthLoginController;
 
 Route::prefix('admin')->name('api.admin.')->group(function () {
 
     // include('profile.php');
     // include('portal.php');
-    Route::post('/login', [AdminLoginController::class, 'login']);
+    Route::post('/login', [AuthLoginController::class, 'login']);
     //--------------------------------------------------------
     Route::middleware([
         'auth:sanctum',

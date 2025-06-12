@@ -11,31 +11,28 @@
     <div class="container-fluid my-4">
         <div class="card shadow-sm border-0">
             <div class="card-body">
-                <h2 class="mb-4">Thông tin sinh viên</h2>
                 <div class="row align-items-center">
                     <!-- Avatar bên trái -->
-                    <div class="col-md-4 text-center mb-3 mb-md-0">
-                        <img src="data:image/svg+xml;base64,PHN2ZyB3aWR0aD0iMTAwIiBoZWlnaHQ9IjEyMCIgdmlld0JveD0iMCAwIDEwMCAxMjAiIGZpbGw9Im5vbmUiIHhtbG5zPSJodHRwOi8vd3d3LnczLm9yZy8yMDAwL3N2ZyI+CjxyZWN0IHdpZHRoPSIxMDAiIGhlaWdodD0iMTIwIiBmaWxsPSIjNEY0NkU1Ii8+CjxjaXJjbGUgY3g9IjUwIiBjeT0iNDAiIHI9IjE1IiBmaWxsPSJ3aGl0ZSIvPgo8cGF0aCBkPSJNMjUgOTBDMjUgNzUgMzUgNjUgNTAgNjVDNjUgNjUgNzUgNzUgNzUgOTBIOTVWMTIwSDVWOTBIMjVaIiBmaWxsPSJ3aGl0ZSIvPgo8L3N2Zz4K"
-                            alt="Student Avatar" class="" style="width: 150px;">
+                    <div class="col-lg-4 col-md-12 col-sm-12 text-center mb-3 mb-md-0">
+                        <img src="{{ asset('' . Auth::guard('student')->user()->hoSo->anh) }}"
+                            alt="Student Avatar" class="rounded-circle" style="width: 240px;">
                     </div>
 
                     <!-- Thông tin bên phải -->
-                    <div class="col-md-8">
-                        <h4 class="fw-bold">Nguyễn Đức Bảo</h4>
+                    <div class="col-lg-8 col-md-12 col-sm-12">
+                        <h4 class="fw-bold">Sinh viên: {{ Auth::guard('student')->user()->hoSo->ho_ten }}</h4>
                         <div class="row">
                             <div class="col-sm-6">
-                                <p><strong>MSSV:</strong> 22638401</p>
-                                <p><strong>Lớp học:</strong> DHITTT18ATT</p>
-                                <p><strong>Hệ đào tạo:</strong> Đại học</p>
-                                <p><strong>Khóa học:</strong> 2022 - 2023</p>
-                                <p><strong>Giới tính:</strong> Nam</p>
+                                <p><strong>MSSV:</strong> {{ Auth::guard('student')->user()->ma_sv }}</p>
+                                <p><strong>Lớp học:</strong> {{ Auth::guard('student')->user()->lop->ten_lop }}</p>
+                                <p><strong>Hệ đào tạo:</strong> Cao đẳng</p>
+                                <p><strong>Khóa học:</strong> {{ Auth::guard('student')->user()->lop->nienKhoa->ten_nien_khoa }}</p>
+                                <p><strong>Giới tính:</strong> {{ Auth::guard('student')->user()->hoSo->gioi_tinh }}</p>
                             </div>
                             <div class="col-sm-6">
-                                <p><strong>Ngày sinh:</strong> 24/12/2004</p>
-                                <p><strong>Nơi sinh:</strong> Tỉnh Bình Phước</p>
+                                <p><strong>Ngày sinh:</strong> {{ Auth::guard('student')->user()->hoSo->ngay_sinh }} </p>
                                 <p><strong>Ngành:</strong> Hệ thống thông tin</p>
                                 <p><strong>Bậc đào tạo:</strong> Tiên tiến</p>
-                                <p><strong>Loại hình đào tạo:</strong> Tiên tiến</p>
                             </div>
                         </div>
                     </div>

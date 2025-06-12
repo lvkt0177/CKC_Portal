@@ -5,9 +5,13 @@ namespace App\Models;
 use Illuminate\Database\Eloquent\Model;
 use App\Enum\RoleStudent;
 use App\Enum\ActiveOrNotStatus;
+use Laravel\Sanctum\HasApiTokens;
 use Illuminate\Foundation\Auth\User as Authenticatable;
+
+
 class SinhVien extends Authenticatable 
 {
+    use HasApiTokens;
     protected $table = 'sinhvien';
 
     protected $fillable = [
