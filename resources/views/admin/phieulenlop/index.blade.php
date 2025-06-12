@@ -4,6 +4,19 @@
 
 @section('css')
     <link rel="stylesheet" href="{{ asset('assets/admin/css/lich.css') }}">
+    <style>
+        .modal-content {
+            border-radius: 12px;
+        }
+
+        .modal-header {
+            border-bottom: 2px solid #007bff;
+        }
+
+        .modal-body ul li {
+            margin-bottom: 6px;
+        }
+    </style>
 @endsection
 
 @section('content')
@@ -27,66 +40,71 @@
                                     </div>
                                     <div class="col-md-6">
                                         <div class="d-flex justify-content-end align-items-center">
-                                            <div class="btn-group me-3">
+                                            <div class="nav-buttons">
                                                 <form method="GET" action="{{ route('admin.phieulenlop.index') }}"
                                                     id="week-form">
-                                                    <input type="hidden" name="id_tuan" value="{{ $tuan->id }}">
-                                                    <input type="hidden" name="action" id="week-action">
+                                                    <input type="hidden" name="action" id="week-action" value="">
 
-                                                    <button type="submit" class="btn btn-outline-primary btn-sm"
-                                                        onclick="event.preventDefault(); document.getElementById('week-action').value='prev'; document.getElementById('week-form').submit();">
-                                                        <i class="fas fa-arrow-left"></i> Tuần trước
-                                                    </button>
-
-                                                    <button type="submit" class="btn btn-outline-primary btn-sm"
-                                                        onclick="event.preventDefault(); document.getElementById('week-action').value='current'; document.getElementById('week-form').submit();">
-                                                        <i class="fas fa-calendar"></i> Hiện tại
-                                                    </button>
-                                                </form>
-                                            </div>
-                                            <div class="nav-buttons">
-                                                <form method="GET" action="{{ route('admin.phieulenlop.index') }}">
                                                     {{-- Chọn Năm --}}
-                                                    <select class="form-control" name="id_nam"
-                                                        onchange="this.form.submit()">
-                                                        @foreach ($dsNam as $n)
-                                                            <option value="{{ $n->id }}"
-                                                                {{ request('id_nam', $nam->id) == $n->id ? 'selected' : '' }}>
-                                                                Năm {{ $n->nam_bat_dau }}
-                                                            </option>
-                                                        @endforeach
-                                                    </select>
+                                                    @php
+                                                        $namHienTai = now()->year;
+                                                        $namDangChon = request('nam', $namHienTai);
+                                                        $tuanHienTai = now()->weekOfYear;
+                                                        $tuanDangChon = request('id_tuan', $tuanHienTai);
+                                                        $soTuan = $namDangChon == $namHienTai ? $tuanHienTai : 52;
+                                                    @endphp
 
-                                                    {{-- Chọn Tuần (theo năm đã chọn) --}}
-                                                    <select class="form-control" name="id_tuan"
-                                                        onchange="this.form.submit()">
+                                                    <div class="d-flex justify-content-end align-items-center">
+                                                        <div class="nav-buttons w-100">
 
-                                                        @foreach ($dsTuan as $t)
-                                                            <option value="{{ $t->id }}"
-                                                                {{ request('id_tuan', $tuan->id) == $t->id ? 'selected' : '' }}>
-                                                                Tuần {{ $t->tuan }}
-                                                                ({{ $t->ngay_bat_dau->format('d/m/Y') }} -
-                                                                {{ $t->ngay_ket_thuc->format('d/m/Y') }})
-                                                            </option>
-                                                        @endforeach
-                                                    </select>
+                                                            <div
+                                                                class="d-flex justify-content-between align-items-center mb-2">
+                                                                <label class="p-1">Năm:</label>
+                                                                <select class="form-control" name="nam"
+                                                                    onchange="document.getElementById('week-form').submit()">
+                                                                    @for ($i = 0; $i < 4; $i++)
+                                                                        @php $nam = $namHienTai - $i; @endphp
+                                                                        <option value="{{ $nam }}"
+                                                                            {{ $namDangChon == $nam ? 'selected' : '' }}>
+                                                                            Năm {{ $nam }}
+                                                                        </option>
+                                                                    @endfor
+                                                                </select>
+                                                            </div>
+
+                                                            <div
+                                                                class="d-flex justify-content-between align-items-center mb-2">
+                                                                <label class="p-1">Tuần:</label>
+                                                                <select class="form-control" name="id_tuan"
+                                                                    onchange="document.getElementById('week-form').submit()">
+                                                                    @for ($i = 1; $i <= $soTuan; $i++)
+                                                                        <option value="{{ $i }}"
+                                                                            {{ $tuanDangChon == $i ? 'selected' : '' }}>
+                                                                            Tuần {{ $i }}
+                                                                        </option>
+                                                                    @endfor
+                                                                </select>
+                                                            </div>
+
+                                                            <div class="btn-group d-flex mb-2">
+                                                                <button type="submit" class="btn btn-back"
+                                                                    onclick="event.preventDefault(); document.getElementById('week-action').value='prev'; document.getElementById('week-form').submit();">
+                                                                    <i class="fas fa-arrow-left"></i> Tuần trước
+                                                                </button>
+
+                                                                <button type="submit" class="btn btn-back"
+                                                                    onclick="event.preventDefault(); document.getElementById('week-action').value='current'; document.getElementById('week-form').submit();">
+                                                                    <i class="fas fa-calendar"></i> Hiện tại
+                                                                </button>
+
+                                                                <a href="{{ route('admin.phieulenlop.create') }}"
+                                                                    class="btn btn-back">
+                                                                    <i class="fas fa-edit"></i> Điền phiếu
+                                                                </a>
+                                                            </div>
+                                                        </div>
+                                                    </div>
                                                 </form>
-
-                                                <div class="btn-group ms-2">
-                                                    <button class="btn btn-info btn-sm d-flex align-items-center ">
-                                                        <i class="fas fa-print"></i>
-                                                    </button>
-                                                    <button class="btn btn-success btn-sm d-flex align-items-center">
-                                                        <i class="fas fa-download"></i>
-                                                    </button>
-                                                    <button class="btn btn-secondary btn-sm d-flex align-items-center">
-                                                        <i class="fas fa-question"></i>
-                                                    </button>
-                                                    <a href="{{ route('admin.phieulenlop.create') }}"
-                                                        class="btn btn-dark btn-sm d-flex align-items-center">
-                                                        <i class="fas fa-edit"></i>
-                                                    </a>
-                                                </div>
                                             </div>
                                         </div>
                                     </div>
@@ -100,9 +118,10 @@
                                 <table class="table table-bordered mb-0">
                                     <thead>
                                         <tr>
-                                            <th class="time-column">Ca học</th>
+                                            <th class="time-column text-white" style="background: var(--primary-color);">Ca
+                                                học</th>
                                             @foreach ($ngayTrongTuan as $ngay)
-                                                <th class="day-header">
+                                                <th class="day-header text-white" style="background: var(--primary-color);">
                                                     {{ ucfirst($ngay->translatedFormat('l')) }}<br>
                                                     {{ $ngay->format('d/m/Y') }}
                                                 </th>
@@ -114,7 +133,8 @@
                                         <tr>
                                             <td class="time-column">Sáng</td>
                                             @foreach ($ngayTrongTuan as $ngay)
-                                                <td class="schedule-cell">
+                                                <td class="schedule-cell"
+                                                    style="background-image: url('https://giaydantuongsacmau.com/upload/product/2020/12/10/giay-dan-tuong-soc-caro-image-20201210161206-350433-thumb.png');">
                                                     @php
                                                         $daDung = [];
                                                     @endphp
@@ -131,8 +151,14 @@
 
                                                             @if ($pll->ngay == $ngay->format('Y-m-d'))
                                                                 @if ($so == $bat_dau && !in_array($pll->id, $daDung))
-                                                                    <div
-                                                                        class="class-card web-dev mb-2 border-left-{{ $pll->lopHocPhan->loai_mon->getBadge() }}">
+                                                                    <div class="class-card web-dev mb-2 border-left-{{ $pll->lopHocPhan->loai_mon->getBadge() }}"
+                                                                        data-subject="{{ $pll->lopHocPhan->ten_hoc_phan }}"
+                                                                        data-class="{{ $pll->lopHocPhan->lop->ten_lop }}"
+                                                                        data-period="{{ $pll->tiet_bat_dau }}-{{ $pll->so_tiet + $pll->tiet_bat_dau - 1 }}"
+                                                                        data-room="{{ $pll->phong->ten }}"
+                                                                        data-teacher="{{ $pll->lopHocPhan->giangVien->hoSo->ho_ten }}"
+                                                                        data-date="{{ \Carbon\Carbon::parse($pll->ngay)->format('d/m/Y') }}"
+                                                                        data-content="{{ $pll->noi_dung }}">
                                                                         <div class="class-title">
                                                                             {{ $pll->lopHocPhan->ten_hoc_phan }}
                                                                         </div>
@@ -173,7 +199,8 @@
                                         <tr>
                                             <td class="time-column">Chiều</td>
                                             @foreach ($ngayTrongTuan as $ngay)
-                                                <td class="schedule-cell">
+                                                <td class="schedule-cell"
+                                                    style="background-image: url('https://giaydantuongsacmau.com/upload/product/2020/12/10/giay-dan-tuong-soc-caro-image-20201210161206-350433-thumb.png')">
                                                     @php
                                                         $daDung = [];
                                                     @endphp
@@ -190,8 +217,13 @@
 
                                                             @if ($pll->ngay == $ngay->format('Y-m-d'))
                                                                 @if ($so == $bat_dau && !in_array($pll->id, $daDung))
-                                                                    <div
-                                                                        class="class-card web-dev mb-2 border-left-{{ $pll->lopHocPhan->loai_mon->getBadge() }}">
+                                                                    <div class="class-card web-dev mb-2 border-left-{{ $pll->lopHocPhan->loai_mon->getBadge() }}"
+                                                                        data-subject="{{ $pll->lopHocPhan->ten_hoc_phan }}"
+                                                                        data-class="{{ $pll->lopHocPhan->lop->ten_lop }}"
+                                                                        data-period="{{ $pll->tiet_bat_dau }}-{{ $pll->so_tiet + $pll->tiet_bat_dau - 1 }}"
+                                                                        data-room="{{ $pll->phong->ten }}"
+                                                                        data-teacher="{{ $pll->lopHocPhan->giangVien->hoSo->ho_ten }}"
+                                                                        data-date="{{ \Carbon\Carbon::parse($pll->ngay)->format('d/m/Y') }}">
                                                                         <div class="class-title">
                                                                             {{ $pll->lopHocPhan->ten_hoc_phan }}
                                                                         </div>
@@ -231,7 +263,8 @@
                                         <tr>
                                             <td class="time-column">Tối</td>
                                             @foreach ($ngayTrongTuan as $ngay)
-                                                <td class="schedule-cell">
+                                                <td class="schedule-cell"
+                                                    style="background-image: url('https://giaydantuongsacmau.com/upload/product/2020/12/10/giay-dan-tuong-soc-caro-image-20201210161206-350433-thumb.png')">
                                                     @php
                                                         $daDung = [];
                                                     @endphp
@@ -248,8 +281,13 @@
 
                                                             @if ($pll->ngay == $ngay->format('Y-m-d'))
                                                                 @if ($so == $bat_dau && !in_array($pll->id, $daDung))
-                                                                    <div
-                                                                        class="class-card web-dev mb-2 border-left-{{ $pll->lopHocPhan->loai_mon->getBadge() }}">
+                                                                    <div class="class-card web-dev mb-2 border-left-{{ $pll->lopHocPhan->loai_mon->getBadge() }}"
+                                                                        data-subject="{{ $pll->lopHocPhan->ten_hoc_phan }}"
+                                                                        data-class="{{ $pll->lopHocPhan->lop->ten_lop }}"
+                                                                        data-period="{{ $pll->tiet_bat_dau }}-{{ $pll->so_tiet + $pll->tiet_bat_dau - 1 }}"
+                                                                        data-room="{{ $pll->phong->ten }}"
+                                                                        data-teacher="{{ $pll->lopHocPhan->giangVien->hoSo->ho_ten }}"
+                                                                        data-date="{{ \Carbon\Carbon::parse($pll->ngay)->format('d/m/Y') }}">
                                                                         <div class="class-title">
                                                                             {{ $pll->lopHocPhan->ten_hoc_phan }}
                                                                         </div>
@@ -315,21 +353,71 @@
         </div>
     </div>
 
+    {{-- Modal chi tiết lớp học --}}
+    <div class="modal fade" id="classDetailModal" tabindex="-1" aria-labelledby="classDetailLabel" aria-hidden="true">
+        <div class="modal-dialog modal-dialog-centered modal-md">
+            <div class="modal-content shadow-lg rounded-4">
+                <div class="modal-header text-white rounded-top-4" style="background: var(--primary-color)">
+                    <h5 class="modal-title" id="classDetailLabel">
+                        <i class="bi bi-info-circle-fill me-2"></i> Chi tiết lớp học
+                    </h5>
+                    <button type="button" class="btn-close btn-close-white" data-bs-dismiss="modal"
+                        aria-label="Đóng"></button>
+                </div>
+                <div class="modal-body p-4"
+                    style="background-image: url('https://giaydantuongsacmau.com/upload/product/2020/12/10/giay-dan-tuong-soc-caro-image-20201210161206-350433-thumb.png')">
+                    <ul class="list-unstyled">
+                        <li><strong>Môn học:</strong> <span id="subjectName">---</span></li>
+                        <li><strong>Lớp:</strong> <span id="className">---</span></li>
+                        <li><strong>Tiết:</strong> <span id="period">---</span></li>
+                        <li><strong>Phòng:</strong> <span id="room">---</span></li>
+                        <li><strong>Giảng viên:</strong> <span id="teacher">---</span></li>
+                        <li><strong>Ngày học:</strong> <span id="date">---</span></li>
+                        <li><strong>Nội dung buổi học:</strong> <span id="content">---</span></li>
+                    </ul>
+                </div>
+                <div class="modal-footer bg-light rounded-bottom-4">
+                    <button type="button" class="btn btn-back" data-bs-dismiss="modal">Đóng</button>
+                </div>
+            </div>
+        </div>
+    </div>
+
 @endsection
 
 
 @section('js')
     <script>
+        const classCards = document.querySelectorAll('.class-card');
+        const modalElement = document.getElementById('classDetailModal');
+        const modal = new bootstrap.Modal(modalElement);
+
+
+
+        const subjectName = document.getElementById('subjectName');
+        const className = document.getElementById('className');
+        const period = document.getElementById('period');
+        const room = document.getElementById('room');
+        const teacher = document.getElementById('teacher');
+        const date = document.getElementById('date');
+        const content = document.getElementById('content');
+
         // Add interactive functionality
         document.addEventListener('DOMContentLoaded', function() {
             // Add click events to class cards
-            const classCards = document.querySelectorAll('.class-card');
             classCards.forEach(card => {
                 card.addEventListener('click', function() {
-                    alert('Chi tiết lớp học:\n' + this.textContent.trim());
+                    subjectName.textContent = this.dataset.subject || '---';
+                    className.textContent = this.dataset.class || '---';
+                    period.textContent = this.dataset.period || '---';
+                    room.textContent = this.dataset.room || '---';
+                    teacher.textContent = this.dataset.teacher || '---';
+                    date.textContent = this.dataset.date || '---';
+                    content.textContent = this.dataset.content || '---';
+
+                    modal.show(); // <-- phải gọi đúng!
                 });
             });
-
             // Add navigation functionality
             const buttons = document.querySelectorAll('.btn-group .btn');
             buttons.forEach(button => {

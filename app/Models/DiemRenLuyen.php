@@ -3,6 +3,7 @@
 namespace App\Models;
 
 use Illuminate\Database\Eloquent\Model;
+use App\Enum\XepLoaiDRL;
 
 class DiemRenLuyen extends Model
 {
@@ -10,8 +11,12 @@ class DiemRenLuyen extends Model
     protected $fillable = [
         "id_gvcn",
         "id_sinh_vien",
+        "id_thang",
         "xep_loai",
         'thoi_gian',
+    ];
+    protected $casts = [
+        'xep_loai' => XepLoaiDRL::class
     ];
     //sinhvien
     public function sinhVien()
@@ -23,5 +28,4 @@ class DiemRenLuyen extends Model
     {
         return $this->belongsTo(User::class, 'id_gvcn', 'id');
     }
-
 }

@@ -161,6 +161,17 @@ class HoSoSeeder extends Seeder
                 'dia_chi' => '42 Lang Ha, Hanoi',
                 'anh' => 'assets/admin/images/ho_so/user_image.jpg',
             ],
+            [
+                'ho_ten' => 'Ho Ngoc Minh Tu',
+                'email' => 'hnmt@fe.edu.vn',
+                'password' => bcrypt('12345678'),
+                'so_dien_thoai' => '0979993000',
+                'ngay_sinh' => '1998-05-12',
+                'gioi_tinh' => 'Nam',
+                'cccd' => '43431413413',
+                'dia_chi' => 'Loc Ninh, Binh Phuoc',
+                'anh' => 'assets/admin/images/ho_so/user_image.jpg',
+            ],
             
 
 

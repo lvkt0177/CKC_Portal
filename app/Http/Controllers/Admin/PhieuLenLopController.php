@@ -17,59 +17,70 @@ class PhieuLenLopController extends Controller
 {
     //
     public function index(Request $request)
-{
-    $dsNam = Nam::all();
+    {
+        $today = now();
+        $namDangChon = $request->nam ?? $today->year;
 
-    // Lấy tuần hiện tại mặc định
-    $today = now()->format('Y-m-d');
+        // Tìm bản ghi năm
+        $nam = Nam::where('nam_bat_dau', $namDangChon)->first();
+        if (!$nam) {
+            $nam = Nam::where('nam_bat_dau', $today->year)->first();
+        }
 
-    // Nếu chọn tuần cụ thể
-    if ($request->filled('id_tuan')) {
-        $tuan = Tuan::findOrFail($request->id_tuan);
-    } else {
-        // Nếu không chọn thì lấy tuần hiện tại
-        $tuan = Tuan::whereDate('ngay_bat_dau', '<=', $today)
-                    ->whereDate('ngay_ket_thuc', '>=', $today)
+        // Tuần đang chọn
+        $tuanDangChon = $request->id_tuan ?? $today->weekOfYear;
+
+        // Tìm tuần theo năm và số tuần
+        $tuan = Tuan::where('id_nam', $nam->id)
+                    ->where('tuan', $tuanDangChon)
                     ->first();
+
+        // Nếu không có, fallback tuần hiện tại
+        if (!$tuan) {
+            $tuan = Tuan::where('id_nam', $nam->id)
+                        ->whereDate('ngay_bat_dau', '<=', $today)
+                        ->whereDate('ngay_ket_thuc', '>=', $today)
+                        ->first();
+        }
+
+        // Xử lý hành động: tuần trước hoặc hiện tại
+        if ($request->action === 'prev') {
+            $tuan = Tuan::where('id_nam', $nam->id)
+                        ->where('tuan', '<', $tuan->tuan)
+                        ->orderByDesc('tuan')
+                        ->first() ?? $tuan;
+        } elseif ($request->action === 'current') {
+            $tuan = Tuan::where('id_nam', $nam->id)
+                        ->whereDate('ngay_bat_dau', '<=', $today)
+                        ->whereDate('ngay_ket_thuc', '>=', $today)
+                        ->first() ?? $tuan;
+        }
+
+        // Lấy phiếu lên lớp theo tuần
+        $phieu_len_lop = PhieuLenLop::with([
+            'lopHocPhan', 'lopHocPhan.lop', 'lopHocPhan.giangVien.hoSo', 'phong', 'tuan'
+        ])
+        ->whereBetween('ngay', [$tuan->ngay_bat_dau, $tuan->ngay_ket_thuc])
+        ->whereHas('lopHocPhan', function ($query) {
+            $query->where('id_giang_vien', Auth::user()->id);
+        })
+        ->orderBy('ngay')
+        ->get();
+
+        // Tạo danh sách ngày trong tuần
+        $ngayTrongTuan = collect();
+        $bat_dau = \Carbon\Carbon::parse($tuan->ngay_bat_dau);
+        $ket_thuc = \Carbon\Carbon::parse($tuan->ngay_ket_thuc);
+        while ($bat_dau->lte($ket_thuc)) {
+            $ngayTrongTuan->push($bat_dau->copy());
+            $bat_dau->addDay();
+        }
+
+        return view('admin.phieulenlop.index', compact(
+            'phieu_len_lop', 'ngayTrongTuan', 'tuan'
+        ));
     }
 
-    // Xử lý hành động tuần trước hoặc hiện tại
-    if ($request->action == 'prev') {
-        $tuan = Tuan::where('id_nam', $tuan->id_nam)
-                    ->where('tuan', '<', $tuan->tuan)
-                    ->orderByDesc('tuan')
-                    ->first() ?? $tuan; // Nếu không có tuần trước thì giữ nguyên
-    } elseif ($request->action == 'current') {
-        $tuan = Tuan::whereDate('ngay_bat_dau', '<=', $today)
-                    ->whereDate('ngay_ket_thuc', '>=', $today)
-                    ->first() ?? $tuan;
-    }
-
-    // Lấy danh sách tuần của năm hiện tại
-    $nam = $tuan->nam;
-    $dsTuan = Tuan::where('id_nam', $nam->id)->orderBy('tuan')->get();
-
-    // Lấy dữ liệu phiếu lên lớp theo tuần
-    $phieu_len_lop = PhieuLenLop::with([
-        'lopHocPhan', 'lopHocPhan.lop', 'lopHocPhan.giangVien.hoSo', 'phong', 'tuan'
-    ])->whereBetween('ngay', [$tuan->ngay_bat_dau, $tuan->ngay_ket_thuc])
-    ->whereHas('lopHocPhan', function ($query) {
-        $query->where('id_giang_vien',Auth::user()->id);
-    })->orderBy('ngay')->get();
-
-    // Tạo danh sách ngày trong tuần
-    $ngayTrongTuan = collect();
-    $bat_dau = \Carbon\Carbon::parse($tuan->ngay_bat_dau);
-    $ket_thuc = \Carbon\Carbon::parse($tuan->ngay_ket_thuc);
-    while ($bat_dau->lte($ket_thuc)) {
-        $ngayTrongTuan->push($bat_dau->copy());
-        $bat_dau->addDay();
-    }
-
-    return view('admin.phieulenlop.index', compact(
-        'dsNam', 'dsTuan', 'nam', 'tuan', 'phieu_len_lop', 'ngayTrongTuan'
-    ));
-}
     public function create()
     {
         $lopHocPhan = LopHocPhan::where('id_giang_vien',Auth::user()->id)->get();
