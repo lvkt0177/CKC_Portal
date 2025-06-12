@@ -11,11 +11,10 @@ return new class extends Migration
      */
     public function up(): void
     {
-        Schema::create('file', function (Blueprint $table) {
+        Schema::create('files', function (Blueprint $table) {
             $table->id();
-            //ten file
+            $table->foreignId('id_thong_bao')->constrained('thong_bao')->onDelete('cascade');
             $table->string('ten_file', 255);
-            //url
             $table->string('url', 255);
 
             $table->timestamps();

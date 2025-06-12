@@ -22,11 +22,8 @@ Route::group(['middleware' => 'web'], function () {
         
         include('admin/profile.php');
 
-        Route::get('/dashboard', function () {
-            return view('admin.dashboard.index');
-        })->name('dashboard');
+        include('admin/portal.php');
         //--------------------------------------
-        //Route chức năng
         Route::middleware(['auth.admin', 'role_or_permission:' . Acl::ROLE_SUPER_ADMIN . '|' . Acl::ROLE_ADMIN . '|' . Acl::ROLE_STAFF])->group(function () {
 
 
@@ -50,6 +47,8 @@ Route::group(['middleware' => 'web'], function () {
             include('admin/bienbanshcn.php');
 
             include('admin/phieulenlop.php');
+
+            include('admin/thongbao.php');
 
         });
 

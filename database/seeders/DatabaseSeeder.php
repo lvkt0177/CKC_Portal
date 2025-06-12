@@ -41,7 +41,11 @@ class DatabaseSeeder extends Seeder
             DangKytGiaySeeder::class,
             RolePermissionSeeder::class,
             BienBanSHCNSeeder::class,
+<<<<<<< HEAD
             DiemRenLuyenSeeder::class
+=======
+            ThongBaoSeeder::class
+>>>>>>> origin/develop
         ]);
 
     }
