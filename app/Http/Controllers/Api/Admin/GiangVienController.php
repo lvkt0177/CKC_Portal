@@ -1,6 +1,6 @@
 <?php
 
-namespace App\Http\Controllers\API\Admin;
+namespace App\Http\Controllers\Api\Admin;
 
 use App\Http\Controllers\Controller;
 use Illuminate\Http\Request;
@@ -14,6 +14,7 @@ use \Spatie\Permission\Models\Role;
 
 class GiangVienController extends Controller
 {
+    //api/admin/giangvien
     public function index()
     {
         $users = User::with('hoSo', 'boMon', 'boMon.nganhHoc.khoa')
@@ -23,13 +24,13 @@ class GiangVienController extends Controller
         return response()->json($users);
     }
 
-    //show
-    public function show($id)
+    //api/admin/giangvien/{id}
+    public function show(int $id)
     {
-        $data = User::with('hoSo', 'boMon', 'boMon.nganhHoc.khoa')
-            ->where('id', $id)
-            ->orderBy('id', 'desc')
-            ->get();
+        $data = User::with('hoSo','boMon.nganhHoc.khoa')
+        ->where('id', $id)
+        ->orderBy('id', 'desc')
+        ->get();
 
         if ($data->isEmpty()) {
             return redirect()->route('admin.giangvien.index')->with('error', 'Giảng viên không tồn tại.');
@@ -37,9 +38,12 @@ class GiangVienController extends Controller
 
         $user = $data[0];
         $roles = Role::all();
-        // dd($user);
 
-        return view('admin.teacher.show', compact('user', 'roles'));
+        return response()->json([
+            'success' => true,
+            'user' => $user,
+            'roles' => Role::all(),
+        ]);
     }
-        
+            
 }

@@ -17,7 +17,7 @@ class ThongBaoSeeder extends Seeder
         ThongBao::insert([
             [
                 'id_gv'      => 1,
-                'tu_ai'      => 'Khoa',
+                'tu_ai'      => 'khoa',
                 'ngay_gui'   => Carbon::now()->subDays(2)->format('Y-m-d'),
                 'tieu_de'    => 'Thông báo 1',
                 'noi_dung'   => 'Nội dung thông báo 1',
@@ -25,7 +25,7 @@ class ThongBaoSeeder extends Seeder
             ],
             [
                 'id_gv'      => 2,
-                'tu_ai'      => 'Khoa',
+                'tu_ai'      => 'khoa',
                 'ngay_gui'   => Carbon::now()->subDays(4)->format('Y-m-d'),
                 'tieu_de'    => 'Thông báo 2',
                 'noi_dung'   => 'Nội dung thông báo 2',
@@ -33,7 +33,7 @@ class ThongBaoSeeder extends Seeder
             ],
             [
                 'id_gv'      => 3,
-                'tu_ai'      => 'Khoa',
+                'tu_ai'      => 'khoa',
                 'ngay_gui'   => Carbon::now()->subDays(6)->format('Y-m-d'),
                 'tieu_de'    => 'Thông báo 3',
                 'noi_dung'   => 'Nội dung thông báo 3',
@@ -41,7 +41,7 @@ class ThongBaoSeeder extends Seeder
             ],
             [
                 'id_gv'      => 4,
-                'tu_ai'      => 'Khoa',
+                'tu_ai'      => 'khoa',
                 'ngay_gui'   => Carbon::now()->subDays(1)->format('Y-m-d'),
                 'tieu_de'    => 'Thông báo 4',
                 'noi_dung'   => 'Nội dung thông báo 4',
@@ -49,7 +49,7 @@ class ThongBaoSeeder extends Seeder
             ],
             [
                 'id_gv'      => 5,
-                'tu_ai'      => 'Khoa',
+                'tu_ai'      => 'khoa',
                 'ngay_gui'   => Carbon::now()->format('Y-m-d'),
                 'tieu_de'    => 'Thông báo 5',
                 'noi_dung'   => 'Nội dung thông báo 5',

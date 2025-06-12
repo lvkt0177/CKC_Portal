@@ -21,11 +21,8 @@ class SinhVienController extends Controller
         $nienKhoas = NienKhoa::orderBy('id', 'desc')->get();
         $nganhHocs = NganhHoc::orderBy('id', 'desc')->get();
 
-        // Nếu không chọn thì lấy id niên khóa mới nhất
         $id_nien_khoa = $request->input('id_nien_khoa') ?? $nienKhoas->first()->id;
-        // Nếu không chọn ngành học thì hiện tất cả các ngành
         $id_nganh_hoc = $request->input('id_nganh_hoc');
-        // Lấy danh sách lớp theo niên khóa
         $lops = Lop::with(['nienKhoa', 'giangVien', 'giangVien.boMon.nganhHoc'])
             ->where('id_nien_khoa', $id_nien_khoa)
             ->when($id_nganh_hoc, function ($query) use ($id_nganh_hoc) {
