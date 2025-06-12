@@ -4,7 +4,8 @@ namespace App\Http\Requests\Phong;
 
 use Illuminate\Foundation\Http\FormRequest;
 use Illuminate\Validation\Rule;
-
+use Illuminate\Validation\Rules\Enum;
+use App\Enum\LoaiPhong;
 
 class UpdatePhongRequest extends FormRequest
 {
@@ -32,7 +33,10 @@ class UpdatePhongRequest extends FormRequest
                 Rule::unique('phong', 'ten')->ignore($this->phong),
             ],
             'so_luong' => 'required|integer|min:1',
-            'loai_phong' => 'required|integer|in:0,1,2', 
+            'loai_phong' => [
+                'required',
+                new Enum(LoaiPhong::class),
+            ], 
         ];
     }
 

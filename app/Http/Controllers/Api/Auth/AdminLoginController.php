@@ -21,7 +21,7 @@ class AdminLoginController extends Controller
 
         $token = $user->createToken('api-token')->plainTextToken;
 
-        $user = User::with('hoSo')->where('tai_khoan', $request->tai_khoan)->first();
+        $user = User::with('hoSo','roles.permissions')->where('tai_khoan', $request->tai_khoan)->first();
         
         return response()->json([
             'token' => $token,
