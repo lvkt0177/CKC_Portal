@@ -11,6 +11,7 @@ use App\Models\User;
 use App\Models\HoSo;
 use App\Models\SinhVien;
 use App\Models\ChiTietThongBao;
+use App\Models\BinhLuan;
 use App\Models\Lop;
 use App\Repositories\ThongBao\ThongBaoRepository;
 use App\Enum\ThongBaoStatus;
@@ -75,7 +76,13 @@ class ThongBaoController extends Controller
      */
     public function show(ThongBao $thongbao)
     {
-        $thongbao->load('giangVien.hoSo','file');
+        $thongbao->load([
+            'binhLuans' => function ($q) {
+                $q->whereNull('id_binh_luan_cha') 
+                  ->with(['nguoiBinhLuan.hoSo', 'binhLuanCon.nguoiBinhLuan.hoSo'])
+                  ->orderBy('created_at', 'desc'); 
+            }
+        ]);
         return view('admin.thongbao.show', compact('thongbao'));
     }
 

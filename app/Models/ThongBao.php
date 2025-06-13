@@ -39,4 +39,9 @@ class ThongBao extends Model
     {
         return $this->hasMany(ChiTietThongBao::class, 'id_thong_bao', 'id');
     }
+
+    public function binhLuans()
+    {
+        return $this->hasMany(BinhLuan::class, 'id_thong_bao','id');
+    }
 }

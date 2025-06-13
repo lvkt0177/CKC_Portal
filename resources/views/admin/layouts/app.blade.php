@@ -180,6 +180,8 @@
     <!-- Main Content -->
     <main class="main-content teams-section">
         @yield('content')
+
+        @livewireScripts
     </main>
 
     <footer class="footer">

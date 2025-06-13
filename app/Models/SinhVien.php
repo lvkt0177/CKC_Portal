@@ -7,7 +7,7 @@ use App\Enum\RoleStudent;
 use App\Enum\ActiveOrNotStatus;
 use Laravel\Sanctum\HasApiTokens;
 use Illuminate\Foundation\Auth\User as Authenticatable;
-
+use Illuminate\Database\Eloquent\Relations\MorphTo;
 
 class SinhVien extends Authenticatable 
 {
@@ -62,6 +62,11 @@ class SinhVien extends Authenticatable
     public function chiTietThongBao()
     {
         return $this->hasMany(ChiTietThongBao::class, 'id_sinh_vien', 'id');
+    }
+
+    public function binhLuans()
+    {
+        return $this->morphMany(BinhLuan::class, 'nguoi_binh_luan','id');
     }
 
 }
