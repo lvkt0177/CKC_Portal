@@ -29,7 +29,10 @@ class NhapDiemRequest extends FormRequest
             'id_sinh_vien' => 'numeric',
             'id_lop_hoc_phan' => 'numeric',
             'xep_loai'=>'in:1,2,3,4',
-            'thoi_gian' => 'in:1,2,3,4,5,6,7,8,9,10,11,12'
+            'thoi_gian' => 'in:1,2,3,4,5,6,7,8,9,10,11,12',
+            'nam'=>'numeric',
+            //mảng sinh viên
+            
         ];
     }
     public function messages(): array

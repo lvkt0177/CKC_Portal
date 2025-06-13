@@ -16,9 +16,9 @@
 
                     <div class="card-body">
 
-                        <div class="table-responsive">
-                            <table class="table table-bordered align-middle mb-0">
-                                <thead class="table-light">
+                        <div class="">
+                            <table class="team-table align-middle" id="room-table">
+                                <thead>
                                     <tr>
                                         <th>No.1</th>
                                         <th>Mã SV</th>
@@ -29,6 +29,7 @@
                                         <th>Điểm thi</th>
                                         <th>Điểm trung bình</th>
                                         <th>Loại sinh viên</th>
+                                        <th> </th>
                                     </tr>
                                 </thead>
                                 <tbody>
@@ -52,8 +53,8 @@
                                             </tr>
                                             <!-- Modal sửa điểm -->
                                             <tr id="edit-row-{{ $dshp->id_sinh_vien }}" style="display: none;">
-                                                <form action="{{ route('admin.diemmonhoc.cap-nhat-diem') }}" method="POST" data-confirm
-                                                   >
+                                                <form action="{{ route('admin.diemmonhoc.cap-nhat-diem') }}" method="POST"
+                                                    data-confirm>
                                                     @csrf
                                                     <input type="hidden" name="id_sinh_vien"
                                                         value="{{ $dshp->id_sinh_vien }}">
@@ -65,8 +66,8 @@
                                                     <td>{{ $sv->lop->ten_lop }}</td>
                                                     <td>
                                                         <input type="number" step="0.1" name="diem_chuyen_can"
-                                                            value="{{ $dshp->diem_chuyen_can }}" class="form-control"
-                                                            min="0" max="10"
+                                                            value="{{ old('diem_chuyen_can', $dshp->diem_chuyen_can) }}"
+                                                            class="form-control" min="0" max="10"
                                                             oninvalid="this.setCustomValidity('Vui lòng nhập điểm từ 0 đến 10')"
                                                             oninput="this.setCustomValidity('')">
                                                         @error('diem_chuyen_can')
@@ -75,8 +76,8 @@
                                                     </td>
                                                     <td>
                                                         <input type="number" step="0.1" name="diem_qua_trinh"
-                                                            value="{{ $dshp->diem_qua_trinh }}" class="form-control"
-                                                            min="0" max="10"
+                                                            value="{{ old('diem_qua_trinh', $dshp->diem_qua_trinh) }}"
+                                                            class="form-control" min="0" max="10"
                                                             oninvalid="this.setCustomValidity('Vui lòng nhập điểm từ 0 đến 10')"
                                                             oninput="this.setCustomValidity('')">
                                                         @error('diem_qua_trinh')
@@ -85,8 +86,9 @@
                                                     </td>
                                                     <td>
                                                         <input type="number" step="0.1" name="diem_thi"
-                                                            value="{{ $dshp->diem_thi }}" class="form-control"
-                                                            step="0.1" min="0" max="10"
+                                                            value="{{ old('diem_thi', $dshp->diem_thi) }}"
+                                                            class="form-control" step="0.1" min="0"
+                                                            max="10"
                                                             oninvalid="this.setCustomValidity('Vui lòng nhập điểm từ 0 đến 10')"
                                                             oninput="this.setCustomValidity('')">
                                                         @error('diem_thi')
@@ -94,6 +96,7 @@
                                                         @enderror
                                                     </td>
                                                     <td colspan="2">Cập nhật điểm</td>
+                                                    <td></td>
                                                     <td>
                                                         <button type="submit" class="btn btn-success btn-sm">Lưu</button>
                                                         <button type="button" class="btn btn-secondary btn-sm"
@@ -118,7 +121,35 @@
             </div>
         </div>
     </div>
+
+@endsection
+
+@section('js')
+
+    <script src="https://cdn.datatables.net/1.13.6/js/jquery.dataTables.min.js"></script>
     <script>
+        $(document).ready(function() {
+            $('#room-table').DataTable({
+                responsive: true,
+                ordering: false,
+                language: {
+                    search: "Tìm kiếm:",
+                    lengthMenu: "Hiển thị _MENU_ dòng",
+                    info: "Hiển thị _START_ đến _END_ trong _TOTAL_ dòng",
+                    paginate: {
+                        previous: '<i class="fa-solid fa-arrow-left"></i>',
+                        next: '<i class="fa-solid fa-arrow-right"></i>'
+                    }
+                },
+                dom: '<"top"lf>rt<"bottom"ip><"clear">'
+            });
+        });
+
+        $('#room-table').on('error.dt', function(e, settings, techNote, message) {
+            console.error('DataTables Lỗi:', message);
+            alert('Đã có lỗi khi tải bảng: ' + message);
+        });
+
         function showEditRow(id) {
             document.getElementById('view-row-' + id).style.display = 'none';
             document.getElementById('edit-row-' + id).style.display = '';
