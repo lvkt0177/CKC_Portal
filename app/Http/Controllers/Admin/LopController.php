@@ -9,6 +9,9 @@ use App\Models\User;
 use App\Models\NienKhoa;
 use App\Models\SinhVien;
 use App\Models\HoSo;
+use App\Models\DiemRenLuyen;
+use App\Http\Requests\GiangVien\NhapDiemRequest;
+use Illuminate\Support\Facades\Auth;
 
 class LopController extends Controller
 {
@@ -34,18 +37,38 @@ class LopController extends Controller
     }
     public function nhapDiemRL(Lop $lop)
     {
-        $sinhViens = SinhVien::with(['hoSo', 'lop', 'lop.nienKhoa', 'lop.giangVien','diemRenLuyens'])
-            ->where('id_lop', $lop->id)
-            ->orderBy('ma_sv', 'asc')->get();
+       
+        $thang = request()->get('thoi_gian', now()->month); 
 
-        return view('admin.class.enter_point_rl', compact('sinhViens', 'lop'));
+        $sinhViens = SinhVien::with([
+            'hoSo',
+            'lop',
+            'lop.nienKhoa',
+            'lop.giangVien',
+            'diemRenLuyens' => function ($query) use ($thang) {
+                $query->where('thoi_gian', $thang); // Lọc theo tháng
+            }
+        ])
+        ->where('id_lop', $lop->id)
+        ->orderBy('ma_sv', 'asc')
+        ->get();
+
+            return view('admin.class.enter_point_rl', compact('sinhViens', 'thang','lop'));
+
     }
 
-    public function capNhatDiemRL(SinhVien $sv,NhapDiemRequest $request)
+    public function capNhatDiemRL(NhapDiemRequest $request)
     {
-        $id_sinh_vien = $request->validated($sv->id);
-        $data = $request->validated('xep_loai');
-        DiemRenLuyen::where('id_sinh_vien', $id_sinh_vien)->update($data);
+        
+        $data = $request->validated();
+        $data['id_gvcn'] = auth()->id();
+        DiemRenLuyen::updateOrCreate(
+        [ 
+            'id_sinh_vien' => $data['id_sinh_vien'],
+            'thoi_gian' => $data['thoi_gian'],
+        ],
+        $data
+        );
         return back()->with('success', 'Cập nhật điểm thành công!');
     }
     /**

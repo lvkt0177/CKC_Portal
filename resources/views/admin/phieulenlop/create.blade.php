@@ -21,24 +21,25 @@
                     </div>
 
                     <div class="card-body">
-                        <form id="phieu-len-lop-form" method="POST" action="{{ route('admin.phieulenlop.store') }}" data-confirm>
+                        <form id="phieu-len-lop-form" method="POST" action="{{ route('admin.phieulenlop.store') }}"
+                            data-confirm>
                             @csrf <!-- Đừng quên thêm CSRF token -->
 
                             <!-- Học phần -->
-                            <div class="col-md-12">
-                                <label for="id_lop_hoc_phan" class="form-label">Chọn lớp học phần</label>
-                                <select id="id_lop_hoc_phan" name="id_lop_hoc_phan" class="form-control">
-                                    <option value="">-- Chọn Lớp học phần -- </option>
-                                    @foreach ($lopHocPhan as $lhp)
-                                        <option value="{{ $lhp->id }}">{{ $lhp->ten_hoc_phan }}
-                                            {{ $lhp->lop->ten_lop }}</option>
-                                    @endforeach
-                                </select>
-
-                                <div id="sinhvien-details-container" class="mt-3"></div>
-                            </div>
-                            <!-- Tiết học -->
                             <div class="row">
+                                <div class="col-md-12">
+                                    <label for="id_lop_hoc_phan" class="form-label">Chọn lớp học phần</label>
+                                    <select id="id_lop_hoc_phan" name="id_lop_hoc_phan" class="form-control">
+                                        <option value="">-- Chọn Lớp học phần -- </option>
+                                        @foreach ($lopHocPhan as $lhp)
+                                            <option value="{{ $lhp->id }}">{{ $lhp->ten_hoc_phan }}
+                                                {{ $lhp->lop->ten_lop }}</option>
+                                        @endforeach
+                                    </select>
+
+                                    <div id="sinhvien-details-container" class="mt-3"></div>
+                                </div>
+                                <!-- Tiết học -->
                                 <div class="col-md-4 mb-3">
                                     <label for="buoi" class="form-label">Chọn buổi</label>
                                     <select id="buoi" name="buoi" class="form-select">
@@ -68,38 +69,39 @@
                                         <span class="text-danger">{{ $message }}</span>
                                     @enderror
                                 </div>
-                            </div>
 
 
-                            <!-- Ngày học -->
-                            <div class="mb-3">
-                                <label for="ngay" class="form-label">Ngày học</label>
-                                <input type="date" id="ngay" name="ngay" class="form-control" readonly
-                                    value="{{ \Carbon\Carbon::now()->format('Y-m-d') }}">
+                                <!-- Ngày học -->
+                                <div class="mb-3">
+                                    <label for="ngay" class="form-label">Ngày học</label>
+                                    <input type="date" id="ngay" name="ngay" class="form-control" readonly
+                                        value="{{ \Carbon\Carbon::now()->format('Y-m-d') }}">
 
-                            </div>
+                                </div>
 
-                            <!-- Phòng học -->
-                            <div class="mb-3">
-                                <label for="id_phong" class="form-label">Phòng học</label>
-                                <select id="id_phong" name="id_phong" class="form-select">
-                                    @foreach ($phong as $p)
-                                        <option value="{{ $p->id }}">{{ $p->ten }}</option>
-                                    @endforeach
+                                <!-- Phòng học -->
+                                <div class="mb-3 col-md-4">
+                                    <label for="id_phong" class="form-label">Phòng học</label>
+                                    <select id="id_phong" name="id_phong" class="form-select">
+                                        @foreach ($phong as $p)
+                                            <option value="{{ $p->id }}">{{ $p->ten }}</option>
+                                        @endforeach
 
-                                </select>
-                            </div>
-                            <div class="row">
+                                    </select>
+                                </div>
+                           
                                 {{-- Sỉ số  --}}
                                 <div class="col-md-4 mb-3">
                                     <label for="si_so" class="form-label">Sỉ số</label>
-                                    <input type="number" id="si_so" value="{{ old('si_so') }}" name="si_so" class="form-control" readonly>
+                                    <input type="number" id="si_so" value="{{ old('si_so') }}" name="si_so"
+                                        class="form-control" readonly>
 
                                 </div>
                                 {{-- Hiện diện --}}
                                 <div class="col-md-4 mb-3">
                                     <label for="hien_dien" class="form-label">Hiện diện</label>
-                                    <input type="number" id="hien_dien" value="{{ old('hien_dien') }}" name="hien_dien" class="form-control">
+                                    <input type="number" id="hien_dien" value="{{ old('hien_dien') }}" name="hien_dien"
+                                        class="form-control">
                                     @error('hien_dien')
                                         <span class="text-danger">{{ $message }}</span>
                                     @enderror

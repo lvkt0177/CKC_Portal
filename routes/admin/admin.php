@@ -23,6 +23,8 @@ Route::prefix('admin')->name('admin.')->group(function () {
         include('phieulenlop.php');
         include('thongbao.php');
         include('binhluan.php');
+        include('capmatkhau.php');
+
 
     });
 });

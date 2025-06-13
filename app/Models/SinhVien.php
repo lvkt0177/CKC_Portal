@@ -69,4 +69,9 @@ class SinhVien extends Authenticatable
         return $this->morphMany(BinhLuan::class, 'nguoi_binh_luan','id');
     }
 
+    public function capMatKhau()
+    {
+        return $this->hasMany(YeuCauCapLaiMatKhau::class, 'id_sinh_vien', 'id');
+    }
+
 }

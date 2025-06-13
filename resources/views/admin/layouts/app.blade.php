@@ -102,6 +102,9 @@
                             <li><a class="dropdown-item" href="{{ route('admin.testimonial.index') }}"><i
                                         class="fas fa-users me-2"></i>Quản lý sinh
                                     viên đăng ký giấy</a></li>
+
+                            <li><a class="dropdown-item" href="{{ route('admin.capmatkhausinhvien.index') }}"><i
+                                class="fas fa-users me-2"></i>Quản lý sinh viên liên hệ cấp mật khẩu</a></li>
                         </ul>
                     </div>
                 </nav>

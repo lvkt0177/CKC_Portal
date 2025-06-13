@@ -2,11 +2,6 @@
 
 @section('title', 'Trang hồ sơ')
 
-@php
-    $cccd = auth()->user()->hoSo->cccd;
-    $maskedCccd = substr($cccd, 0, 6) . str_repeat('*', strlen($cccd) - 6);
-@endphp
-
 @section('content')
 
     <div class="row justify-content-center">
@@ -79,7 +74,7 @@
         
                                 <div class="col-md-6 my-3">
                                     <label class="form-label text-dark fw-medium mb-2">CCCD</label>
-                                    <input type="text" class="form-control border-0 bg-light" value="{{ $maskedCccd }}"
+                                    <input type="text" class="form-control border-0 bg-light" value="{{ auth()->user()->hoSo->cccd }}"
                                         style="padding: 12px 16px; border-radius: 12px; color: black" disabled>
                                 </div>
         

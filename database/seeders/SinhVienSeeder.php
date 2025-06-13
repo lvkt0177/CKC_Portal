@@ -24,6 +24,14 @@ class SinhVienSeeder extends Seeder
                 "trang_thai" => 0,
             ],
             [
+                "ma_sv" => "0306229",
+                "id_lop" => 1,
+                "id_ho_so" => 14,
+                "chuc_vu" => 0,
+                "mat_khau" => bcrypt('1a@'),
+                "trang_thai" => 0,
+            ],
+            [
                 "ma_sv" => "0306222",
                 "id_lop" => 2,
                 "id_ho_so" => 5,

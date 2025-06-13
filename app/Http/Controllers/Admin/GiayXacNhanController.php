@@ -24,7 +24,7 @@ class GiayXacNhanController extends Controller
         $dangkygiay = DangKyGiay::findOrFail($id);
 
         $dangkygiay->trang_thai = 1;
-        $dangkygiay->id_giang_vien = Auth::user()->id; // Gán người đang đăng nhập
+        $dangkygiay->id_giang_vien = Auth::user()->id; 
         $dangkygiay->save();
 
         return redirect()->back()->with('success', 'Duyệt thành công!');

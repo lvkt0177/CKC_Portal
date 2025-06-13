@@ -22,11 +22,11 @@ Route::prefix('admin')->name('api.admin.')->group(function () {
         include('giangvien.php');
         include('permission.php');
         include('phong.php');
-        // include('giayxacnhan.php');
+        include('giayxacnhan.php');
+        include('phieulenlop.php');
+        include('thongbao.php');
+        include('lop.php');
         // include('diemmonhoc.php');
-        // include('lop.php');
         // include('bienbanshcn.php');
-        // include('phieulenlop.php');
-        // include('thongbao.php');
     });
 });

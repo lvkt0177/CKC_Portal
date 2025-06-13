@@ -7,6 +7,12 @@ use App\Acl\Acl;
 use Auth;
 use App\Http\Requests\TeacherLoginRequest;
 use App\Http\Requests\StudentLoginRequest;
+use App\Http\Requests\CapMatKhau\SinhVienYeuCauRequest;
+use App\Enum\LoaiTaiKhoan;
+use App\Models\YeuCauCapLaiMatKhau;
+use App\Models\User;
+use App\Models\SinhVien;
+
 
 class AuthLoginController extends Controller
 {
@@ -80,6 +86,34 @@ class AuthLoginController extends Controller
         $request->session()->invalidate();
         $request->session()->regenerateToken();
         return redirect()->route('login');
+    }
+
+    public function sinhVienYeuCauCapMatKhau(SinhVienYeuCauRequest $request)
+    {
+        $message = '';
+        $sinhVien = SinhVien::where('ma_sv', $request->validated('ma_sv'))->first();
+        $yeuCauCapMatKhau = YeuCauCapLaiMatKhau::create([
+            'id_sinh_vien' => $sinhVien->id,
+            'loai' => $request->validated('loai'),
+        ]);
+
+        if($request->validated('loai') == 0) 
+            $message = 'Yêu cầu cấp mật khẩu thành công. Chúng tôi sẽ liên hệ bạn qua Zalo để gửi mật khẩu.';
+        else
+            $message = 'Yêu cầu cấp mật khẩu thành công. Mật khẩu sẽ sớm được gửi qua Email của bạn.';
+
+        if($yeuCauCapMatKhau)
+            return redirect()->back()->with([
+                'success' => [
+                    'message' => $message,
+                    'ma_sv' => $sinhVien->ma_sv,
+                    'ho_ten' => $sinhVien->hoSo->ho_ten,
+                    'loai' => $yeuCauCapMatKhau->loai->getLabel(),
+                ]
+            ]
+        );
+        
+        return redirect()->back()->with('error', 'Yêu cầu cấp mật khâu thất bại');
     }
    
 

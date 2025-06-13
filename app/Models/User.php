@@ -95,4 +95,9 @@ class User extends Authenticatable
     {
         return $this->morphMany(BinhLuan::class, 'nguoi_binh_luan');
     }
+
+    public function capMatKhau()
+    {
+        return $this->hasMany(YeuCauCapLaiMatKhau::class, 'id_giang_vien', 'id');
+    }
 }

@@ -11,12 +11,15 @@ return new class extends Migration
      */
     public function up(): void
     {
-        Schema::create('diem_ren_luyen', function (Blueprint $table) {
+        Schema::create('yeu_cau_cap_lai_mat_khau', function (Blueprint $table) {
             $table->id();
-            $table->foreignId('id_gvcn')->nullable()->constrained('users')->onDelete('cascade');
+            //id_sinh_vien
             $table->foreignId('id_sinh_vien')->constrained('sinhvien')->onDelete('cascade');
-            $table->integer('xep_loai')->default(0); // 0: Chưa đánh giá, 1: A, 2: B, 3: C
-            $table->integer('thoi_gian')->nullable();// thang 1, 2, 3, 4, 5, 6, 7, 8, 9, 10, 11, 12
+            // id_giang_vien
+            $table->foreignId('id_giang_vien')->nullable()->constrained('users')->onDelete('cascade');
+
+            $table->integer('loai')->default(0);
+            $table->integer('trang_thai')->default(0);
             $table->timestamps();
         });
     }
@@ -26,6 +29,6 @@ return new class extends Migration
      */
     public function down(): void
     {
-        Schema::dropIfExists('diem_ren_luyen');
+        Schema::dropIfExists('yeu_cau_cap_lai_mat_khau');
     }
 };

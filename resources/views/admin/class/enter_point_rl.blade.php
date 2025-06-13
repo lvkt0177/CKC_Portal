@@ -11,6 +11,18 @@
             opacity: 1 !important;
             visibility: visible !important;
         }
+
+        select {
+            border: 1px solid #ced4da;
+            border-radius: 5px;
+            padding: 8px 14px;
+            margin-left: 8px;
+            font-size: 14px;
+            max-width: 100%;
+            box-shadow: 0 1px 4px rgba(0, 0, 0, 0.1);
+            transition: border-color 0.3s ease, box-shadow 0.3s ease;
+            margin: 1rem;
+        }
     </style>
 @endsection
 
@@ -25,7 +37,18 @@
                     </div>
 
                     <div class="teams-section">
-                        <table class="team-table">
+                        <form method="GET" action="{{ route('admin.lop.nhap-diem_rl', $lop->id) }}"
+                            class="d-flex justify-content-end">
+                            <label>Chọn tháng:
+                                <select class="select" name="thoi_gian" onchange="this.form.submit()">
+                                    @for ($i = 1; $i <= now()->month; $i++)
+                                        <option value="{{ $i }}" {{ $i == $thang ? 'selected' : '' }}>Tháng
+                                            {{ $i }}</option>
+                                    @endfor
+                                </select>
+                            </label>
+                        </form>
+                        <table class="team-table" id="room-table">
                             <thead class="table-center">
                                 <tr class="text-center">
                                     <th><input type="checkbox" id="checkAll" style="left: 0"></th>
@@ -33,6 +56,8 @@
                                     <th>MSSV</th>
                                     <th>Họ tên sinh viên</th>
                                     <th>Rèn luyện</th>
+                                    <th></th>
+                                    <th></th>
                                 </tr>
                             </thead>
                             <tbody>
@@ -46,22 +71,27 @@
                                         <td>{{ $sv->ma_sv }}</td>
                                         <td>{{ $sv->hoSo->ho_ten }}</td>
                                         <td>
-                                            @if ($sv->diemRenLuyens->isNotEmpty())
-                                                {{ $sv->diemRenLuyens->first()->xep_loai }}
-                                            @else
-                                                Chưa có điểm
-                                            @endif
+                                            @foreach ($sv->diemRenLuyens as $diemRenLuyen)
+                                                {{ $diemRenLuyen->xep_loai->getLabel() }}
+                                            @endforeach
                                         </td>
                                         <td>
                                             <button class="btn btn-primary btn-sm"
-                                                onclick="showEditRow({{ $sv->id }})"><i
-                                                    class="bi bi-pencil-square"></i></button>
+                                                onclick="showEditRow({{ $sv->id }})">
+                                                <i class="bi bi-pencil-square"></i></button>
                                         </td>
+                                        <td>
+                                            @error('xep_loai')
+                                                <span class="text-danger">{{ $message }}</span>
+                                            @enderror
+                                        </td>
+                                    </tr>
                                     <tr id="edit-row-{{ $sv->id }}" style="display: none;">
-                                        <form action="{{ route('admin.lop.cap-nhat-diem_rl', $sv) }}" method="POST"
-                                            onsubmit="return confirmSubmit();">
+                                        <form action="{{ route('admin.lop.cap-nhat-diem_rl') }}" method="POST"
+                                            data-confirm>
                                             @csrf
-                                            <input type="hidden" name="sv" value="{{ $sv }}">
+                                            <input type="hidden" name="id_sinh_vien" value="{{ $sv->id }}">
+                                            <input type="hidden" name="thoi_gian" value="{{ $thang }}">
                                             <td>
                                                 <input type="checkbox" class="student-checkbox" name="selected_students[]"
                                                     value="{{ $sv->id }}">
@@ -70,15 +100,17 @@
                                             <td>{{ $sv->ma_sv }}</td>
                                             <td>{{ $sv->hoSo->ho_ten }}</td>
                                             <td>
-                                                <input type="text" name="xep_loai"
-                                                    value="{{ optional($sv->diemRenLuyens->first())->xep_loai }}"
-                                                    class="form-control xep-loai-input"
-                                                    oninput="this.value = this.value.toUpperCase().replace(/[^ABCD]/g, '')"
-                                                    maxlength="1">
-
-                                                {{-- @error('diem_thi')
-                                                        <span class="text-danger">{{ $message }}</span>
-                                                    @enderror --}}
+                                                <select name="xep_loai" class="form-control xep-loai-input">
+                                                    <option value="">-- Chọn xếp loại --</option>
+                                                    <option value="1">
+                                                        A</option>
+                                                    <option value="2">
+                                                        B</option>
+                                                    <option value="3">
+                                                        C</option>
+                                                    <option value="4">
+                                                        D</option>
+                                                </select>
                                             </td>
                                             <td colspan="2">Cập nhật điểm</td>
                                             <td>
@@ -101,8 +133,6 @@
     </div>
 
 @endsection
-
-
 @section('js')
     <script>
         function showEditRow(id) {
@@ -119,9 +149,31 @@
             return confirm('Bạn có chắc chắn muốn nhập điểm không?');
         }
     </script>
-@endsection
+    <script src="https://cdn.datatables.net/1.13.6/js/jquery.dataTables.min.js"></script>
+    <script>
+        $(document).ready(function() {
+            $('#room-table').DataTable({
+                responsive: true,
+                ordering: false,
+                language: {
+                    search: "Tìm kiếm sinh viên:",
+                    lengthMenu: "Hiển thị _MENU_ dòng",
+                    info: "Hiển thị _START_ đến _END_ trong _TOTAL_ dòng",
+                    paginate: {
+                        previous: '<i class="fa-solid fa-arrow-left"></i>',
+                        next: '<i class="fa-solid fa-arrow-right"></i>'
+                    }
+                },
+                dom: '<"top"lf>rt<"bottom"ip><"clear">'
+            });
+        });
 
-@section('js')
+        $('#room-table').on('error.dt', function(e, settings, techNote, message) {
+            console.error('DataTables Lỗi:', message);
+            alert('Đã có lỗi khi tải bảng: ' + message);
+        });
+    </script>
+
     <script>
         document.getElementById('checkAll').addEventListener('change', function() {
             const checkboxes = document.querySelectorAll('.student-checkbox');

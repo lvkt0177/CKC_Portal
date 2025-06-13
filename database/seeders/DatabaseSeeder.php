@@ -43,6 +43,8 @@ class DatabaseSeeder extends Seeder
             BienBanSHCNSeeder::class,
             ThongBaoSeeder::class,
             BinhLuanSeeder::class,
+            DiemRenLuyenSeeder::class,
+
         ]);
 
     }
