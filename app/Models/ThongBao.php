@@ -4,6 +4,7 @@ namespace App\Models;
 
 use Illuminate\Database\Eloquent\Model;
 use App\Enum\ThongBaoStatus;
+use App\Enum\CapTren;
 
 class ThongBao extends Model
 {
@@ -20,7 +21,8 @@ class ThongBao extends Model
 
     protected $casts = [
         'ngay_gui' => 'date',
-        'trang_thai' => ThongBaoStatus::class
+        'trang_thai' => ThongBaoStatus::class,
+        'tu_ai' => CapTren::class
     ];
 
     public function file()
@@ -31,5 +33,15 @@ class ThongBao extends Model
     public function giangVien()
     {
         return $this->belongsTo(User::class, 'id_gv', 'id');
+    }
+
+    public function chiTietThongBao()
+    {
+        return $this->hasMany(ChiTietThongBao::class, 'id_thong_bao', 'id');
+    }
+
+    public function binhLuans()
+    {
+        return $this->hasMany(BinhLuan::class, 'id_thong_bao','id');
     }
 }

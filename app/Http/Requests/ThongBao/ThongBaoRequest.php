@@ -26,6 +26,7 @@ class ThongBaoRequest extends FormRequest
             'noi_dung'=> 'required|string',
             'tu_ai' => 'required|string',
             'ngay_gui'  => 'required|date|date_format:Y-m-d\TH:i|before_or_equal:'.now()->format('Y-m-d\TH:i'),
+            'files' => 'array|max:5',
             'files.*' => 'mimes:doc,docx,xls,xlsx,pdf|max:10240',
         ];
     }
@@ -48,6 +49,7 @@ class ThongBaoRequest extends FormRequest
 
             'files.*.mimes'      => 'Tệp đính kèm chỉ cho phép các định dạng: doc, docx, xls, xlsx, pdf.',
             'files.*.max'        => 'Mỗi tệp đính kèm không được vượt quá 10MB.',
+            'files.max'          => 'Tệp đính kèm không quá 3 tệp.',
         ];
     }
 

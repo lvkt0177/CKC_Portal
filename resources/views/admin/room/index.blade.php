@@ -33,7 +33,7 @@
                                                 {{ $room->loai_phong->getLabel() }}
                                             </span></td>
                                         <td>
-                                            <a href="{{ route('admin.phong.show', $room) }}"
+                                            <a href="{{ route('admin.phong.edit', $room) }}"
                                                 class="btn btn-warning btn-sm">Sửa</a>
                                         </td>
                                     </tr>

@@ -33,9 +33,7 @@ class RoomController extends Controller
         return redirect()->route('admin.phong.index')->with('success', 'Phòng đã được tạo thành công.');
     }
 
-
-
-    public function show(Phong $phong)
+    public function edit(Phong $phong)
     {
         return view('admin.room.edit', compact('phong'));
     }
@@ -49,6 +47,4 @@ class RoomController extends Controller
         return redirect()->back()->with('error', 'Không thể cập nhật phòng. Vui lòng thử lại.');
 
     }
-
-
 }

@@ -30,6 +30,11 @@ class ThongBaoRepository extends BaseRepository implements ThongBaoRepositoryInt
         parent::__construct($model);
     }
 
+    public function all()
+    {
+        return $this->model->with('giangVien.hoSo')->where('id_gv', auth()->user()->id)->orderBy('ngay_gui', 'desc')->get();
+    }
+
     public function create($data)
     {
         try {
@@ -73,9 +78,11 @@ class ThongBaoRepository extends BaseRepository implements ThongBaoRepositoryInt
             $model->update($data);
 
             if ($files && is_array($files)) {
-                foreach ($model->files as $oldFile) {
-                    Storage::disk('public')->delete($oldFile->url);
-                    $oldFile->delete(); 
+                if($model->files){
+                    foreach ($model->files as $oldFile) {
+                        Storage::disk('public')->delete($oldFile->url);
+                        $oldFile->delete(); 
+                    }
                 }
     
                 foreach ($files as $file) {

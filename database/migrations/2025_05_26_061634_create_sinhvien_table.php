@@ -24,7 +24,7 @@ return new class extends Migration
             // CHỨC VỤ
             $table->integer('chuc_vu')->default(0); // 0: sinh viên, 1: thư ký
             
-            $table->string('mat_khau')->nullable();
+            $table->string('password')->nullable();
 
             $table->integer('trang_thai')->default(0);
             

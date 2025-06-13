@@ -2,10 +2,10 @@
 
 use Illuminate\Support\Facades\Route;
 use App\Acl\Acl;
+use App\Http\Controllers\Admin\ProfileController;
 
+Route::resource('profile', ProfileController::class);
 
-Route::get('/profile', function () {
-    return view('admin.profile.index');
-})->name('profile.index');
+Route::post('/change-password', [ProfileController::class, 'changePassword'])->name('profile.change-password');
 
 

@@ -20,7 +20,7 @@
                 <div class="card shadow-sm">
                     <div class="card-header d-flex justify-content-between align-items-center">
                         <h3 class="card-title mb-0">Tạo thông báo</h3>
-                        <a class="btn btn-back btn-sm">Quay lại</a>
+                        <a href="{{ route('admin.thongbao.index') }}" class="btn btn-back btn-sm">Quay lại</a>
                     </div>
                     <div class="card-body">
                         <form action="{{ route('admin.thongbao.store') }}" method="POST" data-confirm enctype="multipart/form-data">
@@ -65,6 +65,9 @@
                                 <div class="col-md-12">
                                     <label for="file" class="form-label">File đính kèm</label>
                                     <input type="file" class="form-control" name="files[]" accept=".doc,.docx,.xls,.xlsx,.pdf" multiple>
+                                    @error('files')
+                                        <div class="text-danger">{{ $message }}</div>
+                                    @enderror
                                 </div>
 
                                 <div class="col-12">

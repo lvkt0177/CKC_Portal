@@ -22,7 +22,6 @@ class TeacherLoginRequest extends FormRequest
     public function rules(): array
     {
         return [
-            //
             'tai_khoan' => 'required',
             'password' => 'required|string|min:6',
         ];

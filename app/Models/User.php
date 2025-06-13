@@ -9,7 +9,7 @@ use Illuminate\Foundation\Auth\User as Authenticatable;
 use Illuminate\Notifications\Notifiable;
 use Spatie\Permission\Traits\HasRoles;
 use Laravel\Sanctum\HasApiTokens;
-
+use Illuminate\Database\Eloquent\Relations\MorphTo;
 class User extends Authenticatable
 {
     /** @use HasFactory<\Database\Factories\UserFactory> */
@@ -89,5 +89,10 @@ class User extends Authenticatable
     public function diemRenLuyens()
     {
         return $this->hasMany(DiemRenLuyen::class, 'id_giang_vien', 'id');
+    }
+
+    public function binhLuans()
+    {
+        return $this->morphMany(BinhLuan::class, 'nguoi_binh_luan');
     }
 }

@@ -5,9 +5,13 @@ namespace App\Models;
 use Illuminate\Database\Eloquent\Model;
 use App\Enum\RoleStudent;
 use App\Enum\ActiveOrNotStatus;
+use Laravel\Sanctum\HasApiTokens;
+use Illuminate\Foundation\Auth\User as Authenticatable;
+use Illuminate\Database\Eloquent\Relations\MorphTo;
 
-class SinhVien extends Model
+class SinhVien extends Authenticatable 
 {
+    use HasApiTokens;
     protected $table = 'sinhvien';
 
     protected $fillable = [
@@ -53,6 +57,16 @@ class SinhVien extends Model
     public function chiTietBienBanSHCN()
     {
         return $this->hasMany(ChiTietBienBanSHCN::class, 'id_sinh_vien', 'id');
+    }
+
+    public function chiTietThongBao()
+    {
+        return $this->hasMany(ChiTietThongBao::class, 'id_sinh_vien', 'id');
+    }
+
+    public function binhLuans()
+    {
+        return $this->morphMany(BinhLuan::class, 'nguoi_binh_luan','id');
     }
 
 }
