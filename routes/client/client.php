@@ -10,6 +10,8 @@ Route::prefix('sinhvien')->name('sinhvien.')->group(function () {
         
         include('home.php');
         include('profile.php');
+        include('khungdaotao.php');
+        include('giayxacnhan.php');
         
     });
 });

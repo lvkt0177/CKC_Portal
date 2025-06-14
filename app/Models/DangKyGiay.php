@@ -10,7 +10,7 @@ class DangKyGiay extends Model
     protected $fillable = [
         'id_sinh_vien',
         'id_giang_vien',
-        'id_giay',
+        'id_loai_giay',
         'ngay_dang_ky',
         'ngay_nhan',
         'trang_thai'

@@ -10,7 +10,7 @@
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/animate.css/4.1.1/animate.min.css" />
     <link rel="stylesheet" href="{{ asset('assets/client/css/style.css') }}">
     <link rel="icon" type="image/png"
-    href="https://cdn.haitrieu.com/wp-content/uploads/2023/01/Logo-Truong-Cao-dang-Ky-thuat-Cao-Thang.png">
+        href="https://cdn.haitrieu.com/wp-content/uploads/2023/01/Logo-Truong-Cao-dang-Ky-thuat-Cao-Thang.png">
     @yield('css')
 </head>
 
@@ -51,14 +51,16 @@
             </div>
 
             <div class="d-flex align-items-center position-relative text-muted">
-                <a class="text-decoration-none text-dark" href="{{ route('studentLogout') }}"><i class="fa-solid fa-right-from-bracket text-danger"></i> Đăng xuất</a>
+                <a class="text-decoration-none text-dark" href="{{ route('studentLogout') }}"><i
+                        class="fa-solid fa-right-from-bracket text-danger"></i> Đăng xuất</a>
             </div>
 
         </div>
 
         <!-- Dropdown khi màn hình nhỏ -->
         <div class="dropdown d-lg-none ms-auto">
-            <button class="btn btn-light" type="button" id="mobileMenu" data-bs-toggle="dropdown" aria-expanded="false">
+            <button class="btn btn-light" type="button" id="mobileMenu" data-bs-toggle="dropdown"
+                aria-expanded="false">
                 <i class="fas fa-ellipsis-v"></i>
             </button>
             <ul class="dropdown-menu dropdown-menu-end animate__animated animate__fadeIn" aria-labelledby="mobileMenu">
@@ -80,8 +82,10 @@
                         style="width: 28px; height: 28px; font-weight: bold;">N</div>
                     {{ Auth::guard('student')->user()->hoSo->ho_ten }}
                 </li>
-                <li><a href="{{ route('studentLogout') }}"><i class="fa-solid fa-right-from-bracket text-danger"></i>Đổi mật khẩu</a></li>
-                <li><a href="{{ route('studentLogout') }}"><i class="fa-solid fa-right-from-bracket text-danger"></i> Đăng xuất</a></li>
+                <li><a href="{{ route('studentLogout') }}"><i class="fa-solid fa-right-from-bracket text-danger"></i>Đổi
+                        mật khẩu</a></li>
+                <li><a href="{{ route('studentLogout') }}"><i class="fa-solid fa-right-from-bracket text-danger"></i>
+                        Đăng xuất</a></li>
             </ul>
         </div>
 
@@ -95,13 +99,15 @@
     <!-- Sidebar -->
     <aside class="sidebar" id="sidebar">
         <ul class="sidebar-menu">
-            <li><a href="{{ route('sinhvien.trang-chu.index') }}" class="{{ isActiveRoute('sinhvien/trang-chu') }}"><i class="fas fa-home"></i> TRANG CHỦ</a></li>
+            <li><a href="{{ route('sinhvien.trang-chu.index') }}" class="{{ isActiveRoute('sinhvien/trang-chu') }}"><i
+                        class="fas fa-home"></i> TRANG CHỦ</a></li>
 
             <li class="dropdown">
                 <a href="#" class="dropdown-toggle"><i class="fas fa-info-circle"></i> THÔNG TIN CHUNG</a>
                 <ul class="submenu">
                     <li><a href="#">Thông tin sinh viên</a></li>
-                    <li><a href="#">Đăng ký giấy xác nhận</a></li>
+                    <li><a href="{{ route('sinhvien.giayxacnhan.index') }}">Đăng ký xác nhận giấy tờ</a></li>
+                    <li><a href="{{ route('sinhvien.khungdaotao.index') }}">Khung chương trình đào tạo</a></li>
                 </ul>
             </li>
 
@@ -130,7 +136,8 @@
             </li>
 
             <li class="dropdown">
-                <a href="#" class="dropdown-toggle {{ isActiveRoute('sinhvien/ho-so') }}"><i class="fa-solid fa-user-shield"></i> BẢO MẬT</a>
+                <a href="#" class="dropdown-toggle {{ isActiveRoute('sinhvien/ho-so') }}"><i
+                        class="fa-solid fa-user-shield"></i> BẢO MẬT</a>
                 <ul class="submenu">
                     <li><a href="{{ route('sinhvien.ho-so.doi-mat-khau') }}">Đổi mật khẩu</a></li>
                 </ul>
@@ -141,7 +148,7 @@
 
     <!-- Main Content -->
     <main class="main-content" id="mainContent">
-        @yield('content')        
+        @yield('content')
     </main>
 
     <div id="custom-confirm">
@@ -204,7 +211,7 @@
         }
 
         // Handle responsive sidebar
-        window.addEventListener('resize', function () {
+        window.addEventListener('resize', function() {
             const sidebar = document.getElementById('sidebar');
             const mainContent = document.getElementById('mainContent');
             const overlay = document.querySelector('.sidebar-overlay');
@@ -225,8 +232,8 @@
             document.getElementById('mainContent').classList.add('expanded');
         }
 
-        document.querySelectorAll('.dropdown-toggle').forEach(function (toggle) {
-            toggle.addEventListener('click', function (e) {
+        document.querySelectorAll('.dropdown-toggle').forEach(function(toggle) {
+            toggle.addEventListener('click', function(e) {
                 e.preventDefault();
                 let submenu = this.nextElementSibling;
                 submenu.style.display = submenu.style.display === 'block' ? 'none' : 'block';
@@ -282,7 +289,6 @@
                 });
             @endif
         });
-
     </script>
 </body>
 
