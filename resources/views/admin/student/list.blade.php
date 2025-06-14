@@ -10,7 +10,7 @@
                 <div class="card shadow-sm">
                     <div class="card-header d-flex justify-content-between align-items-center">
                         <h3 class="card-title mb-0"> Danh sách Sinh Viên Lớp {{ $lop->ten_lop ?? '' }} </h3>
-                        <a class="btn btn-primary" href="{{ route('admin.student.index') }}">Quay lại</a>
+                        <a class="btn btn-primary" href="{{ route('giangvien.student.index') }}">Quay lại</a>
                     </div>
 
                     <div class="card-body">
@@ -80,7 +80,7 @@
         });
 
         $('#room-table').on('error.dt', function(e, settings, techNote, message) {
-            alert('Đã có lỗi khi tải danh sách sinh viên của lớp này. '); 
+            alert('Đã có lỗi khi tải danh sách sinh viên của lớp này. ');
         });
     </script>
 @endsection

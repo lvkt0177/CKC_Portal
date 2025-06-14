@@ -10,7 +10,7 @@
                 <div class="card shadow-sm">
                     <div class="card-header d-flex justify-content-between align-items-center">
                         <h3 class="card-title mb-0"> Danh sách Sinh Viên Lớp {{ $lop_HP->ten_hoc_phan ?? '' }} </h3>
-                        <a class="btn btn-back" href="{{ route('admin.diemmonhoc.index') }}">Quay lại</a>
+                        <a class="btn btn-back" href="{{ route('giangvien.diemmonhoc.index') }}">Quay lại</a>
 
                     </div>
 
@@ -23,7 +23,7 @@
 
 
                             </div>
-                            <form action="{{ route('admin.diemmonhoc.cap-nhat-diem') }}" method="POST">
+                            <form action="{{ route('giangvien.diemmonhoc.cap-nhat-diem') }}" method="POST">
                                 @csrf
                                 <table class="table table-bordered mb-3" id="room-table">
                                     <thead>

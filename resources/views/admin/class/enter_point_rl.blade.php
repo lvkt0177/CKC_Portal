@@ -13,11 +13,11 @@
                 <div class="card shadow-sm teams-section">
                     <div class="card-header d-flex justify-content-between align-items-center">
                         <h3 class="card-title mb-0">Danh sách Sinh viên - Lớp {{ $lop->ten_lop }}</h3>
-                        <a href="{{ route('admin.lop.index') }}" class="btn btn-primary">Quay lại</a>
+                        <a href="{{ route('giangvien.lop.index') }}" class="btn btn-primary">Quay lại</a>
                     </div>
 
                     <div class="teams-section">
-                        <form method="GET" id="week-form" action="{{ route('admin.lop.nhap-diem_rl', $lop->id) }}"
+                        <form method="GET" id="week-form" action="{{ route('giangvien.lop.nhap-diem_rl', $lop->id) }}"
                             class="d-flex justify-content-center pt-4 px-3 mb-2" style=" background:#4891e9 90%;">
                             <div class="date-picker-grid">
                                 @php
@@ -51,7 +51,7 @@
                         <div class="design-section" id="bulkFormContainer" style="display: none;">
                             <div class="modern-form-container">
                                 <h2 class="design-title">Xếp loại hàng loạt</h2>
-                                <form action="{{ route('admin.lop.cap-nhat-diem-checked') }}" method="POST">
+                                <form action="{{ route('giangvien.lop.cap-nhat-diem-checked') }}" method="POST">
                                     @csrf
                                     <div class="form-group">
                                         <input type="hidden" name="selected_students" id="selectedStudents">
@@ -128,7 +128,7 @@
                                         </td>
                                     </tr>
                                     <tr id="edit-row-{{ $sv->id }}" style="display: none;">
-                                        <form action="{{ route('admin.lop.cap-nhat-diem_rl') }}" method="POST"
+                                        <form action="{{ route('giangvien.lop.cap-nhat-diem_rl') }}" method="POST"
                                             data-confirm>
                                             @csrf
                                             <input type="hidden" name="id_sinh_vien" value="{{ $sv->id }}">

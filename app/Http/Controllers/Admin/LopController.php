@@ -61,7 +61,7 @@ class LopController extends Controller
             return view('admin.class.enter_point_rl', compact('sinhViens', 'thang','lop'));
 
     }
-
+ 
     public function capNhatDiemRL(NhapDiemRenLuyenRequest $request)
     {
         
