@@ -18,7 +18,8 @@
 
                     <div class="teams-section">
                         <form method="GET" id="week-form" action="{{ route('giangvien.lop.nhap-diem_rl', $lop->id) }}"
-                            class="d-flex justify-content-center pt-4 px-3 mb-2" style=" background:#4891e9 90%;">
+                            class="d-flex justify-content-center pt-4 px-3 "
+                            style=" background: linear-gradient(180deg, #4891e9 10%, #9bc9ec 90%);">
                             <div class="date-picker-grid">
                                 @php
                                     $namHienTai = now()->year;
@@ -57,7 +58,7 @@
                                         <input type="hidden" name="selected_students" id="selectedStudents">
                                         <input type="hidden" name="thoi_gian" value="{{ $thang }}">
                                         <input type="hidden" name="nam" value="{{ $namDangChon }}">
-                                        <label>Chọn Xếp Loại</label>
+
                                         <div class="select-wrapper">
                                             <select class="modern-select" name="xep_loai">
                                                 <option value="">-- Chọn xếp loại --</option>
@@ -81,7 +82,8 @@
                                 </form>
                             </div>
                         </div>
-                        <table class="team-table" id="room-table">
+                        <div class="my-3"></div>
+                        <table class="team-table " id="room-table">
                             <thead class="table-center">
                                 <tr class="text-center">
                                     @if ($namDangChon == now()->year && $thang == now()->month)

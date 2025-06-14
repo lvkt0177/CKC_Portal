@@ -10,7 +10,7 @@
 }
 
 .modern-form-container {
-    background: linear-gradient(180deg, #4891e9 10%, #9ac9ed 90%);
+    background: linear-gradient(180deg, #9bc9ec 10%, #ffffff 90%);
     box-shadow: #699de5;
 
     padding: 24px;
@@ -103,8 +103,8 @@
 }
 
 .modern-btn-primary {
-    background: rgba(255, 255, 255, 0.2);
-    color: white;
+    background: rgba(176, 255, 112, 0.2);
+    color: black;
     border: 1px solid rgba(255, 255, 255, 0.3);
     backdrop-filter: blur(10px);
 }
@@ -116,7 +116,7 @@
 
 .modern-btn-secondary {
     background: rgba(0, 0, 0, 0.1);
-    color: white;
+    color: black;
     border: 1px solid rgba(255, 255, 255, 0.2);
     backdrop-filter: blur(10px);
 }
