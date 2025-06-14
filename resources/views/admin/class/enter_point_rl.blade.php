@@ -84,22 +84,28 @@
                         <table class="team-table" id="room-table">
                             <thead class="table-center">
                                 <tr class="text-center">
-                                    <th><input type="checkbox" id="checkAll" style="left: 0"></th>
+                                    @if ($namDangChon == now()->year && $thang == now()->month)
+                                        <th><input type="checkbox" id="checkAll" style="left: 0"></th>
+                                    @endif
                                     <th>No.</th>
                                     <th>MSSV</th>
                                     <th>Họ tên sinh viên</th>
                                     <th>Rèn luyện</th>
-                                    <th></th>
+                                    @if ($namDangChon == now()->year && $thang == now()->month)
+                                        <th></th>
+                                    @endif
                                     <th></th>
                                 </tr>
                             </thead>
                             <tbody>
                                 @foreach ($sinhViens as $sv)
                                     <tr id="view-row-{{ $sv->id }}" class="text-center">
-                                        <td>
-                                            <input type="checkbox" class="student-checkbox" name="selected_students[]"
-                                                value="{{ $sv->id }}">
-                                        </td>
+                                        @if ($namDangChon == now()->year && $thang == now()->month)
+                                            <td>
+                                                <input type="checkbox" class="student-checkbox" name="selected_students[]"
+                                                    value="{{ $sv->id }}">
+                                            </td>
+                                        @endif
                                         <td>{{ $loop->index + 1 }}</td>
                                         <td>{{ $sv->ma_sv }}</td>
                                         <td>{{ $sv->hoSo->ho_ten }}</td>
@@ -108,11 +114,13 @@
                                                 {{ $diemRenLuyen->xep_loai->getLabel() }}
                                             @endforeach
                                         </td>
-                                        <td>
-                                            <button class="btn btn-primary btn-sm"
-                                                onclick="showEditRow({{ $sv->id }})">
-                                                <i class="bi bi-pencil-square"></i></button>
-                                        </td>
+                                        @if ($namDangChon == now()->year && $thang == now()->month)
+                                            <td>
+                                                <button class="btn btn-primary btn-sm"
+                                                    onclick="showEditRow({{ $sv->id }})">
+                                                    <i class="bi bi-pencil-square"></i></button>
+                                            </td>
+                                        @endif
                                         <td>
                                             @error('xep_loai')
                                                 <span class="text-danger">{{ $message }}</span>

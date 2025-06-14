@@ -18,6 +18,8 @@ class DanhSachHocPhan extends Model
         'diem_tong_ket',
         'loai_hoc',
     ];
+    public $incrementing = false;
+    protected $primaryKey = null;
     //lop hoc phan
     public function lopHocPhan()
     {

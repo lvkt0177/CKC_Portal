@@ -39,7 +39,7 @@ return new class extends Migration
             $table->float('diem_thi')->nullable();
 
             //điểm tổng kết
-            $table->float('diem_tong_ket')->default(0);
+            $table->float('diem_tong_ket')->nullable();
 
             //loại học
             $table->integer('loai_hoc')->default(0); // 0: học chính thức, 1: học ghép

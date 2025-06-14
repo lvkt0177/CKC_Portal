@@ -56,38 +56,46 @@ class DiemMonHocController extends Controller
     }
     public function capNhat(NhapDiemRequest $request)
     {
+       
+        $validated = $request->validated();
+        $Students = $validated['students'] ?? [];
+        $idLopHocPhan = $validated['id_lop_hoc_phan'];
+        $chuyenCan = $validated['diem_chuyen_can'] ?? [];
+        $quaTrinh = $validated['diem_qua_trinh'] ?? [];
+        $thi = $validated['diem_thi'] ?? [];
+       
+        foreach ($Students as $idSinhVien) {
+        $idSinhVien = (int)$idSinhVien;
 
-        $dsHocPhan = DanhSachHocPhan::get();
-        $id_sinh_vien = $request->validated('id_sinh_vien');
-        $id_lop_hoc_phan = $request->validated('id_lop_hoc_phan');
+        $cc = $chuyenCan[$idSinhVien] ?? null;
+        $qt = $quaTrinh[$idSinhVien] ?? null;
+        $dt = $thi[$idSinhVien] ?? null;
 
-        if (!$id_sinh_vien) {
-            return back()->with('error', 'Không nhận được ID sinh viên!');
-        }
-        if (!is_null($request->validated('diem_chuyen_can'))) {
-            $dsHocPhan->diem_chuyen_can = $request->diem_chuyen_can;
-        }
+        $tongKet = (!is_null($cc) && !is_null($qt) && !is_null($dt))
+            ? ($cc * 0.1 + $qt * 0.4 + $dt * 0.5)
+            : null;
 
-        if (!is_null($request->validated('diem_qua_trinh'))) {
-            $dsHocPhan->diem_qua_trinh = $request->diem_qua_trinh;
-        }
+        $updates[] = [
+            'id_sinh_vien' => $idSinhVien,
+            'diem_chuyen_can' => $cc,
+            'diem_qua_trinh' => $qt,
+            'diem_thi' => $dt,
+            'diem_tong_ket' => $tongKet,
+        ];
+    }
+   
+    foreach ($updates as $data) {
+        DanhSachHocPhan::where('id_lop_hoc_phan', $idLopHocPhan)
+            ->where('id_sinh_vien', $data['id_sinh_vien'])
+            ->update([
+                'diem_chuyen_can' => $data['diem_chuyen_can'],
+                'diem_qua_trinh' => $data['diem_qua_trinh'],
+                'diem_thi' => $data['diem_thi'],
+                'diem_tong_ket' => $data['diem_tong_ket'],
+            ]);
+    }
 
-        if (!is_null($request->validated('diem_thi'))) {
-            $dsHocPhan->diem_thi = $request->diem_thi;
-        }
 
-        $data = array_intersect_key(
-            $request->validated(),
-            array_flip(['diem_chuyen_can', 'diem_qua_trinh', 'diem_thi'])
-        );
-
-
-        $data['diem_tong_ket'] = $request->validated('diem_chuyen_can') * 0.1
-            + $request->validated('diem_qua_trinh') * 0.4
-            + $request->validated('diem_thi') * 0.5;
-        DanhSachHocPhan::where('id_sinh_vien', $id_sinh_vien)
-            ->where('id_lop_hoc_phan', $id_lop_hoc_phan)
-            ->update($data);
         return back()->with('success', 'Cập nhật điểm thành công!');
     }
 }

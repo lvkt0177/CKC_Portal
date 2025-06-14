@@ -11,7 +11,7 @@ use App\Models\SinhVien;
 use App\Models\HoSo;
 use App\Models\Nam;
 use App\Models\DiemRenLuyen;
-use App\Http\Requests\GiangVien\NhapDiemRequest;
+use App\Http\Requests\GiangVien\NhapDiemRenLuyenRequest;
 use Illuminate\Support\Facades\Auth;
 
 class LopController extends Controller
@@ -62,13 +62,12 @@ class LopController extends Controller
 
     }
 
-    public function capNhatDiemRL(NhapDiemRequest $request)
+    public function capNhatDiemRL(NhapDiemRenLuyenRequest $request)
     {
         
         $data = $request->validated();
         $data['id_gvcn'] = auth()->id();
         $data['id_nam'] = Nam::where('nam_bat_dau', $data['nam'])->first()->id;
-        
         DiemRenLuyen::updateOrCreate(
         [ 
             'id_sinh_vien' => $data['id_sinh_vien'],
@@ -79,9 +78,8 @@ class LopController extends Controller
         );
         return back()->with('success', 'Cập nhật điểm thành công!');
     }
-    public function capNhatDiemChecked(NhapDiemRequest $request)
-    {
-        
+    public function capNhatDiemChecked(NhapDiemRenLuyenRequest $request)
+    {   
         $data = $request->validated();
         $data['selected_students'] = json_decode($request->selected_students, true);
         // Lấy ID giáo viên chủ nhiệm
