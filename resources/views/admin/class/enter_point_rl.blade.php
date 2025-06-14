@@ -3,27 +3,7 @@
 @section('title', 'Lớp chủ nhiệm')
 
 @section('css')
-
-    <style>
-        input[type="checkbox"] {
-            position: static !important;
-            left: auto !important;
-            opacity: 1 !important;
-            visibility: visible !important;
-        }
-
-        select {
-            border: 1px solid #ced4da;
-            border-radius: 5px;
-            padding: 8px 14px;
-            margin-left: 8px;
-            font-size: 14px;
-            max-width: 100%;
-            box-shadow: 0 1px 4px rgba(0, 0, 0, 0.1);
-            transition: border-color 0.3s ease, box-shadow 0.3s ease;
-            margin: 1rem;
-        }
-    </style>
+    <link rel="stylesheet" href="{{ asset('assets/admin/css/diemrl.css') }}">
 @endsection
 
 @section('content')
@@ -37,36 +17,95 @@
                     </div>
 
                     <div class="teams-section">
-                        <form method="GET" action="{{ route('admin.lop.nhap-diem_rl', $lop->id) }}"
-                            class="d-flex justify-content-end">
-                            <label>Chọn tháng:
-                                <select class="select" name="thoi_gian" onchange="this.form.submit()">
-                                    @for ($i = 1; $i <= now()->month; $i++)
-                                        <option value="{{ $i }}" {{ $i == $thang ? 'selected' : '' }}>Tháng
-                                            {{ $i }}</option>
-                                    @endfor
-                                </select>
-                            </label>
+                        <form method="GET" id="week-form" action="{{ route('admin.lop.nhap-diem_rl', $lop->id) }}"
+                            class="d-flex justify-content-center pt-4 px-3 mb-2" style=" background:#4891e9 90%;">
+                            <div class="date-picker-grid">
+                                @php
+                                    $namHienTai = now()->year;
+                                    $thangHienTai = now()->month;
+                                    $namDangChon = request('nam', $namHienTai);
+                                    $thang = request('thoi_gian', $thangHienTai);
+                                @endphp
+                                <div class="date-picker-field">
+                                    <label>Chọn năm:</label>
+                                    <select id="namSelect" name="nam"
+                                        onchange="document.getElementById('week-form').submit()">
+                                        @for ($i = 0; $i < 4; $i++)
+                                            @php $nam = $namHienTai - $i; @endphp
+                                            <option value="{{ $nam }}"
+                                                {{ $namDangChon == $nam ? 'selected' : '' }}>
+                                                Năm {{ $nam }}
+                                            </option>
+                                        @endfor
+                                    </select>
+                                </div>
+                                <div class="date-picker-field">
+                                    <label>Chọn tháng:</label>
+                                    <select class="select form-control" name="thoi_gian" id="thangSelect"
+                                        onchange="document.getElementById('week-form').submit()">
+
+                                    </select>
+                                </div>
+                            </div>
                         </form>
+                        <div class="design-section" id="bulkFormContainer" style="display: none;">
+                            <div class="modern-form-container">
+                                <h2 class="design-title">Xếp loại hàng loạt</h2>
+                                <form action="{{ route('admin.lop.cap-nhat-diem-checked') }}" method="POST">
+                                    @csrf
+                                    <div class="form-group">
+                                        <input type="hidden" name="selected_students" id="selectedStudents">
+                                        <input type="hidden" name="thoi_gian" value="{{ $thang }}">
+                                        <input type="hidden" name="nam" value="{{ $namDangChon }}">
+                                        <label>Chọn Xếp Loại</label>
+                                        <div class="select-wrapper">
+                                            <select class="modern-select" name="xep_loai">
+                                                <option value="">-- Chọn xếp loại --</option>
+                                                <option value="1">A</option>
+                                                <option value="2">B</option>
+                                                <option value="3">C</option>
+                                                <option value="4">D</option>
+                                            </select>
+                                        </div>
+                                    </div>
+
+                                    <div class="button-group">
+                                        <button type="submit" class="modern-btn modern-btn-primary"
+                                            onclick="prepareSelectedStudents()">
+                                            ✓ Lưu Lại
+                                        </button>
+                                        <button type="button" class="modern-btn modern-btn-secondary" id="cancelBtn">
+                                            ✕ Hủy Bỏ
+                                        </button>
+                                    </div>
+                                </form>
+                            </div>
+                        </div>
                         <table class="team-table" id="room-table">
                             <thead class="table-center">
                                 <tr class="text-center">
-                                    <th><input type="checkbox" id="checkAll" style="left: 0"></th>
+                                    @if ($namDangChon == now()->year && $thang == now()->month)
+                                        <th><input type="checkbox" id="checkAll" style="left: 0"></th>
+                                    @endif
                                     <th>No.</th>
                                     <th>MSSV</th>
                                     <th>Họ tên sinh viên</th>
                                     <th>Rèn luyện</th>
-                                    <th></th>
+                                    @if ($namDangChon == now()->year && $thang == now()->month)
+                                        <th></th>
+                                    @endif
                                     <th></th>
                                 </tr>
                             </thead>
                             <tbody>
                                 @foreach ($sinhViens as $sv)
                                     <tr id="view-row-{{ $sv->id }}" class="text-center">
-                                        <td>
-                                            <input type="checkbox" class="student-checkbox" name="selected_students[]"
-                                                value="{{ $sv->id }}">
-                                        </td>
+                                        @if ($namDangChon == now()->year && $thang == now()->month)
+                                            <td>
+                                                <input type="checkbox" class="student-checkbox" name="selected_students[]"
+                                                    value="{{ $sv->id }}">
+                                            </td>
+                                        @endif
                                         <td>{{ $loop->index + 1 }}</td>
                                         <td>{{ $sv->ma_sv }}</td>
                                         <td>{{ $sv->hoSo->ho_ten }}</td>
@@ -75,11 +114,13 @@
                                                 {{ $diemRenLuyen->xep_loai->getLabel() }}
                                             @endforeach
                                         </td>
-                                        <td>
-                                            <button class="btn btn-primary btn-sm"
-                                                onclick="showEditRow({{ $sv->id }})">
-                                                <i class="bi bi-pencil-square"></i></button>
-                                        </td>
+                                        @if ($namDangChon == now()->year && $thang == now()->month)
+                                            <td>
+                                                <button class="btn btn-primary btn-sm"
+                                                    onclick="showEditRow({{ $sv->id }})">
+                                                    <i class="bi bi-pencil-square"></i></button>
+                                            </td>
+                                        @endif
                                         <td>
                                             @error('xep_loai')
                                                 <span class="text-danger">{{ $message }}</span>
@@ -92,9 +133,9 @@
                                             @csrf
                                             <input type="hidden" name="id_sinh_vien" value="{{ $sv->id }}">
                                             <input type="hidden" name="thoi_gian" value="{{ $thang }}">
+                                            <input type="hidden" name="nam" value="{{ $namDangChon }}">
                                             <td>
-                                                <input type="checkbox" class="student-checkbox" name="selected_students[]"
-                                                    value="{{ $sv->id }}">
+
                                             </td>
                                             <td>{{ $loop->index + 1 }}</td>
                                             <td>{{ $sv->ma_sv }}</td>
@@ -135,6 +176,41 @@
 @endsection
 @section('js')
     <script>
+        const thangSelect = document.getElementById('thangSelect');
+        const namSelect = document.getElementById('namSelect');
+
+        function capNhatDanhSachThang() {
+            const namHienTai = new Date().getFullYear();
+            const thangHienTai = new Date().getMonth() + 1; // Tháng trong JS bắt đầu từ 0
+            const namDangChon = parseInt(namSelect.value);
+            const thangToiDa = (namDangChon === namHienTai) ? thangHienTai : 12;
+
+            const thangDangChon = parseInt({{ $thang }}); // giá trị ban đầu từ server
+
+            // Xóa tất cả option cũ
+            thangSelect.innerHTML = '';
+
+            // Tạo option mới
+            for (let i = 1; i <= thangToiDa; i++) {
+                const option = document.createElement('option');
+                option.value = i;
+                option.text = 'Tháng ' + i;
+                if (i === thangDangChon) option.selected = true;
+                thangSelect.appendChild(option);
+            }
+        }
+
+        // Gọi khi tải trang lần đầu
+        capNhatDanhSachThang();
+
+        // Gọi lại mỗi khi chọn năm
+        namSelect.addEventListener('change', function() {
+            capNhatDanhSachThang();
+        });
+
+
+
+
         function showEditRow(id) {
             document.getElementById('view-row-' + id).style.display = 'none';
             document.getElementById('edit-row-' + id).style.display = '';
@@ -179,56 +255,41 @@
             const checkboxes = document.querySelectorAll('.student-checkbox');
             checkboxes.forEach(cb => cb.checked = this.checked);
         });
+        const checkAll = document.getElementById('checkAll');
+        const studentCheckboxes = document.querySelectorAll('.student-checkbox');
+        const bulkFormContainer = document.getElementById('bulkFormContainer');
 
-        document.addEventListener('DOMContentLoaded', function() {
-            document.querySelectorAll('a.change-role').forEach(function(el) {
-                el.addEventListener('click', function(e) {
-                    e.preventDefault();
-                    const studentId = this.dataset.studentId;
-                    const roleValue = this.dataset.roleValue;
-                    const roleLabel = this.dataset.roleLabel;
-                    const studentName = this.dataset.studentName;
-
-                    if (confirm(
-                            `Bạn có chắc muốn gán chức vụ "${roleLabel}" cho sinh viên "${studentName}"?`
-                        )) {
-                        const input = document.getElementById(`chucVuInput${studentId}`);
-                        input.value = roleValue;
-
-                        this.closest('form').submit();
-                    }
-                });
-            });
+        // Khi nhấn "chọn tất cả"
+        checkAll.addEventListener('change', function() {
+            studentCheckboxes.forEach(cb => cb.checked = this.checked);
+            toggleBulkForm();
         });
 
-        // btn-lock ajax
-        document.querySelectorAll('.btn-lock').forEach(function(el) {
-            el.addEventListener('click', function(e) {
-                e.preventDefault();
-
-                const studentId = this.dataset.id;
-
-                //ajax
-                $.ajax({
-                    url: `/admin/student/khoa-sinh-vien/${studentId}`,
-                    type: 'POST',
-                    data: {
-                        _token: '{{ csrf_token() }}',
-                        student_id: studentId
-                    },
-                    success: function(response) {
-                        if (response.success) {
-                            location.reload();
-                            alert(response.message);
-                        } else {
-                            alert(response.message);
-                        }
-                    },
-                    error: function(xhr, status, error) {
-                        console.error(error);
-                    }
-                });
-            });
+        // Khi tick vào từng checkbox
+        studentCheckboxes.forEach(cb => {
+            cb.addEventListener('change', toggleBulkForm);
         });
+        // Khi bấm "Hủy Bỏ"
+        cancelBtn.addEventListener('click', function() {
+            checkAll.checked = false; // bỏ tick checkAll
+            studentCheckboxes.forEach(cb => cb.checked = false); // bỏ tick tất cả
+            toggleBulkForm(); // ẩn form
+        });
+
+        function toggleBulkForm() {
+            // Kiểm tra nếu có ít nhất 1 checkbox được chọn
+            const hasChecked = [...studentCheckboxes].some(cb => cb.checked);
+            bulkFormContainer.style.display = hasChecked ? 'block' : 'none';
+        }
+
+        function getSelectedStudentIds() {
+            const checkboxes = document.querySelectorAll('.student-checkbox:checked');
+            return Array.from(checkboxes).map(cb => cb.value);
+        }
+
+        function prepareSelectedStudents() {
+            const ids = getSelectedStudentIds();
+            document.getElementById('selectedStudents').value = JSON.stringify(ids);
+        }
     </script>
 @endsection

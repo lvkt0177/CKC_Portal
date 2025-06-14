@@ -17,4 +17,9 @@ class Nam extends Model
     {
         return $this->hasMany(Tuan::class, 'id_nam', 'id');
     }
+    //diemRenLuyen
+    public function diemRenLuyen()
+    {
+        return $this->hasMany(DiemRenLuyen::class, 'id_nam', 'id');
+    }
 }

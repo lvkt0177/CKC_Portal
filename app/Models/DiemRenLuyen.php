@@ -11,7 +11,7 @@ class DiemRenLuyen extends Model
     protected $fillable = [
         "id_gvcn",
         "id_sinh_vien",
-        "id_thang",
+        "id_nam",
         "xep_loai",
         'thoi_gian',
     ];
@@ -27,5 +27,10 @@ class DiemRenLuyen extends Model
     public function giaoVienChuNhiem()
     {
         return $this->belongsTo(User::class, 'id_gvcn', 'id');
+    }
+    //nam
+    public function nam()
+    {
+        return $this->belongsTo(Nam::class, 'id_nam', 'id');
     }
 }

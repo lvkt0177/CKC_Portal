@@ -23,26 +23,32 @@ class NhapDiemRequest extends FormRequest
     {
         return [
             //
-            'diem_chuyen_can' => 'min:0|max:10',
-            'diem_qua_trinh' => 'min:0|max:10',
-            'diem_thi' => 'min:0|max:10',
-            'id_sinh_vien' => 'numeric',
-            'id_lop_hoc_phan' => 'numeric',
-            'xep_loai'=>'in:1,2,3,4',
-            'thoi_gian' => 'in:1,2,3,4,5,6,7,8,9,10,11,12'
+            'students' => ['required', 'array'],
+            'students.*' => ['required', 'integer', 'exists:sinhvien,id'],
+
+            'id_lop_hoc_phan' => ['required', 'integer', 'exists:lop_hoc_phan,id'],
+
+            'diem_chuyen_can' => ['nullable', 'array'],
+            'diem_chuyen_can.*' => ['nullable', 'numeric', 'between:0,10'],
+
+            'diem_qua_trinh' => ['nullable', 'array'],
+            'diem_qua_trinh.*' => ['nullable', 'numeric', 'between:0,10'],
+
+            'diem_thi' => ['nullable', 'array'],
+            'diem_thi.*' => ['nullable', 'numeric', 'between:0,10'],
+            'nam'=>'numeric',
+            //mảng sinh viên
+            
         ];
     }
     public function messages(): array
     {
         return [
-            'xep_loai.in' => 'Xep loai khong hop le',
-            'thoi_gian.in' => 'Thoi gian khong hop le',
-            'diem_chuyen_can.min' => 'Phải lớn hơn 0',
-            'diem_qua_trinh.min' => 'Phải lớn hơn 0',
-            'diem_thi.min' => 'Phải lớn hơn 0',
-            'diem_chuyen_can.max' => 'Phải lớn hơn 10',
-            'diem_qua_trinh.max' => 'Phải lớn hơn 10',
-            'diem_thi.max' => 'Phải lớn hơn 10',
+            'students.required' => 'Vui lòng chọn ít nhất một sinh viên.',
+            'students.*.integer' => 'ID sinh viên không hợp lệ.',
+            'sstudents.*.exists' => 'Sinh viên không tồn tại trong hệ thống.',
+            '*.numeric' => 'Điểm phải là số.',
+            '*.between' => 'Điểm phải nằm trong khoảng từ 0 đến 10.',
         ];
     }
 }
