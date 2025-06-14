@@ -41,7 +41,7 @@
                                     <div class="col-md-6">
                                         <div class="d-flex justify-content-end align-items-center">
                                             <div class="nav-buttons">
-                                                <form method="GET" action="{{ route('admin.phieulenlop.index') }}"
+                                                <form method="GET" action="{{ route('giangvien.phieulenlop.index') }}"
                                                     id="week-form">
                                                     <input type="hidden" name="action" id="week-action" value="">
 
@@ -97,7 +97,7 @@
                                                                     <i class="fas fa-calendar"></i> Hiện tại
                                                                 </button>
 
-                                                                <a href="{{ route('admin.phieulenlop.create') }}"
+                                                                <a href="{{ route('giangvien.phieulenlop.create') }}"
                                                                     class="btn btn-back">
                                                                     <i class="fas fa-edit"></i> Điền phiếu
                                                                 </a>
