@@ -10,13 +10,13 @@
                 <div class="card shadow-sm">
                     <div class="card-header d-flex justify-content-between align-items-center">
                         <h3 class="card-title mb-0">Phân quyền và vai trò</h3>
-                        <a href="{{ route('admin.permissions.index') }}" class="btn btn-primary">Danh sách các quyền</a>
+                        <a href="{{ route('giangvien.permissions.index') }}" class="btn btn-primary">Danh sách các quyền</a>
                     </div>
 
                     <div class="card-header d-flex justify-content-between align-items-center">
                         <a href="" class="btn btn-primary">Thêm mới vai trò</a>
                     </div>
-                    
+
                     <div class="card-body">
                         <div class="table-responsive">
                             <table class="table table-bordered align-middle mb-0">
@@ -41,16 +41,20 @@
                                                 @endphp
 
                                                 @foreach ($displayed as $permission)
-                                                    <span class="badge bg-info text-white my-1">{{ $permission->name }}</span>
+                                                    <span
+                                                        class="badge bg-info text-white my-1">{{ $permission->name }}</span>
                                                 @endforeach
 
                                                 @if ($totalPermissions > $maxPermissions)
-                                                    <span class="badge bg-secondary my-1 text-light">+{{ $totalPermissions - $maxPermissions }} quyền khác</span>
+                                                    <span
+                                                        class="badge bg-secondary my-1 text-light">+{{ $totalPermissions - $maxPermissions }}
+                                                        quyền khác</span>
                                                 @endif
                                             </td>
                                             <td class="d-flex justify-content-center align-items-center gap-1">
-                                                @if($role->name !== Acl()::ROLE_SUPER_ADMIN)
-                                                    <a href="" class="btn btn-warning btn-sm"><i class="bi bi-pencil"></i></a>
+                                                @if ($role->name !== Acl()::ROLE_SUPER_ADMIN)
+                                                    <a href="" class="btn btn-warning btn-sm"><i
+                                                            class="bi bi-pencil"></i></a>
 
                                                     <div class="mx-1"></div>
 
@@ -71,8 +75,8 @@
                                 </tbody>
                             </table>
                         </div>
-                    </div> 
-                </div> 
+                    </div>
+                </div>
             </div>
         </div>
 

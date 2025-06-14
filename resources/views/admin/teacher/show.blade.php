@@ -10,7 +10,7 @@
                 <div class="card shadow-sm">
                     <div class="card-header d-flex justify-content-between align-items-center">
                         <h3 class="card-title mb-0">Thông tin Giảng Viên - {{ $user->hoSo->ho_ten }}</h3>
-                        <a href="{{ route('admin.giangvien.index') }}" class="btn btn-primary">Quay lại</a>
+                        <a href="{{ route('giangvien.giangvien.index') }}" class="btn btn-primary">Quay lại</a>
                     </div>
 
                     <div class="card-body">
@@ -53,7 +53,7 @@
                                                                 <span class="me-3">{{ $role }}</span>
 
                                                                 <form
-                                                                    action="{{ route('admin.roles.removeRoleForUser', $user) }}"
+                                                                    action="{{ route('giangvien.roles.removeRoleForUser', $user) }}"
                                                                     method="POST" class="m-0 p-0">
                                                                     @csrf
                                                                     <input type="hidden" name="name"
@@ -80,7 +80,7 @@
 
                                             @if ($user->getRoleNames()->first() != Acl()::ROLE_SUPER_ADMIN)
 
-                                                <form action="{{ route('admin.roles.addRoleForUser', $user) }}"
+                                                <form action="{{ route('giangvien.roles.addRoleForUser', $user) }}"
                                                     method="post" class="text-capitalize">
                                                     @csrf
                                                     <label class="form-label text-secondary">Chọn vai trò</label>
@@ -136,7 +136,8 @@
                                                 <div class="mb-3">
                                                     <label class="form-label text-secondary">Giới tính</label>
                                                     <input type="text" class="form-control"
-                                                        value="{{ $user->hoSo->gioi_tinh->getLabel()}}" style="pointer-events: none">
+                                                        value="{{ $user->hoSo->gioi_tinh->getLabel() }}"
+                                                        style="pointer-events: none">
                                                 </div>
 
                                                 <div class="mb-3">
@@ -184,46 +185,46 @@
                                     </div>
                                 </div>
                                 {{-- Danh sách các quyền  --}}
-                                @if($user->roles->first())
-                                <div class="col-md-12">
-                                    <div class="card shadow-sm border-0 rounded-3">
-                                        <div class="card-body">
-                                            <h4 class="card-title mb-4 text-primary">
-                                                <i class="fas fa-user-shield me-2"></i>Danh sách các quyền của vai trò
-                                            </h4>
-                                
-                                            <div class="row">
-                                                @php
-                                                    $permissions = $user->roles->first()->permissions->values();
-                                                    $half = ceil($permissions->count() / 2);
-                                                @endphp
-                                
-                                                <div class="col-md-6">
-                                                    <ul class="list-group list-group-flush">
-                                                        @foreach ($permissions->slice(0, $half) as $permission)
-                                                            <li class="list-group-item d-flex align-items-center py-2">
-                                                                <i class="fas fa-check-circle text-success me-2"></i>
-                                                                <span>{{ $permission->name }}</span>
-                                                            </li>
-                                                        @endforeach
-                                                    </ul>
-                                                </div>
-                                
-                                                <div class="col-md-6">
-                                                    <ul class="list-group list-group-flush">
-                                                        @foreach ($permissions->slice($half) as $permission)
-                                                            <li class="list-group-item d-flex align-items-center py-2">
-                                                                <i class="fas fa-check-circle text-success me-2"></i>
-                                                                <span>{{ $permission->name }}</span>
-                                                            </li>
-                                                        @endforeach
-                                                    </ul>
+                                @if ($user->roles->first())
+                                    <div class="col-md-12">
+                                        <div class="card shadow-sm border-0 rounded-3">
+                                            <div class="card-body">
+                                                <h4 class="card-title mb-4 text-primary">
+                                                    <i class="fas fa-user-shield me-2"></i>Danh sách các quyền của vai trò
+                                                </h4>
+
+                                                <div class="row">
+                                                    @php
+                                                        $permissions = $user->roles->first()->permissions->values();
+                                                        $half = ceil($permissions->count() / 2);
+                                                    @endphp
+
+                                                    <div class="col-md-6">
+                                                        <ul class="list-group list-group-flush">
+                                                            @foreach ($permissions->slice(0, $half) as $permission)
+                                                                <li class="list-group-item d-flex align-items-center py-2">
+                                                                    <i class="fas fa-check-circle text-success me-2"></i>
+                                                                    <span>{{ $permission->name }}</span>
+                                                                </li>
+                                                            @endforeach
+                                                        </ul>
+                                                    </div>
+
+                                                    <div class="col-md-6">
+                                                        <ul class="list-group list-group-flush">
+                                                            @foreach ($permissions->slice($half) as $permission)
+                                                                <li class="list-group-item d-flex align-items-center py-2">
+                                                                    <i class="fas fa-check-circle text-success me-2"></i>
+                                                                    <span>{{ $permission->name }}</span>
+                                                                </li>
+                                                            @endforeach
+                                                        </ul>
+                                                    </div>
                                                 </div>
                                             </div>
                                         </div>
                                     </div>
-                                </div>
-                                
+
                                 @endif
 
                             </div>
