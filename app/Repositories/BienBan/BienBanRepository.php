@@ -30,7 +30,7 @@ class BienBanRepository implements BienBanRepositoryInterface
     {
         return BienBanSHCN::with(['lop', 'thuky.hoSo', 'tuan', 'gvcn'])
             ->where('id_lop', $lop->id)
-            ->orderBy('id', 'asc')
+            ->orderBy('id', 'desc')
             ->get();
     }
 

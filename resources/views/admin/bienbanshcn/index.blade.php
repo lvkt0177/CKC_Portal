@@ -12,9 +12,9 @@
                     <div class="card-header d-flex justify-content-between align-items-center">
                         <h3 class="card-title mb-0"> Danh sách biên bản sinh hoạt chủ nhiệm - Lớp {{ $lop->ten_lop }} </h3>
                         <div class="">
-                            <a href="{{ route('admin.bienbanshcn.create', $lop) }}" target="_blank" class="btn btn-add"><i
+                            <a href="{{ route('giangvien.bienbanshcn.create', $lop) }}" target="_blank" class="btn btn-add"><i
                                     class="fa fa-plus" aria-hidden="true"></i> Lập biên bản SHCN</a>
-                            <a href="{{ route('admin.lop.index') }}" class="btn btn-back">Quay lại</a>
+                            <a href="{{ route('giangvien.lop.index') }}" class="btn btn-back">Quay lại</a>
                         </div>
                     </div>
 
@@ -43,14 +43,14 @@
                                         <td>{{ $bb->created_at }}</td>
                                         <td>{{ $bb->trang_thai->getLabel() }}</td>
                                         <td class="d-flex justify-content-center">
-                                            <a href="{{ route('admin.bienbanshcn.show', $bb) }}" target="_blank"
+                                            <a href="{{ route('giangvien.bienbanshcn.show', $bb) }}" target="_blank"
                                                 class="btn btn-dark"><i class="fa-solid fa-eye"></i></a>
                                             @if ($bb->trang_thai->value == 0)
-                                                <a href="{{ route('admin.bienbanshcn.edit', $bb) }}"
-                                                    class="btn btn-warning mx-1" target="_blank"><i class="fa fa-pencil"
+                                                <a href="{{ route('giangvien.bienbanshcn.edit', $bb) }}"
+                                                    class="btn btn-warning mx-1"><i class="fa fa-pencil"
                                                         aria-hidden="true"></i></a>
                                                 {{-- Duyệt --}}
-                                                <form action="{{ route('admin.bienbanshcn.confirm', $bb) }}" data-confirm
+                                                <form action="{{ route('giangvien.bienbanshcn.confirm', $bb) }}" data-confirm
                                                     method="POST">
                                                     @csrf
                                                     <button type="submit" class="btn btn-success"><i class="fa fa-check"
@@ -58,7 +58,7 @@
                                                 </form>
 
                                                 {{-- Huy --}}
-                                                <form action="{{ route('admin.bienbanshcn.destroy', $bb) }}" data-confirm
+                                                <form action="{{ route('giangvien.bienbanshcn.destroy', $bb) }}" data-confirm
                                                     method="POST">
                                                     @csrf
                                                     @method('DELETE')
@@ -139,7 +139,7 @@
 
                     //ajax
                     $.ajax({
-                        url: `/admin/student/khoa-sinh-vien/${studentId}`,
+                        url: `/giangvien/student/khoa-sinh-vien/${studentId}`,
                         type: 'POST',
                         data: {
                             _token: '{{ csrf_token() }}',

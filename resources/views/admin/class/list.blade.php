@@ -21,11 +21,11 @@
                 <div class="card shadow-sm teams-section">
                     <div class="card-header d-flex justify-content-between align-items-center">
                         <h3 class="card-title mb-0">Danh sách Sinh viên - Lớp {{ $lop->ten_lop }}</h3>
-                        <a href="{{ route('admin.lop.index') }}" class="btn btn-primary">Quay lại</a>
+                        <a href="{{ route('giangvien.lop.index') }}" class="btn btn-primary">Quay lại</a>
                     </div>
 
                     <div class="teams-section">
-                        <table class="team-table table-reponsive">
+                        <table class="team-table align-middle" id="room-table">
                             <thead class="table-center">
                                 <tr class="text-center">
                                     <th><input type="checkbox" id="checkAll" style="left: 0"></th>
@@ -37,7 +37,6 @@
                                     <th>Email</th>
                                     <th>Số diện thoại</th>
                                     <th>Chức vụ</th>
-                                    <th>Trạng thái</th>
                                     <th>Hành động</th>
 
                                 </tr>
@@ -57,7 +56,8 @@
                                         <td>{{ $sv->hoSo->email }}</td>
                                         <td>{{ $sv->hoSo->so_dien_thoai }}</td>
                                         <td>
-                                            <form method="POST" action="{{ route('admin.student.doi-chuc-vu', $sv) }}">
+                                            <form method="POST"
+                                                action="{{ route('giangvien.student.doi-chuc-vu', $sv) }}">
                                                 @csrf
                                                 <div class="dropdown">
                                                     <button
@@ -90,17 +90,16 @@
                                             </form>
 
                                         </td>
-                                        <td>{{ $sv->trang_thai->getLabel() }}</td>
 
-                                            <td class="d-flex">
-                                                <a href="" class="btn btn-warning"><i class="fa-solid fa-eye"></i></a>
-                                                <span class="mx-1"></span>
-                                                <button class="btn btn-danger btn-lock" data-id="{{ $sv->id }}">{!! $sv->trang_thai->value == 0 ? '<i class="fa-solid fa-lock"></i>' : '<i class="fa-solid fa-lock-open"></i>' !!}
-                                                </button>
-                                            </td>
-                                        </tr>
-                                    @endforeach
-                                
+                                        <td class="d-flex">
+                                            <a href="" class="btn btn-warning"><i class="fa-solid fa-eye"></i></a>
+                                            <span class="mx-1"></span>
+                                            {{-- <button class="btn btn-danger btn-lock" data-id="{{ $sv->id }}">{!! $sv->trang_thai->value == 0 ? '<i class="fa-solid fa-lock"></i>' : '<i class="fa-solid fa-lock-open"></i>' !!}
+                                                </button> --}}
+                                        </td>
+                                    </tr>
+                                @endforeach
+
                             </tbody>
                         </table>
                     </div>
@@ -115,6 +114,30 @@
 
 
 @section('js')
+    <script src="https://cdn.datatables.net/1.13.6/js/jquery.dataTables.min.js"></script>
+    <script>
+        $(document).ready(function() {
+            $('#room-table').DataTable({
+                responsive: true,
+                ordering: false,
+                language: {
+                    search: "Tìm kiếm thông tin phòng:",
+                    lengthMenu: "Hiển thị _MENU_ dòng",
+                    info: "Hiển thị _START_ đến _END_ trong _TOTAL_ dòng",
+                    paginate: {
+                        previous: '<i class="fa-solid fa-arrow-left"></i>',
+                        next: '<i class="fa-solid fa-arrow-right"></i>'
+                    }
+                },
+                dom: '<"top"lf>rt<"bottom"ip><"clear">'
+            });
+        });
+
+        $('#room-table').on('error.dt', function(e, settings, techNote, message) {
+            console.error('DataTables Lỗi:', message);
+            alert('Đã có lỗi khi tải bảng: ' + message);
+        });
+    </script>
     <script>
         document.getElementById('checkAll').addEventListener('change', function() {
             const checkboxes = document.querySelectorAll('.student-checkbox');
@@ -151,7 +174,7 @@
 
                 //ajax
                 $.ajax({
-                    url: `/admin/student/khoa-sinh-vien/${studentId}`,
+                    url: `/giangvien/student/khoa-sinh-vien/${studentId}`,
                     type: 'POST',
                     data: {
                         _token: '{{ csrf_token() }}',
@@ -211,7 +234,7 @@
 
                 //ajax
                 $.ajax({
-                    url: `/admin/student/khoa-sinh-vien/${studentId}`,
+                    url: `/giangvien/student/khoa-sinh-vien/${studentId}`,
                     type: 'POST',
                     data: {
                         _token: '{{ csrf_token() }}',

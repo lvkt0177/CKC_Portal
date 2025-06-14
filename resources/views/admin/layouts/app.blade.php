@@ -30,80 +30,80 @@
                 </div>
 
 
-                <a href="{{ route('admin.portal.index') }}" class="logo logo-menu">
+                <a href="{{ route('giangvien.portal.index') }}" class="logo logo-menu">
                     <img src="https://cdn.haitrieu.com/wp-content/uploads/2023/01/Logo-Truong-Cao-dang-Ky-thuat-Cao-Thang.png"
                         width="50" height="70" alt="">
                 </a>
 
                 <nav class="nav nav-pills">
-                    <a class="nav-link {{ isActiveRoute('admin/portal') }}"
-                        href="{{ route('admin.portal.index') }}">Portal</a>
+                    <a class="nav-link {{ isActiveRoute('giangvien/portal') }}"
+                        href="{{ route('giangvien.portal.index') }}">Portal</a>
 
                     <div class="dropdown">
-                        <a class="nav-link dropdown-toggle {{ isActiveRoute('admin/lop') }} {{ isActiveRoute('admin/bienbanshcn') }} {{ isActiveRoute('admin/lop/sinhvien/?id=') }} }}"
+                        <a class="nav-link dropdown-toggle {{ isActiveRoute('giangvien/lop') }} {{ isActiveRoute('giangvien/bienbanshcn') }} {{ isActiveRoute('giangvien/lop/sinhvien/?id=') }} }}"
                             href="#" data-bs-toggle="dropdown" aria-expanded="false">
                             Công tác chủ nhiệm
                         </a>
                         <ul class="dropdown-menu">
-                            <li><a class="dropdown-item" href="{{ route('admin.lop.index') }}"><i
+                            <li><a class="dropdown-item" href="{{ route('giangvien.lop.index') }}"><i
                                         class="fas fa-cog me-2"></i>Quản lý lớp</a>
                             </li>
                         </ul>
                     </div>
 
                     <div class="dropdown">
-                        <a class="nav-link dropdown-toggle {{ isActiveRoute('admin/diemmonhoc') }} {{ isActiveRoute('admin/phieulenlop') }} {{ isActiveRoute('admin/thongbao') }}"
+                        <a class="nav-link dropdown-toggle {{ isActiveRoute('giangvien/diemmonhoc') }} {{ isActiveRoute('giangvien/phieulenlop') }} {{ isActiveRoute('giangvien/thongbao') }}"
                             href="#" data-bs-toggle="dropdown" aria-expanded="false">
                             Công tác giảng dạy
                         </a>
                         <ul class="dropdown-menu">
-                            <li><a class="dropdown-item" href="{{ route('admin.diemmonhoc.index') }}"><i
+                            <li><a class="dropdown-item" href="{{ route('giangvien.diemmonhoc.index') }}"><i
                                         class="fas fa-file-invoice me-2"></i>Nhập điểm môn học</a></li>
-                            <li><a class="dropdown-item" href="{{ route('admin.phieulenlop.index') }}"><i
+                            <li><a class="dropdown-item" href="{{ route('giangvien.phieulenlop.index') }}"><i
                                         class="fas fa-credit-card me-2"></i>Phiếu lên lớp</a></li>
-                            <li><a class="dropdown-item" href="{{ route('admin.thongbao.index') }}"><i
+                            <li><a class="dropdown-item" href="{{ route('giangvien.thongbao.index') }}"><i
                                         class="fas fa-credit-card me-2"></i>Thông báo cho sinh viên</a></li>
                         </ul>
                     </div>
 
                     <div class="dropdown">
-                        <a class="nav-link dropdown-toggle {{ isActiveRoute('admin/student') }} {{ isActiveRoute('admin/giangvien') }} {{ isActiveRoute('admin/roles') }}"
+                        <a class="nav-link dropdown-toggle {{ isActiveRoute('giangvien/student') }} {{ isActiveRoute('giangvien/giangvien') }} {{ isActiveRoute('giangvien/roles') }}"
                             href="#" data-bs-toggle="dropdown" aria-expanded="false">
                             Quản lý người dùng
                         </a>
                         <ul class="dropdown-menu">
-                            <li><a class="dropdown-item" href="{{ route('admin.student.index') }}"><i
+                            <li><a class="dropdown-item" href="{{ route('giangvien.student.index') }}"><i
                                         class="fas fa-file-invoice me-2"></i>Sinh viên</a>
                             </li>
-                            <li><a class="dropdown-item" href="{{ route('admin.giangvien.index') }}"><i
+                            <li><a class="dropdown-item" href="{{ route('giangvien.giangvien.index') }}"><i
                                         class="fas fa-credit-card me-2"></i>Giảng viên</a></li>
-                            <li><a class="dropdown-item" href="{{ route('admin.roles.index') }}"><i
+                            <li><a class="dropdown-item" href="{{ route('giangvien.roles.index') }}"><i
                                         class="fas fa-user-tag me-2"></i>Phân quyền và vai trò</a></li>
                         </ul>
                     </div>
 
                     <div class="dropdown">
-                        <a class="nav-link dropdown-toggle {{ isActiveRoute('admin/phong') }}" href="#"
+                        <a class="nav-link dropdown-toggle {{ isActiveRoute('giangvien/phong') }}" href="#"
                             data-bs-toggle="dropdown" aria-expanded="false">
                             Cơ sở vật chất
                         </a>
                         <ul class="dropdown-menu">
-                            <li><a class="dropdown-item" href="{{ route('admin.phong.index') }}"><i
+                            <li><a class="dropdown-item" href="{{ route('giangvien.phong.index') }}"><i
                                         class="fas fa-shield-alt me-2"></i>Quản lý phòng học</a></li>
                         </ul>
                     </div>
 
                     <div class="dropdown">
-                        <a class="nav-link dropdown-toggle {{ isActiveRoute('admin/testimonial') }}" href="#"
+                        <a class="nav-link dropdown-toggle {{ isActiveRoute('giangvien/testimonial') }}" href="#"
                             data-bs-toggle="dropdown" aria-expanded="false">
                             Công tác Chính trị HS - SV
                         </a>
                         <ul class="dropdown-menu">
-                            <li><a class="dropdown-item" href="{{ route('admin.testimonial.index') }}"><i
+                            <li><a class="dropdown-item" href="{{ route('giangvien.testimonial.index') }}"><i
                                         class="fas fa-users me-2"></i>Quản lý sinh
                                     viên đăng ký giấy</a></li>
 
-                            <li><a class="dropdown-item" href="{{ route('admin.capmatkhausinhvien.index') }}"><i
+                            <li><a class="dropdown-item" href="{{ route('giangvien.capmatkhausinhvien.index') }}"><i
                                 class="fas fa-users me-2"></i>Quản lý sinh viên liên hệ cấp mật khẩu</a></li>
                         </ul>
                     </div>
@@ -132,7 +132,7 @@
                                 width="50" height="50" alt="">
                         </a>
                         <ul class="dropdown-menu">
-                            <li><a class="dropdown-item" href="{{ route('admin.profile.index') }}"><i
+                            <li><a class="dropdown-item" href="{{ route('giangvien.profile.index') }}"><i
                                         class="fas fa-book me-2"></i>Thông tin cá
                                     nhân</a>
                             </li>

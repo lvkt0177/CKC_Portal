@@ -17,7 +17,8 @@ class CommentSection extends Component
     public $id_reply = null;
     public $binhLuans = [];
     public $noi_dung_chinh = '';
-
+    protected $listeners = ['xoaBinhLuan' => 'xoaBinhLuan'];
+    
     public function mount()
     {
         $this->loadBinhLuans();
@@ -67,15 +68,38 @@ class CommentSection extends Component
         session()->flash('success', 'Bình luận đã được gửi.');
     }
 
+    public function xoaBinhLuan($id)
+    {
+        $binhluan = BinhLuan::find($id);
+
+        if (!$binhluan || $binhluan->nguoi_binh_luan_id !== auth()->id()) {
+            session()->flash('error', 'Bạn không có quyền xóa bình luận này.');
+            return;
+        }
+    
+        $binhluan->delete();
+    
+        $this->loadBinhLuans();
+        session()->flash('success', 'Đã xoá bình luận.');
+    }
+
 
 
     public function loadBinhLuans()
     {
         $this->binhLuans = BinhLuan::where('id_thong_bao', $this->thongbao->id)
-            ->whereNull('id_binh_luan_cha')
-            ->with(['nguoiBinhLuan.hoSo', 'binhLuanCon.nguoiBinhLuan.hoSo'])
-            ->orderBy('created_at', 'desc')
-            ->get();
+        ->where('trang_thai', ActiveOrNotStatus::ACTIVE)
+        ->whereNull('id_binh_luan_cha')
+        ->with([
+            'nguoiBinhLuan.hoSo',
+            'binhLuanCon' => function ($query) {
+                $query->where('trang_thai', ActiveOrNotStatus::ACTIVE)
+                      ->orderBy('created_at', 'asc') 
+                      ->with('nguoiBinhLuan.hoSo');
+            }
+        ])
+        ->orderBy('created_at', 'desc')
+        ->get();
     }
 
     public function render()

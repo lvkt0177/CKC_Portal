@@ -34,7 +34,7 @@ class ChangePasswordRequest extends FormRequest
                     ->numbers()
                     ->symbols(),
                 function ($attribute, $value, $fail) {
-                    if (Hash::check($value, Auth::user()->password)) {
+                    if (Hash::check($value, Auth::user()->password ?? Auth::guard('student')->user()->password)) {
                         $fail('Mật khẩu mới không được trùng với mật khẩu hiện tại.');
                     }
                 }

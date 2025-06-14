@@ -9,6 +9,7 @@ Route::prefix('sinhvien')->name('sinhvien.')->group(function () {
     Route::middleware('auth:student')->group(function () {
         
         include('home.php');
+        include('profile.php');
         
     });
 });

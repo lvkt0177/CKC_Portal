@@ -20,11 +20,24 @@
 
     <!-- Form Sinh Viên -->
     <div class="form-section active" id="studentForm">
-        <form action="" method="POST">
+        <form action="{{ route('login.user-reset-password.post') }}" method="POST">
+            @csrf
             <div class="form-group">
-                <input type="email" class="form-control" placeholder="Nhâp email người dùng..." required>
+                <input type="email" name="email" class="form-control" placeholder="Nhâp email người dùng..." required>
                 <i class="fas fa-user input-icon"></i>
             </div>
+
+            @if (session('success'))
+                <div class="alert alert-success">
+                    <strong>{{ session('success') }}</strong><br>
+                </div>
+            @endif
+
+            @if (session('error'))
+                <div class="alert alert-danger">
+                    <strong>{{ session('error') }}</strong><br>
+                </div>
+            @endif
 
             <button type="submit" class="login-btn">
                 <i class="fas fa-sign-in-alt me-2"></i>Gửi
@@ -35,7 +48,5 @@
             <a href="{{ route('login') }}">Quay lại</a>
         </div>
     </div>
-
-    <!-- Form Giảng Viên -->
    
 @endsection

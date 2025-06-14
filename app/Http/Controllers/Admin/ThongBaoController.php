@@ -66,9 +66,9 @@ class ThongBaoController extends Controller
         $thongBao = $this->thongBaoRepository->create($request->all());
         
         if($thongBao){
-            return redirect()->route('admin.thongbao.index')->with('success', 'Tạo thông báo thành công');
+            return redirect()->route('giangvien.thongbao.index')->with('success', 'Tạo thông báo thành công');
         }
-        return redirect()->route('admin.thongbao.index')->with('error', 'Tạo thông báo thất bại');
+        return redirect()->route('giangvien.thongbao.index')->with('error', 'Tạo thông báo thất bại');
     }
 
     /**
@@ -103,9 +103,9 @@ class ThongBaoController extends Controller
     {
         $thongbao = $this->thongBaoRepository->update($thongbao, $request->all());
         if($thongbao){
-            return redirect()->route('admin.thongbao.index')->with('success', 'Cập nhật thông báo thành cong');
+            return redirect()->route('giangvien.thongbao.index')->with('success', 'Cập nhật thông báo thành cong');
         }
-        return redirect()->route('admin.thongbao.index')->with('error', 'Cập nhật thông báo thất bại');
+        return redirect()->route('giangvien.thongbao.index')->with('error', 'Cập nhật thông báo thất bại');
     }
 
     /**
@@ -116,9 +116,9 @@ class ThongBaoController extends Controller
         $result = $this->thongBaoRepository->destroy($thongbao);
 
         if ($result) {
-            return redirect()->route('admin.thongbao.index')->with('success', 'Xoá thông báo thành công');
+            return redirect()->route('giangvien.thongbao.index')->with('success', 'Xoá thông báo thành công');
         }
-        return redirect()->route('admin.thongbao.index')->with('error', 'Xoá thông báo thất bại');
+        return redirect()->route('giangvien.thongbao.index')->with('error', 'Xoá thông báo thất bại');
     }
 
     public function destroyFile(int $id)
@@ -156,9 +156,9 @@ class ThongBaoController extends Controller
 
 
         if (!$result) {
-            return redirect()->route('admin.thongbao.index')->with('error', 'Gửi thông báo tới sinh viên thất bại');
+            return redirect()->route('giangvien.thongbao.index')->with('error', 'Gửi thông báo tới sinh viên thất bại');
         }
 
-        return redirect()->route('admin.thongbao.index')->with('success', 'Gửi thông báo tới sinh viên thành công');
+        return redirect()->route('giangvien.thongbao.index')->with('success', 'Gửi thông báo tới sinh viên thành công');
     }
 }

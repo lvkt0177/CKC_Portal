@@ -14,6 +14,11 @@
 
 @endsection
 
+@php
+    use Carbon\Carbon;
+    $today = Carbon::today();
+@endphp
+
 @section('content')
     <link href="https://cdn.jsdelivr.net/npm/select2@4.1.0-rc.0/dist/css/select2.min.css" rel="stylesheet" />
 
@@ -24,9 +29,10 @@
                     <div class="card-header d-flex justify-content-between align-items-center">
                         <h3 class="card-title mb-0">Chỉnh sửa biên bản sinh hoạt chủ nhiệm - Lớp
                             {{ $thongTin->lop->ten_lop }}</h3>
+                        <a href="{{ route('giangvien.bienbanshcn.index', $thongTin->id_lop) }}" class="btn btn-back btn-sm">Quay lại</a>
                     </div>
                     <div class="card-body">
-                        <form action="{{ route('admin.bienbanshcn.update', $thongTin) }}" method="POST" data-confirm
+                        <form action="{{ route('giangvien.bienbanshcn.update', $thongTin) }}" method="POST" data-confirm
                             enctype="multipart/form-data">
                             @csrf
                             @method('PUT')
@@ -59,7 +65,6 @@
 
                                     <select name="id_sv" id="id_sv"
                                         class="form-control @error('id_sv') is-invalid border-danger text-dark @enderror">
-                                        <option value="">-- Chọn thư ký đại diện --</option>
                                         @foreach ($thuKy as $tk)
                                             <option value="{{ $tk->id }}"
                                                 {{ old('id_sv') == $tk->id ? 'selected' : '' }}
@@ -74,15 +79,25 @@
                                     <label for="id_tuan" class="form-label">Tuần</label>
 
                                     <select name="id_tuan" id="id_tuan"
-                                        class="form-control @error('id_tuan') is-invalid border-danger text-dark @enderror">
+                                        class="form-control @error('id_tuan') is-invalid border-danger text-dark @enderror"
+                                        style="pointer-events: none;">
                                         <option value="">-- Chọn tuần --</option>
                                         @foreach ($tuans as $tuan)
+                                            @php
+                                                $start = Carbon::parse($tuan->ngay_bat_dau);
+                                                $end = Carbon::parse($tuan->ngay_ket_thuc);
+                                                $isCurrentWeek = $today->between($start, $end);
+                                            @endphp
                                             <option value="{{ $tuan->id }}"
-                                                {{ $thongTin->id_tuan == $tuan->id ? 'selected' : '' }}>
-                                                Tuần {{ $tuan->tuan }}
+                                                {{ $isCurrentWeek || old('id_tuan') == $tuan->id ? 'selected' : '' }}>
+                                                Tuần {{ $tuan->tuan }} ({{ $tuan->ngay_bat_dau->format('d/m/Y') }} - {{
+                                                    $tuan->ngay_ket_thuc->format('d/m/Y') }})
                                             </option>
                                         @endforeach
                                     </select>
+                                    @error('id_tuan')
+                                        <div class="text-danger">{{ $message }}</div>
+                                    @enderror
                                 </div>
 
                                 <div class="col-md-4">
@@ -113,8 +128,7 @@
                                     <label for="vang_mat" class="form-label">Số lượng sinh viên vắng mặt</label>
                                     <input type="number"
                                         class="form-control @error('vang_mat') is-invalid border-danger text-dark @enderror"
-                                        id="vang_mat" name="vang_mat" min="0"
-                                        value="{{ old('vang_mat', $thongTin->vang_mat) }}">
+                                        id="vang_mat" name="vang_mat" min="0" value="{{ old('vang_mat', $thongTin->vang_mat) }}" readonly>
                                 </div>
 
                                 {{-- Sinh viên vắng mặt --}}
@@ -146,7 +160,6 @@
 
                             <div class="mt-4 d-flex justify-content-between">
                                 <button type="submit" class="btn btn-success px-4">Lưu biên bản</button>
-                                <a href="javascript:void(0);" class="btn btn-danger btn-sm" onclick="window.close();">Huỷ</a>
                             </div>
                         </form>
                     </div>
@@ -195,21 +208,26 @@
                 width: '100%'
             });
 
+            $select.on('change', function () {
+            let selectedCount = $(this).val().length;
+            $('#vang_mat').val(selectedCount);
+            });
+
             function renderSinhVien(id, name) {
                 const lyDo = oldValues?.[id]?.ly_do || '';
                 const loai = oldValues?.[id]?.loai || '';
                 const chiTietId = oldValues?.[id]?.id;
                 const csrfToken = document.querySelector('meta[name="csrf-token"]').getAttribute('content');
-                const deleteUrl = `/admin/bienbanshcn/sinhvienvang/${chiTietId}`;
+                const deleteUrl = `/giangvien/bienbanshcn/sinhvienvang/${chiTietId}`;
 
-                const deleteForm = chiTietId
-                    ? `
+                const deleteForm = chiTietId ?
+                    `
                     <button type="button" class="btn btn-danger btn-sm btn-delete-sinhvien" 
                         data-id="${id}" 
                         data-url="${deleteUrl}">
                         <i class="fas fa-trash-alt"></i>
-                    </button>`
-                    : '';
+                    </button>` :
+                    '';
 
                 const html = `
                     <div class="sinhvien-item row mb-3" id="sinhvien-${id}">
@@ -252,31 +270,35 @@
                 $container.append(html);
             }
 
-            $container.on('click', '.btn-delete-sinhvien', function () {
-            const button = $(this);
-            const id = button.data('id');
-            const url = button.data('url');
-            const csrfToken = $('meta[name="csrf-token"]').attr('content');
+            $container.on('click', '.btn-delete-sinhvien', function() {
 
-            showConfirm(() => {
-                $.ajax({
-                    url: url,
-                    method: 'POST',
-                    data: {
-                        _token: csrfToken,
-                        _method: 'DELETE'
-                    },
-                    success: function () {
-                        $(`#sinhvien-${id}`).remove();
-                        $(`#sinhvien-select option[value="${id}"]`).prop('selected', false).trigger('change');
-                        delete oldValues[id];
-                    },
-                    error: function () {
-                        alert('Xoá thất bại. Sinh viên này chưa được lưu trong biên bản Sinh Hoạt Chủ Nhiệm');
-                    }
-                });
+                const button = $(this);
+                const id = button.data('id');
+                const url = button.data('url');
+                const csrfToken = $('meta[name="csrf-token"]').attr('content');
+
+                if (confirm("Dữ liệu hiện tại sẽ bị thay đổi. Bạn có chắc chắn muốn xoá sinh viên này không?")) {
+                    $.ajax({
+                        url: url,
+                        method: 'POST',
+                        data: {
+                            _token: csrfToken,
+                            _method: 'DELETE'
+                        },
+                        success: function() {
+                            alert('Xoá thành công');
+                            $(`#sinhvien-${id}`).remove();
+                            $(`#sinhvien-select option[value="${id}"]`).prop('selected', false)
+                                .trigger('change');
+                            delete oldValues[id];
+                        },
+                        error: function() {
+                            alert(
+                                'Xoá thất bại. Sinh viên này chưa được lưu trong biên bản Sinh Hoạt Chủ Nhiệm');
+                        }
+                    });
+                }
             });
-        });
 
             const initial = $select.val() || [];
             initial.forEach(id => {
@@ -304,10 +326,6 @@
                 currentSelected = selected;
             });
         });
-
-
-        
-
     </script>
 
     <script src="https://cdn.ckeditor.com/ckeditor5/38.1.1/classic/ckeditor.js"></script>

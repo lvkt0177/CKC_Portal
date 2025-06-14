@@ -64,14 +64,14 @@
                                             style="background-color: #f8f9fa; border-top: 1.5px solid #ced4da !important;">
                                             <p><b>Ngành:</b> {{ $lop->giangVien->boMon->nganhHoc->ten_nganh }}</p>
                                             <div class="d-flex">
-                                                <a href="{{ route('admin.lop.sinhvien', $lop) }}"
+                                                <a href="{{ route('giangvien.lop.sinhvien', $lop) }}"
                                                     class="btn btn-dark text-white btn-sm">
                                                     <i class="fas fa-solid fa-eye"></i>
                                                 </a>
-                                                <a href="{{ route('admin.lop.nhap-diem_rl', $lop) }}"
+                                                <a href="{{ route('giangvien.lop.nhap-diem_rl', $lop) }}"
                                                     class="btn btn-warning btn-sm mx-1"><i class="fa-solid fa-pencil "></i> Điểm rèn luyện
                                                 </a>
-                                                <a href="{{ route('admin.bienbanshcn.index', $lop) }}"
+                                                <a href="{{ route('giangvien.bienbanshcn.index', $lop) }}"
                                                     class="btn btn-success btn-sm text-white"><i
                                                         class="fa-solid fa-file-lines"></i> SHCN</a>
                                             </div>

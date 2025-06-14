@@ -17,6 +17,7 @@ use App\Http\Requests\BienBan\BienBanRequest;
 use Carbon\Carbon;
 use App\Services\BienBanService;
 use App\Repositories\BienBan\BienBanRepository;
+use Illuminate\Support\Facades\Log;
 
 class BienBanController extends Controller
 {
@@ -57,10 +58,10 @@ class BienBanController extends Controller
         $result = $bienBanService->storeBienBanVaChiTiet($request->all(), $lop);
         
         if($result) {
-            return redirect()->route('admin.bienbanshcn.index', $lop->id)->with('success', 'Thêm biên bản thành công');
+            return redirect()->route('giangvien.bienbanshcn.index', $lop->id)->with('success', 'Thêm biên bản thành công');
         }
 
-        return redirect()->route('admin.bienbanshcn.index', $lop->id)->with('error', 'Thêm biên bản thất bại');
+        return redirect()->route('giangvien.bienbanshcn.index', $lop->id)->with('error', 'Thêm biên bản thất bại');
     }
 
     /**
@@ -93,11 +94,11 @@ class BienBanController extends Controller
         $result = $bienBanService->updateBienBanVaChiTiet($request->validated(), $bienbanshcn);
 
         if ($result) {
-            return redirect()->route('admin.bienbanshcn.index', $bienbanshcn->lop->id)
+            return redirect()->route('giangvien.bienbanshcn.index', $bienbanshcn->lop->id)
                 ->with('success', 'Cập nhật biên bản thành công');
         }
 
-        return redirect()->route('admin.bienbanshcn.index', $bienbanshcn->lop->id)
+        return redirect()->route('giangvien.bienbanshcn.index', $bienbanshcn->lop->id)
             ->with('error', 'Cập nhật biên bản thất bại');
     }
 
@@ -112,10 +113,12 @@ class BienBanController extends Controller
 
     public function deleteSinhVienVang(int $id)
     {
-        $sinhVien = ChiTietBienBanSHCN::find($id);
-        $sinhVien->delete();
-
-        return redirect()->back()->with('success', 'Xóa sinh viên vắng thành công');
+        $chiTietBienBan = ChiTietBienBanSHCN::find($id);
+        $chiTietBienBan->delete();
+        $bienBan = BienBanSHCN::find($chiTietBienBan->id_bien_ban_shcn);
+        $bienBan->vang_mat -= 1;
+        $bienBan->save();
+        return response()->json(['success' => true, 'message' => 'Xoá sinh viên vắng mặt thành công']);
     }
 
     public function confirmBienBan(BienBanSHCN $bienBanSHCN)

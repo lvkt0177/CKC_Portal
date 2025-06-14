@@ -400,3 +400,83 @@ body {
 .submenu li a:hover {
     background-color: var(--primary-color);
 }
+
+
+#custom-confirm {
+    display: none;
+    position: fixed;
+    inset: 0;
+    background-color: rgba(0, 0, 0, 0.4);
+    backdrop-filter: blur(2px);
+    z-index: 9999;
+    align-items: center;
+    justify-content: center;
+}
+
+#custom-confirm .confirm-box {
+    background-color: #fff;
+    border-radius: 12px;
+    box-shadow: 0 10px 25px rgba(0, 0, 0, 0.2);
+    padding: 24px;
+    max-width: 400px;
+    width: 90%;
+    animation: fadeIn 0.2s ease-in-out;
+}
+
+#custom-confirm .confirm-box h2 {
+    font-size: 18px;
+    font-weight: 600;
+    margin-bottom: 12px;
+}
+
+#custom-confirm .confirm-box p {
+    font-size: 15px;
+    margin-bottom: 20px;
+    color: #333;
+}
+
+#custom-confirm .confirm-buttons {
+    text-align: right;
+    display: flex;
+    justify-content: flex-end;
+    gap: 12px;
+}
+
+#custom-confirm button {
+    padding: 8px 16px;
+    border-radius: 8px;
+    font-weight: 500;
+    cursor: pointer;
+    transition: background-color 0.2s;
+    border: none;
+}
+
+#confirm-cancel {
+    background-color: #e5e7eb;
+    color: #333;
+}
+
+#confirm-cancel:hover {
+    background-color: #d1d5db;
+}
+
+#confirm-ok {
+    background-color: var(--primary-color);
+    color: white;
+}
+
+#confirm-ok:hover {
+    background-color: #4338ca;
+}
+
+@keyframes fadeIn {
+    from {
+        opacity: 0;
+        transform: scale(0.95);
+    }
+
+    to {
+        opacity: 1;
+        transform: scale(1);
+    }
+}

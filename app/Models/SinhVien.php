@@ -19,7 +19,7 @@ class SinhVien extends Authenticatable
         'id_lop',
         'id_ho_so',
         'chuc_vu',
-        'mat_khau',
+        'password',
         'trang_thai'
     ];
 

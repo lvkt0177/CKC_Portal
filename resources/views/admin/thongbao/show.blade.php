@@ -25,7 +25,7 @@
                 </div>
                 <div class="card-content">
                     <div class="d-flex justify-content-end">
-                        <a href="{{ route('admin.thongbao.index') }}" class="btn btn-back">Quay lại</a>
+                        <a href="{{ route('giangvien.thongbao.index') }}" class="btn btn-back">Quay lại</a>
                     </div>
 
                     <h2 class="card-title">{{ $thongbao->tieu_de }}</h2>
@@ -37,7 +37,7 @@
                             <b>Files đính kèm:</b>
                             @foreach ($thongbao->file as $file)
                                 <div class="">
-                                    <a href="{{ route('admin.file.download', $file->id) }}">{{ $file->ten_file }}</a>
+                                    <a href="{{ route('giangvien.file.download', $file->id) }}">{{ $file->ten_file }}</a>
                                 </div>
                             @endforeach
                         </div>

@@ -11,6 +11,7 @@ use App\Models\Lop;
 use App\Models\BoMon;
 use App\Models\NienKhoa;
 use App\Http\Requests\SinhVien\ChucVuRequest;
+use App\Enum\RoleStudent;
 
 class SinhVienController extends Controller
 {
@@ -50,6 +51,12 @@ class SinhVienController extends Controller
 
     public function doiChucVu(ChucVuRequest $request, SinhVien $sinhVien)
     {
+        $thuKy = SinhVien::where('id_lop', $sinhVien->id_lop)->where('chuc_vu', RoleStudent::SECRETARY)->first();
+        if($thuKy) {
+            $thuKy->chuc_vu = RoleStudent::MEMBER;
+            $thuKy->save();
+        }
+
         if ($sinhVien->update($request->validated()))
             return redirect()->back()->with('success', 'Cập nhật chức vụ cho sinh viên ' . $sinhVien->hoSo->ho_ten . ' thành công');
 

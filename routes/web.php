@@ -2,7 +2,9 @@
 
 use Illuminate\Support\Facades\Route;
 use App\Acl\Acl;
-//Controller
+use Illuminate\Support\Facades\Mail;
+use App\Mail\GuiMatKhauMoi;
+use App\Jobs\SendMailJob;
 
 Route::group(['middleware' => 'web'], function () {
 

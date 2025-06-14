@@ -4,7 +4,7 @@ use Illuminate\Support\Facades\Route;
 use App\Acl\Acl;
 //Controller
 
-Route::prefix('admin')->name('admin.')->group(function () {
+Route::prefix('giangvien')->name('giangvien.')->group(function () {
 
     include('profile.php');
     //--------------------------------------

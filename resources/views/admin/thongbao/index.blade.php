@@ -13,7 +13,7 @@
                 <div class="card shadow-sm teams-section">
                     <div class="card-header d-flex justify-content-between align-items-center">
                         <h3 class="card-title mb-0"> Quản lý thông báo </h3>
-                        <a href="{{ route('admin.thongbao.create') }}" class="btn btn-add">Thêm thông báo</a>
+                        <a href="{{ route('giangvien.thongbao.create') }}" class="btn btn-add">Thêm thông báo</a>
                     </div>
 
                     <div class="teams-section">
@@ -68,7 +68,7 @@
                                                             </div>
                                                             <div class="modal-body">
                                                                 <form
-                                                                    action="{{ route('admin.thongbao.send-to-student', $thongbao) }}"
+                                                                    action="{{ route('giangvien.thongbao.send-to-student', $thongbao) }}"
                                                                     method="POST">
                                                                     @csrf
                                                                     <div class="mb-3">
@@ -96,17 +96,17 @@
                                                 </div>
                                             </div>
 
-                                            <a href="{{ route('admin.thongbao.show', $thongbao) }}"
+                                            <a href="{{ route('giangvien.thongbao.show', $thongbao) }}"
                                                 class="btn btn-dark btn-sm">
                                                 <i class="fa fa-eye" aria-hidden="true"></i>
                                             </a>
 
                                             @if ($thongbao->trang_thai->value == 0)
-                                                <a href="{{ route('admin.thongbao.edit', $thongbao) }}"
+                                                <a href="{{ route('giangvien.thongbao.edit', $thongbao) }}"
                                                     class="btn btn-warning btn-sm mx-1">
                                                     <i class="fa fa-pencil" aria-hidden="true"></i>
                                                 </a>
-                                                <form action="{{ route('admin.thongbao.destroy', $thongbao) }}"
+                                                <form action="{{ route('giangvien.thongbao.destroy', $thongbao) }}"
                                                     method="POST" class="" data-confirm>
                                                     @csrf
                                                     @method('DELETE')

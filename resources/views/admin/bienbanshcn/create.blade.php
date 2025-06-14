@@ -13,6 +13,11 @@
     <link href="https://cdn.jsdelivr.net/npm/select2@4.1.0-rc.0/dist/css/select2.min.css" rel="stylesheet" />
 @endsection
 
+@php
+    use Carbon\Carbon;
+    $today = Carbon::today();
+@endphp
+
 @section('content')
 
     <div class="container-fluid">
@@ -24,7 +29,7 @@
                         <a href="javascript:void(0);" class="btn btn-danger btn-sm" onclick="window.close();">Huỷ</a>
                     </div>
                     <div class="card-body">
-                        <form action="{{ route('admin.bienbanshcn.store', $lop) }}" method="POST" data-confirm
+                        <form action="{{ route('giangvien.bienbanshcn.store', $lop) }}" method="POST" data-confirm
                             enctype="multipart/form-data">
                             @csrf
                             <div class="row g-3">
@@ -54,14 +59,13 @@
 
                                 <div class="col-md-4">
                                     <label class="form-label">Thư ký đại diện</label>
-                                    
+
                                     <select name="id_sv" id="thuky"
                                         class="form-control @error('id_sv') is-invalid border-danger text-dark @enderror">
-                                        <option value="">-- Chọn thư ký đại diện --</option>
                                         @foreach ($thuKy as $tk)
                                             <option value="{{ $tk->id }}"
                                                 {{ old('id_sv') == $tk->id ? 'selected' : '' }}>
-                                                {{ $tk->hoSo->ho_ten}}
+                                                {{ $tk->hoSo->ho_ten }}
                                             </option>
                                         @endforeach
                                     </select>
@@ -71,15 +75,25 @@
                                     <label for="id_tuan" class="form-label">Tuần</label>
 
                                     <select name="id_tuan" id="id_tuan"
-                                        class="form-control @error('id_tuan') is-invalid border-danger text-dark @enderror">
+                                        class="form-control @error('id_tuan') is-invalid border-danger text-dark @enderror"
+                                        style="pointer-events: none;">
                                         <option value="">-- Chọn tuần --</option>
                                         @foreach ($tuans as $tuan)
+                                            @php
+                                                $start = Carbon::parse($tuan->ngay_bat_dau);
+                                                $end = Carbon::parse($tuan->ngay_ket_thuc);
+                                                $isCurrentWeek = $today->between($start, $end);
+                                            @endphp
                                             <option value="{{ $tuan->id }}"
-                                                {{ old('id_tuan') == $tuan->id ? 'selected' : '' }}>
-                                                Tuần {{ $tuan->tuan }}
+                                                {{ $isCurrentWeek || old('id_tuan') == $tuan->id ? 'selected' : '' }}>
+                                                Tuần {{ $tuan->tuan }} ({{ $tuan->ngay_bat_dau->format('d/m/Y') }} - {{
+                                                    $tuan->ngay_ket_thuc->format('d/m/Y') }})
                                             </option>
                                         @endforeach
                                     </select>
+                                    @error('id_tuan')
+                                        <div class="text-danger">{{ $message }}</div>
+                                    @enderror
                                 </div>
 
                                 <div class="col-md-4">
@@ -110,12 +124,13 @@
                                     <label for="vang_mat" class="form-label">Số lượng sinh viên vắng mặt</label>
                                     <input type="number"
                                         class="form-control @error('vang_mat') is-invalid border-danger text-dark @enderror"
-                                        id="vang_mat" name="vang_mat" min="0" value="{{ old('vang_mat') }}">
+                                        id="vang_mat" name="vang_mat" min="0" value="{{ old('vang_mat') }}" readonly>
                                 </div>
 
                                 {{-- Sinh viên vắng mặt --}}
                                 <div class="col-md-12">
-                                    <label for="sinhvien-select" class="form-label">Thông tin sinh viên vắng mặt (Tìm kiếm và chọn)</label>
+                                    <label for="sinhvien-select" class="form-label">Thông tin sinh viên vắng mặt (Tìm kiếm
+                                        và chọn)</label>
 
                                     <select id="sinhvien-select" class="form-control" multiple>
                                         @foreach ($sinhViens as $sv)
@@ -158,9 +173,7 @@
 
     <script>
         const oldValues = @json(old('sinh_vien_vang', []));
-    </script>
-
-    <script>
+    
         $(document).ready(function() {
             console.log('jQuery:', $.fn.jquery);
             console.log('Select2 exists:', typeof $.fn.select2);
@@ -169,7 +182,6 @@
             const $container = $('#sinhvien-details-container');
             let currentSelected = [];
 
-            // ✅ Cảnh báo nếu rời trang khi form thay đổi
             let isFormChanged = false;
 
             $('form').on('change input', function() {
@@ -187,10 +199,14 @@
                 isFormChanged = false;
             });
 
-            // ✅ Khởi tạo select2
             $select.select2({
                 placeholder: "Tìm và chọn sinh viên",
                 width: '100%'
+            });
+
+            $select.on('change', function () {
+            let selectedCount = $(this).val().length;
+            $('#vang_mat').val(selectedCount);
             });
 
             // ✅ Hàm render sinh viên

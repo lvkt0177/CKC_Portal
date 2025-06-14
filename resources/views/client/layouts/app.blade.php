@@ -43,17 +43,17 @@
                 </a>
             </div>
 
-            <div class="d-flex align-items-center text-dark dropdown">
-                <div class="dropdown-toggle d-flex align-items-center" id="userMenu" data-bs-toggle="dropdown"
-                    style="cursor: pointer;">
-                    <div class="bg-primary text-white rounded-circle d-flex justify-content-center align-items-center"
-                        style="width: 32px; height: 32px; font-weight: bold;">N</div>
-                    <span class="ms-2">Nguyễn Đức Bảo</span>
-                </div>
-                <ul class="dropdown-menu dropdown-menu-end" aria-labelledby="userMenu">
-                    <li><a class="text-decoration-none text-dark px-4" href="{{ route('studentLogout') }}"><i class="fa-solid fa-right-from-bracket text-danger"></i> Đăng xuất</a></li>
-                </ul>
+            <div class="d-flex align-items-center position-relative text-muted">
+                <a href="#" class="text-muted text-decoration-none position-relative">
+                    <i class="fa fa-user" aria-hidden="true"></i>
+                    <span>{{ Auth::guard('student')->user()->hoSo->ho_ten }}</span>
+                </a>
             </div>
+
+            <div class="d-flex align-items-center position-relative text-muted">
+                <a class="text-decoration-none text-dark" href="{{ route('studentLogout') }}"><i class="fa-solid fa-right-from-bracket text-danger"></i> Đăng xuất</a>
+            </div>
+
         </div>
 
         <!-- Dropdown khi màn hình nhỏ -->
@@ -78,8 +78,9 @@
                 <li class="dropdown-item d-flex align-items-center text-dark">
                     <div class="bg-primary text-white rounded-circle d-flex justify-content-center align-items-center me-2"
                         style="width: 28px; height: 28px; font-weight: bold;">N</div>
-                    Nguyễn Đức Bảo
+                    {{ Auth::guard('student')->user()->hoSo->ho_ten }}
                 </li>
+                <li><a href="{{ route('studentLogout') }}"><i class="fa-solid fa-right-from-bracket text-danger"></i>Đổi mật khẩu</a></li>
                 <li><a href="{{ route('studentLogout') }}"><i class="fa-solid fa-right-from-bracket text-danger"></i> Đăng xuất</a></li>
             </ul>
         </div>
@@ -94,21 +95,21 @@
     <!-- Sidebar -->
     <aside class="sidebar" id="sidebar">
         <ul class="sidebar-menu">
-            <li><a href="#" class="active"><i class="fas fa-home"></i> TRANG CHỦ</a></li>
+            <li><a href="{{ route('sinhvien.trang-chu.index') }}" class="{{ isActiveRoute('sinhvien/trang-chu') }}"><i class="fas fa-home"></i> TRANG CHỦ</a></li>
 
             <li class="dropdown">
                 <a href="#" class="dropdown-toggle"><i class="fas fa-info-circle"></i> THÔNG TIN CHUNG</a>
                 <ul class="submenu">
-                    <li><a href="#">Giới thiệu</a></li>
-                    <li><a href="#">Liên hệ</a></li>
+                    <li><a href="#">Thông tin sinh viên</a></li>
+                    <li><a href="#">Đăng ký giấy xác nhận</a></li>
                 </ul>
             </li>
 
             <li class="dropdown">
                 <a href="#" class="dropdown-toggle"><i class="fas fa-graduation-cap"></i> HỌC TẬP</a>
                 <ul class="submenu">
-                    <li><a href="#">Lịch học</a></li>
                     <li><a href="#">Điểm số</a></li>
+                    <li><a href="#">Lịch học theo tuần</a></li>
                 </ul>
             </li>
 
@@ -127,6 +128,13 @@
                     <li><a href="#">Lịch sử thanh toán</a></li>
                 </ul>
             </li>
+
+            <li class="dropdown">
+                <a href="#" class="dropdown-toggle {{ isActiveRoute('sinhvien/ho-so') }}"><i class="fa-solid fa-user-shield"></i> BẢO MẬT</a>
+                <ul class="submenu">
+                    <li><a href="{{ route('sinhvien.ho-so.doi-mat-khau') }}">Đổi mật khẩu</a></li>
+                </ul>
+            </li>
         </ul>
     </aside>
 
@@ -136,9 +144,51 @@
         @yield('content')        
     </main>
 
-    @yield('js')
+    <div id="custom-confirm">
+        <div class="confirm-box">
+            <h2>Xác nhận</h2>
+            <p>Dữ liệu hiện tại sẽ bị thay đổi. Bạn có chắc chắn muốn thực hiện thao tác này?</p>
+            <div class="confirm-buttons">
+                <button id="confirm-cancel">Hủy</button>
+                <button id="confirm-ok">OK</button>
+            </div>
+        </div>
+    </div>
 
+    <script>
+        let currentForm = null;
+        let confirmCallback = null;
+        document.addEventListener('DOMContentLoaded', function() {
+            document.querySelectorAll('form[data-confirm]').forEach(form => {
+                form.addEventListener('submit', function(e) {
+                    e.preventDefault();
+                    currentForm = form;
+                    showConfirm(() => form.submit());
+                });
+            });
+
+            document.getElementById('confirm-ok').addEventListener('click', function() {
+                document.getElementById('custom-confirm').style.display = 'none';
+                if (currentForm) currentForm.submit();
+            });
+
+            document.getElementById('confirm-cancel').addEventListener('click', function() {
+                document.getElementById('custom-confirm').style.display = 'none';
+                currentForm = null;
+            });
+        });
+
+        function showConfirm(callback = null) {
+            document.getElementById('custom-confirm').style.display = 'flex';
+            confirmCallback = callback;
+        }
+    </script>
+
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/jquery/3.6.0/jquery.min.js"></script>
     <script src="https://cdnjs.cloudflare.com/ajax/libs/bootstrap/5.3.2/js/bootstrap.bundle.min.js"></script>
+    <script src="{{ asset('assets/admin/js/plugin/bootstrap-notify/bootstrap-notify.min.js') }}"></script>
+
+    @yield('js')
     <script>
         function toggleSidebar() {
             const sidebar = document.getElementById('sidebar');
@@ -181,6 +231,56 @@
                 let submenu = this.nextElementSibling;
                 submenu.style.display = submenu.style.display === 'block' ? 'none' : 'block';
             });
+        });
+
+        $(function() {
+            @if (session('success'))
+                $.notify({
+                    message: "{{ session('success') }}"
+                }, {
+                    type: 'success',
+                    placement: {
+                        from: "bottom",
+                        align: "right"
+                    },
+                    delay: 3000,
+                    z_index: 9999,
+                    animate: {
+                        enter: 'animated fadeInUp',
+                        exit: 'animated fadeOutDown'
+                    },
+                    template: `
+                <div data-notify="container" class="col-11 col-md-4 alert alert-{0}" role="alert"
+                     style="font-size: 15px; font-weight: 600; line-height: 1.5; padding: 16px 20px; border-radius: 10px;
+                            background-color: #d1e7dd; color: #0f5132; font-family: system-ui, -apple-system, Arial, sans-serif;">
+                    <span data-notify="message">{2}</span>
+                </div>`
+                });
+            @endif
+
+            @if (session('error'))
+                $.notify({
+                    message: "{{ session('error') }}"
+                }, {
+                    type: 'danger',
+                    placement: {
+                        from: "bottom",
+                        align: "right"
+                    },
+                    delay: 3000,
+                    z_index: 9999,
+                    animate: {
+                        enter: 'animated fadeInUp',
+                        exit: 'animated fadeOutDown'
+                    },
+                    template: `
+                <div data-notify="container" class="col-11 col-md-4 alert alert-{0}" role="alert"
+                     style="font-size: 15px; font-weight: 600; line-height: 1.5; padding: 16px 20px; border-radius: 10px;
+                            background-color: #f8d7da; color: #842029; font-family: system-ui, -apple-system, Arial, sans-serif;">
+                    <span data-notify="message">{2}</span>
+                </div>`
+                });
+            @endif
         });
 
     </script>
