@@ -12,9 +12,9 @@ class BinhLuan extends Model
 
     protected $fillable = [
         'noi_dung',
+        'id_thong_bao',
         'nguoi_binh_luan_id',
         'nguoi_binh_luan_type',
-        'id_thong_bao',
         'id_binh_luan_cha',
         'trang_thai',
     ];

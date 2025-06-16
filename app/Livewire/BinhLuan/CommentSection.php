@@ -17,6 +17,7 @@ class CommentSection extends Component
     public $id_reply = null;
     public $binhLuans = [];
     public $noi_dung_chinh = '';
+    
     protected $listeners = ['xoaBinhLuan' => 'xoaBinhLuan'];
     
     public function mount()

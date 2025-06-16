@@ -131,6 +131,7 @@ class AuthLoginController extends Controller
                 'message' => $message,
                 'ma_sv' => $sinhVien->ma_sv,
                 'ho_ten' => $sinhVien->hoSo->ho_ten,
+                'email' => $sinhVien->hoSo->email,
                 'loai' => LoaiTaiKhoan::from($loai)->getLabel(),
             ]
         ]);
