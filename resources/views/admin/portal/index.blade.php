@@ -7,10 +7,11 @@
 @endsection
 
 @section('content')
-    <div class="main-container" >
+    <div class="main-container">
         <!-- Thông tin sinh viên -->
-        <div class="user-info-card" style="100vh">
-            <h4 class="mb-4">Thông tin người dùng</h4>
+        <div class="user-info-card"
+            style="100vh; background: linear-gradient(135deg, #366bd6 0%, #6ea8fe 50%, #d5e6ff 100%);">
+            <h4 class="mb-4 text-white">Thông tin người dùng</h4>
             <div class="d-flex align-items-start">
                 <img src="{{ asset('' . auth()->user()->hoSo->anh) }}" alt="Avatar" class="user-avatar">
                 <div class="user-details flex-grow-1">
@@ -32,7 +33,7 @@
                                 <span class="info-label">Email:</span>
                                 <span class="info-value">{{ auth()->user()->hoSo->email }}</span>
                             </div>
-                            
+
                         </div>
                         <div class="col-md-6 col-sm-12 my-1">
                             <div class="stats-card">
@@ -42,7 +43,7 @@
                             </div>
                         </div>
                     </div>
-                   
+
                 </div>
             </div>
         </div>
@@ -116,7 +117,7 @@
                 </div>
                 <div class="function-label">...</div>
             </div>
-            
+
         </div>
     </div>
 @endsection

@@ -1,7 +1,9 @@
 @extends('admin.layouts.app')
 
 @section('title', 'Danh sách sinh viên')
-
+@section('css')
+    <link rel="stylesheet" href="{{ asset('assets/admin/css/lop.css') }}">
+@endsection
 @section('content')
 
     <div class="container-fluid">
@@ -11,11 +13,12 @@
                     <div class="card-header d-flex justify-content-between align-items-center">
                         <h3 class="card-title mb-0">Danh sách lớp học</h3>
                     </div>
-                    <div class="card-header bg-white border-bottom d-flex flex-column flex-md-row justify-content-between gap-3">
+                    <div
+                        class="card-header bg-white border-bottom d-flex flex-column flex-md-row justify-content-between gap-3">
 
                         <!-- Form lọc -->
                         <form class="d-flex flex-wrap gap-2 align-items-end" method="GET"
-                            action="{{ route('admin.student.index') }}">
+                            action="{{ route('giangvien.student.index') }}">
 
                             <!-- Ngành học -->
                             <div>
@@ -57,17 +60,15 @@
                             @foreach ($nganhHocs as $nh)
                                 @foreach ($lops as $l)
                                     @if ($l->giangVien->boMon->nganhHoc->id == $nh->id)
-                                        <div class="col-md-6 col-lg-4 col-sm-6 mb-4">
+                                        <div class=" col-md-6 col-lg-4 col-sm-6 mb-4">
                                             <div class="card h-100 shadow-sm"
                                                 style="border-radius: 15px; overflow: hidden; border: 1.5px solid #ced4da;">
 
                                                 <!-- Header -->
-                                                <div
-                                                    style="background: #007ACC url('https://img.tripi.vn/cdn-cgi/image/width=700,height=700/https://gcs.tripi.vn/public-tripi/tripi-feed/img/482601ikZ/anh-mo-ta.png') no-repeat right center; background-size: cover; height: 100px; position: relative;">
+                                                <div class="class-header" style="  height: 100px; position: relative;">
 
                                                     <!-- Overlay đen nhẹ -->
-                                                    <div
-                                                        style="background-color: rgba(0, 0, 0, 0.4); position: absolute; inset: 0; z-index: 1;">
+                                                    <div style="position: absolute; inset: 0; z-index: 1;">
                                                     </div>
 
                                                     <!-- Nội dung -->
@@ -80,7 +81,7 @@
 
                                                     <!-- Avatar -->
                                                     <img src="{{ asset('' . $l->giangVien->hoSo->anh) }}" alt="Avatar"
-                                                        style="width: 70px; height: 70px; object-fit: cover; border-radius: 50%; position: absolute; bottom: -20px; right: 15px; border: 1px solid white; z-index: 3;">
+                                                        style="width: 70px; height: 70px; object-fit: cover; border-radius: 50%; position: absolute; bottom: 10px; right: 15px; border: 1px solid white; z-index: 3;">
                                                 </div>
 
                                                 <!-- Body -->
@@ -92,7 +93,7 @@
                                                 <div class="card-footer d-flex justify-content-between gap-2 align-items-center"
                                                     style="background-color: #f8f9fa; border-top: 1.5px solid #ced4da !important;">
                                                     <p><b>Ngành:</b> {{ $l->giangVien->boMon->nganhHoc->ten_nganh }}</p>
-                                                    <a href="{{ route('admin.student.list', ['id' => $l->id]) }}"
+                                                    <a href="{{ route('giangvien.student.list', ['id' => $l->id]) }}"
                                                         class="btn btn-dark text-white btn-sm">
                                                         <i class="fas fa-solid fa-eye"></i>
                                                     </a>

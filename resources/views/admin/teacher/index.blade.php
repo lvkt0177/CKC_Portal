@@ -75,7 +75,7 @@
                                                             <td>{{ $gv->boMon->ten_bo_mon }}</td>
                                                             <td>{{ $gv->boMon->nganhHoc->khoa->ten_khoa }}</td>
                                                             <td>
-                                                                <a href="{{ route('admin.giangvien.show', $gv->id) }}"
+                                                                <a href="{{ route('giangvien.giangvien.show', $gv->id) }}"
                                                                     class="btn btn-warning"><i class="la la-eye"></i></a>
                                                             </td>
 
@@ -102,7 +102,7 @@
                                             @foreach ($users as $gv)
                                                 @if ($gv->getRoleNames()->first() != Acl()::ROLE_SUPER_ADMIN)
                                                     <div class="col-lg-3 col-md-3 mb-4">
-                                                        <a href="{{ route('admin.giangvien.show', $gv->id) }}"
+                                                        <a href="{{ route('giangvien.giangvien.show', $gv->id) }}"
                                                             class="text-decoration-none" style="text-decoration: none;">
                                                             <div class="card h-100 border-0 position-relative bg-white transition-all"
                                                                 style="border-radius: 12px; box-shadow: 0 1rem 2rem rgba(0, 0, 0, 0.075) !important; transition: all 0.3s ease-in-out;"

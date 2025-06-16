@@ -9,7 +9,7 @@
                 <div class="card shadow-sm teams-section">
                     <div class="card-header d-flex justify-content-between align-items-center">
                         <h3 class="card-title mb-0"> Quản lý phòng học </h3>
-                        <a href="{{ route('admin.phong.create') }}" class="btn btn-add">Thêm phòng học</a>
+                        <a href="{{ route('giangvien.phong.create') }}" class="btn btn-add">Thêm phòng học</a>
                     </div>
 
                     <div class="teams-section">
@@ -29,11 +29,12 @@
                                         <td>{{ $loop->index + 1 }}</td>
                                         <td>{{ $room->ten }}</td>
                                         <td>{{ $room->so_luong }}</td>
-                                        <td class="w-25"><span class="badge bg-{{ $room->loai_phong->getBadge() }} text-dark">
+                                        <td class="w-25"><span
+                                                class="badge bg-{{ $room->loai_phong->getBadge() }} text-dark">
                                                 {{ $room->loai_phong->getLabel() }}
                                             </span></td>
                                         <td>
-                                            <a href="{{ route('admin.phong.edit', $room) }}"
+                                            <a href="{{ route('giangvien.phong.edit', $room) }}"
                                                 class="btn btn-warning btn-sm">Sửa</a>
                                         </td>
                                     </tr>
@@ -75,7 +76,7 @@
 
         $('#room-table').on('error.dt', function(e, settings, techNote, message) {
             console.error('DataTables Lỗi:', message);
-            alert('Đã có lỗi khi tải bảng: ' + message); 
+            alert('Đã có lỗi khi tải bảng: ' + message);
         });
     </script>
 @endsection

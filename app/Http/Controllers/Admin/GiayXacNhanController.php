@@ -15,7 +15,7 @@ class GiayXacNhanController extends Controller
     public function index()
     {
         $dangkygiays = DangKyGiay::with('sinhVien', 'loaiGiay', 'giangVien', 'sinhVien.hoSo', 'giangVien.hoSo')
-            ->orderBy('id', 'desc')
+            ->orderBy('trang_thai', 'asc')
             ->get();
         return view("admin.testimonial.index", compact("dangkygiays"));
     }

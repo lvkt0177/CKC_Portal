@@ -17,11 +17,11 @@
                             <i class="fas fa-calendar-alt me-2"></i>
                             Sổ lên lớp
                         </h4>
-                        <a href="{{ route('admin.phieulenlop.index') }}" class="btn btn-back">Quay lại</a>
+                        <a href="{{ route('giangvien.phieulenlop.index') }}" class="btn btn-back">Quay lại</a>
                     </div>
 
                     <div class="card-body">
-                        <form id="phieu-len-lop-form" method="POST" action="{{ route('admin.phieulenlop.store') }}"
+                        <form id="phieu-len-lop-form" method="POST" action="{{ route('giangvien.phieulenlop.store') }}"
                             data-confirm>
                             @csrf <!-- Đừng quên thêm CSRF token -->
 

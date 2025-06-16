@@ -10,7 +10,7 @@
                     <div class="card-header d-flex justify-content-between align-items-center">
                         <h3 class="card-title mb-0"> Danh sách các quyền theo nhóm </h3>
 
-                        <a href="{{ route('admin.roles.index') }}" class="btn btn-primary">Quay lại</a>
+                        <a href="{{ route('giangvien.roles.index') }}" class="btn btn-primary">Quay lại</a>
 
                     </div>
 
@@ -20,9 +20,10 @@
                                 <div class="col-md-6 my-1">
                                     <div class="p-3 border rounded shadow-sm h-100">
                                         <h5 class="fw-bold text-h1 mb-3">{{ $group }}</h5>
-                                        
+
                                         @foreach ($permissions as $permission)
-                                            <div class="badge bg- text-dark border mb-2 me-2 p-2" style="font-size: 0.9rem;">
+                                            <div class="badge bg- text-dark border mb-2 me-2 p-2"
+                                                style="font-size: 0.9rem;">
                                                 {{ $permission }}
                                             </div>
                                         @endforeach
@@ -31,7 +32,7 @@
                             @endforeach
                         </div>
                     </div>
-                    
+
                 </div>
             </div>
         </div>

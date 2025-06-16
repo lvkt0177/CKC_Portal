@@ -39,8 +39,8 @@
                                         <td>{{ $dkg->giangVien?->hoSo?->ho_ten ?? 'N/A' }}</td>
                                         <td>{{ $dkg->trang_thai == 0 ? 'Chưa duyệt' : 'Đã duyệt' }}</td>
                                         <td>
-                                            <form action="{{ route('admin.testimonial.update', $dkg->id) }}" method="POST"
-                                                data-confirm>
+                                            <form action="{{ route('giangvien.testimonial.update', $dkg->id) }}"
+                                                method="POST" data-confirm>
                                                 @csrf
                                                 {!! $dkg->trang_thai == 0 ? '<button class="btn btn-warning">Duyệt</button>' : '' !!}
                                             </form>

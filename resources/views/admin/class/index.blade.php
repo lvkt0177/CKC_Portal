@@ -3,7 +3,7 @@
 @section('title', 'Lớp chủ nhiệm')
 
 @section('css')
-
+    <link rel="stylesheet" href="{{ asset('assets/admin/css/lop.css') }}">
     <style>
         input[type="checkbox"] {
             position: static !important;
@@ -32,12 +32,10 @@
                                         style="border-radius: 15px; overflow: hidden; border: 1.5px solid #ced4da;">
 
                                         <!-- Header -->
-                                        <div
-                                            style="background: #007ACC url('https://img.tripi.vn/cdn-cgi/image/width=700,height=700/https://gcs.tripi.vn/public-tripi/tripi-feed/img/482601ikZ/anh-mo-ta.png') no-repeat right center; background-size: cover; height: 100px; position: relative;">
+                                        <div class="class-header" style="  height: 100px; position: relative;">
 
                                             <!-- Overlay đen nhẹ -->
-                                            <div
-                                                style="background-color: rgba(0, 0, 0, 0.4); position: absolute; inset: 0; z-index: 1;">
+                                            <div style="position: absolute; inset: 0; z-index: 1;">
                                             </div>
 
                                             <!-- Nội dung -->
@@ -51,7 +49,7 @@
 
                                             <!-- Avatar -->
                                             <img src="{{ asset('' . $lop->giangVien->hoSo->anh) }}" alt="Avatar"
-                                                style="width: 70px; height: 70px; object-fit: cover; border-radius: 50%; position: absolute; bottom: -20px; right: 15px; border: 1px solid white; z-index: 3;">
+                                                style="width: 70px; height: 70px; object-fit: cover; border-radius: 50%; position: absolute; bottom: 10px; right: 15px; border: 1px solid white; z-index: 3;">
                                         </div>
 
                                         <!-- Body -->
@@ -69,7 +67,8 @@
                                                     <i class="fas fa-solid fa-eye"></i>
                                                 </a>
                                                 <a href="{{ route('giangvien.lop.nhap-diem_rl', $lop) }}"
-                                                    class="btn btn-warning btn-sm mx-1"><i class="fa-solid fa-pencil "></i> Điểm rèn luyện
+                                                    class="btn btn-warning btn-sm mx-1"><i class="fa-solid fa-pencil "></i>
+                                                    Điểm rèn luyện
                                                 </a>
                                                 <a href="{{ route('giangvien.bienbanshcn.index', $lop) }}"
                                                     class="btn btn-success btn-sm text-white"><i

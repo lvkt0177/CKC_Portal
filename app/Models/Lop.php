@@ -11,6 +11,7 @@ class Lop extends Model
         'ten_lop',
         'id_nien_khoa',
         'id_gvcn',
+        'id_nganh_hoc',
         'si_so'
     ];
 
@@ -38,5 +39,10 @@ class Lop extends Model
     public function lopHocPhans()
     {
         return $this->hasMany(LopHocPhan::class, 'id_lop', 'id');
+    }
+    // Nganh hoc
+    public function nganhHoc()
+    {
+        return $this->belongsTo(NganhHoc::class, 'id_nganh_hoc', 'id');
     }
 }
