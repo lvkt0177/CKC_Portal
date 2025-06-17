@@ -1,9 +1,8 @@
 @extends('admin.layouts.app')
 
 @section('title', 'Danh sách sinh viên')
-@section('css')
-    <link rel="stylesheet" href="{{ asset('assets/admin/css/lop.css') }}">
-@endsection
+
+
 @section('content')
 
     <div class="container-fluid">
@@ -13,9 +12,7 @@
                     <div class="card-header d-flex justify-content-between align-items-center">
                         <h3 class="card-title mb-0">Danh sách lớp học</h3>
                     </div>
-                    <div
-                        class="card-header bg-white border-bottom d-flex flex-column flex-md-row justify-content-between gap-3">
-
+                    <div class="card-header bg-white border-bottom d-flex flex-column flex-md-row justify-content-between gap-3">
                         <!-- Form lọc -->
                         <form class="d-flex flex-wrap gap-2 align-items-end" method="GET"
                             action="{{ route('giangvien.student.index') }}">
@@ -52,8 +49,6 @@
                         </form>
                     </div>
 
-
-
                     <div class="card-body p-2">
                         <div class="row justify-content-start g-4">
 
@@ -63,10 +58,8 @@
                                         <div class=" col-md-6 col-lg-4 col-sm-6 mb-4">
                                             <div class="card h-100 shadow-sm"
                                                 style="border-radius: 15px; overflow: hidden; border: 1.5px solid #ced4da;">
-
                                                 <!-- Header -->
-                                                <div class="class-header" style="  height: 100px; position: relative;">
-
+                                                <div style="background: #007ACC url('https://img.tripi.vn/cdn-cgi/image/width=700,height=700/https://gcs.tripi.vn/public-tripi/tripi-feed/img/482601ikZ/anh-mo-ta.png') no-repeat right center; background-size: cover; height: 100px; position: relative;">
                                                     <!-- Overlay đen nhẹ -->
                                                     <div style="position: absolute; inset: 0; z-index: 1;">
                                                     </div>
@@ -109,5 +102,4 @@
             </div>
         </div>
     </div>
-
 @endsection

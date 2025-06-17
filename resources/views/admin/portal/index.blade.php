@@ -8,9 +8,7 @@
 
 @section('content')
     <div class="main-container">
-        <!-- Thông tin sinh viên -->
-        <div class="user-info-card"
-            style="100vh; background: linear-gradient(135deg, #366bd6 0%, #6ea8fe 50%, #d5e6ff 100%);">
+        <div class="user-info-card">
             <h4 class="mb-4 text-white">Thông tin người dùng</h4>
             <div class="d-flex align-items-start">
                 <img src="{{ asset('' . auth()->user()->hoSo->anh) }}" alt="Avatar" class="user-avatar">

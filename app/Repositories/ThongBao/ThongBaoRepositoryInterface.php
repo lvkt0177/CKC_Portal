@@ -10,5 +10,5 @@ use Illuminate\Support\Collection;
  */
 interface ThongBaoRepositoryInterface extends RepositoryInterface
 {
-
+    public function thongBaoSinhVien($sinhVienId);
 }

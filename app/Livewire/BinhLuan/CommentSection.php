@@ -7,6 +7,9 @@ use App\Models\ThongBao;
 use App\Enum\ActiveOrNotStatus;
 use App\Models\BinhLuan;
 use App\Rules\BinhLuanRules;
+use App\Models\User;
+use App\Models\SinhVien;
+use Auth;
 
 class CommentSection extends Component
 {
@@ -17,12 +20,14 @@ class CommentSection extends Component
     public $id_reply = null;
     public $binhLuans = [];
     public $noi_dung_chinh = '';
+    public $giangVien = null;
     
     protected $listeners = ['xoaBinhLuan' => 'xoaBinhLuan'];
     
     public function mount()
     {
         $this->loadBinhLuans();
+        $this->giangVien = auth()->user() ? true : false;
     }
 
     public function setReplyTo($id)
@@ -51,8 +56,8 @@ class CommentSection extends Component
         BinhLuan::create([
             ...$data,
             'id_thong_bao' => $this->thongbao->id,
-            'nguoi_binh_luan_id' => auth()->id(),
-            'nguoi_binh_luan_type' => get_class(auth()->user()),
+            'nguoi_binh_luan_id' => auth()->id() ?? Auth::guard('student')->user()->id,
+            'nguoi_binh_luan_type' => get_class(auth()->user()) ?? SinhVien::class,
             'id_binh_luan_cha' => $id,
             'trang_thai' => ActiveOrNotStatus::ACTIVE,
         ]);
@@ -73,7 +78,7 @@ class CommentSection extends Component
     {
         $binhluan = BinhLuan::find($id);
 
-        if (!$binhluan || $binhluan->nguoi_binh_luan_id !== auth()->id()) {
+        if (!$binhluan || $binhluan->nguoi_binh_luan_id !== auth()->id() ?? Auth::guard('student')->user()->id) {
             session()->flash('error', 'Bạn không có quyền xóa bình luận này.');
             return;
         }
@@ -84,7 +89,17 @@ class CommentSection extends Component
         session()->flash('success', 'Đã xoá bình luận.');
     }
 
+    public function coTheXoa(BinhLuan $binhLuan): bool
+    {
+        
+        $giangVien = Auth::guard('web')->user(); 
+        if ($giangVien) return true;
 
+        $sinhVien = Auth::guard('student')->user();
+        return $sinhVien &&
+            $binhLuan->nguoi_binh_luan_type === SinhVien::class &&
+            $binhLuan->nguoi_binh_luan_id == $sinhVien->id;
+    }
 
     public function loadBinhLuans()
     {

@@ -3,7 +3,7 @@
 @section('title', 'Lớp chủ nhiệm')
 
 @section('css')
-    <link rel="stylesheet" href="{{ asset('assets/admin/css/lop.css') }}">
+    
     <style>
         input[type="checkbox"] {
             position: static !important;
@@ -32,8 +32,7 @@
                                         style="border-radius: 15px; overflow: hidden; border: 1.5px solid #ced4da;">
 
                                         <!-- Header -->
-                                        <div class="class-header" style="  height: 100px; position: relative;">
-
+                                        <div style="background: #007ACC url('https://img.tripi.vn/cdn-cgi/image/width=700,height=700/https://gcs.tripi.vn/public-tripi/tripi-feed/img/482601ikZ/anh-mo-ta.png') no-repeat right center; background-size: cover; height: 100px; position: relative;">
                                             <!-- Overlay đen nhẹ -->
                                             <div style="position: absolute; inset: 0; z-index: 1;">
                                             </div>
