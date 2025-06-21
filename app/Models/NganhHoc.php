@@ -15,6 +15,11 @@ class NganhHoc extends Model
     {
         return $this->hasMany(BoMon::class, 'id_nganh_hoc', 'id');
     }
+    /**
+     * Khoa of NganhHoc
+     *
+     * @return \Illuminate\Database\Eloquent\Relations\BelongsTo
+     */
     public function khoa()
     {
         return $this->belongsTo(Khoa::class, 'id_khoa', 'id');
