@@ -13,37 +13,32 @@ use App\Http\Requests\GiangVien\NhapDiemRequest;
 
 class DiemMonHocController extends Controller
 {
-    public function index()
+    public function index(Request $request)
     {
         $id_giang_vien = Auth::user()->id;
+        $id_lop = $request->input('lop');  
 
         $lop_hoc_phan = LopHocPhan::with([
-            'chuongTrinhDaoTao',
             'lop',
-            'chuongTrinhDaoTao.chiTietChuongTrinhDaoTao',
-            'giangVien',
-            'giangVien.hoSo'
         ])
             ->where('id_giang_vien', $id_giang_vien)
-            ->orderBy('id_giang_vien', 'desc')
             ->get();
 
-        $danh_sach_HP = DanhSachHocPhan::with(['lopHocPhan', 'sinhVien', 'sinhVien.hoSo'])->get();
+        if($id_lop) {
+            $lop_hoc_phan = $lop_hoc_phan->where('id_lop', $id_lop);
+        }
 
         return response()->json([
             'status' => true,
             'lop_hoc_phan' => $lop_hoc_phan,
-            'danh_sach_HP' => $danh_sach_HP
         ]);
     }
-
+    
     public function list(int $id)
     {
         $sinhviens = SinhVien::with([
             'hoSo',
-            'lop',
             'lop.nienKhoa',
-            'danhSachHocPhans',
             'danhSachHocPhans.lopHocPhan'
         ])
             ->whereHas('danhSachHocPhans.lopHocPhan', function ($query) use ($id) {

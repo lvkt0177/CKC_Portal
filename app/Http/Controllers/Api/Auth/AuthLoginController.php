@@ -4,11 +4,19 @@ namespace App\Http\Controllers\Api\Auth;
 
 use App\Http\Controllers\Controller;
 use Illuminate\Http\Request;
+use Illuminate\Support\Facades\Auth;
+use App\Http\Requests\TeacherLoginRequest;
+use App\Http\Requests\StudentLoginRequest;
 use App\Models\User;
 use App\Models\SinhVien;
+use App\Models\HoSo;
+use App\Models\YeuCauCapLaiMatKhau;
+use App\Mail\GuiMatKhauMoi;
+use App\Jobs\SendMailJob;
+use App\Enum\LoaiTaiKhoan;
 use Illuminate\Support\Facades\Hash;
-use Illuminate\Support\Facades\Auth;
-use App\Http\Requests\StudentLoginRequest;
+use Illuminate\Support\Facades\Mail;
+use Illuminate\Support\Str;
 
 class AuthLoginController extends Controller
 {

@@ -12,10 +12,9 @@ Route::prefix('sinhvien')->name('api.sinhvien.')->group(function () {
     //--------------------------------------------------------
     Route::middleware([
         'auth:sanctum',
-        'auth.student'
         ])->group(function () {
         
         Route::post('/logout', [AuthLoginController::class, 'studentLogout']);
-
+        include('giayxacnhan.php');
     });
 });

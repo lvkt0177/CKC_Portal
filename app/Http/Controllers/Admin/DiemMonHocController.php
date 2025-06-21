@@ -20,19 +20,13 @@ class DiemMonHocController extends Controller
     {
         $id_giang_vien = Auth::user()->id;
         $lop_hoc_phan = LopHocPhan::with([
-            'chuongTrinhDaoTao',
             'lop',
-            'chuongTrinhDaoTao.chiTietChuongTrinhDaoTao',
-            'giangVien',
-            'giangVien.hoSo'
         ])
             ->where('id_giang_vien', $id_giang_vien)
             ->orderBy('id_giang_vien', 'desc')
             ->get();
-
-        $danh_sach_HP = DanhSachHocPhan::with(['lopHocPhan', 'sinhVien', 'sinhVien.hoSo'])
-            ->get();
-        return view('admin.diemmonhoc.index', compact('danh_sach_HP', 'lop_hoc_phan'));
+     
+        return view('admin.diemmonhoc.index', compact('lop_hoc_phan'));
 
     }
     public function list(int $id)
