@@ -874,6 +874,90 @@ class ChiTietChuongTrinhDaoTaoSeeder extends Seeder
 
 
 
+
+
+
+            // HK3 k24
+            [
+                "id_chuong_trinh_dao_tao" => 1,
+                "id_mon_hoc" => 21,
+                "id_bo_mon" => null,
+                "id_hoc_ky" => 15,
+                "so_tiet" => 135,
+                "so_tin_chi" => 2,
+            ],
+            [
+                "id_chuong_trinh_dao_tao" => 1,
+                "id_mon_hoc" => 22,
+                "id_bo_mon" => null,
+                "id_hoc_ky" => 15,
+                "so_tiet" => 45,
+                "so_tin_chi" => 3,
+            ],
+            [
+                "id_chuong_trinh_dao_tao" => 1,
+                "id_mon_hoc" => 23,
+                "id_bo_mon" => null,
+                "id_hoc_ky" => 15,
+                "so_tiet" => 75,
+                "so_tin_chi" => 5,
+            ],
+            [
+                "id_chuong_trinh_dao_tao" => 1,
+                "id_mon_hoc" => 24,
+                "id_bo_mon" => null,
+                "id_hoc_ky" => 15,
+                "so_tiet" => 30,
+                "so_tin_chi" => 2,
+            ],
+            [
+                "id_chuong_trinh_dao_tao" => 1,
+                "id_mon_hoc" => 25,
+                "id_bo_mon" => null,
+                "id_hoc_ky" => 15,
+                "so_tiet" => 45,
+                "so_tin_chi" => 3,
+            ],
+            [
+                "id_chuong_trinh_dao_tao" => 1,
+                "id_mon_hoc" => 26,
+                "id_bo_mon" => null,
+                "id_hoc_ky" => 15,
+                "so_tiet" => 45,
+                "so_tin_chi" => 3,
+            ],
+            [
+                "id_chuong_trinh_dao_tao" => 1,
+                "id_mon_hoc" => 27,
+                "id_bo_mon" => null,
+                "id_hoc_ky" => 15,
+                "so_tiet" => 45,
+                "so_tin_chi" => 3,
+            ],
+            [
+                "id_chuong_trinh_dao_tao" => 1,
+                "id_mon_hoc" => 28,
+                "id_bo_mon" => null,
+                "id_hoc_ky" => 15,
+                "so_tiet" => 45,
+                "so_tin_chi" => 2,
+            ],
+            [
+                "id_chuong_trinh_dao_tao" => 1,
+                "id_mon_hoc" => 29,
+                "id_bo_mon" => null,
+                "id_hoc_ky" => 15,
+                "so_tiet" => 45,
+                "so_tin_chi" => 2,
+            ],
+            [
+                "id_chuong_trinh_dao_tao" => 1,
+                "id_mon_hoc" => 30,
+                "id_bo_mon" => null,
+                "id_hoc_ky" => 15,
+                "so_tiet" => 45,
+                "so_tin_chi" => 2,
+            ]
         ]);
     }
 }

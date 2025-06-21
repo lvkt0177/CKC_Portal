@@ -42,6 +42,7 @@ class PhieuLenLopRequest extends FormRequest
             'id_phong.exists' => 'Phòng khóa khóa',
             'tiet_bat_dau.required' => 'Chọn tiết bắt đầu',
             'so_tiet.required' => 'Chọn số tiết',
+            'hien_dien.required' => 'Nhập hiện diện',
             'hien_dien.integer' => 'Hiện diện phái lớn hơn 0',
             'hien_dien.max' => 'Hiện diện phải bé hơn bằng sỉ số',
             'noi_dung.max' => 'Nội dung tối đa 500 ký tự',

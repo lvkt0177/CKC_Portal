@@ -2,6 +2,23 @@
 
 @section('title', 'Danh sách sinh viên')
 
+@section('css')
+    <style>
+        .btn {
+            padding: 4px 24px;
+            border: none;
+            border-radius: 25px;
+            cursor: pointer;
+            font-size: 16px;
+            font-weight: 600;
+            transition: all 0.3s ease;
+            text-decoration: none;
+            display: inline-block;
+        }
+    </style>
+
+@endsection
+
 @section('content')
 
     <div class="container-fluid">

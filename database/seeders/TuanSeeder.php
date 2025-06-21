@@ -23,8 +23,8 @@ class TuanSeeder extends Seeder
                 ['nam_bat_dau' => $year]
             );
 
-            // 🔹 Bắt đầu từ thứ 2 đầu tiên của năm
-            $startDate = Carbon::create($year, 1, 2)->startOfWeek(Carbon::MONDAY);
+            // 🔹 Bắt đầu từ thứ 2 gần nhất trước hoặc bằng ngày 5/8
+            $startDate = Carbon::create($year, 8, 5)->startOfWeek(Carbon::MONDAY);
 
             for ($week = 1; $week <= 52; $week++) {
                 $ngay_bat_dau = $startDate->copy();
@@ -45,5 +45,6 @@ class TuanSeeder extends Seeder
                 $startDate->addWeek();
             }
         }
+
     }
 }

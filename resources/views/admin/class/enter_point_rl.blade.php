@@ -93,13 +93,12 @@
                                     <th>MSSV</th>
                                     <th>Họ tên sinh viên</th>
                                     <th>Rèn luyện</th>
-                                    @if ($namDangChon == now()->year && $thang == now()->month)
-                                        <th></th>
-                                    @endif
+
                                     <th></th>
                                 </tr>
                             </thead>
                             <tbody>
+
                                 @foreach ($sinhViens as $sv)
                                     <tr id="view-row-{{ $sv->id }}" class="text-center">
                                         @if ($namDangChon == now()->year && $thang == now()->month)
@@ -112,58 +111,66 @@
                                         <td>{{ $sv->ma_sv }}</td>
                                         <td>{{ $sv->hoSo->ho_ten }}</td>
                                         <td>
-                                            @foreach ($sv->diemRenLuyens as $diemRenLuyen)
-                                                {{ $diemRenLuyen->xep_loai->getLabel() }}
-                                            @endforeach
+                                            @php
+                                                $diemRL = $sv->diemRenLuyens->first();
+                                            @endphp
+                                            @if ($diemRL)
+                                                @if ($namDangChon == now()->year && $thang == now()->month)
+                                                    <form action="{{ route('giangvien.lop.cap-nhat-diem_rl') }}"
+                                                        method="POST" data-confirm>
+                                                        @csrf
+                                                        <input type="hidden" name="id_sinh_vien"
+                                                            value="{{ $sv->id }}">
+                                                        <input type="hidden" name="thoi_gian" value="{{ $thang }}">
+                                                        <input type="hidden" name="nam" value="{{ $namDangChon }}">
+                                                        <select class="modern-select" name="xep_loai"
+                                                            onchange="form.submit()">
+                                                            <option value="{{ $diemRL->xep_loai }}">
+                                                                {{ $diemRL->xep_loai->getLabel() }}
+                                                            </option>
+                                                            @foreach ([1, 2, 3, 4] as $loai)
+                                                                @if ($loai != $diemRL->xep_loaii)
+                                                                    <option value="{{ $loai }}">
+                                                                        {{ \App\Enum\XepLoaiDRL::from($loai)->getLabel() }}
+                                                                    </option>
+                                                                @endif
+                                                            @endforeach
+                                                        </select>
+                                                    </form>
+                                                @else
+                                                    <span> {{ $diemRL->xep_loai->getLabel() }}</span>
+                                                @endif
+                                            @else
+                                                @if ($namDangChon == now()->year && $thang == now()->month)
+                                                    <form action="{{ route('giangvien.lop.cap-nhat-diem_rl') }}"
+                                                        method="POST" data-confirm>
+                                                        @csrf
+                                                        <input type="hidden" name="id_sinh_vien"
+                                                            value="{{ $sv->id }}">
+                                                        <input type="hidden" name="thoi_gian" value="{{ $thang }}">
+                                                        <input type="hidden" name="nam" value="{{ $namDangChon }}">
+                                                        <select class="modern-select" name="xep_loai"
+                                                            onchange="form.submit()">
+                                                            @foreach ([0, 1, 2, 3, 4] as $loai)
+                                                                <option value="{{ $loai }}">
+                                                                    {{ \App\Enum\XepLoaiDRL::from($loai)->getLabel() }}
+                                                                </option>
+                                                            @endforeach
+                                                        </select>
+                                                    </form>
+                                                @else
+                                                    <span></span>
+                                                @endif
+                                            @endif
                                         </td>
-                                        @if ($namDangChon == now()->year && $thang == now()->month)
-                                            <td>
-                                                <button class="btn btn-primary btn-sm"
-                                                    onclick="showEditRow({{ $sv->id }})">
-                                                    <i class="bi bi-pencil-square"></i></button>
-                                            </td>
-                                        @endif
                                         <td>
                                             @error('xep_loai')
                                                 <span class="text-danger">{{ $message }}</span>
                                             @enderror
                                         </td>
                                     </tr>
-                                    <tr id="edit-row-{{ $sv->id }}" style="display: none;">
-                                        <form action="{{ route('giangvien.lop.cap-nhat-diem_rl') }}" method="POST"
-                                            data-confirm>
-                                            @csrf
-                                            <input type="hidden" name="id_sinh_vien" value="{{ $sv->id }}">
-                                            <input type="hidden" name="thoi_gian" value="{{ $thang }}">
-                                            <input type="hidden" name="nam" value="{{ $namDangChon }}">
-                                            <td>
-
-                                            </td>
-                                            <td>{{ $loop->index + 1 }}</td>
-                                            <td>{{ $sv->ma_sv }}</td>
-                                            <td>{{ $sv->hoSo->ho_ten }}</td>
-                                            <td>
-                                                <select name="xep_loai" class="form-control xep-loai-input">
-                                                    <option value="">-- Chọn xếp loại --</option>
-                                                    <option value="1">
-                                                        A</option>
-                                                    <option value="2">
-                                                        B</option>
-                                                    <option value="3">
-                                                        C</option>
-                                                    <option value="4">
-                                                        D</option>
-                                                </select>
-                                            </td>
-                                            <td colspan="2">Cập nhật điểm</td>
-                                            <td>
-                                                <button type="submit" class="btn btn-success btn-sm">Lưu</button>
-                                                <button type="button" class="btn btn-secondary btn-sm"
-                                                    onclick="hideEditRow({{ $sv->id }})">Hủy</button>
-                                            </td>
-                                        </form>
-                                    </tr>
                                 @endforeach
+
 
                             </tbody>
                         </table>

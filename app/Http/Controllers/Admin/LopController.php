@@ -36,6 +36,7 @@ class LopController extends Controller
 
         return view('admin.class.list', compact('sinhViens', 'lop'));
     }
+
     public function nhapDiemRL(Lop $lop)
     {
        
@@ -57,8 +58,8 @@ class LopController extends Controller
         ->where('id_lop', $lop->id)
         ->orderBy('ma_sv', 'asc')
         ->get();
-
-            return view('admin.class.enter_point_rl', compact('sinhViens', 'thang','lop'));
+       
+    return view('admin.class.enter_point_rl', compact('sinhViens', 'thang','lop'));
 
     }
  

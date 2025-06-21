@@ -101,12 +101,28 @@ class PhieuLenLopController extends Controller
         }
 
         $data = $request->validated();
-        
         $data['id_tuan'] = $tuan->id;
-        
+        $tietBatDauMoi = $data['tiet_bat_dau'];
+        $tietKetThucMoi = $tietBatDauMoi + $data['so_tiet'] - 1;
+
+        // Kiểm tra giao tiết
+        $trungTiet = PhieuLenLop::where('ngay', $request->ngay)
+            ->where(function ($query) use ($tietBatDauMoi, $tietKetThucMoi) {
+                $query->where(function ($q) use ($tietBatDauMoi, $tietKetThucMoi) {
+                    $q->whereRaw("tiet_bat_dau <= ?", [$tietKetThucMoi])
+                    ->whereRaw("(tiet_bat_dau + so_tiet - 1) >= ?", [$tietBatDauMoi]);
+                });
+            })
+            ->exists();
+
+        if ($trungTiet) {
+            return redirect()->route('giangvien.phieulenlop.index')->with('error', 'Đã có phiếu lên lớp trùng khung tiết trong ngày này.');
+        }
+
+
         PhieuLenLop::create($data);
 
-        return redirect()->route('admin.phieulenlop.index')->with('success', 'Đã tạo phiếu lên lớp thành công.');
+        return redirect()->route('giangvien.phieulenlop.index')->with('success', 'Đã tạo phiếu lên lớp thành công.');
     }
 
     public function getSiSo($id)

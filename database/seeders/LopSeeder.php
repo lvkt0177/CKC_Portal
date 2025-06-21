@@ -48,6 +48,13 @@ class LopSeeder extends Seeder
                 "id_nganh_hoc"=> 1,
                 "si_so" => 0,
             ],
+            [
+                "ten_lop" => "CDTH 24A",
+                "id_nien_khoa" => 3,
+                "id_gvcn" => 1,
+                "id_nganh_hoc"=> 1,
+                "si_so" => 0,
+            ],
         ]);
 
     }

@@ -35,8 +35,8 @@ return new class extends Migration
             //tiết kết thúc
             $table->integer('tiet_ket_thuc');
 
-            //thứ
-            $table->integer('thu');
+            //ngày
+            $table->date('ngay');
 
 
             $table->timestamps();

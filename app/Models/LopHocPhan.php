@@ -43,4 +43,9 @@ class LopHocPhan extends Model
     {
         return $this->hasMany(PhieuLenLop::class, 'id_lop_hoc_phan', 'id');
     }
+    //thoi khoa bieu
+    public function thoiKhoaBieu()
+    {
+        return $this->hasMany(ThoiKhoaBieu::class, 'id_lop_hoc_phan', 'id');
+    }
 }

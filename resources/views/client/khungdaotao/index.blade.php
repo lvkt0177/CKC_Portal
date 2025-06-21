@@ -41,6 +41,46 @@
                     <div class="spinner"></div>
                     <p>Đang tải dữ liệu...</p>
                 </div>
+                @php
+                    $tongMonHoc = 0;
+                    $tongSoTinChi = 0;
+                    $tongSoTiet = 0;
+                    $tongHocKy = count($ct_ctdt);
+
+                    foreach ($ct_ctdt as $dsMon) {
+                        $tongMonHoc += count($dsMon);
+                        $tongSoTinChi += $dsMon->sum('so_tin_chi');
+                        $tongSoTiet += $dsMon->sum('so_tiet');
+                    }
+                @endphp
+                <div class="semester-card">
+
+                    <div class="summary-section">
+                        <div class="summary-header">
+                            <div class="summary-icon">📊</div>
+                            <h2 class="summary-title">Tổng Kết Chương Trình</h2>
+                        </div>
+
+                        <div class="summary-grid">
+                            <div class="summary-item">
+                                <div class="summary-number">{{ $tongMonHoc }}</div>
+                                <div class="summary-label">Tổng môn học</div>
+                            </div>
+                            <div class="summary-item">
+                                <div class="summary-number">{{ $tongSoTiet }}</div>
+                                <div class="summary-label">Tổng số tiết</div>
+                            </div>
+                            <div class="summary-item">
+                                <div class="summary-number">{{ $tongSoTinChi }}</div>
+                                <div class="summary-label">Tổng tín chỉ</div>
+                            </div>
+                            <div class="summary-item">
+                                <div class="summary-number">{{ $tongHocKy }}</div>
+                                <div class="summary-label">Số học kỳ</div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
                 <!-- Curriculum Grid -->
                 <div class="curriculum-grid" id="curriculumGrid">
                     <!-- Semester 1 -->
@@ -84,43 +124,7 @@
                         </div>
                     @endforeach
                 </div>
-                @php
-                    $tongMonHoc = 0;
-                    $tongSoTinChi = 0;
-                    $tongSoTiet = 0;
-                    $tongHocKy = count($ct_ctdt);
 
-                    foreach ($ct_ctdt as $dsMon) {
-                        $tongMonHoc += count($dsMon);
-                        $tongSoTinChi += $dsMon->sum('so_tin_chi');
-                        $tongSoTiet += $dsMon->sum('so_tiet');
-                    }
-                @endphp
-                <div class="summary-section">
-                    <div class="summary-header">
-                        <div class="summary-icon">📊</div>
-                        <h2 class="summary-title">Tổng Kết Chương Trình</h2>
-                    </div>
-
-                    <div class="summary-grid">
-                        <div class="summary-item">
-                            <div class="summary-number">{{ $tongMonHoc }}</div>
-                            <div class="summary-label">Tổng môn học</div>
-                        </div>
-                        <div class="summary-item">
-                            <div class="summary-number">{{ $tongSoTiet }}</div>
-                            <div class="summary-label">Tổng số tiết</div>
-                        </div>
-                        <div class="summary-item">
-                            <div class="summary-number">{{ $tongSoTinChi }}</div>
-                            <div class="summary-label">Tổng tín chỉ</div>
-                        </div>
-                        <div class="summary-item">
-                            <div class="summary-number">{{ $tongHocKy }}</div>
-                            <div class="summary-label">Số học kỳ</div>
-                        </div>
-                    </div>
-                </div>
             </div>
         </div>
 

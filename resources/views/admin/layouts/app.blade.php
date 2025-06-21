@@ -83,6 +83,21 @@
                     </div>
 
                     <div class="dropdown">
+                        <a class="nav-link dropdown-toggle {{ isActiveRoute('giangvien/student') }} {{ isActiveRoute('giangvien/giangvien') }} {{ isActiveRoute('giangvien/roles') }}"
+                            href="#" data-bs-toggle="dropdown" aria-expanded="false">
+                            Quản lý đào tạo
+                        </a>
+                        <ul class="dropdown-menu">
+                            <li><a class="dropdown-item" href="{{ route('giangvien.student.index') }}"><i
+                                        class="fas fa-file-invoice me-2"></i>Lịch đào tạo</a>
+                            </li>
+                           
+                            <li><a class="dropdown-item" href="{{ route('giangvien.roles.index') }}"><i
+                                        class="fas fa-user-tag me-2"></i>Khung đào tạo</a></li>
+                        </ul>
+                    </div>
+
+                    <div class="dropdown">
                         <a class="nav-link dropdown-toggle {{ isActiveRoute('giangvien/phong') }}" href="#"
                             data-bs-toggle="dropdown" aria-expanded="false">
                             Cơ sở vật chất
