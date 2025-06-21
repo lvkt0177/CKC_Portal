@@ -58,18 +58,20 @@
                             <i class="fas fa-reply"></i>
                             Trả lời
                         </button>
-                        <form wire:submit.prevent="xoaBinhLuan({{ $binhluan->id }})">
-                            <div class="d-flex justify-content-end gap-2 mt-2">
-                                <button type="button" class="btn btn-outline-danger reply-btn"
-                                    onclick="confirmDelete({{ $binhluan->id }})">
-                                    <i class="fa fa-trash" aria-hidden="true"></i>
-                                </button>
-                            </div>
-                        </form>
+                        @if ($this->coTheXoa($binhluan))
+                            <form wire:submit.prevent="xoaBinhLuan({{ $binhluan->id }})">
+                                <div class="d-flex justify-content-end gap-2 mt-2">
+                                    <button type="button" class="btn btn-outline-danger reply-btn"
+                                        onclick="confirmDelete({{ $binhluan->id }})">
+                                        <i class="fa fa-trash" aria-hidden="true"></i>
+                                    </button>
+                                </div>
+                            </form>
+                        @endif
                     </div>
 
                     @if ($id_binh_luan_cha === $binhluan->id && $id_binh_luan_cha !== null)
-                        <div class="">
+                        <div class="mt-2">
                             <div class="d-flex">
                                 <div class="me-2">
                                     <img class="rounded-circle" src="{{ asset('' . auth()->user()->hoSo->anh) }}"
@@ -132,18 +134,20 @@
                                     <i class="fas fa-reply"></i>
                                     Trả lời
                                 </button>
-                                <form wire:submit.prevent="xoaBinhLuan({{ $phanhoi->id }})">
-                                    <div class="d-flex justify-content-end gap-2 mt-2">
-                                        <button type="button" class="btn btn-outline-danger reply-btn"
-                                            onclick="confirmDelete({{ $phanhoi->id }})">
-                                            <i class="fa fa-trash" aria-hidden="true"></i>
-                                        </button>
-                                    </div>
-                                </form>
+                                @if ($this->coTheXoa($phanhoi))
+                                    <form wire:submit.prevent="xoaBinhLuan({{ $phanhoi->id }})">
+                                        <div class="d-flex justify-content-end gap-2 mt-2">
+                                            <button type="button" class="btn btn-outline-danger reply-btn"
+                                                onclick="confirmDelete({{ $phanhoi->id }})">
+                                                <i class="fa fa-trash" aria-hidden="true"></i>
+                                            </button>
+                                        </div>
+                                    </form>
+                                @endif
                             </div>
 
                             @if ($id_reply === $binhluan->id && $box_reply === $phanhoi->id)
-                                <div class="">
+                                <div class="mt-2">
                                     <div class="d-flex">
                                         <div class="me-2">
                                             <img class="rounded-circle"

@@ -34,6 +34,14 @@ class BienBanRepository implements BienBanRepositoryInterface
             ->get();
     }
 
+    public function getByLopWithRelationsByIdLop($id_lop)
+    {
+        return BienBanSHCN::with(['lop', 'thuky.hoSo', 'tuan', 'gvcn.hoSo'])
+            ->where('id_lop', $id_lop)
+            ->orderBy('id', 'desc')
+            ->get();
+    }
+
     public function create($data)
     {
         return $this->model->create($data);

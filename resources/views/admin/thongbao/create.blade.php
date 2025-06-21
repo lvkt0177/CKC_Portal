@@ -20,10 +20,10 @@
                 <div class="card shadow-sm">
                     <div class="card-header d-flex justify-content-between align-items-center">
                         <h3 class="card-title mb-0">Tạo thông báo</h3>
-                        <a href="{{ route('admin.thongbao.index') }}" class="btn btn-back btn-sm">Quay lại</a>
+                        <a href="{{ route('giangvien.thongbao.index') }}" class="btn btn-back btn-sm">Quay lại</a>
                     </div>
                     <div class="card-body">
-                        <form action="{{ route('admin.thongbao.store') }}" method="POST" data-confirm enctype="multipart/form-data">
+                        <form action="{{ route('giangvien.thongbao.store') }}" method="POST" data-confirm enctype="multipart/form-data">
                             @csrf
                             <div class="row g-3">
                                 <div class="col-12">

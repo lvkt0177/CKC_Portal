@@ -36,10 +36,10 @@
             </div>
 
             <div class="d-flex align-items-center position-relative text-muted">
-                <a href="#" class="text-muted text-decoration-none position-relative">
+                <a href="{{ route('sinhvien.thong-bao.index') }}" class="text-muted text-decoration-none position-relative">
                     <i class="fas fa-bell me-2"></i>
-                    <span class="badge bg-danger position-absolute top-0 start-100 translate-middle">4</span>
-                    <span>Tin tức</span>
+                    <span class="badge bg-danger position-absolute top-0 start-100 translate-middle">{{ $unreadNotificationCount }}</span>
+                    <span>Thông báo</span>
                 </a>
             </div>
 
@@ -108,6 +108,7 @@
                     <li><a href="#">Thông tin sinh viên</a></li>
                     <li><a href="{{ route('sinhvien.giayxacnhan.index') }}">Đăng ký xác nhận giấy tờ</a></li>
                     <li><a href="{{ route('sinhvien.khungdaotao.index') }}">Khung chương trình đào tạo</a></li>
+                    <li><a href="{{ route('sinhvien.bienbanshcn.index') }}">Biên bản SHCN</a></li>
                 </ul>
             </li>
 

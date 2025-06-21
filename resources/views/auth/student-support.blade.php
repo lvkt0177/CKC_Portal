@@ -47,7 +47,8 @@
                 <div class="alert alert-success">
                     <strong>{{ session('success')['message'] }}</strong><br>
                     <strong>- Mã sinh viên:</strong> {{ session('success')['ma_sv'] }}<br>
-                    <strong>- Ho_ten:</strong> {{ session('success')['ho_ten'] }} <br>
+                    <strong>- Họ tên:</strong> {{ session('success')['ho_ten'] }} <br>
+                    <strong>- Email:</strong> {{ session('success')['email'] }} <br>
                     <strong>- Loại tài khoản:</strong> {{ session('success')['loai'] }}
                 </div>
             @endif

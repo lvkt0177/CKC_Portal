@@ -38,9 +38,9 @@ class ThongBaoController extends Controller
 
         foreach ($thongBaos as $thongbao) {
             $lopIds = collect($thongbao->chiTietThongBao)
-                    ->pluck('sinhVien.id_lop')
-                    ->filter()
-                    ->unique();
+                        ->pluck('sinhVien.id_lop')
+                        ->filter()
+                        ->unique();
 
             $thongbao->ds_lops = Lop::whereIn('id', $lopIds)->get();
         }

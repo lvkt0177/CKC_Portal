@@ -22,7 +22,7 @@ Route::prefix('giangvien')->name('giangvien.')->group(function () {
         include('bienbanshcn.php');
         include('phieulenlop.php');
         include('thongbao.php');
-        include('binhluan.php');
+        // include('binhluan.php');
         include('capmatkhau.php');
         include('lichhoc.php');
     });

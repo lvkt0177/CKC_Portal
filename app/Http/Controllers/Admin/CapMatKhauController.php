@@ -25,7 +25,7 @@ class CapMatKhauController extends Controller
         ]);
 
         if(!$result) 
-            return redirect()->route('admin.capmatkhausinhvien.index')->with('error', 'Cập nhật trạng thái thất bại');
-        return redirect()->route('admin.capmatkhausinhvien.index')->with('success', 'Cập nhật trạng thái thành công');
+            return redirect()->route('giangvien.capmatkhausinhvien.index')->with('error', 'Cập nhật trạng thái thất bại');
+        return redirect()->route('giangvien.capmatkhausinhvien.index')->with('success', 'Cập nhật trạng thái thành công');
     }
 }
