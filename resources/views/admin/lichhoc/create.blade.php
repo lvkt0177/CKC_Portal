@@ -189,14 +189,8 @@
 
                 <div id="list-container" style="display: none; margin-top: 20px;">
 
-                    @include('admin.lichhoc.partials.schedule-table', [
-                        'thoikhoabieu' => $thoikhoabieu,
-                        'ngayTrongTuan' => $ngayTrongTuan,
-                        'lop' => $lop,
-                        'dsTuan' => $dsTuan,
-                        'tuanDangChon' => $tuanDangChon,
-                        'hocKy' => $hocKy,
-                    ])
+                    <livewire:lich-hoc.lich-hoc :lop="$lop" />
+
                 </div>
             </div>
         </div>
