@@ -5,6 +5,7 @@ namespace App\Http\Controllers\Api\Auth;
 use App\Http\Controllers\Controller;
 use Illuminate\Http\Request;
 use App\Models\User;
+use App\Models\SinhVien;
 use Illuminate\Support\Facades\Hash;
 use Illuminate\Support\Facades\Auth;
 use App\Http\Requests\StudentLoginRequest;
@@ -42,26 +43,25 @@ class AuthLoginController extends Controller
 
     public function studentLogin(StudentLoginRequest $request)
     {
-        $credentials = $request->validated();
+        $sinhVien = SinhVien::where('ma_sv', $request->ma_sv)->first();
 
-        if (Auth::guard('student')->attempt($credentials)) {
-            $student = Auth::guard('student')->user();
-            $student->load('hoSo','lop');
-
-            $token = $student->createToken('student_token')->plainTextToken;
-
+        if (!$sinhVien || !Hash::check($request->password, $sinhVien->password)) {
             return response()->json([
-                'success' => true,
-                'message' => 'Đăng nhập thành công',
-                'token' => $token,
-                'student' => $student,
-            ]);
+                'success' => false,
+                'message' => 'Tài khoản hoặc mật khẩu không đúng.',
+            ], 401);
         }
-
+    
+        $token = $sinhVien->createToken('student_token')->plainTextToken;
+    
+        $sinhVien->load('hoSo', 'lop');
+    
         return response()->json([
-            'success' => false,
-            'message' => 'Tài khoản hoặc mật khẩu không đúng.',
-        ], 401);
+            'success' => true,
+            'message' => 'Đăng nhập thành công',
+            'token' => $token,
+            'sinh_vien' => $sinhVien,
+        ]);
     }
 
 

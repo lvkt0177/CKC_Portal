@@ -27,22 +27,23 @@ class GiangVienController extends Controller
     //api/admin/giangvien/{id}
     public function show(int $id)
     {
-        $data = User::with('hoSo','boMon.nganhHoc.khoa')
+        $data = User::with('hoSo','boMon.nganhHoc.khoa','roles.permissions')
         ->where('id', $id)
         ->orderBy('id', 'desc')
         ->get();
 
         if ($data->isEmpty()) {
-            return redirect()->route('admin.giangvien.index')->with('error', 'Giảng viên không tồn tại.');
+            return response()->json([
+                'success' => false,
+                'message' => 'Giảng viên không tồn tại.'
+            ]);
         }
 
         $user = $data[0];
-        $roles = Role::all();
 
         return response()->json([
             'success' => true,
             'user' => $user,
-            'roles' => Role::all(),
         ]);
     }
             
