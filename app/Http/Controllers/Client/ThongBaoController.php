@@ -14,7 +14,7 @@ use App\Models\Lop;
 use Auth;
 use App\Repositories\ThongBao\ThongBaoRepository;
 use Illuminate\Support\Facades\Log;
-use App\Enum\ThongBaoStatus;
+use App\Enum\DocThongBao;
 
 
 class ThongBaoController extends Controller
@@ -54,11 +54,16 @@ class ThongBaoController extends Controller
      */
     public function show(ThongBao $thongbao)
     {
+        ChiTietThongBao::where('id_thong_bao', $thongbao->id)
+            ->where('id_sinh_vien', Auth::guard('student')->user()->id)
+            ->where('trang_thai', '!=', DocThongBao::DADOC)
+            ->update(['trang_thai' => DocThongBao::DADOC]);
+
         $thongbao->load([
             'binhLuans' => function ($q) {
                 $q->whereNull('id_binh_luan_cha') 
-                  ->with(['nguoiBinhLuan.hoSo', 'binhLuanCon.nguoiBinhLuan.hoSo'])
-                  ->orderBy('created_at', 'desc'); 
+                    ->with(['nguoiBinhLuan.hoSo', 'binhLuanCon.nguoiBinhLuan.hoSo'])
+                    ->orderBy('created_at', 'desc'); 
             }
         ]);
         return view('client.thongbao.show', compact('thongbao'));

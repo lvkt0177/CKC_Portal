@@ -41,7 +41,12 @@ class ThongBaoRepository extends BaseRepository implements ThongBaoRepositoryInt
             ->whereHas('chiTietThongBao', function ($query) use ($sinhVienId) {
                 $query->where('id_sinh_vien', $sinhVienId);
             })
-            ->with('giangVien.hoSo')
+            ->with([
+                'giangVien.hoSo',
+                'chiTietThongBao' => function ($query) use ($sinhVienId) {
+                    $query->where('id_sinh_vien', $sinhVienId);
+                }
+            ])
             ->orderBy('ngay_gui', 'desc')
             ->get();
     }

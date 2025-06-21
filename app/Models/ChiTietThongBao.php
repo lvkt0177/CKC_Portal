@@ -3,6 +3,7 @@
 namespace App\Models;
 
 use Illuminate\Database\Eloquent\Model;
+use App\Enum\DocThongBao;
 
 class ChiTietThongBao extends Model
 {
@@ -13,6 +14,10 @@ class ChiTietThongBao extends Model
         'id_thong_bao',
         'id_sinh_vien',
         'trang_thai',
+    ];
+
+    protected $casts = [
+        'trang_thai' => DocThongBao::class
     ];
 
     public function thongBao()

@@ -43,21 +43,36 @@
 
                     <!-- Notifications List -->
                     <div class="notifications-list">
-                        <!-- Notification 1 -->
                         @foreach ($thongbaos as $thongbao)
-                            <div class="notification-item">
-                                <div class="d-flex">
-                                    <a href="{{ route('sinhvien.thong-bao.show', $thongbao) }}" class="d-flex text-decoration-none">
-                                        <div class="notification-icon">
+                            @php
+                                $trangThai = $thongbao->chiTietThongBao->first()?->trang_thai ?? 0;
+                            @endphp
+
+                            <div
+                                class="notification-item">
+                                <div class="d-flex justify-content-between align-items-start">
+                                    <a href="{{ route('sinhvien.thong-bao.show', $thongbao) }}"
+                                        class="d-flex text-decoration-none flex-grow-1">
+                                        <div class="notification-icon me-3">
                                             <i class="fas fa-file-alt"></i>
                                         </div>
                                         <div class="notification-content">
                                             <div class="notification-title fs-6">
-                                                <strong>{{ $thongbao->giangVien->hoSo->ho_ten }} đã gửi một thông báo mới:</strong> {{ $thongbao->tieu_de }}
+                                                <strong>{{ $thongbao->giangVien->hoSo->ho_ten }} đã gửi một thông báo
+                                                    mới:</strong>
+                                                {{ $thongbao->tieu_de }}
                                             </div>
-                                            <div class="notification-date fs-6">{{ $thongbao->ngay_gui->format('d/m/Y') }}</div>
+                                            <div class="notification-date fs-6 text-muted">
+                                                {{ $thongbao->ngay_gui->format('d/m/Y') }}</div>
                                         </div>
                                     </a>
+
+                                    <div class="ms-2">
+                                        <span
+                                            class="badge rounded-pill {{ $trangThai->getBadge() }}">
+                                            {{ $trangThai->getLabel()}}
+                                        </span>
+                                    </div>
                                 </div>
                             </div>
                         @endforeach

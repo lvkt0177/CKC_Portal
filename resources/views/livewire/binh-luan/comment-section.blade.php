@@ -71,7 +71,7 @@
                     </div>
 
                     @if ($id_binh_luan_cha === $binhluan->id && $id_binh_luan_cha !== null)
-                        <div class="">
+                        <div class="mt-2">
                             <div class="d-flex">
                                 <div class="me-2">
                                     <img class="rounded-circle" src="{{ asset('' . auth()->user()->hoSo->anh) }}"
@@ -147,7 +147,7 @@
                             </div>
 
                             @if ($id_reply === $binhluan->id && $box_reply === $phanhoi->id)
-                                <div class="">
+                                <div class="mt-2">
                                     <div class="d-flex">
                                         <div class="me-2">
                                             <img class="rounded-circle"

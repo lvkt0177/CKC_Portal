@@ -545,7 +545,7 @@
     /* Dark mode support */
     @media (prefers-color-scheme: dark) {
         :root {
-            --light-gray: #1a1a1a;
+            --light-gray: #ffffff;
             --border-color: #333;
         }
 
@@ -556,7 +556,6 @@
 
         .sidebar,
         .main-content {
-            background: #1e1e1e;
             border: 1px solid #333;
         }
 
