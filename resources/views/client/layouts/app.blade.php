@@ -115,7 +115,7 @@
                 <a href="#" class="dropdown-toggle"><i class="fas fa-graduation-cap"></i> HỌC TẬP</a>
                 <ul class="submenu">
                     <li><a href="#">Điểm số</a></li>
-                    <li><a href="#">Lịch học theo tuần</a></li>
+                    <li><a href="{{ route('sinhvien.thoikhoabieu.index') }}">Lịch học theo tuần</a></li>
                 </ul>
             </li>
 

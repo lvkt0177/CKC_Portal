@@ -44,7 +44,7 @@ class DatabaseSeeder extends Seeder
             ThongBaoSeeder::class,
             BinhLuanSeeder::class,
             DiemRenLuyenSeeder::class,
-
+            ThoiKhoaBieuSeeder::class,
         ]);
 
     }

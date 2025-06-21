@@ -12,7 +12,8 @@
             <div class="card shadow-sm ">
                 <div>
                     <div class="card-header d-flex justify-content-end align-items-center">
-                        <a href="{{ route('sinhvien.giayxacnhan.list') }}" class="btn" style=" background: #4891e9 ;">Danh
+                        <a href="{{ route('sinhvien.giayxacnhan.list') }}" class="btn text-light"
+                            style=" background: #2c3e50 ;">Danh
                             sách giấy đã đăng
                             ký</a>
                     </div>

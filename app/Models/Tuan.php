@@ -29,4 +29,9 @@ class Tuan extends Model
     {
         return $this->belongsTo(Nam::class, 'id_nam', 'id');
     }
+    //thoi khoa bieu
+    public function thoiKhoaBieu()
+    {
+        return $this->hasMany(ThoiKhoaBieu::class, 'id_tuan', 'id');
+    }
 }

@@ -12,6 +12,7 @@ Route::prefix('sinhvien')->name('sinhvien.')->group(function () {
         include('profile.php');
         include('khungdaotao.php');
         include('giayxacnhan.php');
+        include('thoikhoabieu.php');
         
     });
 });

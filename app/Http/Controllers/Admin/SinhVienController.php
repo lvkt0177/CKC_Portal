@@ -1,7 +1,7 @@
 <?php
 
 namespace App\Http\Controllers\Admin;
-
+use Carbon\Carbon;
 use App\Http\Controllers\Controller;
 use App\Models\NganhHoc;
 use Illuminate\Http\Request;
@@ -22,7 +22,10 @@ class SinhVienController extends Controller
         $nienKhoas = NienKhoa::orderBy('id', 'desc')->get();
         $nganhHocs = NganhHoc::orderBy('id', 'desc')->get();
 
-        $id_nien_khoa = $request->input('id_nien_khoa') ?? $nienKhoas->first()->id;
+        $id_nien_khoa = $request->input('id_nien_khoa') ?? NienKhoa::where('nam_bat_dau', '<', Carbon::now()->year)
+            ->where('nam_ket_thuc', '>=', Carbon::now()->year)
+            ->orderByDesc('nam_ket_thuc')
+            ->first()?->id;
         $id_nganh_hoc = $request->input('id_nganh_hoc');
         $lops = Lop::with(['nienKhoa', 'giangVien', 'giangVien.boMon.nganhHoc'])
             ->where('id_nien_khoa', $id_nien_khoa)
