@@ -8,10 +8,11 @@ use App\Enum\ActiveOrNotStatus;
 use Laravel\Sanctum\HasApiTokens;
 use Illuminate\Foundation\Auth\User as Authenticatable;
 use Illuminate\Database\Eloquent\Relations\MorphTo;
+use Spatie\Permission\Traits\HasPermissions;
 
 class SinhVien extends Authenticatable 
 {
-    use HasApiTokens;
+    use HasApiTokens, HasPermissions;
     protected $table = 'sinhvien';
 
     protected $fillable = [

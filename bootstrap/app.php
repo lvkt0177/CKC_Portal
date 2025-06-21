@@ -8,6 +8,7 @@ use Spatie\Permission\Middleware\PermissionMiddleware;
 use Spatie\Permission\Middleware\RoleOrPermissionMiddleware;
 use App\Http\Middleware\AuthenticateAdmin;
 use App\Http\Middleware\AuthenticateStudentApi;
+use App\Http\Middleware\RoleSecretary;
 
 return Application::configure(basePath: dirname(__DIR__))
     ->withRouting(
@@ -24,6 +25,7 @@ return Application::configure(basePath: dirname(__DIR__))
             'role_or_permission' => RoleOrPermissionMiddleware::class,
             'auth.admin' => AuthenticateAdmin::class,
             'auth.student' => AuthenticateStudentApi::class,
+            'auth.scretary' => RoleSecretary::class
         ]);
         
     })

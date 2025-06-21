@@ -10,10 +10,11 @@ use App\Models\HoSo;
 use App\Models\Lop;
 use App\Models\BoMon;
 use App\Models\NienKhoa;
-use App\Models\Permission;
-use App\Models\Role;
 use App\Http\Requests\SinhVien\ChucVuRequest;
 use App\Enum\RoleStudent;
+use App\Acl\Acl;
+use \Spatie\Permission\Models\Role;
+use \Spatie\Permission\Models\Permission;
 
 class SinhVienController extends Controller
 {
@@ -56,22 +57,38 @@ class SinhVienController extends Controller
 
     public function doiChucVu(ChucVuRequest $request, SinhVien $sinhVien)
     {
-        $thuKy = SinhVien::where('id_lop', $sinhVien->id_lop)->where('chuc_vu', RoleStudent::SECRETARY)->first();
-        if($thuKy) {
+        $permissionId = Permission::where('name', Acl::PERMISSION_SECRETARY_CREATE_REPORT)->value('id');
+
+        if (!$permissionId) {
+            return redirect()->back()->with('error', 'Không tìm thấy quyền thư ký tạo biên bản');
+        }
+        
+        if($sinhVien) {
+            $sinhVien->chuc_vu = $sinhVien->chuc_vu == RoleStudent::MEMBER ? RoleStudent::SECRETARY : RoleStudent::MEMBER;
+            if($sinhVien->chuc_vu == RoleStudent::MEMBER)
+                $sinhVien->permissions()->detach($permissionId);
+            else
+                $sinhVien->permissions()->syncWithoutDetaching([$permissionId]);
+            $sinhVien->save();
+        }
+        
+        $thuKy = SinhVien::where('id_lop', $sinhVien->id_lop)
+            ->where('chuc_vu', RoleStudent::SECRETARY)
+            ->where('id', '!=', $sinhVien->id)
+            ->first();
+
+        if ($thuKy) {
             $thuKy->chuc_vu = RoleStudent::MEMBER;
-            //xoá quyền
-            $thuKy->permissions()->detach(Permission::PERMISSION_SECRETARY_CREATE_REPORT);
+            $thuKy->permissions()->detach($permissionId);
             $thuKy->save();
         }
 
-        if ($sinhVien->update($request->validated())) {
-            // gắn quyền PERMISSION_SECRETARY_CREATE_REPORT cho sinh viên
-            $sinhVien->permissions()->attach(Permission::PERMISSION_SECRETARY_CREATE_REPORT);
-            return redirect()->back()->with('success', 'Cập nhật chức vụ cho sinh viên ' . $sinhVien->hoSo->ho_ten . ' thành công');
-        }
-
-        return redirect()->back()->with('error', 'Đổi chức vụ không thành công');
+        return redirect()->back()->with(
+            'success',
+            'Cập nhật chức vụ cho sinh viên ' . $sinhVien->hoSo->ho_ten . ' thành công'
+        );
     }
+
 
     public function khoaSinhVien(SinhVien $sinhVien)
     {

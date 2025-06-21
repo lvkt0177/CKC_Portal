@@ -14,6 +14,9 @@
             <div class="card shadow-sm">
                 <div class="card-header d-flex justify-content-between align-items-center">
                     <h3 class="card-title mb-0">Danh sách biên bản sinh hoạt chủ nhiệm</h3>
+                    @if($thuKy)
+                        <a href="{{ route('sinhvien.bienbanshcn.create', $lop) }}" class="btn btn-primary">Tạo biên bản sinh hoạt chủ nhiệm</a>
+                    @endif
                 </div>
                 
                 <!-- Curriculum Grid -->
@@ -26,6 +29,7 @@
                                     <th>Tuần</th>
                                     <th>Giáo viên chủ nhiệm</th>
                                     <th>Thư ký</th>
+                                    <th>Trạng thái</th>
                                     <th>Hành động</th>
                                 </tr>
                             </thead>
@@ -37,7 +41,13 @@
                                         <td>Tuần {{ $bienBan->tuan->tuan }}</td>
                                         <td>{{ $bienBan->gvcn->hoSo->ho_ten }}</td>
                                         <td>{{ $bienBan->thuky->hoSo->ho_ten }}</td>
-                                        <td><a href="{{ route('sinhvien.bienbanshcn.show', $bienBan) }}" class="btn btn-primary" target="_blank">Xem</a></td>
+                                        <td>{{ $bienBan->trang_thai->getLabel() }}</td>
+                                        <td>
+                                            <a href="{{ route('sinhvien.bienbanshcn.show', $bienBan) }}" class="btn btn-primary" target="_blank"><i class="fa fa-eye" aria-hidden="true"></i></a>
+                                            @if($bienBan->trang_thai->value == 0)
+                                              <a href="{{ route('sinhvien.bienbanshcn.edit', $bienBan) }}" class="btn btn-warning mx-1"><i class="fa fa-pencil" aria-hidden="true"></i></a>
+                                            @endif
+                                        </td>
                                     </tr>
                                 @endforeach
                             </tbody>

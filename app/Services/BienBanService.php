@@ -53,6 +53,9 @@ class BienBanService
 
     public function updateBienBanVaChiTiet(array $data, BienBanSHCN $bienBan)
     {
+        if($bienBan->trang_thai == 1) {
+            return false;
+        }
         $this->bienBanRepository->update($bienBan, [
             'id_lop' => $bienBan->id_lop,
             'id_sv' => $data['id_sv'],
