@@ -79,6 +79,8 @@ final class Acl
     // const PERMISSION_ROOM_DELETE = 'xóa phòng học';
 
     //....
+    // Thư ký
+    const PERMISSION_SECRETARY_CREATE_REPORT = 'thư ký tạo biên bản';
 
 
     /**

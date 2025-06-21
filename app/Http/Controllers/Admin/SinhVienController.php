@@ -10,6 +10,8 @@ use App\Models\HoSo;
 use App\Models\Lop;
 use App\Models\BoMon;
 use App\Models\NienKhoa;
+use App\Models\Permission;
+use App\Models\Role;
 use App\Http\Requests\SinhVien\ChucVuRequest;
 use App\Enum\RoleStudent;
 
@@ -57,11 +59,16 @@ class SinhVienController extends Controller
         $thuKy = SinhVien::where('id_lop', $sinhVien->id_lop)->where('chuc_vu', RoleStudent::SECRETARY)->first();
         if($thuKy) {
             $thuKy->chuc_vu = RoleStudent::MEMBER;
+            //xoá quyền
+            $thuKy->permissions()->detach(Permission::PERMISSION_SECRETARY_CREATE_REPORT);
             $thuKy->save();
         }
 
-        if ($sinhVien->update($request->validated()))
+        if ($sinhVien->update($request->validated())) {
+            // gắn quyền PERMISSION_SECRETARY_CREATE_REPORT cho sinh viên
+            $sinhVien->permissions()->attach(Permission::PERMISSION_SECRETARY_CREATE_REPORT);
             return redirect()->back()->with('success', 'Cập nhật chức vụ cho sinh viên ' . $sinhVien->hoSo->ho_ten . ' thành công');
+        }
 
         return redirect()->back()->with('error', 'Đổi chức vụ không thành công');
     }
