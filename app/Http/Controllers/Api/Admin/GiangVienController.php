@@ -14,17 +14,17 @@ use \Spatie\Permission\Models\Role;
 
 class GiangVienController extends Controller
 {
-    //api/admin/giangvien
+    //api/giangvien/giangvien
     public function index()
     {
-        $users = User::with('hoSo', 'boMon', 'boMon.nganhHoc.khoa')
+        $users = User::with('hoSo', 'boMon.nganhHoc.khoa', 'roles.permissions')
             ->orderBy('id', 'desc')
             ->get();
 
         return response()->json($users);
     }
 
-    //api/admin/giangvien/{id}
+    //api/giangvien/giangvien/{id}
     public function show(int $id)
     {
         $data = User::with('hoSo','boMon.nganhHoc.khoa','roles.permissions')

@@ -29,6 +29,7 @@ Route::prefix('admin')->name('api.admin.')->group(function () {
         include('diemmonhoc.php');
         include('nienkhoa.php');
         include('nganhhoc.php');
+        include('bomon.php');
         // include('bienbanshcn.php');
     });
 });
