@@ -33,9 +33,7 @@ class DiemMonHocController extends Controller
     {
         $sinhviens = SinhVien::with([
             'hoSo',
-            'lop',
             'lop.nienKhoa',
-            'danhSachHocPhans',
             'danhSachHocPhans.lopHocPhan'
         ])
             ->whereHas('danhSachHocPhans.lopHocPhan', function ($query) use ($id) {

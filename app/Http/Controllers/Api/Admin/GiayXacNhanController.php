@@ -6,13 +6,15 @@ use Illuminate\Support\Facades\Auth;
 use App\Models\DangKyGiay;
 use App\Http\Controllers\Controller;
 use Illuminate\Http\Request;
+use App\Http\Requests\GiayXacNhan\GiayXacNhanUpdate;
+use Illuminate\Support\Arr;
 
 class GiayXacNhanController extends Controller
 {
     // GET /api/admin/giay-xac-nhan
     public function index()
     {
-        $dangkygiays = DangKyGiay::with('sinhVien', 'loaiGiay', 'giangVien', 'sinhVien.hoSo', 'giangVien.hoSo')
+        $dangkygiays = DangKyGiay::with('loaiGiay','sinhVien.hoSo', 'giangVien.hoSo')
             ->orderBy('id', 'desc')
             ->get();
 
@@ -23,25 +25,27 @@ class GiayXacNhanController extends Controller
     }
 
     // PUT /api/admin/giay-xac-nhan/{id}
-    public function update($id, $user_id)
+    public function update(GiayXacNhanUpdate $request)
     {
-        $dangkygiay = DangKyGiay::find($id);
+        try {
+            $data = $request->validated();
 
-        if (!$dangkygiay) {
+            $ids = $data['ids'];
+            $updateData = Arr::except($data, ['ids']);
+
+            DangKyGiay::whereIn('id', $ids)->update($updateData);
+
             return response()->json([
-                'status' => false,
-                'message' => 'Không tìm thấy yêu cầu.',
-            ], 404);
+                'success' => true,
+                'message' => 'Cập nhật hàng loạt giấy xác nhận thành công.',
+                'updated_ids' => $ids
+            ]);
+        } catch (\Exception $e) {
+            return response()->json([
+                'success' => false,
+                'message' => 'Đã xảy ra lỗi khi cập nhật.',
+                'error' => $e->getMessage()
+            ], 500);
         }
-
-        $dangkygiay->trang_thai = 1;
-        $dangkygiay->id_giang_vien = $user_id;
-        $dangkygiay->save();
-
-        return response()->json([
-            'status' => true,
-            'message' => 'Duyệt thành công!',
-            'data' => $dangkygiay,
-        ]);
     }
 }

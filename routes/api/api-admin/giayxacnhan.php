@@ -7,4 +7,4 @@ use App\Acl\Acl;
 use App\Http\Controllers\Api\Admin\GiayXacNhanController;
 
 Route::get('giay-xac-nhan', [GiayXacNhanController::class, 'index']);
-Route::put('giay-xac-nhan/{id}', [GiayXacNhanController::class, 'update']);
+Route::put('giay-xac-nhan', [GiayXacNhanController::class, 'update']);
