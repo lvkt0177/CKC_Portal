@@ -17,27 +17,14 @@ class SinhVienController extends Controller
     // Lấy ra danh sách lớp theo Niên khoá hoặc Ngành Học
     public function index(Request $request)
     {
-        $nienKhoas = NienKhoa::orderBy('id', 'desc')->get();
-        $nganhHocs = NganhHoc::orderBy('id', 'desc')->get();
-    
         $query = Lop::with(['nienKhoa', 'giangVien.boMon.nganhHoc'])
             ->orderBy('id', 'desc');
-    
-        if ($request->filled('id_nien_khoa')) {
-            $query->where('id_nien_khoa', $request->id_nien_khoa);
-        }
-    
-        if ($request->filled('id_nganh_hoc')) {
-            $query->where('id_nganh_hoc', $request->id_nganh_hoc);
-        }
     
         $lops = $query->get();
     
         return response()->json([
             'success' => true,
             'lops' => $lops,
-            'nien_khoas' => $nienKhoas,
-            'nganh_hocs' => $nganhHocs
         ]);
     }
 
