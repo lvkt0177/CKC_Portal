@@ -18,7 +18,7 @@ Route::prefix('admin')->name('api.admin.')->group(function () {
         ])->group(function () {
         include('auth.php');
         include('role.php');
-        include('sinhvien.php');
+        include('lopsinhvien.php');
         include('giangvien.php');
         include('permission.php');
         include('phong.php');

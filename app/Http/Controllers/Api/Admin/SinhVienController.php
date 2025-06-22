@@ -14,16 +14,25 @@ use App\Http\Requests\SinhVien\ChucVuRequest;
 
 class SinhVienController extends Controller
 {
-    // api/admin/student
-    public function index()
+    // Lấy ra danh sách lớp theo Niên khoá hoặc Ngành Học
+    public function index(Request $request)
     {
         $nienKhoas = NienKhoa::orderBy('id', 'desc')->get();
         $nganhHocs = NganhHoc::orderBy('id', 'desc')->get();
-
-        $lops = Lop::with(['nienKhoa', 'giangVien', 'giangVien.boMon.nganhHoc'])
-            ->orderBy('id', 'desc')
-            ->get();
-
+    
+        $query = Lop::with(['nienKhoa', 'giangVien.boMon.nganhHoc'])
+            ->orderBy('id', 'desc');
+    
+        if ($request->filled('id_nien_khoa')) {
+            $query->where('id_nien_khoa', $request->id_nien_khoa);
+        }
+    
+        if ($request->filled('id_nganh_hoc')) {
+            $query->where('id_nganh_hoc', $request->id_nganh_hoc);
+        }
+    
+        $lops = $query->get();
+    
         return response()->json([
             'success' => true,
             'lops' => $lops,
@@ -32,10 +41,10 @@ class SinhVienController extends Controller
         ]);
     }
 
-    // api/admin/student/{id}
+    // Lấy ra danh sách sinh viên thuộc Lớp(ID)
     public function showlist(int $id)
     {
-        $sinhviens = SinhVien::with(['hoSo', 'lop', 'lop.nienKhoa'])
+        $sinhviens = SinhVien::with(['hoSo'])
             ->where('id_lop', $id)
             ->orderBy('ma_sv', 'asc')
             ->get();
@@ -56,7 +65,7 @@ class SinhVienController extends Controller
         ]);
     }
 
-    // api/admin/student/{sinhVien}/chucvu
+    // Đổi chức vụ cho sinh viên
     public function doiChucVu(ChucVuRequest $request, SinhVien $sinhVien)
     {
         if ($sinhVien->update($request->validated())) {
@@ -70,25 +79,6 @@ class SinhVienController extends Controller
         return response()->json([
             'success' => false,
             'message' => 'Đổi chức vụ không thành công'
-        ]);
-    }
-
-    // api/admin/student/{sinhVien}/khoa
-    public function khoaSinhVien(SinhVien $sinhVien)
-    {
-        $sinhVien->trang_thai = $sinhVien->trang_thai->value == 0 ? 1 : 0;
-
-        if ($sinhVien->save()) {
-            return response()->json([
-                'success' => true,
-                'message' => 'Thay đổi trạng thái thành công',
-                'trang_thai' => $sinhVien->trang_thai
-            ]);
-        }
-
-        return response()->json([
-            'success' => false,
-            'message' => 'Không thể thay đổi trạng thái'
         ]);
     }
 }
