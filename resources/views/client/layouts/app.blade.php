@@ -120,6 +120,7 @@
                     <li><a href="{{ route('sinhvien.xemdiem.ketquahoctap') }}">Kết quả học tập</a></li>
                     <li><a href="{{ route('sinhvien.xemdiem.ketquarenluyen') }}">kết quả rèn luyện</a></li>
                     <li><a href="{{ route('sinhvien.thoikhoabieu.index') }}">Lịch học theo tuần</a></li>
+                    <li><a href="{{ route('sinhvien.lichthi.index') }}">Lịch thi</a></li>
                 </ul>
             </li>
 

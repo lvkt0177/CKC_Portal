@@ -15,6 +15,7 @@ Route::prefix('sinhvien')->name('sinhvien.')->group(function () {
         include('bienbanshcn.php');
         include('thoikhoabieu.php');
         include('xemdiem.php');
+        include('lichthi.php');
         
     });
 });

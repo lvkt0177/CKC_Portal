@@ -3,7 +3,12 @@
 @section('title', 'Trang chu')
 
 @section('css')
-
+    <style>
+        .scrollable-area {
+            max-height: 500px;
+            overflow-y: auto;
+        }
+    </style>
 @endsection
 
 @section('content')
@@ -14,8 +19,8 @@
                 <div class="row align-items-center">
                     <!-- Avatar bên trái -->
                     <div class="col-lg-4 col-md-12 col-sm-12 text-center mb-3 mb-md-0">
-                        <img src="{{ asset('' . Auth::guard('student')->user()->hoSo->anh) }}"
-                            alt="Student Avatar" class="rounded-circle" style="width: 240px;">
+                        <img src="{{ asset('' . Auth::guard('student')->user()->hoSo->anh) }}" alt="Student Avatar"
+                            class="rounded-circle" style="width: 240px;">
                     </div>
 
                     <!-- Thông tin bên phải -->
@@ -26,7 +31,8 @@
                                 <p><strong>MSSV:</strong> {{ Auth::guard('student')->user()->ma_sv }}</p>
                                 <p><strong>Lớp học:</strong> {{ Auth::guard('student')->user()->lop->ten_lop }}</p>
                                 <p><strong>Hệ đào tạo:</strong> Cao đẳng</p>
-                                <p><strong>Khóa học:</strong> {{ Auth::guard('student')->user()->lop->nienKhoa->ten_nien_khoa }}</p>
+                                <p><strong>Khóa học:</strong>
+                                    {{ Auth::guard('student')->user()->lop->nienKhoa->ten_nien_khoa }}</p>
                                 <p><strong>Giới tính:</strong> {{ Auth::guard('student')->user()->hoSo->gioi_tinh }}</p>
                             </div>
                             <div class="col-sm-6">
@@ -97,16 +103,75 @@
 
     <!-- Charts Section -->
     <div class="charts-section">
-        <div class="chart-container">
+        <div class="chart-container ">
             <h5 class="chart-title">Kết quả học tập</h5>
             <div class="dropdown mb-3">
-                <select class="form-select">
-                    <option>HK3 (2024 - 2025)</option>
-                </select>
+                <form method="GET" action="">
+                    <select name="id_hoc_ky" id="hocKySelect" class="form-select">
+                        @foreach ($dsHocKy as $ky)
+                            <option value="{{ $ky->id }}" {{ $idHocKy == $ky->id ? 'selected' : '' }}>
+                                {{ $ky->ten_hoc_ky }}
+                            </option>
+                        @endforeach
+                    </select>
+                </form>
             </div>
-            <div class="no-data">
-                <p>Chưa có dữ liệu hiển thị</p>
+            <div class="scrollable-area">
+                @foreach ($gradesData as $hocKy => $monHocList)
+                    <div class="grades-table mb-4 hoc-ky-bang" data-hocky="{{ $hocKy }}">
+                        <table class="table table-bordered">
+                            <thead>
+                                <tr>
+                                    <th>STT</th>
+                                    <th>Tên môn học</th>
+                                    <th>Tín chỉ</th>
+                                    <th>Điểm chuyên cần</th>
+                                    <th>Điểm quá trình</th>
+                                    <th>Điểm thi</th>
+                                    <th>Điểm tổng kết</th>
+                                </tr>
+                            </thead>
+                            <tbody>
+                                @foreach ($monHocList as $index => $mon)
+                                    <tr>
+                                        <td>{{ $index + 1 }}</td>
+                                        <td>{{ $mon['ten_mon'] }}</td>
+                                        <td>{{ $mon['tin_chi'] }}</td>
+                                        <td>{{ $mon['chuyencan'] }}</td>
+                                        <td>{{ $mon['quatrinh'] }}</td>
+                                        <td>{{ $mon['thi'] }}</td>
+                                        <td>{{ $mon['tongket'] }}</td>
+                                    </tr>
+                                @endforeach
+                            </tbody>
+                        </table>
+                    </div>
+                @endforeach
             </div>
         </div>
     </div>
+@endsection
+
+
+@section('js')
+    <script>
+        document.addEventListener("DOMContentLoaded", function() {
+            const select = document.getElementById('hocKySelect');
+            const tables = document.querySelectorAll('.hoc-ky-bang');
+
+            function showTable(hocKyId) {
+                tables.forEach(table => {
+                    table.style.display = (table.dataset.hocky == hocKyId) ? 'block' : 'none';
+                });
+            }
+
+            // Ban đầu hiển thị theo kỳ được chọn
+            showTable(select.value);
+
+            // Khi chọn kỳ mới
+            select.addEventListener('change', function() {
+                showTable(this.value);
+            });
+        });
+    </script>
 @endsection
