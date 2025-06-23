@@ -24,7 +24,8 @@ class GiayXacNhanUpdate extends FormRequest
         return [
             'ids' => 'required|array',
             'ids.*' => 'integer|exists:dang_ky_giay,id',
-            'user_id' => 'required|integer|exists:users,id',
+            'id_giang_vien' => 'required|integer|exists:users,id',
+            'trang_thai' => 'nullable|integer|in:1,2', 
         ];
     }
 }
