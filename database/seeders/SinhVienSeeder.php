@@ -28,7 +28,7 @@ class SinhVienSeeder extends Seeder
                 "id_lop" => 1,
                 "id_ho_so" => 14,
                 "chuc_vu" => 0,
-                "mat_khau" => bcrypt('1a@'),
+                "mat_khau" => Hash::make('1a@'),
                 "trang_thai" => 0,
             ],
             [

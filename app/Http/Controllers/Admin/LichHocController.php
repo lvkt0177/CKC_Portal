@@ -51,8 +51,6 @@ class LichHocController extends Controller
 
     public function list(Request $request,Lop $lop)
     {   
-
-    
         $today = now();
 
         // Lấy danh sách học kỳ theo lớp

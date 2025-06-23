@@ -91,8 +91,8 @@
                             <li><a class="dropdown-item" href="{{ route('giangvien.student.index') }}"><i
                                         class="fas fa-file-invoice me-2"></i>Lịch đào tạo</a>
                             </li>
-                           
-                            <li><a class="dropdown-item" href="{{ route('giangvien.roles.index') }}"><i
+
+                            <li><a class="dropdown-item" href="{{ route('giangvien.ctdt.index') }}"><i
                                         class="fas fa-user-tag me-2"></i>Khung đào tạo</a></li>
                         </ul>
                     </div>
@@ -119,7 +119,7 @@
                                     viên đăng ký giấy</a></li>
 
                             <li><a class="dropdown-item" href="{{ route('giangvien.capmatkhausinhvien.index') }}"><i
-                                class="fas fa-users me-2"></i>Quản lý sinh viên liên hệ cấp mật khẩu</a></li>
+                                        class="fas fa-users me-2"></i>Quản lý sinh viên liên hệ cấp mật khẩu</a></li>
                         </ul>
                     </div>
                 </nav>
@@ -133,7 +133,8 @@
                         <ul class="dropdown-menu">
                             <li><a class="dropdown-item" href="#"><i
                                         class="fas fa-book me-2"></i>Documentation</a></li>
-                            <li><a class="dropdown-item" href="#"><i class="fas fa-life-ring me-2"></i>Support</a>
+                            <li><a class="dropdown-item" href="#"><i
+                                        class="fas fa-life-ring me-2"></i>Support</a>
                             </li>
                             <li><a class="dropdown-item" href="#"><i
                                         class="fas fa-list-alt me-2"></i>Changelog</a></li>

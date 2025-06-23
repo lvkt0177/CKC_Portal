@@ -23,4 +23,9 @@ class ChiTietChuongTrinhDaoTao extends Model
     {
         return $this->belongsTo(MonHoc::class, 'id_mon_hoc', 'id');
     }
+    //hocKy
+    public function hocKy()
+    {
+        return $this->belongsTo(HocKy::class, 'id_hoc_ky', 'id');
+    }
 }

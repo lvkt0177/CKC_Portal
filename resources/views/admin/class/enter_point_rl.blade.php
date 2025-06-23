@@ -52,7 +52,8 @@
                         <div class="design-section" id="bulkFormContainer" style="display: none;">
                             <div class="modern-form-container">
                                 <h2 class="design-title">Xếp loại hàng loạt</h2>
-                                <form action="{{ route('giangvien.lop.cap-nhat-diem-checked') }}" method="POST">
+                                <form action="{{ route('giangvien.lop.cap-nhat-diem-checked') }}" method="POST"
+                                    data-confirm>
                                     @csrf
                                     <div class="form-group">
                                         <input type="hidden" name="selected_students" id="selectedStudents">
@@ -125,15 +126,11 @@
                                                         <input type="hidden" name="nam" value="{{ $namDangChon }}">
                                                         <select class="modern-select" name="xep_loai"
                                                             onchange="form.submit()">
-                                                            <option value="{{ $diemRL->xep_loai }}">
-                                                                {{ $diemRL->xep_loai->getLabel() }}
-                                                            </option>
                                                             @foreach ([1, 2, 3, 4] as $loai)
-                                                                @if ($loai != $diemRL->xep_loaii)
-                                                                    <option value="{{ $loai }}">
-                                                                        {{ \App\Enum\XepLoaiDRL::from($loai)->getLabel() }}
-                                                                    </option>
-                                                                @endif
+                                                                <option value="{{ $loai }}"
+                                                                    {{ $loai != $diemRL->xep_loai->value ? '' : 'selected' }}>
+                                                                    {{ \App\Enum\XepLoaiDRL::from($loai)->getLabel() }}
+                                                                </option>
                                                             @endforeach
                                                         </select>
                                                     </form>
@@ -170,8 +167,6 @@
                                         </td>
                                     </tr>
                                 @endforeach
-
-
                             </tbody>
                         </table>
                     </div>

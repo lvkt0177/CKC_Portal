@@ -36,9 +36,11 @@
             </div>
 
             <div class="d-flex align-items-center position-relative text-muted">
-                <a href="{{ route('sinhvien.thong-bao.index') }}" class="text-muted text-decoration-none position-relative">
+                <a href="{{ route('sinhvien.thong-bao.index') }}"
+                    class="text-muted text-decoration-none position-relative">
                     <i class="fas fa-bell me-2"></i>
-                    <span class="badge bg-danger position-absolute top-0 start-100 translate-middle">{{ $unreadNotificationCount }}</span>
+                    <span
+                        class="badge bg-danger position-absolute top-0 start-100 translate-middle">{{ $unreadNotificationCount }}</span>
                     <span>Thông báo</span>
                 </a>
             </div>
@@ -115,7 +117,8 @@
             <li class="dropdown">
                 <a href="#" class="dropdown-toggle"><i class="fas fa-graduation-cap"></i> HỌC TẬP</a>
                 <ul class="submenu">
-                    <li><a href="#">Điểm số</a></li>
+                    <li><a href="{{ route('sinhvien.xemdiem.ketquahoctap') }}">Kết quả học tập</a></li>
+                    <li><a href="{{ route('sinhvien.xemdiem.ketquarenluyen') }}">kết quả rèn luyện</a></li>
                     <li><a href="{{ route('sinhvien.thoikhoabieu.index') }}">Lịch học theo tuần</a></li>
                 </ul>
             </li>
