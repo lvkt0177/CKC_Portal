@@ -79,11 +79,19 @@
                                 <div class="col-md-6">
                                     <div class="form-group">
                                         <label class="form-label">Học kỳ</label>
-                                        <select class="form-select" id="hoc-ky">
-                                            @foreach ($dsHocKy as $hk)
-                                                <option value="{{ $hk->id }}">{{ $hk->ten_hoc_ky }}</option>
-                                            @endforeach
-                                        </select>
+                                        <form action="{{ route('giangvien.lichhoc.create', ['lop' => $lop->id]) }}"
+                                            method="GET" id="form-hoc-ky">
+                                            <input type="hidden" name="id_tuan" value="{{ request('id_tuan') }}">
+                                            <select class="form-select" name="hoc_ky"
+                                                onchange="document.getElementById('form-hoc-ky').submit()">
+                                                @foreach ($dsHocKy as $hk)
+                                                    <option value="{{ $hk->id }}"
+                                                        {{ $hocKy->id == $hk->id ? 'selected' : '' }}>
+                                                        {{ $hk->ten_hoc_ky }}
+                                                    </option>
+                                                @endforeach
+                                            </select>
+                                        </form>
                                     </div>
                                 </div>
                             </div>
@@ -181,6 +189,16 @@
                                         Thêm vào TKB
                                     </button>
                                 </div>
+                                @if (session('error'))
+                                    <div class="alert alert-danger m-3  ">
+                                        {{ session('error') }}
+                                    </div>
+                                @endif
+                                @if (session('success'))
+                                    <div class="alert alert-success m-3  ">
+                                        {{ session('success') }}
+                                    </div>
+                                @endif
                         </form>
                     </div>
                     <button id="load-list" class="btn btn-info">Xem trước</button>
@@ -194,6 +212,7 @@
             </div>
         </div>
     </div>
+
 @endsection
 
 @section('js')

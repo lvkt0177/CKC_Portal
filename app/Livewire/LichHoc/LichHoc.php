@@ -122,11 +122,13 @@ class LichHoc extends Component
             'phong',
             'tuan'
         ])
+        
         ->whereHas('lopHocPhan', function ($query) {
             $query->where('id_lop', $this->lop->id);
         })
         ->where('id_tuan', $this->tuanDangChon->id ?? null)
         ->get();
+        
     }
 
     public function render()
