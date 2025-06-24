@@ -46,8 +46,10 @@
                                     <span class="thongtin-value">{{ $sinhVien->hoSo->dia_chi }}</span>
                                 </div>
                                 <div class="thongtin-item col-6 py-1">
-                                    <span class="thongtin-label">Lớp:</span>
-                                    <span class="thongtin-value">{{ $sinhVien->lop->ten_lop ?? 'Chưa có' }}</span>
+                                    <span class="thongtin-label">Lớp, Lớp chuyên ngành:</span>
+                                    <span class="thongtin-value">{{ $sinhVien->lop->ten_lop ?? 'Chưa có' }}
+                                        {{ optional($sinhVien->lopChuyenNganh)->ten_lop ? ', ' . optional($sinhVien->lopChuyenNganh)->ten_lop : '' }}
+                                    </span>
                                 </div>
                                 <div class="thongtin-item col-6 py-1">
                                     <span class="thongtin-label">Ngành, chuyên ngành:</span>

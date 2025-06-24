@@ -45,20 +45,39 @@
                                                     id="week-form">
                                                     <input type="hidden" name="action" id="week-action" value="">
 
-                                                    {{-- Chọn Năm --}}
+
                                                     @php
-                                                        $namHienTai = now()->year;
+                                                        use App\Models\Nam;
+                                                        use App\Models\Tuan;
+
+                                                        $today = now();
+                                                        $namHienTai =
+                                                            $today->month <= 7 ? $today->year - 1 : $today->year;
+
                                                         $namDangChon = request('nam', $namHienTai);
-                                                        $tuanHienTai = now()->weekOfYear;
+
+                                                        $nam = Nam::where('nam_bat_dau', $namDangChon)->first();
+
+                                                        if (!$nam) {
+                                                            $nam = Nam::where('nam_bat_dau', $namHienTai)->first();
+                                                        }
+
+                                                        $tuanHienTai =
+                                                            Tuan::where('id_nam', $nam->id ?? 0)
+                                                                ->whereDate('ngay_bat_dau', '<=', $today)
+                                                                ->whereDate('ngay_ket_thuc', '>=', $today)
+                                                                ->first()?->tuan ?? 1;
+
                                                         $tuanDangChon = request('id_tuan', $tuanHienTai);
-                                                        $soTuan = $namDangChon == $namHienTai ? $tuanHienTai : 52;
+
+                                                        $soTuan = Tuan::where('id_nam', $nam->id ?? 0)->count();
                                                     @endphp
 
                                                     <div class="d-flex justify-content-end align-items-center">
                                                         <div class="nav-buttons w-100">
 
                                                             <div
-                                                                class="d-flex justify-content-between align-items-center mb-2">
+                                                                class="d-flex justify-content-between align-items-center mb-2 ">
                                                                 <label class="p-1">Năm:</label>
                                                                 <select class="form-control" name="nam"
                                                                     onchange="document.getElementById('week-form').submit()">
@@ -66,7 +85,7 @@
                                                                         @php $nam = $namHienTai - $i; @endphp
                                                                         <option value="{{ $nam }}"
                                                                             {{ $namDangChon == $nam ? 'selected' : '' }}>
-                                                                            Năm {{ $nam }}
+                                                                            {{ $nam }}-{{ $nam + 1 }}
                                                                         </option>
                                                                     @endfor
                                                                 </select>
@@ -118,10 +137,10 @@
                                 <table class="table table-bordered mb-0">
                                     <thead>
                                         <tr>
-                                            <th class="time-column text-white" style="background: var(--primary-color);">Ca
+                                            <th class="time-column text-white" style="background: #2c3e50;">Ca
                                                 học</th>
                                             @foreach ($ngayTrongTuan as $ngay)
-                                                <th class="day-header text-white" style="background: var(--primary-color);">
+                                                <th class="day-header text-white" style="background: #2c3e50;">
                                                     {{ ucfirst($ngay->translatedFormat('l')) }}<br>
                                                     {{ $ngay->format('d/m/Y') }}
                                                 </th>

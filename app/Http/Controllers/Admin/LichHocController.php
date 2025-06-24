@@ -10,6 +10,7 @@ use Carbon\Carbon;
 //Model
 use Illuminate\Support\Facades\Auth;
 use App\Models\Lop;
+use App\Models\DanhSachHocPhan;
 use App\Models\Phong;
 use App\Models\LopHocPhan;
 use App\Models\User;
@@ -22,6 +23,7 @@ use App\Models\Tuan;
 use App\Models\HocKy;
 use App\Models\ThoiKhoaBieu;
 use App\Models\ChiTietChuongTrinhDaoTao;
+
 class LichHocController extends Controller
 {
     //
@@ -118,14 +120,13 @@ class LichHocController extends Controller
                 ->with('error', 'Lớp đã hết kỳ để tạo thời khóa biểu');
         }
 
-        // Lấy danh sách 3 học kỳ tương lai của lớp
+
         $dsHocKy = HocKy::where('id_nien_khoa', $lop->id_nien_khoa)
             ->where('ngay_bat_dau', '>', Carbon::today())
             ->orderBy('ngay_bat_dau')
-            ->take(3)
             ->get();
 
-        // Lấy ID học kỳ được chọn từ request (nếu không có thì lấy học kỳ đầu tiên)
+      
         $id_hoc_ky = $request->hoc_ky ?? $dsHocKy->first()?->id;
         
         $hocKy = $id_hoc_ky
@@ -135,7 +136,7 @@ class LichHocController extends Controller
         if (!$hocKy) {
             $hocKy = HocKy::where('ngay_ket_thuc', '<=', $today)->orderByDesc('ngay_ket_thuc')->first();
         }
-        // Mặc định danh sách môn học rỗng
+       
         $monHoc = collect();
 
         $dsTuan = Tuan::whereDate('ngay_bat_dau', '>=', $hocKy->ngay_bat_dau)
@@ -188,10 +189,75 @@ class LichHocController extends Controller
         return view('admin.lichhoc.create', compact('lop', 'dsHocKy', 'monHoc', 'phong', 'id_hoc_ky','tuanDangChon','dsTuan','ngayTrongTuan','thoikhoabieu','hocKy'));
     }
 
-    public function store(ThoiKhoaBieuRequest $request)
+    public function store(ThoiKhoaBieuRequest  $request)
     {
-        dd($request->validated());
-        return redirect()->route('admin.lichhoc.create')
+        $data = $request->validated();
+
+        
+        $tietKetThuc = $data['tiet_bat_dau'] + $data['so_tiet'] - 1;
+
+       
+        $tuan = Tuan::find($data['id_tuan']);
+        if (!$tuan) {
+            return back()->withErrors(['id_tuan' => 'Tuần không tồn tại']);
+        }
+
+        
+        $ngayHoc = Carbon::parse($tuan->ngay_bat_dau)->addDays($data['thu'] - 2)->format('Y-m-d');
+        
+        $sinhVienList = SinhVien::where('id_lop', $data['lop_id'])->get();
+
+        $tenMon = \App\Models\MonHoc::find($data['mon_hoc'])->ten_mon ?? 'Môn học';
+
+        $lopHocPhan = \App\Models\LopHocPhan::firstOrCreate([
+        'ten_hoc_phan' => $tenMon,
+        'id_lop' => $data['lop_id'],
+        ], [
+            'id_giang_vien' => null,
+            'id_chuong_trinh_dao_tao' => 1, 
+            'loai_lop_hoc_phan' => 'chinh',
+            'so_luong_dang_ky' => $sinhVienList->count(),
+            'loai_mon' => null,
+            'trang_thai' => 1,
+        ]);
+        
+        
+        $trungLich = ThoiKhoaBieu::where('ngay', $ngayHoc)
+            ->where('id_phong', $data['id_phong'])
+            ->where(function ($query) use ($data, $tietKetThuc) {
+                $query->whereBetween('tiet_bat_dau', [$data['tiet_bat_dau'], $tietKetThuc])
+                    ->orWhereBetween('tiet_ket_thuc', [$data['tiet_bat_dau'], $tietKetThuc]);
+            })->exists();
+
+        if ($trungLich) {
+            return back()->withErrors(['tiet_bat_dau' => 'Phòng đã có lịch học trùng vào thời gian này.']);
+        }
+
+        
+        ThoiKhoaBieu::create([
+            'id_tuan'         => $data['id_tuan'],
+            'id_lop_hoc_phan' => $data['mon_hoc'],
+            'id_phong'        => $data['id_phong'],
+            'tiet_bat_dau'    => $data['tiet_bat_dau'],
+            'tiet_ket_thuc'   => $tietKetThuc,
+            'ngay'            => $ngayHoc,
+        ]);
+
+       
+       
+
+        
+        foreach ($sinhVienList as $sv) {
+            DanhSachHocPhan::firstOrCreate([
+                'id_sinh_vien'    => $sv->id,
+                'id_lop_hoc_phan' => $data['mon_hoc'],
+            ], [
+                'loai_hoc' => 0, // Gán là 0
+            ]);
+        }
+
+        
+        return redirect()->route('giangvien.lichhoc.create')
         ->with('success', 'Thêm thành công');
     }
 

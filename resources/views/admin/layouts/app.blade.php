@@ -88,7 +88,7 @@
                             Quản lý đào tạo
                         </a>
                         <ul class="dropdown-menu">
-                            <li><a class="dropdown-item" href="{{ route('giangvien.student.index') }}"><i
+                            <li><a class="dropdown-item" href="{{ route('giangvien.lichhoc.index') }}"><i
                                         class="fas fa-file-invoice me-2"></i>Lịch đào tạo</a>
                             </li>
 
@@ -161,6 +161,7 @@
                 </div>
             </div>
         </div>
+        @livewireStyles
     </header>
 
     <!-- Mobile Navigation -->

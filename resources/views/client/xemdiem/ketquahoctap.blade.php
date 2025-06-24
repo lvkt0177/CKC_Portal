@@ -62,7 +62,11 @@
                         </div>
                     </div>
                     @foreach ($gradesData as $hocKy => $danhSachMon)
-                        <h5 class="m-4 fs-4">📘 Học kỳ {{ $hocKy }}</h5>
+                        @php
+                            $tenHocKy = $gradesData[$hocKy]->first()['ten_hoc_ky'] ?? '';
+                        @endphp
+                        <h5 class="m-4 fs-4">📘{{ $tenHocKy }}
+                        </h5>
                         <div class="grades-table">
                             <table>
                                 <thead>

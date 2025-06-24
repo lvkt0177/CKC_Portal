@@ -30,7 +30,7 @@ class LichHoc extends Component
 
     public function mount(Lop $lop,)
     {
-        
+       
         $this->lop = $lop;
 
         $today = now();
@@ -43,15 +43,21 @@ class LichHoc extends Component
         }
 
         // Học kỳ hiện tại hoặc theo id
-        $this->hocKy = $this->hoc_ky_id
-            ? HocKy::find($this->hoc_ky_id)
-            : HocKy::where('ngay_bat_dau', '<=', $today)
-                   ->where('ngay_ket_thuc', '>=', $today)->first();
+        if ($this->hoc_ky_id) {
+            $this->hocKy = HocKy::find($this->hoc_ky_id);
+        } else {
+            // Nếu chưa chọn → lấy học kỳ hiện tại (đang diễn ra)
+            $this->hocKy = HocKy::where('ngay_bat_dau', '<=', $today)
+                                ->where('ngay_ket_thuc', '>=', $today)
+                                ->first();
 
-        if (!$this->hocKy) {
-            $this->hocKy = HocKy::where('ngay_ket_thuc', '<=', $today)
-                                ->orderByDesc('ngay_ket_thuc')->first();
-        }
+            // Nếu không có học kỳ đang diễn ra → lấy học kỳ gần nhất đã kết thúc
+            if (!$this->hocKy) {
+                $this->hocKy = HocKy::where('ngay_ket_thuc', '<=', $today)
+                                    ->orderByDesc('ngay_ket_thuc')
+                                    ->first();
+            }
+        }                                                         
 
         // Danh sách tuần
         if ($this->hocKy) {
@@ -75,7 +81,7 @@ class LichHoc extends Component
 
     public function updatedHocKyId()
     {
-        dd('hoc_ky_id'. $this->hocKy->id);
+        
         $this->mount($this->lop);
     }
 
@@ -86,7 +92,7 @@ class LichHoc extends Component
 
     public function capNhatTuan()
     {
-        dd('id_tuan', $this->id_tuan);
+       
         $this->tuanDangChon = Tuan::find($this->id_tuan);
         $this->layNgayTrongTuan();
         $this->layThoiKhoaBieu();

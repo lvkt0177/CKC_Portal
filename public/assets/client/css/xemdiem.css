@@ -11,8 +11,8 @@ table {
 }
 
 th {
-    background: linear-gradient(135deg, #ffffff 10%, #000000 900%);
-    color: black;
+    background: #2c3e50;
+    color: rgb(255, 255, 255);
     padding: 20px 15px;
     text-align: center;
     font-weight: 600;
@@ -84,11 +84,11 @@ tr:nth-child(even):hover {
 }
 
 .stat-card {
-    background: linear-gradient(135deg, #e1dfdf 0%, #7e7b7b 100%);
+    background: #2c3e50;
     padding: 20px;
     border-radius: 15px;
     text-align: center;
-    color: #000000;
+    color: #ffffff;
     box-shadow: 0 5px 15px rgba(252, 182, 159, 0.3);
 }
 
@@ -149,6 +149,7 @@ tr:nth-child(even):hover {
 }
 
 .print-btn {
+    margin-bottom: 10px;
     background: linear-gradient(135deg, #28a745, #20c997);
     color: white;
     border: none;

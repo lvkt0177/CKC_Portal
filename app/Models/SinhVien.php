@@ -73,5 +73,10 @@ class SinhVien extends Authenticatable
     {
         return $this->hasMany(YeuCauCapLaiMatKhau::class, 'id_sinh_vien', 'id');
     }
+    //lopchuyennganh
+    public function lopChuyenNganh()
+    {
+        return $this->belongsTo(LopChuyenNganh::class, 'id_lop_chuyen_nganh', 'id');
+    }
 
 }

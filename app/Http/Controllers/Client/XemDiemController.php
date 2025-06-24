@@ -14,6 +14,9 @@ use App\Models\ChuongTrinhDaoTao;
 use App\Models\ChiTietChuongTrinhDaoTao;
 use App\Models\NienKhoa;
 use App\Models\DiemRenLuyen;
+use App\Models\LopChuyenNganh;
+use App\Models\ChuyenNganh;
+use App\Models\HocKy;
 
 
 class XemDiemController extends Controller
@@ -22,27 +25,30 @@ class XemDiemController extends Controller
 
         $id_sv = Auth::guard('student')->user()->id;
         
-        $sinhVien = SinhVien::with('hoSo','lop')->where('id', $id_sv)->first();
+        $sinhVien = SinhVien::with('hoSo','lop','lopChuyenNganh')->where('id', $id_sv)->first();
         
         $lop = Lop::where('id',$sinhVien->id_lop)->first();
-
         $nienkhoa = NienKhoa::where('id', $lop->id_nien_khoa)->first();
+       
 
 
         $chuong_trinh_dao_tao = ChuongTrinhDaoTao::whereHas('chuyenNganh', function ($q) use ($sinhVien) {
             $q->where('id_nganh_hoc', $sinhVien->lop->id_nganh_hoc);
         })->orderBy('id', 'asc')->get();
-
+        
 
         $id_chuong_trinh_dao_tao = $chuong_trinh_dao_tao->first()->id;
-
+        
         if (!$id_chuong_trinh_dao_tao) {
             return redirect()->back()->with('error', 'Không có chương trình đào tạo nào.');
         }
 
-        $ct_ctdt = collect();
+        
 
+        $ct_ctdt = collect();
+        
         if ($id_chuong_trinh_dao_tao && $nienkhoa) {
+
             $ct_ctdt = ChiTietChuongTrinhDaoTao::with(['monHoc', 'chuongTrinhDaoTao', 'hocKy'])
                 ->where('id_chuong_trinh_dao_tao', $id_chuong_trinh_dao_tao)
                 ->whereHas('hocKy', function ($q) use ($nienkhoa) {
@@ -50,12 +56,14 @@ class XemDiemController extends Controller
                 })
                 ->get()
                 ->groupBy('id_hoc_ky');
+                    
         }
+       
         $gradesData = $ct_ctdt->mapWithKeys(function ($dsMon, $idHocKy) {
             return [
                 $idHocKy => $dsMon->map(function ($ct) {
                     return [
-                        
+                        'ten_hoc_ky' => $ct->hocKy->ten_hoc_ky ?? '',
                         'ten_mon' => $ct->monHoc->ten_mon ?? '',
                         'tin_chi' => $ct->so_tin_chi,
                         'chuyencan' => $ct->diem_chuyen_can ?? '-',
@@ -66,6 +74,7 @@ class XemDiemController extends Controller
                 })
             ];
         });
+        
         $thongKeTungKy = [];
 
         foreach ($ct_ctdt as $idHocKy => $dsMon) {
@@ -97,7 +106,7 @@ class XemDiemController extends Controller
     {
         $id_sv = Auth::guard('student')->user()->id;
 
-        $sinhVien = SinhVien::with('hoSo', 'lop')->find($id_sv);
+        $sinhVien = SinhVien::with('hoSo', 'lop','lopChuyenNganh.chuyenNganh')->find($id_sv);
 
         $nienKhoa = NienKhoa::find($sinhVien->lop->id_nien_khoa);
         
@@ -122,9 +131,6 @@ class XemDiemController extends Controller
         ->orderBy('thoi_gian', 'asc')
         ->get();
         
-       
-        
-
         for ($i = 1; $i <= 12; $i++) {
             $diemThang = $dsDiemRenLuyen->where('thoi_gian', $i);
         }

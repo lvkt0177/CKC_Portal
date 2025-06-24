@@ -86,9 +86,12 @@
                         <div class="curriculum-grid">
                             <!-- Semester 1 -->
                             @foreach ($ct_ctdt as $hocKy => $danhSachMon)
+                                @php
+                                    $tenhocKy = $danhSachMon->first()->hocKy->ten_hoc_ky ?? '';
+                                @endphp
                                 <div class="semester-card">
                                     <div class="semester-header">
-                                        <h3 class="semester-title">Học kỳ {{ $hocKy }}</h3>
+                                        <h3 class="semester-title">{{ $tenhocKy }}</h3>
                                         <div class="semester-stats">
                                             <div class="stat-item">
                                                 <div class="stat-icon">📚</div>

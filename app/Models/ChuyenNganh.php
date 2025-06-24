@@ -21,4 +21,8 @@ class ChuyenNganh extends Model
     {
         return $this->belongsTo(NganhHoc::class, 'id_nganh_hoc', 'id');
     }
+        public function lopChuyenNganh()
+    {
+        return $this->hasMany(LopChuyenNganh::class, 'id_chuyen_nganh', 'id');
+    }
 }
