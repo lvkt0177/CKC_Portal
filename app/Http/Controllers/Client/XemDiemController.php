@@ -74,7 +74,6 @@ class XemDiemController extends Controller
                 })
             ];
         });
-        
         $thongKeTungKy = [];
 
         foreach ($ct_ctdt as $idHocKy => $dsMon) {

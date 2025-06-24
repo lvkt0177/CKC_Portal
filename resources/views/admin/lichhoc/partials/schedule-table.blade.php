@@ -64,7 +64,7 @@
                                                 data-class="{{ $tkb->lopHocPhan->lop->ten_lop }}"
                                                 data-period="{{ $tkb->tiet_bat_dau }}-{{ $tkb->tiet_ket_thuc }}"
                                                 data-room="{{ $tkb->phong->ten }}"
-                                                data-teacher="{{ $tkb->lopHocPhan->giangVien->hoSo->ho_ten }}"
+                                                data-teacher="{{ $tkb->lopHocPhan->giangVien->hoSo->ho_ten ?? '' }}"
                                                 data-date="{{ \Carbon\Carbon::parse($tkb->ngay)->format('d/m/Y') }}">
                                                 <div class="class-title">
                                                     {{ $tkb->lopHocPhan->ten_hoc_phan }}
@@ -75,7 +75,7 @@
                                                     {{ $tkb->tiet_bat_dau }}-{{ $tkb->tiet_ket_thuc }}<br>
                                                     Phòng: {{ $tkb->phong->ten }}<br>
                                                     GV:
-                                                    {{ $tkb->lopHocPhan->giangVien->hoSo->ho_ten }}<br>
+                                                    {{ $tkb->lopHocPhan->giangVien->hoSo->ho_ten ?? '' }}<br>
                                                     Ngày:
                                                     {{ \Carbon\Carbon::parse($tkb->ngay)->format('d/m/Y') }}
                                                 </div>
@@ -129,7 +129,7 @@
                                                 data-class="{{ $tkb->lopHocPhan->lop->ten_lop }}"
                                                 data-period="{{ $tkb->tiet_bat_dau }}-{{ $tkb->tiet_ket_thuc }}"
                                                 data-room="{{ $tkb->phong->ten }}"
-                                                data-teacher="{{ $tkb->lopHocPhan->giangVien->hoSo->ho_ten }}"
+                                                data-teacher="{{ $tkb->lopHocPhan->giangVien->hoSo->ho_ten ?? '' }}"
                                                 data-date="{{ \Carbon\Carbon::parse($tkb->ngay)->format('d/m/Y') }}">
                                                 <div class="class-title">
                                                     {{ $tkb->lopHocPhan->ten_hoc_phan }}
@@ -140,7 +140,7 @@
                                                     {{ $tkb->tiet_bat_dau }}-{{ $tkb->tiet_ket_thuc }}<br>
                                                     Phòng: {{ $tkb->phong->ten }}<br>
                                                     GV:
-                                                    {{ $tkb->lopHocPhan->giangVien->hoSo->ho_ten }}<br>
+                                                    {{ $tkb->lopHocPhan->giangVien->hoSo->ho_ten ?? '' }}<br>
                                                     Ngày:
                                                     {{ \Carbon\Carbon::parse($tkb->ngay)->format('d/m/Y') }}
                                                 </div>
@@ -194,7 +194,7 @@
                                                 data-class="{{ $tkb->lopHocPhan->lop->ten_lop }}"
                                                 data-period="{{ $tkb->tiet_bat_dau }}-{{ $tkb->tiet_ket_thuc }}"
                                                 data-room="{{ $tkb->phong->ten }}"
-                                                data-teacher="{{ $tkb->lopHocPhan->giangVien->hoSo->ho_ten }}"
+                                                data-teacher="{{ $tkb->lopHocPhan->giangVien->hoSo->ho_ten ?? '' }}"
                                                 data-date="{{ \Carbon\Carbon::parse($tkb->ngay)->format('d/m/Y') }}">
                                                 <div class="class-title">
                                                     {{ $tkb->lopHocPhan->ten_hoc_phan }}
@@ -205,7 +205,7 @@
                                                     {{ $tkb->tiet_bat_dau }}-{{ $tkb->tiet_ket_thuc }}<br>
                                                     Phòng: {{ $tkb->phong->ten }}<br>
                                                     GV:
-                                                    {{ $tkb->lopHocPhan->giangVien->hoSo->ho_ten }}<br>
+                                                    {{ $tkb->lopHocPhan->giangVien->hoSo->ho_ten ?? '' }}<br>
                                                     Ngày:
                                                     {{ \Carbon\Carbon::parse($tkb->ngay)->format('d/m/Y') }}
                                                 </div>
@@ -250,6 +250,33 @@
         <div class="legend-item">
             <div class="legend-color bg-success"></div>
             <span>Módun</span>
+        </div>
+    </div>
+    <div class="modal fade" id="classDetailModal" tabindex="-1" aria-labelledby="classDetailLabel" aria-hidden="true">
+        <div class="modal-dialog modal-dialog-centered modal-md">
+            <div class="modal-content shadow-lg rounded-4">
+                <div class="modal-header text-white rounded-top-4" style="background: #2c3e50">
+                    <h5 class="modal-title" id="classDetailLabel">
+                        <i class="bi bi-info-circle-fill me-2"></i> Chi tiết lớp học
+                    </h5>
+                    <button type="button" class="btn-close btn-close-white" data-bs-dismiss="modal"
+                        aria-label="Đóng"></button>
+                </div>
+                <div class="modal-body p-4"
+                    style="background-image: url('https://giaydantuongsacmau.com/upload/product/2020/12/10/giay-dan-tuong-soc-caro-image-20201210161206-350433-thumb.png')">
+                    <ul class="list-unstyled">
+                        <li><strong>Môn học:</strong> <span id="subjectName">---</span></li>
+                        <li><strong>Lớp:</strong> <span id="className">---</span></li>
+                        <li><strong>Tiết:</strong> <span id="period">---</span></li>
+                        <li><strong>Phòng:</strong> <span id="room">---</span></li>
+                        <li><strong>Giảng viên:</strong> <span id="teacher">---</span></li>
+                        <li><strong>Ngày học:</strong> <span id="date">---</span></li>
+                    </ul>
+                </div>
+                <div class="modal-footer bg-light rounded-bottom-4">
+                    <button type="button" class="btn btn-back" data-bs-dismiss="modal">Đóng</button>
+                </div>
+            </div>
         </div>
     </div>
 </div>
