@@ -6,6 +6,7 @@ use Illuminate\Support\ServiceProvider;
 use Carbon\Carbon;
 use App\Providers\RepositoryServiceProvider;
 use App\Providers\ViewServiceProvider;
+use App\Providers\RouteServiceProvider;
 
 class AppServiceProvider extends ServiceProvider
 {
@@ -16,6 +17,7 @@ class AppServiceProvider extends ServiceProvider
     {
         $this->app->register(RepositoryServiceProvider::class);
         $this->app->register(ViewServiceProvider::class);
+        // $this->app->register(RouteServiceProvider::class);
     }
 
     /**

@@ -26,7 +26,7 @@
                 <div class="card shadow-sm">
                     <div class="card-header d-flex justify-content-between align-items-center">
                         <h3 class="card-title mb-0">Lập biên bản sinh hoạt chủ nhiệm - Lớp {{ $lop->ten_lop }}</h3>
-                        <a href="{{ route('sinhvien.bienbanshcn.index') }}" class="btn btn-danger btn-sm">Quay lại</a>
+                        <a href="{{ route('sinhvien.bienbanshcn.list') }}" class="btn btn-danger btn-sm">Quay lại</a>
                     </div>
                     <div class="card-body">
                         <form action="{{ route('sinhvien.bienbanshcn.store', $lop) }}" method="POST" data-confirm

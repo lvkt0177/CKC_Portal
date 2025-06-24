@@ -103,12 +103,12 @@
                         class="fas fa-home"></i> TRANG CHỦ</a></li>
 
             <li class="dropdown">
-                <a href="#" class="dropdown-toggle"><i class="fas fa-info-circle"></i> THÔNG TIN CHUNG</a>
-                <ul class="submenu">
-                    <li><a href="#">Thông tin sinh viên</a></li>
-                    <li><a href="{{ route('sinhvien.giayxacnhan.index') }}">Đăng ký xác nhận giấy tờ</a></li>
-                    <li><a href="{{ route('sinhvien.khungdaotao.index') }}">Khung chương trình đào tạo</a></li>
-                    <li><a href="{{ route('sinhvien.bienbanshcn.index') }}">Biên bản SHCN</a></li>
+                <a href="#" class="dropdown-toggle {{ isActiveRoute('sinhvien/giay-xac-nhan') }} {{ isActiveRoute('sinhvien/khung-dao-tao') }} {{ isActiveRoute('sinhvien/bienbanshcn') }}"><i class="fas fa-info-circle"></i> THÔNG TIN CHUNG</a>
+                <ul class="submenu" style="display: {{ isActiveMenuRoute('sinhvien/giay-xac-nhan') }} {{ isActiveMenuRoute('sinhvien/khung-dao-tao') }} {{ isActiveMenuRoute('sinhvien/bienbanshcn') }};">
+                    <li><a class="" href="#">Thông tin sinh viên</a></li>
+                    <li><a class="{{ isActiveRoute('sinhvien/giay-xac-nhan') }}" href="{{ route('sinhvien.giayxacnhan.index') }}">Đăng ký xác nhận giấy tờ</a></li>
+                    <li><a class="{{ isActiveRoute('sinhvien/khung-dao-tao') }}" href="{{ route('sinhvien.khungdaotao.index') }}">Khung chương trình đào tạo</a></li>
+                    <li><a class="{{ isActiveRoute('sinhvien/bienbanshcn') }}" href="{{ route('sinhvien.bienbanshcn.index') }}">Biên bản SHCN</a></li>
                 </ul>
             </li>
 
@@ -131,8 +131,7 @@
             <li class="dropdown">
                 <a href="#" class="dropdown-toggle"><i class="fas fa-file-alt"></i> HỌC PHÍ</a>
                 <ul class="submenu">
-                    <li><a href="#">Tra cứu học phí</a></li>
-                    <li><a href="#">Lịch sử thanh toán</a></li>
+                    <li><a href="{{ route('sinhvien.hocphi.index') }}">Tra cứu học phí</a></li>
                 </ul>
             </li>
 

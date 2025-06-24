@@ -12,7 +12,7 @@ use App\Models\Lop;
 interface BienBanRepositoryInterface
 {
     public function getByLopWithRelations(Lop $lop);
-    public function getByLopWithRelationsByIdLop($id_lop);
+    public function getByLopWithRelationsByIdLop($id_lop, $perPage = 10);
 
     public function create($data);
 

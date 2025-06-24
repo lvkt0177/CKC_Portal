@@ -7,28 +7,7 @@
 @endsection
 
 @section('content')
-    <!-- Header Banner -->
-    <div class="container-fluid my-4">
-        <div class="card shadow-sm border-0 header-banner">
-            <div class="card-body">
-                <div class="row align-items-center">
-                    <div class="col-12">
-                        <h1 class="course-title">Thông báo tới sinh viên - Lớp
-                            {{ Auth::guard('student')->user()->lop->ten_lop }}</h1>
-                        <!-- Pencil SVG Icon -->
-                        <svg class="pencil-icon" viewBox="0 0 100 100" fill="none" xmlns="http://www.w3.org/2000/svg">
-                            <rect x="20" y="75" width="50" height="8" fill="#ff6b6b" rx="4" />
-                            <rect x="25" y="15" width="40" height="65" fill="#74c0fc" rx="4" />
-                            <rect x="30" y="20" width="30" height="50" fill="#e9ecef" />
-                            <circle cx="45" cy="10" r="5" fill="#ffd43b" />
-                        </svg>
-                    </div>
-                </div>
-            </div>
-        </div>
-    </div>
-
-    <div class="container-fluid mt-4">
+    <div class="container-fluid">
         <div class="row">
             <!-- Main Content -->
             <div class="col-xl-12 col-lg-8 col-md-7 col-sm-12">

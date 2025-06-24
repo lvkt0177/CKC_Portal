@@ -5,59 +5,51 @@
 @section('css')
     <script src="https://cdn.jsdelivr.net/npm/alpinejs@3.x.x/dist/cdn.min.js" defer></script>
     <link rel="stylesheet" href="{{ asset('assets/client/css/khungdaotao.css') }}">
+    <link rel="stylesheet" href="{{ asset('assets/client/css/report.css') }}">
 @endsection
 
 @section('content')
-
-    <div class="container-fluid">
-        <div class="row">
-            <div class="card shadow-sm">
-                <div class="card-header d-flex justify-content-between align-items-center">
-                    <h3 class="card-title mb-0">Danh sách biên bản sinh hoạt chủ nhiệm</h3>
-                    @if($thuKy)
-                        <a href="{{ route('sinhvien.bienbanshcn.create', $lop) }}" class="btn btn-primary">Tạo biên bản sinh hoạt chủ nhiệm</a>
-                    @endif
-                </div>
-                
-                <!-- Curriculum Grid -->
-                <div class="curriculum-grid" id="curriculumGrid">
-                        <table class="table table-light">
-                            <thead class="thead-light">
-                                <tr>
-                                    <th>No.</th>
-                                    <th>Tên biên bản</th>
-                                    <th>Tuần</th>
-                                    <th>Giáo viên chủ nhiệm</th>
-                                    <th>Thư ký</th>
-                                    <th>Trạng thái</th>
-                                    <th>Hành động</th>
-                                </tr>
-                            </thead>
-                            <tbody>
-                                @foreach ($bienBanSHCN as $bienBan)
-                                    <tr>
-                                        <td>{{ $loop->index + 1 }}</td>
-                                        <td>{{ $bienBan->tieu_de }}</td>
-                                        <td>Tuần {{ $bienBan->tuan->tuan }}</td>
-                                        <td>{{ $bienBan->gvcn->hoSo->ho_ten }}</td>
-                                        <td>{{ $bienBan->thuky->hoSo->ho_ten }}</td>
-                                        <td>{{ $bienBan->trang_thai->getLabel() }}</td>
-                                        <td>
-                                            <a href="{{ route('sinhvien.bienbanshcn.show', $bienBan) }}" class="btn btn-primary" target="_blank"><i class="fa fa-eye" aria-hidden="true"></i></a>
-                                            @if($bienBan->trang_thai->value == 0)
-                                              <a href="{{ route('sinhvien.bienbanshcn.edit', $bienBan) }}" class="btn btn-warning mx-1"><i class="fa fa-pencil" aria-hidden="true"></i></a>
-                                            @endif
-                                        </td>
-                                    </tr>
-                                @endforeach
-                            </tbody>
-                        </table>
-                        
+    
+    <div class="report-container">
+        <div class="report-header">
+            <h4 class="mb-1">Biên bản Sinh hoạt chủ nhiệm</h4>
+            <small class="opacity-75">Những thông tin mới nhất trong tuần</small>
+        </div>
+        @if ($thuKy)
+            <div class="text-end report-header my-1">
+                <a href="{{ route('sinhvien.bienbanshcn.list') }}" class="btn btn-primary">Quản lý Biên bản SHCN</a>
+            </div>
+        @endif
+        
+        @if($bienBanSHCN->count() > 0) 
+            @foreach ($bienBanSHCN as $bienBan)
+                <div class="report-item">
+                    <div class="report-icon icon-message">
+                        <i class="fas fa-envelope"></i>
+                    </div>
+                    <div class="report-content">
+                        <div class="d-flex justify-content-between align-items-start mb-1">
+                            <div class="report-title"><a class="report-title text-decoration-none" target="_blank" href="{{ route('sinhvien.bienbanshcn.show', $bienBan->id) }}">{{ $bienBan->tieu_de }}</a></div>
+                        </div>
+                        <div class="report-user"><b>Giáo viên chủ nhiệm:</b> {{ $bienBan->gvcn->hoSo->ho_ten }}</div>
+                        <div class="report-user"><b>Thư ký:</b> {{ $bienBan->thuKy->hoSo->ho_ten }}</div>
+                    </div>
+                    <div class="report-time">
+                        <i class="far fa-clock"></i>
+                        {{ $bienBan->thoi_gian_bat_dau->format('H:i') }}, ngày {{ $bienBan->thoi_gian_bat_dau->format('d') }} tháng {{ $bienBan->thoi_gian_bat_dau->format('m') }} năm {{ $bienBan->thoi_gian_bat_dau->format('Y') }}
+                    </div>
                     
                 </div>
+            @endforeach
+        @else
+            <div class="p-5">
+                    <div class="d-flex justify-content-between align-items-start mb-1">
+                        <div class="report-title">Không có biên bản sinh hoạt chủ nhiệm nào</div>
+                    </div>
             </div>
-        </div>
-
+        @endif
     </div>
-
+    <div class="d-flex justify-content-center mt-3">
+        {{ $bienBanSHCN->links('pagination::bootstrap-5') }}
+    </div>
 @endsection

@@ -17,4 +17,6 @@ Route::delete('/bienbanshcn/sinhvienvang/{id}', [BienBanController::class, 'dele
 
 Route::post('/bienbanshcn/confirm/{bienBanSHCN}', [BienBanController::class, 'confirmBienBan'])->name('bienbanshcn.confirm');
 
+Route::get('/bienbanshcn/thuky', [BienBanController::class, 'list'])->name('bienbanshcn.list');
+
 Route::resource('bienbanshcn', BienBanController::class)->except(['index','create','store','show']);

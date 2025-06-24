@@ -32,16 +32,34 @@ class BienBanController extends Controller
     public function __construct(
         protected BienBanRepository $bienBanRepository
     ) {
-        $this->middleware('auth.scretary', ['only' => ['create', 'store', 'edit', 'update','deleteSinhVienVang']]);
+        $this->middleware('auth.scretary', ['only' => ['list','create', 'store', 'edit', 'update','deleteSinhVienVang']]);
     }
 
     public function index()
     {   
         $sinhVien = Auth::guard('student')->user();
-        $thuKy = $sinhVien->chuc_vu == RoleStudent::SECRETARY ? true : false;
-        $bienBanSHCN = $this->bienBanRepository->getByLopWithRelationsByIdLop($sinhVien->id_lop);
+        $thuKy = $sinhVien->chuc_vu == RoleStudent::SECRETARY;
+
+        $bienBanSHCN = $this->bienBanRepository
+            ->getByLopWithRelationsByIdLop($sinhVien->id_lop, 10);
+
         $lop = Lop::find($sinhVien->id_lop);
+
         return view('client.bienbanshcn.index', compact('bienBanSHCN', 'lop', 'thuKy'));
+    }
+
+    public function list()
+    {
+        $sinhVien = Auth::guard('student')->user();
+        $thuKy = $sinhVien->chuc_vu == RoleStudent::SECRETARY;
+        $lop = Lop::find($sinhVien->id_lop);
+
+        $bienBanSHCN = $this->bienBanRepository
+            ->getByLopWithRelations($lop);
+
+        $lop = Lop::find($sinhVien->id_lop);
+
+        return view('client.bienbanshcn.list', compact('bienBanSHCN', 'lop', 'thuKy'));
     }
     
     /**
@@ -64,10 +82,10 @@ class BienBanController extends Controller
         $result = $bienBanService->storeBienBanVaChiTiet($request->all(), $lop);
         
         if($result) {
-            return redirect()->route('sinhvien.bienbanshcn.index', $lop->id)->with('success', 'Thêm biên bản thành công');
+            return redirect()->route('sinhvien.bienbanshcn.list', $lop->id)->with('success', 'Thêm biên bản thành công');
         }
 
-        return redirect()->route('sinhvien.bienbanshcn.index', $lop->id)->with('error', 'Thêm biên bản thất bại');
+        return redirect()->route('sinhvien.bienbanshcn.list', $lop->id)->with('error', 'Thêm biên bản thất bại');
     }
 
     /**
@@ -85,7 +103,7 @@ class BienBanController extends Controller
     public function edit(BienBanSHCN $bienbanshcn)
     {
         if($bienbanshcn->trang_thai == BienBanStatus::ACTIVE) {
-            return redirect()->route('sinhvien.bienbanshcn.index');
+            return redirect()->route('sinhvien.bienbanshcn.list');
         }
         $bienbanshcn->load('lop.sinhViens.hoSo','thuky.hoSo', 'tuan', 'gvcn.hoSo', 'chiTietBienBanSHCN.sinhVien.hoSo');
         $thuKy = SinhVien::where('id_lop', $bienbanshcn->lop->id)->where('chuc_vu', RoleStudent::SECRETARY)->get();
@@ -102,11 +120,11 @@ class BienBanController extends Controller
         $result = $bienBanService->updateBienBanVaChiTiet($request->validated(), $bienbanshcn);
 
         if ($result) {
-            return redirect()->route('sinhvien.bienbanshcn.index')
+            return redirect()->route('sinhvien.bienbanshcn.list')
                 ->with('success', 'Cập nhật biên bản thành công');
         }
 
-        return redirect()->route('sinhvien.bienbanshcn.index')
+        return redirect()->route('sinhvien.bienbanshcn.list')
             ->with('error', 'Cập nhật biên bản thất bại');
     }
 

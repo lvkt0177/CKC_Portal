@@ -18,8 +18,8 @@ enum BienBanStatus:int
     public function getBadge(): string
     {
         return match ($this) {
-            self::ACTIVE => 'success',
-            self::INACTIVE => 'warning',
+            self::ACTIVE => 'success text-white',
+            self::INACTIVE => 'warning text-dark',
         };
     }
 }

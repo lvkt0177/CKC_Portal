@@ -21,6 +21,8 @@ return new class extends Migration
             $table->decimal('tong_tien', 10, 2)->default(0.00);
 
             $table->integer('trang_thai')->default(0); // 0: chưa đóng, 1: đã đóng
+
+            $table->date('ngay_dong')->nullable();
             
             $table->timestamps();
         });

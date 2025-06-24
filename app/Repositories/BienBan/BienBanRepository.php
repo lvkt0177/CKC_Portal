@@ -8,6 +8,8 @@ use Illuminate\Support\Str;
 use App\Models\BienBanSHCN;
 use App\Repositories\BienBan\BienBanRepositoryInterface;
 use App\Models\Lop;
+use App\Models\User;
+use App\Enum\BienBanStatus;
 /**
  * The repository for Permission Model
  */
@@ -34,12 +36,13 @@ class BienBanRepository implements BienBanRepositoryInterface
             ->get();
     }
 
-    public function getByLopWithRelationsByIdLop($id_lop)
+    public function getByLopWithRelationsByIdLop($id_lop, $perPage = 10)
     {
         return BienBanSHCN::with(['lop', 'thuky.hoSo', 'tuan', 'gvcn.hoSo'])
             ->where('id_lop', $id_lop)
+            ->where('trang_thai', BienBanStatus::ACTIVE)
             ->orderBy('id', 'desc')
-            ->get();
+            ->paginate($perPage);
     }
 
     public function create($data)
@@ -49,6 +52,9 @@ class BienBanRepository implements BienBanRepositoryInterface
 
     public function update($model, array $data)
     {
+        if($data['trang_thai'] == BienBanStatus::ACTIVE){
+            return false;
+        }
         $model->update($data);
         return $model;
     }

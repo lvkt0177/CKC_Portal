@@ -17,4 +17,9 @@ class HocKy extends Model
     {
         return $this->belongsTo(NienKhoa::class, 'id_nien_khoa', 'id');
     }
+
+    public function hocPhi()
+    {
+        return $this->hasMany(HocPhi::class, 'id_hoc_ky', 'id');
+    }
 }
