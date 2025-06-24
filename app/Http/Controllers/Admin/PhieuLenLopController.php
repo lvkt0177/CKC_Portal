@@ -19,26 +19,26 @@ class PhieuLenLopController extends Controller
     public function index(Request $request)
     {
         $today = now();
-        $namDangChon = $request->nam ?? $today->year;
-
-        $nam = Nam::where('nam_bat_dau', $namDangChon)->first();
+       
+        $nam = Nam::where('nam_bat_dau', $request->nam)->first();
+        
         if (!$nam) {
-            $nam = Nam::where('nam_bat_dau', $today->year)->first();
+            $nam = Nam::where('nam_bat_dau', $today->year - 1)->first();
         }
-
-        $tuanDangChon = $request->id_tuan ?? $today->weekOfYear;
+       
+        $tuanDangChon = $request->id_tuan;
 
         $tuan = Tuan::where('id_nam', $nam->id)
                     ->where('tuan', $tuanDangChon)
                     ->first();
-
+        
         if (!$tuan) {
             $tuan = Tuan::where('id_nam', $nam->id)
                         ->whereDate('ngay_bat_dau', '<=', $today)
                         ->whereDate('ngay_ket_thuc', '>=', $today)
                         ->first();
         }
-
+       
         if ($request->action === 'prev') {
             $tuan = Tuan::where('id_nam', $nam->id)
                         ->where('tuan', '<', $tuan->tuan)

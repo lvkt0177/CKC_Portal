@@ -14,7 +14,7 @@ class ThoiKhoaBieu extends Model
         'id_phong',	
         'tiet_bat_dau',	
         'tiet_ket_thuc',
-        'thu',	
+        'ngay',	
         ];
     //tuan
     public function tuan()

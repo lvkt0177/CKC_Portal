@@ -88,17 +88,16 @@
                                 </div>
                             </div>
                         </div>
-                        <form id="phieu-len-lop-form" method="POST" action="{{ route('giangvien.lichhoc.store') }}"
+                        <form method="POST" action="{{ route('giangvien.lichhoc.store') }}" id="phieu-len-lop-form"
                             data-confirm>
                             @csrf
-
-
                             <!-- Học phần -->
                             <div class="row">
-
+                                <input type="hidden" name="hoc_ky" value="{{ $hocKy->id }}">
+                                <input type="hidden" name="lop_id" value="{{ $lop->id }}">
                                 <div class="col-md-12">
-                                    <label for="id_lop_hoc_phan" class="form-label">Chọn môn</label>
-                                    <select id="id_lop_hoc_phan" name="id_lop_hoc_phan" class="form-control">
+                                    <label for="mon_hoc" class="form-label">Chọn môn</label>
+                                    <select id="mon_hoc" name="mon_hoc" class="form-control">
                                         <option value="">-- Chọn môn -- </option>
                                         @foreach ($monHoc as $mh)
                                             <option value="{{ $mh->id }}">
@@ -178,7 +177,7 @@
                                 </div>
 
                                 <div class="text-end">
-                                    <button style=" padding: 12px 24px;" type="button" class="btn btn-success">➕
+                                    <button style=" padding: 12px 24px;" type="submit" class="btn btn-success">➕
                                         Thêm vào TKB
                                     </button>
                                 </div>
@@ -189,14 +188,8 @@
 
                 <div id="list-container" style="display: none; margin-top: 20px;">
 
-                    @include('admin.lichhoc.partials.schedule-table', [
-                        'thoikhoabieu' => $thoikhoabieu,
-                        'ngayTrongTuan' => $ngayTrongTuan,
-                        'lop' => $lop,
-                        'dsTuan' => $dsTuan,
-                        'tuanDangChon' => $tuanDangChon,
-                        'hocKy' => $hocKy,
-                    ])
+                    <livewire:lich-hoc.lich-hoc :lop="$lop" />
+
                 </div>
             </div>
         </div>

@@ -8,6 +8,7 @@ use Auth;
 //Model
 use App\Models\DanhSachHocPhan;
 use App\Models\SinhVien;
+use App\Models\NienKhoa;
 use App\Models\ChiTietChuongTrinhDaoTao;
 use App\Models\MonHoc;
 use App\Models\ChuongTrinhDaoTao;
@@ -19,6 +20,11 @@ class KDTController extends Controller
     {
         $sinhvien = Auth::guard('student')->user()->load('lop');
 
+        $lop = Lop::where('id', Auth::user()->id_lop)->first();
+
+        $nienkhoa = NienKhoa::where('id', $lop->id_nien_khoa)->first();
+
+        
         $chuong_trinh_dao_tao = ChuongTrinhDaoTao::whereHas('chuyenNganh', function ($q) use ($sinhvien) {
             $q->where('id_nganh_hoc', $sinhvien->lop->id_nganh_hoc);
         })->orderBy('id', 'asc')->get();
@@ -31,16 +37,17 @@ class KDTController extends Controller
         }
 
 
-        $ct_ctdt = ChiTietChuongTrinhDaoTao::with(['monHoc', 'chuongTrinhDaoTao'])
-            ->where('id_chuong_trinh_dao_tao', $id_chuong_trinh_dao_tao)
-            ->get()
-            ->groupBy('id_hoc_ky');
+        $ct_ctdt = collect();
+        if ($id_chuong_trinh_dao_tao && $nienkhoa) {
+            $ct_ctdt = ChiTietChuongTrinhDaoTao::with(['monHoc', 'chuongTrinhDaoTao', 'hocKy'])
+                ->where('id_chuong_trinh_dao_tao', $id_chuong_trinh_dao_tao)
+                ->whereHas('hocKy', function ($q) use ($nienkhoa) {
+                    $q->where('id_nien_khoa', $nienkhoa->id);
+                })
+                ->get()
+                ->groupBy('id_hoc_ky');
+        }
 
-        $lop_hoc_phan = LopHocPhan::with(['chuongTrinhDaoTao', 'lop', 'chuongTrinhDaoTao.chiTietChuongTrinhDaoTao'])
-            ->where('id_chuong_trinh_dao_tao', $id_chuong_trinh_dao_tao)
-            ->get();
-        $danh_sach_HP = DanhSachHocPhan::with(['lopHocPhan', 'sinhVien', 'sinhVien.hoSo'])
-            ->get();
-        return view('client.khungdaotao.index', compact('danh_sach_HP', 'ct_ctdt', 'id_chuong_trinh_dao_tao', 'chuong_trinh_dao_tao', 'lop_hoc_phan'));
+        return view('client.khungdaotao.index', compact( 'ct_ctdt', 'id_chuong_trinh_dao_tao', 'chuong_trinh_dao_tao'));
     }
 }

@@ -17,7 +17,6 @@ class HoSoSeeder extends Seeder
             [
                 'ho_ten' => 'Le Van Khanh Thinh',
                 'email' => 'lvkt@fe.edu.vn',
-                //password
                 'password' => bcrypt('12345678'),
                 'so_dien_thoai' => '0857853419',
                 'ngay_sinh' => '2000-01-01',

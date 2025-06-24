@@ -119,7 +119,7 @@
                                     viên đăng ký giấy</a></li>
 
                             <li><a class="dropdown-item" href="{{ route('giangvien.capmatkhausinhvien.index') }}"><i
-                                class="fas fa-users me-2"></i>Quản lý sinh viên liên hệ cấp mật khẩu</a></li>
+                                        class="fas fa-users me-2"></i>Quản lý sinh viên liên hệ cấp mật khẩu</a></li>
                         </ul>
                     </div>
                 </nav>
@@ -133,7 +133,8 @@
                         <ul class="dropdown-menu">
                             <li><a class="dropdown-item" href="#"><i
                                         class="fas fa-book me-2"></i>Documentation</a></li>
-                            <li><a class="dropdown-item" href="#"><i class="fas fa-life-ring me-2"></i>Support</a>
+                            <li><a class="dropdown-item" href="#"><i
+                                        class="fas fa-life-ring me-2"></i>Support</a>
                             </li>
                             <li><a class="dropdown-item" href="#"><i
                                         class="fas fa-list-alt me-2"></i>Changelog</a></li>
@@ -160,6 +161,7 @@
                 </div>
             </div>
         </div>
+        @livewireStyles
     </header>
 
     <!-- Mobile Navigation -->

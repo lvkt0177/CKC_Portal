@@ -25,6 +25,7 @@ Route::prefix('giangvien')->name('giangvien.')->group(function () {
         // include('binhluan.php');
         include('capmatkhau.php');
         include('lichhoc.php');
+        include('ctdt.php');
     });
 });
     

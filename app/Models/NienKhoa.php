@@ -24,4 +24,9 @@ class NienKhoa extends Model
     {
         return $this->hasMany(HocKy::class, 'id_nien_khoa', 'id');
     }
+    
+    public function lopChuyenNganhs()
+    {
+        return $this->hasMany(LopChuyenNganh::class, 'id_nien_khoa', 'id');
+    }
 }

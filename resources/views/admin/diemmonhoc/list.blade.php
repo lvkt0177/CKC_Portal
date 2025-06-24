@@ -13,7 +13,7 @@
                         <a class="btn btn-back" href="{{ route('giangvien.diemmonhoc.index') }}">Quay lại</a>
 
                     </div>
-                    
+
                     <div class="card-body">
                         <div class="">
                             <div class="d-flex justify-content-end mb-3">
@@ -23,7 +23,7 @@
 
 
                             </div>
-                            <form action="{{ route('giangvien.diemmonhoc.cap-nhat-diem') }}" method="POST">
+                            <form action="{{ route('giangvien.diemmonhoc.cap-nhat-diem') }}" method="POST" data-confirm>
                                 @csrf
                                 <table class="table table-bordered mb-3" id="room-table">
                                     <thead>
