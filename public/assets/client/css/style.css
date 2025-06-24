@@ -480,3 +480,48 @@ body {
         transform: scale(1);
     }
 }
+
+.form-title {
+    text-align: center;
+    margin-top: 30px;
+    padding: 20px;
+    background: linear-gradient(135deg, #f1f5f9, #e2e8f0);
+    border-radius: 15px;
+
+}
+
+.form-title h2 {
+    color: #1e293b;
+    font-size: 24px;
+    font-weight: 600;
+    margin-bottom: 8px;
+}
+
+.student-thongtin {
+    background: #f8fafc;
+    padding: 25px;
+    border-radius: 15px;
+    margin-bottom: 30px;
+    border: 1px solid #e2e8f0;
+}
+
+
+.form-section {
+    background: white;
+}
+
+.form-title {
+    text-align: center;
+    margin-top: 30px;
+    padding: 20px;
+    background: linear-gradient(135deg, #f1f5f9, #e2e8f0);
+    border-radius: 15px;
+
+}
+
+.form-title h2 {
+    color: #1e293b;
+    font-size: 24px;
+    font-weight: 600;
+    margin-bottom: 8px;
+}

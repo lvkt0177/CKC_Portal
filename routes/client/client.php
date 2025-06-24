@@ -17,6 +17,6 @@ Route::prefix('sinhvien')->name('sinhvien.')->group(function () {
         include('hocphi.php');
         include('xemdiem.php');
         include('lichthi.php');
-        
+        include('dangkyhocghep.php');
     });
 });
