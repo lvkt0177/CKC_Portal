@@ -48,7 +48,7 @@ class HocKySeeder extends Seeder
                     'id_nien_khoa' => $idNienKhoa,
                     'ten_hoc_ky' => "Học kỳ $hocKySo",
                     'ngay_bat_dau' => Carbon::create($namHienTai + 1, 1, 1),
-                    'ngay_ket_thuc' => Carbon::create($namHienTai + 1, 5, 31),
+                    'ngay_ket_thuc' => Carbon::create($namHienTai + 1, 6, 31),
                     'created_at' => now(),
                     'updated_at' => now(),
                 ]);

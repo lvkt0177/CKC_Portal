@@ -131,9 +131,9 @@ class XemDiemController extends Controller
         $nam = Nam::where('nam_bat_dau', $namDangChon)->first();
 
         $dsDiemRenLuyen = DiemRenLuyen::where('id_sinh_vien', $id_sv)
-        ->when($nam?->id, fn($q) => $q->where('id_nam', $nam->id))
-        ->orderBy('thoi_gian', 'asc')
-        ->get();
+            ->when($nam?->id, fn($q) => $q->where('id_nam', $nam->id))
+            ->orderBy('thoi_gian', 'asc')
+            ->get();
         
         for ($i = 1; $i <= 12; $i++) {
             $diemThang = $dsDiemRenLuyen->where('thoi_gian', $i);

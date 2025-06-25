@@ -31,7 +31,7 @@
                                 <p><strong>MSSV:</strong> {{ Auth::guard('student')->user()->ma_sv }}</p>
                                 <p><strong>Lớp học:</strong> {{ Auth::guard('student')->user()->lop->ten_lop }}</p>
                                 <p><strong>Hệ đào tạo:</strong> Cao đẳng</p>
-                                <p><strong>Khóa học:</strong>
+                                <p><strong>Niên khoá:</strong>
                                     {{ Auth::guard('student')->user()->lop->nienKhoa->ten_nien_khoa }}</p>
                                 <p><strong>Giới tính:</strong> {{ Auth::guard('student')->user()->hoSo->gioi_tinh }}</p>
                             </div>

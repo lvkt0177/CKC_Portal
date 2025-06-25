@@ -120,7 +120,6 @@ class CTDTController extends Controller
         if ($year < now()->year) {
             return redirect()->back()->with('error', 'Không được khởi tạo tuần ở năm này!');
         }
-
         
         for ($namVongLap = $year; $namVongLap <= $year + 1; $namVongLap++) {
         

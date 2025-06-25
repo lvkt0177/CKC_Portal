@@ -995,175 +995,166 @@ class ChiTietChuongTrinhDaoTaoSeeder extends Seeder
             ["id_chuong_trinh_dao_tao" => 2, "id_mon_hoc" => 60, "id_bo_mon" => null, "id_hoc_ky" => 12, "so_tiet" => null, "so_tin_chi" => 4],
             ["id_chuong_trinh_dao_tao" => 2, "id_mon_hoc" => 61, "id_bo_mon" => null, "id_hoc_ky" => 12, "so_tiet" => null, "so_tin_chi" => null],
             //mạng
-//Chuyên Ngành Quản trị mạng
-//HK7
-[
-    "id_chuong_trinh_dao_tao" => 3, "id_mon_hoc" => 1, "id_bo_mon" => null, "id_hoc_ky" => 7, "so_tiet" => 75, "so_tin_chi" => 5,
-],
-[
-    "id_chuong_trinh_dao_tao" => 3, "id_mon_hoc" => 2, "id_bo_mon" => null, "id_hoc_ky" => 7, "so_tiet" => 30, "so_tin_chi" => 1,
-],
-[
-    "id_chuong_trinh_dao_tao" => 3, "id_mon_hoc" => 3, "id_bo_mon" => null, "id_hoc_ky" => 7, "so_tiet" => 30, "so_tin_chi" => 2,
-],
-[
-    "id_chuong_trinh_dao_tao" => 3, "id_mon_hoc" => 4, "id_bo_mon" => null, "id_hoc_ky" => 7, "so_tiet" => 45, "so_tin_chi" => 3,
-],
-[
-    "id_chuong_trinh_dao_tao" => 3, "id_mon_hoc" => 5, "id_bo_mon" => null, "id_hoc_ky" => 7, "so_tiet" => 45, "so_tin_chi" => 3,
-],
-[
-    "id_chuong_trinh_dao_tao" => 3, "id_mon_hoc" => 6, "id_bo_mon" => null, "id_hoc_ky" => 7, "so_tiet" => 45, "so_tin_chi" => 3,
-],
-[
-    "id_chuong_trinh_dao_tao" => 3, "id_mon_hoc" => 7, "id_bo_mon" => null, "id_hoc_ky" => 7, "so_tiet" => 75, "so_tin_chi" => 5,
-],
-[
-    "id_chuong_trinh_dao_tao" => 3, "id_mon_hoc" => 8, "id_bo_mon" => null, "id_hoc_ky" => 7, "so_tiet" => 45, "so_tin_chi" => 3,
-],
-[
-    "id_chuong_trinh_dao_tao" => 3, "id_mon_hoc" => 9, "id_bo_mon" => null, "id_hoc_ky" => 7, "so_tiet" => 45, "so_tin_chi" => 2,
-],
-[
-    "id_chuong_trinh_dao_tao" => 3, "id_mon_hoc" => 10, "id_bo_mon" => null, "id_hoc_ky" => 7, "so_tiet" => 90, "so_tin_chi" => 2,
-],
+            //Chuyên Ngành Quản trị mạng
+            //HK7
+            [
+                "id_chuong_trinh_dao_tao" => 3, "id_mon_hoc" => 1, "id_bo_mon" => null, "id_hoc_ky" => 7, "so_tiet" => 75, "so_tin_chi" => 5,
+            ],
+            [
+                "id_chuong_trinh_dao_tao" => 3, "id_mon_hoc" => 2, "id_bo_mon" => null, "id_hoc_ky" => 7, "so_tiet" => 30, "so_tin_chi" => 1,
+            ],
+            [
+                "id_chuong_trinh_dao_tao" => 3, "id_mon_hoc" => 3, "id_bo_mon" => null, "id_hoc_ky" => 7, "so_tiet" => 30, "so_tin_chi" => 2,
+            ],
+            [
+                "id_chuong_trinh_dao_tao" => 3, "id_mon_hoc" => 4, "id_bo_mon" => null, "id_hoc_ky" => 7, "so_tiet" => 45, "so_tin_chi" => 3,
+            ],
+            [
+                "id_chuong_trinh_dao_tao" => 3, "id_mon_hoc" => 5, "id_bo_mon" => null, "id_hoc_ky" => 7, "so_tiet" => 45, "so_tin_chi" => 3,
+            ],
+            [
+                "id_chuong_trinh_dao_tao" => 3, "id_mon_hoc" => 6, "id_bo_mon" => null, "id_hoc_ky" => 7, "so_tiet" => 45, "so_tin_chi" => 3,
+            ],
+            [
+                "id_chuong_trinh_dao_tao" => 3, "id_mon_hoc" => 7, "id_bo_mon" => null, "id_hoc_ky" => 7, "so_tiet" => 75, "so_tin_chi" => 5,
+            ],
+            [
+                "id_chuong_trinh_dao_tao" => 3, "id_mon_hoc" => 8, "id_bo_mon" => null, "id_hoc_ky" => 7, "so_tiet" => 45, "so_tin_chi" => 3,
+            ],
+            [
+                "id_chuong_trinh_dao_tao" => 3, "id_mon_hoc" => 9, "id_bo_mon" => null, "id_hoc_ky" => 7, "so_tiet" => 45, "so_tin_chi" => 2,
+            ],
+            [
+                "id_chuong_trinh_dao_tao" => 3, "id_mon_hoc" => 10, "id_bo_mon" => null, "id_hoc_ky" => 7, "so_tiet" => 90, "so_tin_chi" => 2,
+            ],
 
-//HK8
-[
-    "id_chuong_trinh_dao_tao" => 3, "id_mon_hoc" => 11, "id_bo_mon" => null, "id_hoc_ky" => 8, "so_tiet" => 75, "so_tin_chi" => 5,
-],
-[
-    "id_chuong_trinh_dao_tao" => 3, "id_mon_hoc" => 12, "id_bo_mon" => null, "id_hoc_ky" => 8, "so_tiet" => 30, "so_tin_chi" => 1,
-],
-[
-    "id_chuong_trinh_dao_tao" => 3, "id_mon_hoc" => 13, "id_bo_mon" => null, "id_hoc_ky" => 8, "so_tiet" => 60, "so_tin_chi" => 4,
-],
-[
-    "id_chuong_trinh_dao_tao" => 3, "id_mon_hoc" => 14, "id_bo_mon" => null, "id_hoc_ky" => 8, "so_tiet" => 75, "so_tin_chi" => 5,
-],
-[
-    "id_chuong_trinh_dao_tao" => 3, "id_mon_hoc" => 15, "id_bo_mon" => null, "id_hoc_ky" => 8, "so_tiet" => 45, "so_tin_chi" => 3,
-],
-[
-    "id_chuong_trinh_dao_tao" => 3, "id_mon_hoc" => 16, "id_bo_mon" => null, "id_hoc_ky" => 8, "so_tiet" => 45, "so_tin_chi" => 3,
-],
-[
-    "id_chuong_trinh_dao_tao" => 3, "id_mon_hoc" => 17, "id_bo_mon" => null, "id_hoc_ky" => 8, "so_tiet" => 45, "so_tin_chi" => 3,
-],
-[
-    "id_chuong_trinh_dao_tao" => 3, "id_mon_hoc" => 18, "id_bo_mon" => null, "id_hoc_ky" => 8, "so_tiet" => 45, "so_tin_chi" => 2,
-],
-[
-    "id_chuong_trinh_dao_tao" => 3, "id_mon_hoc" => 19, "id_bo_mon" => null, "id_hoc_ky" => 8, "so_tiet" => 45, "so_tin_chi" => 2,
-],
-[
-    "id_chuong_trinh_dao_tao" => 3, "id_mon_hoc" => 20, "id_bo_mon" => null, "id_hoc_ky" => 8, "so_tiet" => 45, "so_tin_chi" => 2,
-],
-// HK9
-[
-    "id_chuong_trinh_dao_tao" => 3, "id_mon_hoc" => 21, "id_bo_mon" => null, "id_hoc_ky" => 9, "so_tiet" => 135, "so_tin_chi" => 2,
-],
-[
-    "id_chuong_trinh_dao_tao" => 3, "id_mon_hoc" => 22, "id_bo_mon" => null, "id_hoc_ky" => 9, "so_tiet" => 45, "so_tin_chi" => 3,
-],
-[
-    "id_chuong_trinh_dao_tao" => 3, "id_mon_hoc" => 23, "id_bo_mon" => null, "id_hoc_ky" => 9, "so_tiet" => 75, "so_tin_chi" => 5,
-],
-[
-    "id_chuong_trinh_dao_tao" => 3, "id_mon_hoc" => 24, "id_bo_mon" => null, "id_hoc_ky" => 9, "so_tiet" => 30, "so_tin_chi" => 2,
-],
-[
-    "id_chuong_trinh_dao_tao" => 3, "id_mon_hoc" => 25, "id_bo_mon" => null, "id_hoc_ky" => 9, "so_tiet" => 45, "so_tin_chi" => 3,
-],
-[
-    "id_chuong_trinh_dao_tao" => 3, "id_mon_hoc" => 26, "id_bo_mon" => null, "id_hoc_ky" => 9, "so_tiet" => 45, "so_tin_chi" => 3,
-],
-[
-    "id_chuong_trinh_dao_tao" => 3, "id_mon_hoc" => 27, "id_bo_mon" => null, "id_hoc_ky" => 9, "so_tiet" => 45, "so_tin_chi" => 3,
-],
-[
-    "id_chuong_trinh_dao_tao" => 3, "id_mon_hoc" => 28, "id_bo_mon" => null, "id_hoc_ky" => 9, "so_tiet" => 45, "so_tin_chi" => 2,
-],
-[
-    "id_chuong_trinh_dao_tao" => 3, "id_mon_hoc" => 29, "id_bo_mon" => null, "id_hoc_ky" => 9, "so_tiet" => 45, "so_tin_chi" => 2,
-],
-[
-    "id_chuong_trinh_dao_tao" => 3, "id_mon_hoc" => 30, "id_bo_mon" => null, "id_hoc_ky" => 9, "so_tiet" => 45, "so_tin_chi" => 2,
-],
+            //HK8
+            [
+                "id_chuong_trinh_dao_tao" => 3, "id_mon_hoc" => 11, "id_bo_mon" => null, "id_hoc_ky" => 8, "so_tiet" => 75, "so_tin_chi" => 5,
+            ],
+            [
+                "id_chuong_trinh_dao_tao" => 3, "id_mon_hoc" => 12, "id_bo_mon" => null, "id_hoc_ky" => 8, "so_tiet" => 30, "so_tin_chi" => 1,
+            ],
+            [
+                "id_chuong_trinh_dao_tao" => 3, "id_mon_hoc" => 13, "id_bo_mon" => null, "id_hoc_ky" => 8, "so_tiet" => 60, "so_tin_chi" => 4,
+            ],
+            [
+                "id_chuong_trinh_dao_tao" => 3, "id_mon_hoc" => 14, "id_bo_mon" => null, "id_hoc_ky" => 8, "so_tiet" => 75, "so_tin_chi" => 5,
+            ],
+            [
+                "id_chuong_trinh_dao_tao" => 3, "id_mon_hoc" => 15, "id_bo_mon" => null, "id_hoc_ky" => 8, "so_tiet" => 45, "so_tin_chi" => 3,
+            ],
+            [
+                "id_chuong_trinh_dao_tao" => 3, "id_mon_hoc" => 16, "id_bo_mon" => null, "id_hoc_ky" => 8, "so_tiet" => 45, "so_tin_chi" => 3,
+            ],
+            [
+                "id_chuong_trinh_dao_tao" => 3, "id_mon_hoc" => 17, "id_bo_mon" => null, "id_hoc_ky" => 8, "so_tiet" => 45, "so_tin_chi" => 3,
+            ],
+            [
+                "id_chuong_trinh_dao_tao" => 3, "id_mon_hoc" => 18, "id_bo_mon" => null, "id_hoc_ky" => 8, "so_tiet" => 45, "so_tin_chi" => 2,
+            ],
+            [
+                "id_chuong_trinh_dao_tao" => 3, "id_mon_hoc" => 19, "id_bo_mon" => null, "id_hoc_ky" => 8, "so_tiet" => 45, "so_tin_chi" => 2,
+            ],
+            [
+                "id_chuong_trinh_dao_tao" => 3, "id_mon_hoc" => 20, "id_bo_mon" => null, "id_hoc_ky" => 8, "so_tiet" => 45, "so_tin_chi" => 2,
+            ],
+            // HK9
+            [
+                "id_chuong_trinh_dao_tao" => 3, "id_mon_hoc" => 21, "id_bo_mon" => null, "id_hoc_ky" => 9, "so_tiet" => 135, "so_tin_chi" => 2,
+            ],
+            [
+                "id_chuong_trinh_dao_tao" => 3, "id_mon_hoc" => 22, "id_bo_mon" => null, "id_hoc_ky" => 9, "so_tiet" => 45, "so_tin_chi" => 3,
+            ],
+            [
+                "id_chuong_trinh_dao_tao" => 3, "id_mon_hoc" => 23, "id_bo_mon" => null, "id_hoc_ky" => 9, "so_tiet" => 75, "so_tin_chi" => 5,
+            ],
+            [
+                "id_chuong_trinh_dao_tao" => 3, "id_mon_hoc" => 24, "id_bo_mon" => null, "id_hoc_ky" => 9, "so_tiet" => 30, "so_tin_chi" => 2,
+            ],
+            [
+                "id_chuong_trinh_dao_tao" => 3, "id_mon_hoc" => 25, "id_bo_mon" => null, "id_hoc_ky" => 9, "so_tiet" => 45, "so_tin_chi" => 3,
+            ],
+            [
+                "id_chuong_trinh_dao_tao" => 3, "id_mon_hoc" => 26, "id_bo_mon" => null, "id_hoc_ky" => 9, "so_tiet" => 45, "so_tin_chi" => 3,
+            ],
+            [
+                "id_chuong_trinh_dao_tao" => 3, "id_mon_hoc" => 27, "id_bo_mon" => null, "id_hoc_ky" => 9, "so_tiet" => 45, "so_tin_chi" => 3,
+            ],
+            [
+                "id_chuong_trinh_dao_tao" => 3, "id_mon_hoc" => 28, "id_bo_mon" => null, "id_hoc_ky" => 9, "so_tiet" => 45, "so_tin_chi" => 2,
+            ],
+            [
+                "id_chuong_trinh_dao_tao" => 3, "id_mon_hoc" => 29, "id_bo_mon" => null, "id_hoc_ky" => 9, "so_tiet" => 45, "so_tin_chi" => 2,
+            ],
+            [
+                "id_chuong_trinh_dao_tao" => 3, "id_mon_hoc" => 30, "id_bo_mon" => null, "id_hoc_ky" => 9, "so_tiet" => 45, "so_tin_chi" => 2,
+            ],
 
-// HK10
-[
-    "id_chuong_trinh_dao_tao" => 3, "id_mon_hoc" => 31, "id_bo_mon" => null, "id_hoc_ky" => 10, "so_tiet" => 45, "so_tin_chi" => 3,
-],
-[
-    "id_chuong_trinh_dao_tao" => 3, "id_mon_hoc" => 32, "id_bo_mon" => null, "id_hoc_ky" => 10, "so_tiet" => 45, "so_tin_chi" => 3,
-],
-[
-    "id_chuong_trinh_dao_tao" => 3, "id_mon_hoc" => 33, "id_bo_mon" => null, "id_hoc_ky" => 10, "so_tiet" => 75, "so_tin_chi" => 5,
-],
-[
-    "id_chuong_trinh_dao_tao" => 3, "id_mon_hoc" => 39, "id_bo_mon" => null, "id_hoc_ky" => 10, "so_tiet" => 45, "so_tin_chi" => 3,
-],
-[
-    "id_chuong_trinh_dao_tao" => 3, "id_mon_hoc" => 40, "id_bo_mon" => null, "id_hoc_ky" => 10, "so_tiet" => 75, "so_tin_chi" => 5,
-],
-[
-    "id_chuong_trinh_dao_tao" => 3, "id_mon_hoc" => 41, "id_bo_mon" => null, "id_hoc_ky" => 10, "so_tiet" => 90, "so_tin_chi" => 6,
-],
-[
-    "id_chuong_trinh_dao_tao" => 3, "id_mon_hoc" => 38, "id_bo_mon" => null, "id_hoc_ky" => 10, "so_tiet" => 45, "so_tin_chi" => 2,
-],
+            // HK10
+            [
+                "id_chuong_trinh_dao_tao" => 3, "id_mon_hoc" => 31, "id_bo_mon" => null, "id_hoc_ky" => 10, "so_tiet" => 45, "so_tin_chi" => 3,
+            ],
+            [
+                "id_chuong_trinh_dao_tao" => 3, "id_mon_hoc" => 32, "id_bo_mon" => null, "id_hoc_ky" => 10, "so_tiet" => 45, "so_tin_chi" => 3,
+            ],
+            [
+                "id_chuong_trinh_dao_tao" => 3, "id_mon_hoc" => 33, "id_bo_mon" => null, "id_hoc_ky" => 10, "so_tiet" => 75, "so_tin_chi" => 5,
+            ],
+            [
+                "id_chuong_trinh_dao_tao" => 3, "id_mon_hoc" => 39, "id_bo_mon" => null, "id_hoc_ky" => 10, "so_tiet" => 45, "so_tin_chi" => 3,
+            ],
+            [
+                "id_chuong_trinh_dao_tao" => 3, "id_mon_hoc" => 40, "id_bo_mon" => null, "id_hoc_ky" => 10, "so_tiet" => 75, "so_tin_chi" => 5,
+            ],
+            [
+                "id_chuong_trinh_dao_tao" => 3, "id_mon_hoc" => 41, "id_bo_mon" => null, "id_hoc_ky" => 10, "so_tiet" => 90, "so_tin_chi" => 6,
+            ],
+            [
+                "id_chuong_trinh_dao_tao" => 3, "id_mon_hoc" => 38, "id_bo_mon" => null, "id_hoc_ky" => 10, "so_tiet" => 45, "so_tin_chi" => 2,
+            ],
 
-// HK11
-[
-    "id_chuong_trinh_dao_tao" => 3, "id_mon_hoc" => 34, "id_bo_mon" => null, "id_hoc_ky" => 11, "so_tiet" => 45, "so_tin_chi" => 3,
-],
-[
-    "id_chuong_trinh_dao_tao" => 3, "id_mon_hoc" => 52, "id_bo_mon" => null, "id_hoc_ky" => 11, "so_tiet" => 75, "so_tin_chi" => 5,
-],
-[
-    "id_chuong_trinh_dao_tao" => 3, "id_mon_hoc" => 53, "id_bo_mon" => null, "id_hoc_ky" => 11, "so_tiet" => 45, "so_tin_chi" => 3,
-],
-[
-    "id_chuong_trinh_dao_tao" => 3, "id_mon_hoc" => 54, "id_bo_mon" => null, "id_hoc_ky" => 11, "so_tiet" => 30, "so_tin_chi" => 2,
-],
-[
-    "id_chuong_trinh_dao_tao" => 3, "id_mon_hoc" => 55, "id_bo_mon" => null, "id_hoc_ky" => 11, "so_tiet" => 45, "so_tin_chi" => 3,
-],
-[
-    "id_chuong_trinh_dao_tao" => 3, "id_mon_hoc" => 56, "id_bo_mon" => null, "id_hoc_ky" => 11, "so_tiet" => 75, "so_tin_chi" => 5,
-],
-[
-    "id_chuong_trinh_dao_tao" => 3, "id_mon_hoc" => 57, "id_bo_mon" => null, "id_hoc_ky" => 11, "so_tiet" => 90, "so_tin_chi" => 6,
-],
-[
-    "id_chuong_trinh_dao_tao" => 3, "id_mon_hoc" => 48, "id_bo_mon" => null, "id_hoc_ky" => 11, "so_tiet" => 75, "so_tin_chi" => 5,
-],
+            // HK11
+            [
+                "id_chuong_trinh_dao_tao" => 3, "id_mon_hoc" => 34, "id_bo_mon" => null, "id_hoc_ky" => 11, "so_tiet" => 45, "so_tin_chi" => 3,
+            ],
+            [
+                "id_chuong_trinh_dao_tao" => 3, "id_mon_hoc" => 52, "id_bo_mon" => null, "id_hoc_ky" => 11, "so_tiet" => 75, "so_tin_chi" => 5,
+            ],
+            [
+                "id_chuong_trinh_dao_tao" => 3, "id_mon_hoc" => 53, "id_bo_mon" => null, "id_hoc_ky" => 11, "so_tiet" => 45, "so_tin_chi" => 3,
+            ],
+            [
+                "id_chuong_trinh_dao_tao" => 3, "id_mon_hoc" => 54, "id_bo_mon" => null, "id_hoc_ky" => 11, "so_tiet" => 30, "so_tin_chi" => 2,
+            ],
+            [
+                "id_chuong_trinh_dao_tao" => 3, "id_mon_hoc" => 55, "id_bo_mon" => null, "id_hoc_ky" => 11, "so_tiet" => 45, "so_tin_chi" => 3,
+            ],
+            [
+                "id_chuong_trinh_dao_tao" => 3, "id_mon_hoc" => 56, "id_bo_mon" => null, "id_hoc_ky" => 11, "so_tiet" => 75, "so_tin_chi" => 5,
+            ],
+            [
+                "id_chuong_trinh_dao_tao" => 3, "id_mon_hoc" => 57, "id_bo_mon" => null, "id_hoc_ky" => 11, "so_tiet" => 90, "so_tin_chi" => 6,
+            ],
+            [
+                "id_chuong_trinh_dao_tao" => 3, "id_mon_hoc" => 48, "id_bo_mon" => null, "id_hoc_ky" => 11, "so_tiet" => 75, "so_tin_chi" => 5,
+            ],
 
-// HK12
-[
-    "id_chuong_trinh_dao_tao" => 3, "id_mon_hoc" => 63, "id_bo_mon" => null, "id_hoc_ky" => 12, "so_tiet" => 30, "so_tin_chi" => 2,
-],
-[
-    "id_chuong_trinh_dao_tao" => 3, "id_mon_hoc" => 59, "id_bo_mon" => null, "id_hoc_ky" => 12, "so_tiet" => null, "so_tin_chi" => 4,
-],
-[
-    "id_chuong_trinh_dao_tao" => 3, "id_mon_hoc" => 60, "id_bo_mon" => null, "id_hoc_ky" => 12, "so_tiet" => null, "so_tin_chi" => 4,
-],
-[
-    "id_chuong_trinh_dao_tao" => 3, "id_mon_hoc" => 61, "id_bo_mon" => null, "id_hoc_ky" => 12, "so_tiet" => null, "so_tin_chi" => null,
-],
-
-
+            // HK12
+            [
+                "id_chuong_trinh_dao_tao" => 3, "id_mon_hoc" => 63, "id_bo_mon" => null, "id_hoc_ky" => 12, "so_tiet" => 30, "so_tin_chi" => 2,
+            ],
+            [
+                "id_chuong_trinh_dao_tao" => 3, "id_mon_hoc" => 59, "id_bo_mon" => null, "id_hoc_ky" => 12, "so_tiet" => null, "so_tin_chi" => 4,
+            ],
+            [
+                "id_chuong_trinh_dao_tao" => 3, "id_mon_hoc" => 60, "id_bo_mon" => null, "id_hoc_ky" => 12, "so_tiet" => null, "so_tin_chi" => 4,
+            ],
+            [
+                "id_chuong_trinh_dao_tao" => 3, "id_mon_hoc" => 61, "id_bo_mon" => null, "id_hoc_ky" => 12, "so_tiet" => null, "so_tin_chi" => null,
+            ],
 
 
-
-
-
-
-
-
-            
             // HK3 k24-----------------------------------------------------------------
             [
                 "id_chuong_trinh_dao_tao" => 1,
@@ -1246,5 +1237,7 @@ class ChiTietChuongTrinhDaoTaoSeeder extends Seeder
                 "so_tin_chi" => 2,
             ]
         ]);
+
+        
     }
 }
