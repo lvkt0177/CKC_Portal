@@ -23,9 +23,9 @@ class PhieuLenLopController extends Controller
         $nam = Nam::where('nam_bat_dau', $request->nam)->first();
         
         if (!$nam) {
-            $nam = Nam::where('nam_bat_dau', $today->year - 1)->first();
+            $nam = Nam::where('nam_bat_dau', $today->year)->first();
         }
-       
+    
         $tuanDangChon = $request->id_tuan;
 
         $tuan = Tuan::where('id_nam', $nam->id)
@@ -38,7 +38,9 @@ class PhieuLenLopController extends Controller
                         ->whereDate('ngay_ket_thuc', '>=', $today)
                         ->first();
         }
-       
+        if (!$tuan) {
+            return back()->with('error', 'Không tìm thấy tuần phù hợp.');
+        }
         if ($request->action === 'prev') {
             $tuan = Tuan::where('id_nam', $nam->id)
                         ->where('tuan', '<', $tuan->tuan)

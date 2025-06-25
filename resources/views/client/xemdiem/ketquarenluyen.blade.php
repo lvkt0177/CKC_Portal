@@ -83,19 +83,18 @@
                                     @php
                                         $diemThang = $dsDiemRenLuyen->firstWhere('thoi_gian', $thang);
                                     @endphp
-                                    @if ($thang <= now()->month)
-                                        <tr>
-                                            <td>{{ $thang }}</td>
-                                            <td>Tháng {{ $thang }}</td>
-                                            <td>
-                                                @if ($diemThang)
-                                                    {{ $diemThang->xep_loai->getLabel() }}
-                                                @else
-                                                    <em class="text-muted">Đang cập nhật</em>
-                                                @endif
-                                            </td>
-                                        </tr>
-                                    @endif
+
+                                    <tr>
+                                        <td>{{ $thang }}</td>
+                                        <td>Tháng {{ $thang }}</td>
+                                        <td>
+                                            @if ($diemThang)
+                                                {{ $diemThang->xep_loai->getLabel() }}
+                                            @else
+                                                <em class="text-muted">Đang cập nhật</em>
+                                            @endif
+                                        </td>
+                                    </tr>
                                 @endfor
                             </tbody>
                         </table>

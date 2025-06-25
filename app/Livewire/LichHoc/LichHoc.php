@@ -3,12 +3,6 @@
 namespace App\Livewire\LichHoc;
 
 use Livewire\Component;
-
-
-
-//Model
-use Illuminate\Support\Facades\Auth;
-use Illuminate\Http\Request;
 use App\Models\Lop;
 use App\Models\HocKy;
 use App\Models\Tuan;
@@ -18,103 +12,74 @@ use Carbon\Carbon;
 class LichHoc extends Component
 {
     public $lop;
-    public $dsHocKy = [];
-    public $dsTuan = [];
+    public $idTuan;
+    public $hocKyId;
+
     public $hocKy;
     public $tuanDangChon;
     public $ngayTrongTuan = [];
     public $thoikhoabieu = [];
 
-    public $hoc_ky_id;
-    public $id_tuan;
-
-    public function mount(Lop $lop,)
+    public function mount(Lop $lop, $idTuan = null, $hocKyId = null)
     {
-       
         $this->lop = $lop;
+        $this->idTuan = $idTuan;
+        $this->hocKyId = $hocKyId;
 
-        $today = now();
+        $this->hocKy = HocKy::where('id_nien_khoa', $lop->id_nien_khoa)
+                            ->where('id', $hocKyId)
+                            ->first();
 
-        // Danh sách học kỳ
-        $this->dsHocKy = HocKy::where('id_nien_khoa', $lop->id_nien_khoa)
-                                ->orderBy('ngay_bat_dau')->get();
-        if ($this->dsHocKy->count() > 0) {
-            $this->dsHocKy->pop();
-        }
-
-        // Học kỳ hiện tại hoặc theo id
-        if ($this->hoc_ky_id) {
-            $this->hocKy = HocKy::find($this->hoc_ky_id);
-        } else {
-            // Nếu chưa chọn → lấy học kỳ hiện tại (đang diễn ra)
-            $this->hocKy = HocKy::where('ngay_bat_dau', '<=', $today)
-                                ->where('ngay_ket_thuc', '>=', $today)
-                                ->first();
-
-            // Nếu không có học kỳ đang diễn ra → lấy học kỳ gần nhất đã kết thúc
-            if (!$this->hocKy) {
-                $this->hocKy = HocKy::where('ngay_ket_thuc', '<=', $today)
-                                    ->orderByDesc('ngay_ket_thuc')
-                                    ->first();
-            }
-        }                                                         
-
-        // Danh sách tuần
-        if ($this->hocKy) {
-            $this->dsTuan = Tuan::whereDate('ngay_bat_dau', '>=', $this->hocKy->ngay_bat_dau)
-                ->whereDate('ngay_ket_thuc', '<=', $this->hocKy->ngay_ket_thuc)
-                ->orderBy('tuan')
-                ->get();
-        }
-
-        // Tuần đang chọn
-        $this->tuanDangChon = $this->id_tuan
-            ? Tuan::find($this->id_tuan)
-            : $this->dsTuan->first();
-
-        // Ngày trong tuần
-        $this->layNgayTrongTuan();
-
-        // Lấy TKB
-        $this->layThoiKhoaBieu();
-    }
-
-    public function updatedHocKyId()
-    {
+        $this->capNhatTheoTuan();
         
-        $this->mount($this->lop);
     }
 
     public function updatedIdTuan()
     {
-        $this->capNhatTuan();
+        $this->capNhatTheoTuan();
     }
 
-    public function capNhatTuan()
+    public function capNhatTheoTuan()
     {
-       
-        $this->tuanDangChon = Tuan::find($this->id_tuan);
+        $this->tuanDangChon = Tuan::find($this->idTuan);
         $this->layNgayTrongTuan();
         $this->layThoiKhoaBieu();
     }
 
-    public function layNgayTrongTuan()
+    public function layDanhSachTuanTheoHocKy()
+    {
+        if (!$this->hocKy) return collect();
+
+        return Tuan::whereDate('ngay_bat_dau', '>=', $this->hocKy->ngay_bat_dau)
+            ->whereDate('ngay_ket_thuc', '<=', $this->hocKy->ngay_ket_thuc)
+            ->orderBy('ngay_bat_dau')
+            ->get();
+    }
+
+    protected function layNgayTrongTuan()
     {
         $this->ngayTrongTuan = [];
+        $tuan = $this->tuanDangChon;
+        if (!$tuan) return;
 
-        if ($this->tuanDangChon) {
-            $bat_dau = Carbon::parse($this->tuanDangChon->ngay_bat_dau);
-            $ket_thuc = Carbon::parse($this->tuanDangChon->ngay_ket_thuc);
+        $this->ngayTrongTuan = [];
 
-            while ($bat_dau->lte($ket_thuc)) {
-                $this->ngayTrongTuan[] = $bat_dau->copy();
-                $bat_dau->addDay();
-            }
+        $bat_dau = Carbon::parse($tuan->ngay_bat_dau);
+        $ket_thuc = Carbon::parse($tuan->ngay_ket_thuc);
+
+        while ($bat_dau->lte($ket_thuc)) {
+            $this->ngayTrongTuan[] = $bat_dau->copy();
+            $bat_dau->addDay();
         }
     }
 
-    public function layThoiKhoaBieu()
+    protected function layThoiKhoaBieu()
     {
+
+        $this->thoikhoabieu = [];
+        
+        if (!$this->idTuan) return;
+
         $this->thoikhoabieu = ThoiKhoaBieu::with([
             'lopHocPhan',
             'lopHocPhan.lop',
@@ -122,25 +87,22 @@ class LichHoc extends Component
             'phong',
             'tuan'
         ])
-        
-        ->whereHas('lopHocPhan', function ($query) {
-            $query->where('id_lop', $this->lop->id);
-        })
-        ->where('id_tuan', $this->tuanDangChon->id ?? null)
-        ->get();
-        
+            ->whereHas('lopHocPhan', function ($query) {
+                $query->where('id_lop', $this->lop->id);
+            })
+            ->where('id_tuan', $this->idTuan)
+            ->get();
     }
 
     public function render()
     {
         return view('livewire.lich-hoc.lich-hoc', [
-        'thoikhoabieu' => $this->thoikhoabieu,
-        'ngayTrongTuan' => $this->ngayTrongTuan,
-        'lop' => $this->lop,
-        'dsTuan' => $this->dsTuan,
-        'dsHocKy' => $this->dsHocKy,
-        'tuanDangChon' => $this->tuanDangChon,
-        'hocKy' => $this->hocKy,
-    ]);
+            'hocKy' => $this->hocKy,
+            'thoikhoabieu' => $this->thoikhoabieu,
+            'ngayTrongTuan' => $this->ngayTrongTuan,
+            'lop' => $this->lop,
+            'tuanDangChon' => $this->tuanDangChon,
+            'dsTuan' => $this->layDanhSachTuanTheoHocKy(),
+        ]);
     }
 }

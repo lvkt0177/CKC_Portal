@@ -26,7 +26,7 @@ class ThoiKhoaBieuController extends Controller
             $nam = Nam::where('nam_bat_dau', $today->year)->first();
         }
 
-        $tuanDangChon = $request->id_tuan ?? $today->weekOfYear;
+        $tuanDangChon = $request->id_tuan;
         $tuan = Tuan::where('id_nam', $nam->id)
                     ->where('tuan', $tuanDangChon)
                     ->first();

@@ -88,12 +88,16 @@
                             Quản lý đào tạo
                         </a>
                         <ul class="dropdown-menu">
-                            <li><a class="dropdown-item" href="{{ route('giangvien.lichhoc.index') }}"><i
-                                        class="fas fa-file-invoice me-2"></i>Lịch đào tạo</a>
+                            <li><a class="dropdown-item" href="{{ route('giangvien.lichhoc.index') }}">
+                                    <i class="fas fa-file-invoice me-2"></i>Lịch đào tạo</a>
                             </li>
-                           
-                            <li><a class="dropdown-item" href="{{ route('giangvien.ctdt.index') }}"><i
-                                        class="fas fa-user-tag me-2"></i>Khung đào tạo</a></li>
+                            <li><a class="dropdown-item" href="{{ route('giangvien.lichthi.index') }}">
+                                    <i class="fas fa-user-tag me-2"></i>Lịch thi</a>
+                            </li>
+                            <li><a class="dropdown-item" href="{{ route('giangvien.ctdt.index') }}">
+                                    <i class="fas fa-user-tag me-2"></i>Khung đào tạo</a>
+                            </li>
+
                         </ul>
                     </div>
 
