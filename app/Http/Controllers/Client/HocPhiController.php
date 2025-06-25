@@ -28,7 +28,7 @@ class HocPhiController extends Controller
             ->where('id_nien_khoa', $nienKhoa->id)
             ->first();
 
-            $hocPhi = null;
+        $hocPhi = null;
         
         if ($hocKyHienTai) {
             $hocPhi = HocPhi::firstOrCreate(

@@ -74,7 +74,7 @@
                                             </div>
                                             <div class="fee-details">
                                                 <div class="fee-detail-item">
-                                                    <span class="fee-label">Số tiền:</span>
+                                                    <span class="fee-label fs-5">Số tiền</span>
                                                     <span class="fee-value text-success">{{ number_format($hocPhi->tong_tien, 0, ',', '.') }} VNĐ</span>
                                                 </div>
                                             </div>

@@ -10,9 +10,14 @@ use App\Models\Lop;
 use App\Models\ChuongTrinhDaoTao;
 use App\Models\ChiTietChuongTrinhDaoTao;
 use App\Models\NienKhoa;
+use App\Models\HocKy;
 use App\Models\MonHoc;
 use App\Models\DanhSachHocPhan;
 use Illuminate\Support\Facades\DB;
+use App\Enum\LoaiMonHoc;
+use Carbon\Carbon;
+use App\Models\LopHocPhan;
+use App\Models\ChuyenNganh;
 
 class DangKyHocGhepController extends Controller
 {
@@ -30,14 +35,36 @@ class DangKyHocGhepController extends Controller
             ->where('dshp.id_sinh_vien', $idSinhVien)
             ->where('dshp.diem_tong_ket', '<', 5)
             ->select(
-                'lhp.ten_hoc_phan as ten_mon',
+                'lhp.loai_mon',
+                'lhp.ten_hoc_phan as ten_hoc_phan',
+                'mh.ten_mon',
+                'mh.id as id_mon_hoc',
                 'dshp.diem_tong_ket',
-                'ct.so_tin_chi'
+                'ct.so_tin_chi',
             )
             ->distinct()
-            ->get();
+            ->get()
+            ->map(function ($item) {
+                $item->loai_mon_enum = LoaiMonHoc::from($item->loai_mon);
+                $item->loai_mon = $item->loai_mon_enum->getLabel();
+                return $item;
+            });
+
 
         return view('client.dangkyhocghep.index', compact('monHoc'));
+    }
+
+    public function list($id_mon_hoc)
+    {
+        $tenMonHoc = MonHoc::find($id_mon_hoc)->ten_mon;
+
+        $lopHocPhanDangMo = LopHocPhan::where('trang_thai', 1)
+            ->where('ten_hoc_phan', 'LIKE', '%' . $tenMonHoc . '%')
+            ->get();
+
+        $lopHocPhanDangMo->load('lop','giangVien.hoSo','thoiKhoaBieu.phong');
+
+        return view('client.dangkyhocghep.list', compact('lopHocPhanDangMo'));
     }
 
     /**

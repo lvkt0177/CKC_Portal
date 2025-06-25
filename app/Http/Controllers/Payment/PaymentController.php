@@ -22,6 +22,12 @@ class PaymentController extends Controller
 
     public function vnpay_payment(PaymentRequest $request)
     {
+        $url = $this->paymentService->createPaymentUrl($request->validated());
+        return redirect($url);
+    }
+
+    public function vnpay_hoc_ghep(Request $request)
+    {
         $url = $this->paymentService->createPaymentUrl($request->all());
         return redirect($url);
     }
