@@ -23,6 +23,7 @@ use App\Models\Tuan;
 use App\Models\HocKy;
 use App\Models\ThoiKhoaBieu;
 use App\Models\ChiTietChuongTrinhDaoTao;
+use App\Models\ChuongTrinhDaoTao;
 
 class LichHocController extends Controller
 {
@@ -56,41 +57,42 @@ class LichHocController extends Controller
         $today = now();
 
         
-        $dsHocKy = HocKy::where('id_nien_khoa', $lop->id_nien_khoa)->orderBy('ngay_bat_dau')->get();
-        if ($dsHocKy->count() > 0) {
-            $dsHocKy->pop(); 
-        }
-      
-        $hoc_ky_id = $request->hoc_ky;
-        
-        $hocKy = $hoc_ky_id
-            ? HocKy::find($hoc_ky_id)
-            : HocKy::where('id_nien_khoa',$lop->id_nien_khoa)->where('ngay_bat_dau', '<=', $today)->where('ngay_ket_thuc', '>=', $today)->first();
-        
-        if (!$hocKy) {
-            $hocKy = HocKy::where('ngay_ket_thuc', '<=', $today)->orderByDesc('ngay_ket_thuc')->first();
-        }
-        
-        
-        $dsTuan = Tuan::whereDate('ngay_bat_dau', '>=', $hocKy->ngay_bat_dau)
-                    ->whereDate('ngay_ket_thuc', '<=', $hocKy->ngay_ket_thuc)
-                    ->orderBy('tuan')->get();
-                    
-        $tuanHienTai=$dsTuan->where('ngay_bat_dau', '<=', $today)->where('ngay_ket_thuc', '>=', $today)->first();
-       
-        
-       
-        
-        $tuanDangChon = Tuan::find($request->id_tuan);
-        if($tuanDangChon == null)
-        {
-            $tuanDangChon=$tuanHienTai;
+        $dsHocKy = HocKy::where('id_nien_khoa', $lop->id_nien_khoa)
+                        ->orderBy('ngay_bat_dau')
+                        ->get();
+
+    
+        $hocKy = null;
+
+        if ($request->filled('hoc_ky')) {
+            $hocKy = HocKy::find($request->hoc_ky);
         }
 
+        if (!$hocKy) {
+            $hocKy = HocKy::where('ngay_bat_dau', '<=', $today)
+                        ->where('ngay_ket_thuc', '>=', $today)
+                        ->first();
+        }
+
+        if (!$hocKy) {
+            $hocKy = HocKy::where('ngay_ket_thuc', '<=', $today)
+                        ->orderByDesc('ngay_ket_thuc')
+                        ->first();
+        }
+
+       
+        $dsTuan = Tuan::whereDate('ngay_bat_dau', '>=', $hocKy->ngay_bat_dau)
+                    ->whereDate('ngay_ket_thuc', '<=', $hocKy->ngay_ket_thuc)
+                    ->orderBy('tuan')
+                    ->get();
+
         
+        $tuanDangChon = $request->filled('id_tuan')
+            ? Tuan::find($request->id_tuan)
+            : $dsTuan->first();
+
         $tuan = $tuanDangChon;
         
-       
         $ngayTrongTuan = collect();
         if ($tuan) {
             $bat_dau = \Carbon\Carbon::parse($tuan->ngay_bat_dau);
@@ -101,7 +103,6 @@ class LichHocController extends Controller
             }
         }
 
-        
         $thoikhoabieu = ThoiKhoaBieu::with([
             'lopHocPhan',
             'lopHocPhan.lop',
@@ -119,6 +120,7 @@ class LichHocController extends Controller
     }
     public function create(Request $request, Lop $lop)
     {
+        
         $nienKhoa = $lop->nienKhoa;
 
         if ($nienKhoa && $nienKhoa->nam_ket_thuc <= now()->year) {
@@ -128,12 +130,12 @@ class LichHocController extends Controller
 
         $today = now();
 
-       
+    
         $dsHocKy = HocKy::where('id_nien_khoa', $lop->id_nien_khoa)
             ->orderBy('ngay_bat_dau')
             ->get();
 
-        
+       
         $id_hoc_ky = $request->hoc_ky ?? $dsHocKy->first()?->id;
         $hocKy = HocKy::find($id_hoc_ky);
 
@@ -141,18 +143,18 @@ class LichHocController extends Controller
             return back()->with('error', 'Không tìm thấy học kỳ');
         }
 
-    
+       
         $dsTuan = Tuan::whereDate('ngay_bat_dau', '>=', $hocKy->ngay_bat_dau)
             ->whereDate('ngay_ket_thuc', '<=', $hocKy->ngay_ket_thuc)
             ->orderBy('tuan')->get();
-        dd($dsTuan);
+        
         $tuanDangChon = $request->id_tuan
             ? Tuan::find($request->id_tuan)
             : $dsTuan->first();
-
+       
         $tuan = $tuanDangChon;
 
-       
+     
         $monHoc = collect();
         if ($id_hoc_ky) {
             $monHoc = MonHoc::whereHas('chiTietChuongTrinhDaoTaos', function ($query) use ($lop, $id_hoc_ky) {
@@ -210,7 +212,7 @@ class LichHocController extends Controller
     public function store(ThoiKhoaBieuRequest  $request)
     {
         $data = $request->validated();
-       
+        
         $lop = Lop::find( $data['lop_id'] );
         $tietKetThuc = $data['tiet_bat_dau'] + $data['so_tiet'] - 1;
 
@@ -241,7 +243,6 @@ class LichHocController extends Controller
             return redirect()->route('giangvien.lichhoc.create',['lop'=>$lop])->with('error','Phòng đã có lịch học trùng vào thời gian này.');
         }
         
-        
         $trungLichLop = ThoiKhoaBieu::where('ngay', $ngayHoc)
             ->whereHas('lopHocPhan', function ($query) use ($data) {
                 $query->where('id_lop', $data['lop_id']);
@@ -265,40 +266,52 @@ class LichHocController extends Controller
         $sinhVienList = SinhVien::where('id_lop', $data['lop_id'])->get();
       
 
-        $tenMon = \App\Models\MonHoc::find($data['mon_hoc'])->ten_mon ?? 'Môn học';
-
-        $lopHocPhan = MonHoc::first($data[''])->get();
-        $lopHocPhan = LopHocPhan::Create([
-            'ten_hoc_phan' => $tenMon . ' ' . $lop->ten_lop,
-            'id_lop' => $data['lop_id'],
-        ], [
-            'id_giang_vien' => null,
-            'id_chuong_trinh_dao_tao' => 1, 
-            'loai_lop_hoc_phan' => 0,
-            'so_luong_dang_ky' => $sinhVienList->count(),
-            'loai_mon' => 0,
-            'trang_thai' => 0,
-        ]);    
-        ThoiKhoaBieu::create([
-            'id_tuan'         => $data['id_tuan'],
-            'id_lop_hoc_phan' =>  $lopHocPhan->id,
-            'id_phong'        => $data['id_phong'],
-            'tiet_bat_dau'    => $data['tiet_bat_dau'],
-            'tiet_ket_thuc'   => $tietKetThuc,
-            'ngay'            => $ngayHoc,
-        ]);
-
+        $tenMon = MonHoc::find($data['mon_hoc'])->ten_mon ?? 'Môn học';
        
-       
-
+        $monHoc = MonHoc::with('chiTietChuongTrinhDaoTaos.chuongTrinhDaoTao')->where('ten_mon', $tenMon)->first();
         
-        foreach ($sinhVienList as $sv) {
-            DanhSachHocPhan::firstOrCreate([
-                'id_sinh_vien'    => $sv->id,
+        $ct_ctdt = $monHoc->chiTietChuongTrinhDaoTaos->first();
+
+        $ctdt = $ct_ctdt->ChuongTrinhDaoTao->first();
+        
+        
+        
+        $tenHocPhan = $tenMon . ' ' . $lop->ten_lop;
+        $lopHocPhan = LopHocPhan::where('ten_hoc_phan', $tenHocPhan)
+            ->where('id_lop', $data['lop_id'])
+            ->first();  
+        if (!$lopHocPhan) {
+            $lopHocPhan = LopHocPhan::create([
+                'ten_hoc_phan' => $tenMon . ' ' . $lop->ten_lop,
+                'id_lop' => $data['lop_id'],
+                'id_giang_vien' => null,
+                'id_chuong_trinh_dao_tao' => $ct_ctdt->id_chuong_trinh_dao_tao, 
+                'loai_lop_hoc_phan' => 0,
+                'so_luong_dang_ky' => $sinhVienList->count(),
+                'loai_mon' => 0,
+                'trang_thai' => 0,
+            ]);    
+            ThoiKhoaBieu::create([
+                'id_tuan'         => $data['id_tuan'],
                 'id_lop_hoc_phan' =>  $lopHocPhan->id,
-            ], [
-                'loai_hoc' => 0, // Gán là 0
+                'id_phong'        => $data['id_phong'],
+                'tiet_bat_dau'    => $data['tiet_bat_dau'],
+                'tiet_ket_thuc'   => $tietKetThuc,
+                'ngay'            => $ngayHoc,
             ]);
+            
+            foreach ($sinhVienList as $sv) {
+                DanhSachHocPhan::firstOrCreate([
+                    'id_sinh_vien'    => $sv->id,
+                    'id_lop_hoc_phan' =>  $lopHocPhan->id,
+                ], [
+                    'loai_hoc' => 0, 
+                ]);
+            }
+        } else {
+        
+            session()->flash('error', 'Lớp học phần này đã tồn tại. Không thể thêm trùng.');
+            return back();
         }
 
         

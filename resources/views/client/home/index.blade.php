@@ -31,7 +31,7 @@
                                 <p><strong>MSSV:</strong> {{ Auth::guard('student')->user()->ma_sv }}</p>
                                 <p><strong>Lớp học:</strong> {{ Auth::guard('student')->user()->lop->ten_lop }}</p>
                                 <p><strong>Hệ đào tạo:</strong> Cao đẳng</p>
-                                <p><strong>Khóa học:</strong>
+                                <p><strong>Niên khoá:</strong>
                                     {{ Auth::guard('student')->user()->lop->nienKhoa->ten_nien_khoa }}</p>
                                 <p><strong>Giới tính:</strong> {{ Auth::guard('student')->user()->hoSo->gioi_tinh }}</p>
                             </div>
@@ -98,56 +98,6 @@
         <div class="dashboard-item">
             <i class="fas fa-clipboard"></i>
             <span>Khảo sát</span>
-        </div>
-    </div>
-
-    <!-- Charts Section -->
-    <div class="charts-section">
-        <div class="chart-container ">
-            <h5 class="chart-title">Kết quả học tập</h5>
-            <div class="dropdown mb-3">
-                <form method="GET" action="">
-                    <select name="id_hoc_ky" id="hocKySelect" class="form-select">
-                        @foreach ($dsHocKy as $ky)
-                            <option value="{{ $ky->id }}" {{ $idHocKy == $ky->id ? 'selected' : '' }}>
-                                {{ $ky->ten_hoc_ky }}
-                            </option>
-                        @endforeach
-                    </select>
-                </form>
-            </div>
-            <div class="scrollable-area">
-                @foreach ($gradesData as $hocKy => $monHocList)
-                    <div class="grades-table mb-4 hoc-ky-bang" data-hocky="{{ $hocKy }}">
-                        <table class="table table-bordered">
-                            <thead>
-                                <tr>
-                                    <th>STT</th>
-                                    <th>Tên môn học</th>
-                                    <th>Tín chỉ</th>
-                                    <th>Điểm chuyên cần</th>
-                                    <th>Điểm quá trình</th>
-                                    <th>Điểm thi</th>
-                                    <th>Điểm tổng kết</th>
-                                </tr>
-                            </thead>
-                            <tbody>
-                                @foreach ($monHocList as $index => $mon)
-                                    <tr>
-                                        <td>{{ $index + 1 }}</td>
-                                        <td>{{ $mon['ten_mon'] }}</td>
-                                        <td>{{ $mon['tin_chi'] }}</td>
-                                        <td>{{ $mon['chuyencan'] }}</td>
-                                        <td>{{ $mon['quatrinh'] }}</td>
-                                        <td>{{ $mon['thi'] }}</td>
-                                        <td>{{ $mon['tongket'] }}</td>
-                                    </tr>
-                                @endforeach
-                            </tbody>
-                        </table>
-                    </div>
-                @endforeach
-            </div>
         </div>
     </div>
 @endsection

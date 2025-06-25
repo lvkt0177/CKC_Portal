@@ -31,19 +31,22 @@ class DiemMonHocController extends Controller
     }
     public function list(int $id)
     {
+        $lop_HP = LopHocPhan::find($id);
+        
         $sinhviens = SinhVien::with([
             'hoSo',
             'lop.nienKhoa',
-            'danhSachHocPhans.lopHocPhan'
+            'danhSachHocPhans' => function ($query) use ($id) {
+                $query->where('id_lop_hoc_phan', $id)->with('lopHocPhan');
+            }
         ])
-            ->whereHas('danhSachHocPhans.lopHocPhan', function ($query) use ($id) {
-                $query->where('id_lop_hoc_phan', $id);
-            })
-            ->orderBy('ma_sv', 'asc')
-            ->get();
+        ->whereHas('danhSachHocPhans.lopHocPhan', function ($query) use ($id) {
+            $query->where('id_lop_hoc_phan', $id);
+        })
+        ->orderBy('ma_sv', 'asc')
+        ->get();
 
-
-        $lop_HP = LopHocPhan::find($id);
+       
         return view('admin.diemmonhoc.list', compact('sinhviens', 'lop_HP'));
     }
     public function capNhat(NhapDiemRequest $request)

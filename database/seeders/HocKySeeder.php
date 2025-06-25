@@ -35,7 +35,7 @@ class HocKySeeder extends Seeder
                 DB::table('hoc_ky')->insert([
                     'id_nien_khoa' => $idNienKhoa,
                     'ten_hoc_ky' => "Học kỳ $hocKySo",
-                    'ngay_bat_dau' => Carbon::create($namHienTai, 8, 1),
+                    'ngay_bat_dau' => Carbon::create($namHienTai, 8, 5),
                     'ngay_ket_thuc' => Carbon::create($namHienTai, 12, 31),
                     'created_at' => now(),
                     'updated_at' => now(),
@@ -46,8 +46,8 @@ class HocKySeeder extends Seeder
                 DB::table('hoc_ky')->insert([
                     'id_nien_khoa' => $idNienKhoa,
                     'ten_hoc_ky' => "Học kỳ $hocKySo",
-                    'ngay_bat_dau' => Carbon::create($namHienTai + 1, 1, 1),
-                    'ngay_ket_thuc' => Carbon::create($namHienTai + 1, 5, 31),
+                    'ngay_bat_dau' => Carbon::create($namHienTai + 1, 1, 12),
+                    'ngay_ket_thuc' => Carbon::create($namHienTai + 1, 5,26),
                     'created_at' => now(),
                     'updated_at' => now(),
                 ]);

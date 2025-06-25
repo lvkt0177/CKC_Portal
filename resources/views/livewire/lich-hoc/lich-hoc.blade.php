@@ -1,29 +1,23 @@
 <div>
     <div>
         <hr>
-        <div class="row mb-3">
-            <div class="col-md-3">
-                <label class="me-2 mb-0 d-inline-block"><em>Chọn học kỳ:</em></label>
-                <select wire:model.defer="hoc_ky_id" wire:change="$refresh" class="form-control">
-                    @foreach ($dsHocKy as $ky)
-                        <option value="{{ $ky->id }}">{{ $ky->ten_hoc_ky }}</option>
-                    @endforeach
-                </select>
-            </div>
-            <div class="col-md-3 ">
-                <label class=""><em>Chọn tuần:</em></label>
-                <select wire:model.defer="id_tuan" wire:change="$refresh" class="form-control">
+        <div>
+
+            <div class="form-group">
+                <label for="tuan">Chọn tuần:</label>
+                <select wire:model="idTuan" wire:change="capNhatTheoTuan" class="form-control">
                     @foreach ($dsTuan as $tuan)
-                        <option value="{{ $tuan->id }}">Tuần {{ $tuan->tuan }}</option>
+                        <option value="{{ $tuan->id }}" {{ $idTuan == $tuan->id ? 'selected' : '' }}>
+                            Tuần {{ $loop->iteration }}
+                            ({{ \Carbon\Carbon::parse($tuan->ngay_bat_dau)->format('d/m/Y') }} -
+                            {{ \Carbon\Carbon::parse($tuan->ngay_ket_thuc)->format('d/m/Y') }})
+                        </option>
                     @endforeach
                 </select>
             </div>
+
         </div>
-
-
-
-
-        <h4>Lịch học tuần: {{ $tuanDangChon->tuan ?? 'Không có' }}</h4>
+        <h4>Lịch học tuần </h4>
         <div class="container">
             <div class="schedule-table">
                 <table class="table table-bordered mb-0">

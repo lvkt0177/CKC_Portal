@@ -8,6 +8,8 @@ use Auth;
 use App\Models\HocPhi;
 use App\Models\SinhVien;
 use App\Models\HocKy;
+use App\Models\Lop;
+use App\Models\NienKhoa;
 
 class HocPhiController extends Controller
 {
@@ -17,12 +19,16 @@ class HocPhiController extends Controller
     public function index()
     {
         $sinhVien = Auth::guard('student')->user();
+        $sinhVien->load('lop');
         $now = now()->toDateString();
+        $nienKhoa = NienKhoa::find($sinhVien->lop->id_nien_khoa);
+
         $hocKyHienTai = HocKy::whereDate('ngay_bat_dau', '<=', $now)
-            ->where('ngay_ket_thuc', '>=', $now)
+            ->whereDate('ngay_ket_thuc', '>=', $now)
+            ->where('id_nien_khoa', $nienKhoa->id)
             ->first();
 
-        $hocPhi = null;
+            $hocPhi = null;
         
         if ($hocKyHienTai) {
             $hocPhi = HocPhi::firstOrCreate(

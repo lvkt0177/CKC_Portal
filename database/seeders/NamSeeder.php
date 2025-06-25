@@ -15,9 +15,11 @@ class NamSeeder extends Seeder
     {
         //
         Nam::insert([
+            ['nam_bat_dau' => 2022],
             ['nam_bat_dau' => 2023],
             ['nam_bat_dau' => 2024],
             ['nam_bat_dau' => 2025],
+            ['nam_bat_dau' => 2026],
         ]);
     }
 }
