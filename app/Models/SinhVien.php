@@ -85,4 +85,9 @@ class SinhVien extends Authenticatable
         return $this->hasMany(HocPhi::class, 'id_sinh_vien', 'id');
     }
 
+    public function dangKyHocGhep()
+    {
+        return $this->hasMany(DangKyHGTL::class, 'id_sinh_vien', 'id');
+    }
+
 }

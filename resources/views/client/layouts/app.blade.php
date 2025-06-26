@@ -128,7 +128,7 @@
                 <a href="#" class="dropdown-toggle"><i class="fas fa-calendar"></i> ĐĂNG KÝ HỌC GHÉP</a>
                 <ul class="submenu">
                     <li><a href="{{ route('sinhvien.dang-ky-hoc-ghep.index') }}">Lớp học ghép</a></li>
-                    <li><a href="#">Kết quả đăng ký</a></li>
+                    <li><a href="{{ route('sinhvien.dang-ky-hoc-ghep.history') }}">Lịch sử đăng ký học ghép</a></li>
                 </ul>
             </li>
 

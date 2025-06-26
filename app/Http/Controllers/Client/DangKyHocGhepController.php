@@ -18,6 +18,7 @@ use App\Enum\LoaiMonHoc;
 use Carbon\Carbon;
 use App\Models\LopHocPhan;
 use App\Models\ChuyenNganh;
+use App\Models\DangKyHGTL;
 
 class DangKyHocGhepController extends Controller
 {
@@ -56,15 +57,28 @@ class DangKyHocGhepController extends Controller
 
     public function list($id_mon_hoc)
     {
-        $tenMonHoc = MonHoc::find($id_mon_hoc)->ten_mon;
+        $monHoc = MonHoc::find($id_mon_hoc);
 
         $lopHocPhanDangMo = LopHocPhan::where('trang_thai', 1)
-            ->where('ten_hoc_phan', 'LIKE', '%' . $tenMonHoc . '%')
+            ->where('ten_hoc_phan', 'LIKE', '%' . $monHoc->ten_mon . '%')
             ->get();
 
         $lopHocPhanDangMo->load('lop','giangVien.hoSo','thoiKhoaBieu.phong');
 
-        return view('client.dangkyhocghep.list', compact('lopHocPhanDangMo'));
+        return view('client.dangkyhocghep.list', compact('lopHocPhanDangMo', 'monHoc'));
+    }
+
+    public function history()
+    {
+        $sinhVien = Auth::guard('student')->user();
+
+        $dangKyHocGhep = DangKyHGTL::where('id_sinh_vien', $sinhVien->id)
+            ->where('trang_thai', '!=', 0)
+            ->where('loai_dong', 0)
+            ->with(['lopHocPhan.lop', 'lopHocPhan.giangVien.hoSo'])
+            ->get();
+
+        return view('client.dangkyhocghep.history', compact('dangKyHocGhep', 'sinhVien'));
     }
 
     /**

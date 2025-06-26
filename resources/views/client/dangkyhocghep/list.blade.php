@@ -48,7 +48,7 @@
                                 </div>
                                 <div class="info-content">
                                     <div class="info-label">Giảng viên</div>
-                                    <div class="info-value">{{ $lop->giangVien->hoSo->ho_ten }}</div>
+                                    <div class="info-value">{{ $lop->giangVien->hoSo->ho_ten ?? 'Chưa có giáo viên dạy' }}</div>
                                 </div>
                             </div>
                             
@@ -83,9 +83,10 @@
                             </div>
                             
                             <div class="text-center mt-3">
-                                <form action="" method="POST">
+                                <form action="{{ route('vnpay.payment.hoc-ghep', $lop   ) }}" method="POST">
                                     @csrf
-                                    <input type="hidden" name="total_vnpay" value="">
+                                    <input type="hidden" name="id_mon_hoc" value="{{ $monHoc->id }}">
+                                    <input type="hidden" name="id_lop_hoc_phan" value="{{ $lop->id }}">
                                     <button class="status-badge status-active border-0">
                                         <span class="fs-6">
                                             Đăng ký

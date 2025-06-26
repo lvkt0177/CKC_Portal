@@ -289,7 +289,7 @@ class LichHocController extends Controller
                 'loai_lop_hoc_phan' => 0,
                 'so_luong_dang_ky' => $sinhVienList->count(),
                 'loai_mon' => 0,
-                'trang_thai' => 0,
+                'trang_thai' => 1,
             ]);    
             ThoiKhoaBieu::create([
                 'id_tuan'         => $data['id_tuan'],
