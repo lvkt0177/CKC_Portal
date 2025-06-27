@@ -31,4 +31,3 @@ Route::group(['middleware' => 'web'], function () {
 
 include('ckeditor/ckeditor.php');
 include('client/vnpay.php');
-   

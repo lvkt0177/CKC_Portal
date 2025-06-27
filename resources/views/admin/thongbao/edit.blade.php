@@ -20,10 +20,10 @@
                 <div class="card shadow-sm">
                     <div class="card-header d-flex justify-content-between align-items-center">
                         <h3 class="card-title mb-0">Chỉnh sửa thông báo</h3>
-                        <a href="{{ route('admin.thongbao.index') }}" class="btn btn-back btn-sm">Quay lại</a>
+                        <a href="{{ route('giangvien.thongbao.index') }}" class="btn btn-back btn-sm">Quay lại</a>
                     </div>
                     <div class="card-body">
-                        <form action="{{ route('admin.thongbao.update', $thongbao) }}" method="POST" data-confirm
+                        <form action="{{ route('giangvien.thongbao.update', $thongbao) }}" method="POST" data-confirm
                             enctype="multipart/form-data">
                             @csrf
                             @method('PUT')
@@ -170,7 +170,7 @@
 
             if (confirm('Dữ liệu sẽ không được khôi phục!. Bạn có chắc muốn xoá file này không?')) {
                 $.ajax({
-                    url: `/admin/thongbao/file/${fileId}`,
+                    url: `/giangvien/thongbao/file/${fileId}`,
                     type: 'POST',
                     data: {
                         _method: 'DELETE',

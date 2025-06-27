@@ -13,6 +13,6 @@ Route::post('/student/login-student', [AuthLoginController::class, 'studentLogin
 Route::get('/logout', [AuthLoginController::class, 'logout'])->name('logout');
 Route::get('/student/logout', [AuthLoginController::class, 'studentLogout'])->name('studentLogout');
 
-Route::post('/sinh-vien/yeu-cau-cap-mat-khau', [AuthLoginController::class, 'sinhVienYeuCauCapMatKhau']);
+Route::post('/sinh-vien-yeu-cau-cap-mat-khau', [AuthLoginController::class, 'svYeuCauCapMatKhau']);
 
-Route::post('/user/lay-lai-mat-khau', [AuthLoginController::class, 'userResetPasswordPost']);
+Route::post('/user/lay-lai-mat-khau', [AuthLoginController::class, 'userLayLaiMatKhau']);

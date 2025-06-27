@@ -1,6 +1,6 @@
 <?php
 
-namespace App\Http\Controllers\Payment;
+namespace App\Http\Controllers\Api\Payment;
 
 use App\Http\Controllers\Controller;
 use Illuminate\Http\Request;
@@ -13,6 +13,7 @@ use App\Models\Lop;
 use App\Services\PaymentService;
 use App\Http\Requests\Payment\PaymentRequest;
 use Illuminate\Support\Facades\DB;
+use Illuminate\Support\Facades\Log;
 
 class PaymentController extends Controller
 {
@@ -31,8 +32,9 @@ class PaymentController extends Controller
             'type' => 'hoc_phi',
         ]);
         $url = $this->paymentService->createPaymentUrl($data);
-        
-        return redirect($url);
+        return response()->json([
+            'url' => $url,
+        ]);
     }
 
     private function tinhTienTheoTinChi($soTinChi, $loaiMon)

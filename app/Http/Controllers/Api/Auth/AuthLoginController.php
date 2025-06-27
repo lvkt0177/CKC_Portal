@@ -17,6 +17,9 @@ use App\Enum\LoaiTaiKhoan;
 use Illuminate\Support\Facades\Hash;
 use Illuminate\Support\Facades\Mail;
 use Illuminate\Support\Str;
+use App\Http\Requests\CapMatKhau\SinhVienYeuCauRequest;
+use App\Http\Requests\CapMatKhau\UserResetPasswordRequest;
+use Illuminate\Support\Facades\Log;
 
 class AuthLoginController extends Controller
 {
@@ -50,7 +53,7 @@ class AuthLoginController extends Controller
 
     public function studentLogin(StudentLoginRequest $request)
     {
-        $sinhVien = SinhVien::where('ma_sv', $request->ma_sv)->first();
+        $sinhVien = SinhVien::where('ma_sv', $request->validated('ma_sv'))->first();
 
         if (!$sinhVien || !Hash::check($request->password, $sinhVien->password)) {
             return response()->json([
@@ -82,8 +85,10 @@ class AuthLoginController extends Controller
             'message' => 'Đăng xuất thành công.',
         ]);
     }
-    public function sinhVienYeuCauCapMatKhau(SinhVienYeuCauRequest $request)
+    public function svYeuCauCapMatKhau(SinhVienYeuCauRequest $request)
     {
+        Log::info('Yêu cầu cấp lại mật khẩu:');
+        Log::info($request->validated());
         $sinhVien = SinhVien::where('ma_sv', $request->validated('ma_sv'))->firstOrFail();
         $loai = $request->validated('loai');
         $matKhauMoi = null;
@@ -124,7 +129,7 @@ class AuthLoginController extends Controller
         ]);
     }
 
-    public function userResetPasswordPost(UserResetPasswordRequest $request)
+    public function userLayLaiMatKhau(UserResetPasswordRequest $request)
     {
         $hoSo = HoSo::where('email', $request->validated('email'))->first();
 

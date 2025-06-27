@@ -15,6 +15,10 @@ Route::prefix('sinhvien')->name('api.sinhvien.')->group(function () {
         ])->group(function () {
         
         Route::post('/logout', [AuthLoginController::class, 'studentLogout']);
-        include('giayxacnhan.php');
+            include('giayxacnhan.php');
+            include('khungdaotao.php');
+            include('bienbanshcn.php');
+            include('hocphi.php');
     });
 });
+
