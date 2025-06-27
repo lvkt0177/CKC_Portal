@@ -63,6 +63,8 @@
                                         class="fas fa-credit-card me-2"></i>Phiếu lên lớp</a></li>
                             <li><a class="dropdown-item" href="{{ route('giangvien.thongbao.index') }}"><i
                                         class="fas fa-credit-card me-2"></i>Thông báo cho sinh viên</a></li>
+                            <li><a class="dropdown-item" href="{{ route('giangvien.phieulenlop.manage') }}"><i
+                                class="fas fa-credit-card me-2"></i>Quản lý phiếu lên lớp</a></li>
                         </ul>
                     </div>
 

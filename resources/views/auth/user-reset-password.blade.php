@@ -23,7 +23,7 @@
         <form action="{{ route('login.user-reset-password.post') }}" method="POST">
             @csrf
             <div class="form-group">
-                <input type="email" name="email" class="form-control" placeholder="Nhâp email người dùng..." required>
+                <input type="email" name="email" class="form-control @error('email') border-danger text-dark @enderror" placeholder="Nhâp email người dùng..." required>
                 <i class="fas fa-user input-icon"></i>
             </div>
 

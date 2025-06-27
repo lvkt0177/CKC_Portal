@@ -138,4 +138,18 @@ class PhieuLenLopController extends Controller
             'si_so' => $soLuong
         ]);
     }
+
+    public function quanLyPhieuLenLop()
+    {
+        $phieuLenLop = PhieuLenLop::with([
+            'lopHocPhan', 'lopHocPhan.lop', 'lopHocPhan.giangVien.hoSo', 'phong', 'tuan'
+        ])
+        ->orderBy('ngay')
+        ->get();
+
+        return response()->json([
+            'status' => true,
+            'data' => $phieuLenLop
+        ]);
+    }
 }
