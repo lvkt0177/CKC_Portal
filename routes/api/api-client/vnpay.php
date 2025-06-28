@@ -12,4 +12,5 @@ Route::post('/payment/vnpay/hoc-ghep/{lopHocPhan}', [PaymentController::class, '
 
 
 Route::get('/vnpay-return', [PaymentController::class, 'vnpayReturn'])->name('vnpay.return');
+
 Route::get('/vnpay-ipn', [PaymentController::class, 'ipn'])->name('vnpay.ipn');

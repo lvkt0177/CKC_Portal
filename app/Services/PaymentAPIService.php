@@ -13,7 +13,7 @@ use App\Models\DanhSachHocPhan;
 use App\Enum\LoaiDangKy;
 use Illuminate\Support\Facades\DB;
 
-class PaymentService
+class  PaymentAPIService
 {
     protected string $vnp_TmnCode = 'U4PG4M2O';
     protected string $vnp_HashSecret = 'U0ZBWWF07HXOQYZL2ZR823GINKU3X1O7';

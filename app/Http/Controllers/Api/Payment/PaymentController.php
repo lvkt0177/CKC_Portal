@@ -32,6 +32,8 @@ class PaymentController extends Controller
             'type' => 'hoc_phi',
         ]);
         $url = $this->paymentService->createPaymentUrl($data);
+        Log::info('VNPAY Payment URL: ' . $url);
+        
         return response()->json([
             'url' => $url,
         ]);

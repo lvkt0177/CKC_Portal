@@ -77,7 +77,8 @@ class AuthLoginController extends Controller
 
     public function studentLogout(Request $request)
     {
-        $user = $request->user(); 
+        $user = Auth::user();
+     
         $user->currentAccessToken()->delete();
 
         return response()->json([

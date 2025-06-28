@@ -49,14 +49,28 @@ class CTDTController extends Controller
         $nam_bat_dau = $request->input('nam_bat_dau');
 
         if (!$nam_bat_dau) {
-            return redirect()->back()->with('error', 'Vui lòng chọn năm để xem danh sách tuần.');
+            return response()->json([
+                'success' => false,
+                'message' => 'Vui lòng chọn năm để xem danh sách tuần.'
+            ], 400);
         }
-
-        $nam = Nam::where('nam_bat_dau', $nam_bat_dau)->firstOrFail();
-
+    
+        $nam = Nam::where('nam_bat_dau', $nam_bat_dau)->first();
+    
+        if (!$nam) {
+            return response()->json([
+                'success' => false,
+                'message' => 'Không tìm thấy năm học.'
+            ], 404);
+        }
+    
         $dsTuan = Tuan::where('id_nam', $nam->id)->orderBy('tuan')->get();
-
-        return view('admin.ctdt.dstuan', compact('nam', 'dsTuan'));
+    
+        return response()->json([
+            'success' => true,
+            'nam' => $nam,
+            'dsTuan' => $dsTuan
+        ]);
     }
     public function store(TuanRequest $request)
     {

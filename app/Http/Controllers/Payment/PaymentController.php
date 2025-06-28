@@ -13,6 +13,7 @@ use App\Models\Lop;
 use App\Services\PaymentService;
 use App\Http\Requests\Payment\PaymentRequest;
 use Illuminate\Support\Facades\DB;
+use Illuminate\Support\Facades\Log;
 
 class PaymentController extends Controller
 {
@@ -32,7 +33,7 @@ class PaymentController extends Controller
         ]);
         $url = $this->paymentService->createPaymentUrl($data);
         
-        return redirect($url);
+        return redirect()->away($url);
     }
 
     private function tinhTienTheoTinChi($soTinChi, $loaiMon)
