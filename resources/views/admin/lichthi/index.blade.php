@@ -19,7 +19,7 @@
                     <div class="card-body">
                         <div class="card-bod p-2">
                             <form class="d-flex flex-wrap gap-2 align-items-end" method="GET"
-                                action="{{ route('giangvien.lichhoc.index') }}">
+                                action="{{ route('giangvien.lichthi.index') }}">
 
                                 <!-- Ngành học -->
                                 <div>

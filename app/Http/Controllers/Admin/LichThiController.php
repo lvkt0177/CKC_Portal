@@ -6,6 +6,7 @@ use App\Http\Controllers\Controller;
 use Illuminate\Http\Request;
 use Carbon\Carbon;
 
+
 //Models
 use Illuminate\Support\Facades\Auth;
 use App\Models\Lop;
@@ -102,28 +103,77 @@ class LichThiController extends Controller
             }
         }
 
-        $thoikhoabieu = ThoiKhoaBieu::with([
-            'lopHocPhan',
-            'lopHocPhan.lop',
-            'lopHocPhan.giangVien.hoSo',
-            'phong',
-            'tuan'
-        ])
-        ->whereHas('lopHocPhan', function ($query) use ($lop) {
-            $query->where('id_lop', $lop->id);
-        })
-        ->where('id_tuan', $tuan->id ?? null)
-        ->get();
-        return view('admin.lichthi.show', compact('ngayTrongTuan','thoikhoabieu','lop','dsHocKy','dsTuan','hocKy','tuanDangChon'));
+        //$lichthi = LichThi
+        return view('admin.lichthi.show', compact('ngayTrongTuan','lop','dsHocKy','dsTuan','hocKy','tuanDangChon'));
     }
-    public function create(Lop $lop)
+    public function create(Request $request,Lop $lop)
     {
-        return view('admin.lichthi.show', compact('lop'));
+        
+        $today = now();
+        $dsHocKy = HocKy::where('id_nien_khoa', $lop->id_nien_khoa)
+                        ->where('ngay_bat_dau', '>=', $today)
+                        ->orderBy('ngay_bat_dau')
+                        ->get();
+
+        if ($request->filled('hoc_ky')) {
+            $hocKy = HocKy::find($request->hoc_ky);
+        } else {
+            $hocKy = $dsHocKy->first();
+        }
+        
+        $dsLopHP = collect();
+        $dsLopHP = LopHocPhan::where('id_lop', $lop->id)
+                ->whereHas('chuongTrinhDaoTao.chiTietChuongTrinhDaoTao', function ($query) use ($hocKy) {
+                    $query->where('id_hoc_ky', $hocKy->id);})
+                ->get();
+        dump($dsLopHP);           
+        $dsTuan = Tuan::whereDate('ngay_bat_dau', '>=', $hocKy->ngay_bat_dau)
+                    ->whereDate('ngay_ket_thuc', '<=', $hocKy->ngay_ket_thuc)
+                    ->orderBy('tuan')
+                    ->get();
+        
+
+        if ($request->filled('tuan')) {
+            $tuanDangChon = $dsTuan->firstWhere('id', $request->tuan);
+        } else {
+            $tuanDangChon = $dsTuan->slice(16)->first();
+        }
+        
+        $ngayTrongTuan = collect();
+        if ($tuanDangChon) {
+            $bat_dau = \Carbon\Carbon::parse($tuanDangChon->ngay_bat_dau);
+            $ket_thuc = \Carbon\Carbon::parse($tuanDangChon->ngay_ket_thuc);
+            while ($bat_dau->lte($ket_thuc)) {
+                $ngayTrongTuan->push($bat_dau->copy());
+                $bat_dau->addDay();
+            }
+        }
+        
+        $giam_thi = User::with('boMon.nganhHoc')
+        ->whereHas('boMon.nganhHoc', function ($query) use ($lop) {
+            $query->where('id_nganh_hoc', $lop->id_nganh_hoc);
+        })
+        ->get(); 
+
+        $phong = Phong::all();
+        return view('admin.lichthi.create', compact(
+            'lop',
+            'phong',
+            'giam_thi',
+            'dsHocKy',
+            'hocKy',
+            'dsLopHP',
+            'dsTuan',
+            'tuanDangChon',
+            'ngayTrongTuan'
+            
+        
+        ));
     }
     public function store()
     {
-        
         return redirect()->route('giangvien.lichthi.create',['lop'=>$lop])
         ->with('success', 'Thêm thành công');
     }
+    
 }

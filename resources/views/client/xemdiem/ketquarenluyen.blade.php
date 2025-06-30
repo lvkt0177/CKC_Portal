@@ -75,6 +75,7 @@
                                 <tr>
                                     <th>STT</th>
                                     <th>Tháng</th>
+                                    <th>Năm</th>
                                     <th>Rèn luyện</th>
                                 </tr>
                             </thead>
@@ -86,7 +87,8 @@
 
                                     <tr>
                                         <td>{{ $thang }}</td>
-                                        <td>Tháng {{ $thang }}</td>
+                                        <td>Tháng {{ $thang }} </td>
+                                        <td>{{ $namDangChon }}</td>
                                         <td>
                                             @if ($diemThang)
                                                 {{ $diemThang->xep_loai->getLabel() }}
