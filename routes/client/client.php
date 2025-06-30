@@ -18,5 +18,6 @@ Route::prefix('sinhvien')->name('sinhvien.')->group(function () {
         include('xemdiem.php');
         include('lichthi.php');
         include('dangkyhocghep.php');
+        include('baomat.php');
     });
 });

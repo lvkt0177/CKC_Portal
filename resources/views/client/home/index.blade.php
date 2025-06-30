@@ -19,26 +19,28 @@
                 <div class="row align-items-center">
                     <!-- Avatar bên trái -->
                     <div class="col-lg-4 col-md-12 col-sm-12 text-center mb-3 mb-md-0">
-                        <img src="{{ asset('' . Auth::guard('student')->user()->hoSo->anh) }}" alt="Student Avatar"
+                        <div class="">
+                            <img src="{{ asset('' . Auth::guard('student')->user()->hoSo->anh) }}" alt="Student Avatar"
                             class="rounded-circle" style="width: 240px;">
+                            <div class="mt-3"><a class="text-primary text-decoration-none" href="{{ route('sinhvien.ho-so.index') }}">Xem chi tiết</a></div>
+                        </div>
                     </div>
 
                     <!-- Thông tin bên phải -->
                     <div class="col-lg-8 col-md-12 col-sm-12">
-                        <h4 class="fw-bold">Sinh viên: {{ Auth::guard('student')->user()->hoSo->ho_ten }}</h4>
+                        <h3 class="fw-bold">{{ Auth::guard('student')->user()->hoSo->ho_ten }}</h3>
                         <div class="row">
                             <div class="col-sm-6">
                                 <p><strong>MSSV:</strong> {{ Auth::guard('student')->user()->ma_sv }}</p>
                                 <p><strong>Lớp học:</strong> {{ Auth::guard('student')->user()->lop->ten_lop }}</p>
                                 <p><strong>Hệ đào tạo:</strong> Cao đẳng</p>
-                                <p><strong>Niên khoá:</strong>
-                                    {{ Auth::guard('student')->user()->lop->nienKhoa->ten_nien_khoa }}</p>
                                 <p><strong>Giới tính:</strong> {{ Auth::guard('student')->user()->hoSo->gioi_tinh }}</p>
                             </div>
                             <div class="col-sm-6">
+                                <p><strong>Niên khoá:</strong>
+                                    {{ Auth::guard('student')->user()->lop->nienKhoa->ten_nien_khoa }}</p>
                                 <p><strong>Ngày sinh:</strong> {{ Auth::guard('student')->user()->hoSo->ngay_sinh }} </p>
                                 <p><strong>Ngành:</strong> Hệ thống thông tin</p>
-                                <p><strong>Bậc đào tạo:</strong> Tiên tiến</p>
                             </div>
                         </div>
                     </div>

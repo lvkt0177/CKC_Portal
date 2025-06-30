@@ -181,12 +181,27 @@ class PaymentService
     protected function updateDanhSachHocPhan($id_lop_hoc_phan): void
     {
         $sinhVien = Auth::guard('student')->user();
-        $lopHocPhan = DanhSachHocPhan::create([
-            'id_sinh_vien' => $sinhVien->id,
-            'id_lop_hoc_phan' => $id_lop_hoc_phan,
-            'loai_hoc' => 1,
-        ]);
-        $lopHocPhan->save();
+
+        $lopHocPhan = LopHocPhan::find($id_lop_hoc_phan);
+        if (!$lopHocPhan) {
+            throw new \Exception('Lớp học phần không tồn tại.');
+        }
+        
+        if($lopHocPhan->gioi_han_dang_ky >= 0)
+        {
+            $lopHocPhan->so_luong_dang_ky += 1;
+            $lopHocPhan->gioi_han_dang_ky -= 1;
+            
+            $lopHocPhan->save();
+            
+            $danhSachHocPhan = DanhSachHocPhan::create([
+                'id_sinh_vien' => $sinhVien->id,
+                'id_lop_hoc_phan' => $id_lop_hoc_phan,
+                'loai_hoc' => 1,
+                
+            ]);
+            $danhSachHocPhan->save();
+        }
     }
 
     protected function updateHocPhiHocGhepThiLai($id_lop_hoc_phan, $amount, $loai_dong): void

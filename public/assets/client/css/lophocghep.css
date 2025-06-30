@@ -1,5 +1,5 @@
 :root {
-    --primary-color: #2c3e50;
+    --primary-color-list: #2c3e50;
     --secondary-color: #3498db;
     --accent-color: #e74c3c;
     --success-color: #27ae60;
@@ -24,7 +24,7 @@ body {
 }
 
 .page-title {
-    color: var(--primary-color);
+    color: var(--primary-color-list);
     font-weight: 700;
     font-size: 2.5rem;
     margin-bottom: 0.5rem;
@@ -131,7 +131,7 @@ body {
 
 .info-label {
     font-weight: 600;
-    color: var(--primary-color);
+    color: var(--primary-color-list);
     font-size: 0.9rem;
     margin-bottom: 0.2rem;
 }
@@ -223,7 +223,7 @@ body {
     margin-bottom: 0.5rem;
     border: 2px solid rgba(255, 255, 255, 0.3);
     background: rgba(255, 255, 255, 0.9);
-    color: var(--primary-color);
+    color: var(--primary-color-list);
     font-weight: 600;
     transition: all 0.3s ease;
 }

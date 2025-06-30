@@ -1,6 +1,6 @@
 @extends('client.layouts.app')
 
-@section('title', 'Đăng Ký Xác Nhận Giấy Tờ')
+@section('title', 'Lịch sử đăng ký học ghép')
 
 @section('css')
     <link rel="stylesheet" href="{{ asset('assets/client/css/hocphi.css') }}">

@@ -1,0 +1,512 @@
+body {
+    background-color: #f8f9fa;
+    font-family: Arial, sans-serif;
+}
+
+.student-card {
+    background: white;
+    border-radius: 15px;
+    box-shadow: 0 4px 6px rgba(0, 0, 0, 0.1);
+    padding: 30px;
+    margin: 20px auto;
+    max-width: 1200px;
+}
+
+.profile-section {
+    display: flex;
+    align-items: flex-start;
+    gap: 30px;
+    margin-bottom: 40px;
+}
+
+.profile-image {
+    width: 180px;
+    height: 180px;
+    border-radius: 50%;
+    object-fit: cover;
+    border: 4px solid #e9ecef;
+    box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1);
+}
+
+.profile-info {
+    flex: 1;
+}
+
+.student-id {
+    background: rgb(241, 95, 95);
+    color: white;
+    padding: 8px 15px;
+    border-radius: 20px;
+    font-weight: bold;
+    display: inline-block;
+    margin-bottom: 15px;
+}
+
+.student-name {
+    font-size: 1.8rem;
+    font-weight: bold;
+    color: #2c3e50;
+    margin-bottom: 10px;
+}
+
+.student-gender {
+    color: #6c757d;
+    font-size: 1.1rem;
+    margin-bottom: 20px;
+}
+
+.section-title {
+    color: #000000;
+    font-size: 1.5rem;
+    font-weight: bold;
+    margin-bottom: 25px;
+    border-bottom: 2px solid #000000;
+    padding-bottom: 8px;
+}
+
+.info-grid {
+    display: grid;
+    grid-template-columns: repeat(auto-fit, minmax(300px, 1fr));
+    gap: 20px;
+    margin-bottom: 30px;
+}
+
+.info-item {
+    display: flex;
+    align-items: center;
+    padding: 12px 0;
+    border-bottom: 1px solid #eee;
+}
+
+.info-label {
+    font-weight: 600;
+    color: #495057;
+    min-width: 120px;
+    margin-right: 15px;
+}
+
+.info-value {
+    color: #212529;
+    flex: 1;
+}
+
+.personal-info-grid {
+    display: grid;
+    grid-template-columns: repeat(auto-fit, minmax(250px, 1fr));
+    gap: 15px;
+    margin-bottom: 20px;
+}
+
+.personal-info-item {
+    display: flex;
+    padding: 8px 0;
+}
+
+.personal-label {
+    font-weight: 600;
+    color: #495057;
+    min-width: 100px;
+    margin-right: 10px;
+}
+
+.personal-value {
+    color: #212529;
+    flex: 1;
+}
+
+.address-section {
+    background: #f8f9fa;
+    padding: 15px;
+    border-radius: 8px;
+    margin-top: 15px;
+}
+
+.address-label {
+    font-weight: 600;
+    color: #495057;
+    margin-bottom: 5px;
+}
+
+.address-value {
+    color: #212529;
+    line-height: 1.4;
+}
+
+/* Extra Large devices (large desktops, 1200px and up) */
+@media (min-width: 1200px) {
+    .student-card {
+        max-width: 1400px;
+        padding: 40px;
+    }
+    
+    .profile-image {
+        width: 200px;
+        height: 200px;
+    }
+    
+    .student-name {
+        font-size: 2rem;
+    }
+    
+    .info-grid {
+        grid-template-columns: repeat(2, 1fr);
+        gap: 30px;
+    }
+    
+    .personal-info-grid {
+        grid-template-columns: repeat(4, 1fr);
+        gap: 20px;
+    }
+}
+
+/* Large devices (desktops, 992px and up) */
+@media (min-width: 992px) and (max-width: 1199.98px) {
+    .student-card {
+        max-width: 1100px;
+        padding: 35px;
+    }
+    
+    .profile-image {
+        width: 180px;
+        height: 180px;
+    }
+    
+    .info-grid {
+        grid-template-columns: repeat(2, 1fr);
+        gap: 25px;
+    }
+    
+    .personal-info-grid {
+        grid-template-columns: repeat(3, 1fr);
+        gap: 18px;
+    }
+}
+
+/* Medium devices (tablets, 768px and up) */
+@media (min-width: 768px) and (max-width: 991.98px) {
+    .student-card {
+        max-width: 900px;
+        padding: 30px;
+        margin: 15px;
+    }
+    
+    .profile-section {
+        flex-direction: row;
+        gap: 20px;
+    }
+    
+    .profile-image {
+        width: 160px;
+        height: 160px;
+    }
+    
+    .student-name {
+        font-size: 1.6rem;
+    }
+    
+    .info-grid {
+        grid-template-columns: 1fr;
+        gap: 15px;
+    }
+    
+    .personal-info-grid {
+        grid-template-columns: repeat(2, 1fr);
+        gap: 15px;
+    }
+    
+    .info-label {
+        min-width: 140px;
+    }
+    
+    .personal-label {
+        min-width: 120px;
+    }
+}
+
+/* Small devices (landscape phones, 576px and up) */
+@media (min-width: 576px) and (max-width: 767.98px) {
+    .student-card {
+        margin: 10px;
+        padding: 25px;
+        border-radius: 12px;
+    }
+    
+    .profile-section {
+        flex-direction: column;
+        align-items: center;
+        text-align: center;
+        gap: 20px;
+    }
+    
+    .profile-image {
+        width: 140px;
+        height: 140px;
+    }
+    
+    .student-name {
+        font-size: 1.5rem;
+    }
+    
+    .section-title {
+        font-size: 1.3rem;
+        text-align: center;
+    }
+    
+    .info-grid {
+        grid-template-columns: 1fr;
+        gap: 12px;
+    }
+    
+    .personal-info-grid {
+        grid-template-columns: 1fr;
+        gap: 12px;
+    }
+    
+    .info-item {
+        flex-direction: column;
+        align-items: flex-start;
+        padding: 10px;
+        background: #f8f9fa;
+        border-radius: 6px;
+        border: none;
+        margin-bottom: 8px;
+    }
+    
+    .info-label {
+        min-width: auto;
+        margin-right: 0;
+        margin-bottom: 5px;
+        font-size: 0.9rem;
+    }
+    
+    .info-value {
+        font-size: 1rem;
+        font-weight: 500;
+    }
+    
+    .personal-info-item {
+        flex-direction: column;
+        padding: 10px;
+        background: #f8f9fa;
+        border-radius: 6px;
+        margin-bottom: 8px;
+    }
+    
+    .personal-label {
+        min-width: auto;
+        margin-right: 0;
+        margin-bottom: 5px;
+        font-size: 0.9rem;
+    }
+    
+    .personal-value {
+        font-size: 1rem;
+        font-weight: 500;
+    }
+}
+
+/* Extra small devices (portrait phones, less than 576px) */
+@media (max-width: 575.98px) {
+    .student-card {
+        margin: 5px;
+        padding: 20px;
+        border-radius: 10px;
+    }
+    
+    .profile-section {
+        flex-direction: column;
+        align-items: center;
+        text-align: center;
+        gap: 15px;
+    }
+    
+    .profile-image {
+        width: 120px;
+        height: 120px;
+    }
+    
+    .student-id {
+        font-size: 0.9rem;
+        padding: 6px 12px;
+    }
+    
+    .student-name {
+        font-size: 1.4rem;
+        margin-bottom: 8px;
+    }
+    
+    .student-gender {
+        font-size: 1rem;
+        margin-bottom: 15px;
+    }
+    
+    .section-title {
+        font-size: 1.2rem;
+        text-align: center;
+        margin-bottom: 20px;
+    }
+    
+    .info-grid {
+        grid-template-columns: 1fr;
+        gap: 10px;
+    }
+    
+    .personal-info-grid {
+        grid-template-columns: 1fr;
+        gap: 10px;
+    }
+    
+    .info-item {
+        flex-direction: column;
+        align-items: flex-start;
+        padding: 12px;
+        background: #f8f9fa;
+        border-radius: 8px;
+        border: none;
+        margin-bottom: 8px;
+        box-shadow: 0 1px 3px rgba(0,0,0,0.1);
+    }
+    
+    .info-label {
+        min-width: auto;
+        margin-right: 0;
+        margin-bottom: 6px;
+        font-size: 0.85rem;
+        color: #6c757d;
+        text-transform: uppercase;
+        letter-spacing: 0.5px;
+    }
+    
+    .info-value {
+        font-size: 1rem;
+        font-weight: 600;
+        color: #212529;
+    }
+    
+    .personal-info-item {
+        flex-direction: column;
+        padding: 12px;
+        background: #f8f9fa;
+        border-radius: 8px;
+        margin-bottom: 8px;
+        box-shadow: 0 1px 3px rgba(0,0,0,0.1);
+    }
+    
+    .personal-label {
+        min-width: auto;
+        margin-right: 0;
+        margin-bottom: 6px;
+        font-size: 0.85rem;
+        color: #6c757d;
+        text-transform: uppercase;
+        letter-spacing: 0.5px;
+    }
+    
+    .personal-value {
+        font-size: 1rem;
+        font-weight: 600;
+        color: #212529;
+    }
+    
+    .address-section {
+        padding: 15px;
+        border-radius: 8px;
+    }
+    
+    .address-label {
+        font-size: 0.9rem;
+        margin-bottom: 8px;
+    }
+    
+    .address-value {
+        font-size: 0.95rem;
+        line-height: 1.5;
+    }
+}
+
+/* Ultra small devices (very small phones, less than 375px) */
+@media (max-width: 374.98px) {
+    .student-card {
+        margin: 2px;
+        padding: 15px;
+        border-radius: 8px;
+    }
+    
+    .profile-image {
+        width: 100px;
+        height: 100px;
+    }
+    
+    .student-id {
+        font-size: 0.8rem;
+        padding: 5px 10px;
+    }
+    
+    .student-name {
+        font-size: 1.2rem;
+    }
+    
+    .section-title {
+        font-size: 1.1rem;
+    }
+    
+    .info-item, .personal-info-item {
+        padding: 10px;
+    }
+    
+    .info-label, .personal-label {
+        font-size: 0.8rem;
+    }
+    
+    .info-value, .personal-value {
+        font-size: 0.9rem;
+    }
+}
+
+/* Landscape orientation for mobile devices */
+@media (max-width: 768px) and (orientation: landscape) {
+    .profile-section {
+        flex-direction: row;
+        align-items: flex-start;
+        text-align: left;
+        gap: 20px;
+    }
+    
+    .profile-image {
+        width: 120px;
+        height: 120px;
+    }
+    
+    .info-grid {
+        grid-template-columns: repeat(2, 1fr);
+        gap: 15px;
+    }
+    
+    .personal-info-grid {
+        grid-template-columns: repeat(2, 1fr);
+        gap: 12px;
+    }
+}
+
+/* Print styles */
+@media print {
+    body {
+        background-color: white;
+    }
+    
+    .student-card {
+        box-shadow: none;
+        border: 1px solid #ddd;
+        margin: 0;
+        max-width: none;
+    }
+    
+    .section-title {
+        color: #333 !important;
+    }
+    
+    .student-id {
+        background: #f0f0f0 !important;
+        color: #333 !important;
+    }
+}

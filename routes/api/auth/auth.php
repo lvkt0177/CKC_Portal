@@ -12,6 +12,6 @@ Route::post('/student/login-student', [AuthLoginController::class, 'studentLogin
 
 Route::get('/login/user-reset-password', [AuthLoginController::class, 'userResetPassword'])->name('login.user-reset-password');
 
-Route::post('/sinh-vien-yeu-cau-cap-mat-khau', [AuthLoginController::class, 'svYeuCauCapMatKhau']);
+Route::post('/sinhvien/sinh-vien-yeu-cau-cap-mat-khau', [AuthLoginController::class, 'svYeuCauCapMatKhau']);
 
 Route::post('/user/lay-lai-mat-khau', [AuthLoginController::class, 'userLayLaiMatKhau']);

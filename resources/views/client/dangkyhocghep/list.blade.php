@@ -57,8 +57,14 @@
                                     <i class="fas fa-clock"></i>
                                 </div>
                                 <div class="info-content">
-                                    <div class="info-label">Thời gian</div>
-                                    <div class="info-value">{{ $lop->thoiKhoaBieu[0]->ngay }}</div>
+                                    @php
+                                        \Carbon\Carbon::setLocale('vi');
+                                    @endphp
+                                    <div class="info-label">Ngày bắt đầu học</div>
+                                    <div class="info-value text-capitalize">
+                                        {{ \Carbon\Carbon::parse($lop->thoiKhoaBieu[0]->ngay)->translatedFormat('l') }},
+                                        {{ \Carbon\Carbon::parse($lop->thoiKhoaBieu[0]->ngay)->format('d-m-Y') }}
+                                    </div>
                                 </div>
                             </div>
                             
@@ -81,19 +87,31 @@
                                     <div class="info-value">{{ $lop->so_luong_dang_ky }}</div>
                                 </div>
                             </div>
-                            
-                            <div class="text-center mt-3">
-                                <form action="{{ route('vnpay.payment.hoc-ghep', $lop   ) }}" method="POST">
-                                    @csrf
-                                    <input type="hidden" name="id_mon_hoc" value="{{ $monHoc->id }}">
-                                    <input type="hidden" name="id_lop_hoc_phan" value="{{ $lop->id }}">
-                                    <button class="status-badge status-active border-0">
-                                        <span class="fs-6">
-                                            Đăng ký
-                                        </span>
-                                    </button>
-                                </form>
+
+                            <div class="info-item">
+                                <div class="info-icon">
+                                    <i class="fas fa-users"></i>
+                                </div>
+                                <div class="info-content">
+                                    <div class="info-label">Số lượng sinh viên học ghép đăng ký</div>
+                                    <div class="info-value">{{ $lop->gioi_han_dang_ky }}</div>
+                                </div>
                             </div>
+                            
+                            @if($lop->gioi_han_dang_ky != 0)
+                                <div class="text-center mt-3">
+                                    <form action="{{ route('vnpay.payment.hoc-ghep', $lop   ) }}" method="POST">
+                                        @csrf
+                                        <input type="hidden" name="id_mon_hoc" value="{{ $monHoc->id }}">
+                                        <input type="hidden" name="id_lop_hoc_phan" value="{{ $lop->id }}">
+                                        <button class="status-badge status-active border-0">
+                                            <span class="fs-6">
+                                                Đăng ký
+                                            </span>
+                                        </button>
+                                    </form>
+                                </div>
+                            @endif
                         </div>
                     </div>
                 </div>

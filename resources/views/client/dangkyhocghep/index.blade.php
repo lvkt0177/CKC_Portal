@@ -1,6 +1,6 @@
 @extends('client.layouts.app')
 
-@section('title', 'Đăng Ký học ghép')
+@section('title', 'Lớp học ghép')
 
 @section('css')
     <link rel="stylesheet" href="{{ asset('assets/client/css/danghoclop.css') }}">
