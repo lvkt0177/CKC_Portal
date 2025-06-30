@@ -84,7 +84,7 @@
                                 </div>
                                 <div class="info-content">
                                     <div class="info-label">Sĩ số</div>
-                                    <div class="info-value">{{ $lop->so_luong_dang_ky }}</div>
+                                    <div class="info-value">{{ $lop->so_luong_sinh_vien }}</div>
                                 </div>
                             </div>
 

@@ -13,7 +13,7 @@ class LopHocPhan extends Model
         'id_chuong_trinh_dao_tao',
         'id_lop',
         'loai_lop_hoc_phan',
-        'so_luong_dang_ky',
+        'so_luong_sinh_vien',
         'loai_mon',
         'trang_thai',
     ];

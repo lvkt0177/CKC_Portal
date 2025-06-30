@@ -24,7 +24,7 @@ return new class extends Migration {
 
             $table->integer('loai_lop_hoc_phan')->default(0);
 
-            $table->integer('so_luong_dang_ky')->default(0);
+            $table->integer('so_luong_sinh_vien')->default(0);
 
             $table->integer('gioi_han_dang_ky')->nullable()->default(0);
             //loai_mon

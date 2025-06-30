@@ -51,7 +51,6 @@ class DangKyHocGhepController extends Controller
                 return $item;
             });
 
-
         return view('client.dangkyhocghep.index', compact('monHoc'));
     }
 

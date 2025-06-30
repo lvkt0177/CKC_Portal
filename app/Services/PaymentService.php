@@ -189,7 +189,7 @@ class PaymentService
         
         if($lopHocPhan->gioi_han_dang_ky >= 0)
         {
-            $lopHocPhan->so_luong_dang_ky += 1;
+            $lopHocPhan->so_luong_sinh_vien += 1;
             $lopHocPhan->gioi_han_dang_ky -= 1;
             
             $lopHocPhan->save();
