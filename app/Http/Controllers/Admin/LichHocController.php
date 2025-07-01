@@ -6,6 +6,7 @@ use App\Http\Controllers\Controller;
 use Illuminate\Http\Request;
 use App\Http\Requests\ThoiKhoaBieu\ThoiKhoaBieuRequest;
 use App\Http\Requests\ThoiKhoaBieu\UpdateLichHocRequest;
+use App\Http\Requests\ThoiKhoaBieu\DestroyLichHocRequest;
 use Carbon\Carbon;
 
 //Model
@@ -67,17 +68,20 @@ class LichHocController extends Controller
         $hocKy = null;
 
         if ($request->filled('hoc_ky')) {
-            $hocKy = HocKy::find($request->hoc_ky);
+            $hocKy = HocKy::where('id_nien_khoa', $lop->id_nien_khoa)
+                        ->find($request->hoc_ky);
         }
 
         if (!$hocKy) {
-            $hocKy = HocKy::where('ngay_bat_dau', '<=', $today)
+            $hocKy = HocKy::where('id_nien_khoa', $lop->id_nien_khoa)
+                        ->where('ngay_bat_dau', '<=', $today)
                         ->where('ngay_ket_thuc', '>=', $today)
                         ->first();
         }
 
         if (!$hocKy) {
-            $hocKy = HocKy::where('ngay_ket_thuc', '<=', $today)
+            $hocKy = HocKy::where('id_nien_khoa', $lop->id_nien_khoa)
+                        ->where('ngay_ket_thuc', '<=', $today)
                         ->orderByDesc('ngay_ket_thuc')
                         ->first();
         }
@@ -123,7 +127,7 @@ class LichHocController extends Controller
             $query->where('id', $lop->id_nganh_hoc);
         })
         ->get();
-
+        
         return view('admin.lichhoc.list', compact('ngayTrongTuan','thoikhoabieu','lop','dsHocKy','dsTuan','hocKy','tuanDangChon','dsgv','dsPhong'));
     }
     public function create(Request $request, Lop $lop)
@@ -296,6 +300,7 @@ class LichHocController extends Controller
                 'id_chuong_trinh_dao_tao' => $ct_ctdt->id_chuong_trinh_dao_tao, 
                 'loai_lop_hoc_phan' => 0,
                 'so_luong_sinh_vien' => $sinhVienList->count(),
+                'gioi_han_dang_ky' => 20,
                 'loai_mon' => 0,
                 'trang_thai' => 1,
             ]);    
@@ -459,27 +464,7 @@ class LichHocController extends Controller
                     return redirect()->route('giangvien.lichhoc.list',['lop'=>$lop])->with('error','Phòng đã có lịch học trùng vào thời gian này.');
                 }
             }
-        
-
-           
-        $trungLichLop = ThoiKhoaBieu::where('ngay', $ngay)
-            ->whereHas('lopHocPhan', function ($query) use ($idLop) {
-                $query->where('id_lop', $idLop);
-            })
-            ->where(function ($query) use ($data,$tietBatDau, $tietKetThuc) {
-                $query->whereBetween('tiet_bat_dau', [$tietBatDau, $tietKetThuc])
-                    ->orWhereBetween('tiet_ket_thuc', [$tietBatDau, $tietKetThuc])
-                    ->orWhere(function ($q) use ($data,$tietBatDau, $tietKetThuc) {
-                        $q->where('tiet_bat_dau', '<=', $tietBatDau)
-                            ->where('tiet_ket_thuc', '>=', $tietKetThuc);
-                    });
-            })
-            ->exists();
-        dd($trungLichLop);
-        if ($trungLichLop) {
-            return redirect()->route('giangvien.lichhoc.list',['lop'=>$lop])->with('error','Lớp đã có học phần khác trùng lịch vào thời gian này.');
-        }
-
+    
            
             
             $updateData = [];
@@ -498,31 +483,17 @@ class LichHocController extends Controller
         ->with('success', 'Cập nhật thành công.');
     }
 
-    public function destroy(Request $request)
+    public function destroy(DestroyLichHocRequest $request)
     {
-       
-        dd($request->all());
-
-        $idLopHocPhan = $request->id_lop_hoc_phan;
-        $tietBatDau = $request->tiet_bat_dau;
-        $ngay = $request->ngay;
-
-        
-        $lop = Lop::find($request->id_lop);
-
-     
-        $thoiKhoaBieu = ThoiKhoaBieu::where('id_lop_hoc_phan', $idLopHocPhan)
-                            ->where('tiet_bat_dau', $tietBatDau)
-                            ->where('ngay', $ngay)
-                            ->first();
-
+        $data = $request->validated();
+        $idTKB = $data['id_tkb'];
+        $thoiKhoaBieu = ThoiKhoaBieu::find($idTKB);
         if ($thoiKhoaBieu) {
             $thoiKhoaBieu->delete();
-            return redirect()->route('giangvien.lichhoc.list', ['lop' => $lop])
+            return redirect()->back()
                             ->with('success', 'Xóa thành công.');
         }
-
-        return redirect()->route('giangvien.lichhoc.list', ['lop' => $lop])
+        return redirect()->back()
                         ->with('error', 'Không tìm thấy, xóa không thành công.');
     }
 
