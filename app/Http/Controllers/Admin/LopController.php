@@ -53,7 +53,7 @@ class LopController extends Controller
                 ->whereHas('nam', function ($q) use ($nam) {
                     $q->where('nam_bat_dau', $nam);
               });
-    }
+            }
         ])
         ->where('id_lop', $lop->id)
         ->orderBy('ma_sv', 'asc')

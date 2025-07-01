@@ -11,18 +11,9 @@ use Hash;
 
 class ProfileController extends Controller
 {
-    public function showChangePassword()
-    {
-        return view('client.profile.change-password');
-    }
-
-    public function changePassword(ChangePasswordRequest $request)
+    public function index()
     {
         $sinhVien = Auth::guard('student')->user();
-
-        $sinhVien->password = Hash::make($request->new_password);
-        $sinhVien->save();
-
-        return redirect()->back()->with('success', 'Đổi mật khất thành công.');
+        return view('client.profile.index', compact('sinhVien'));
     }
 }

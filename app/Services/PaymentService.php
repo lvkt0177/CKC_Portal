@@ -6,6 +6,12 @@ use Illuminate\Support\Facades\Auth;
 use App\Models\HocPhi;
 use App\Models\HocKy;
 use Carbon\Carbon;
+use App\Models\SinhVien;
+use App\Models\LopHocPhan;
+use App\Models\DangKyHGTL;
+use App\Models\DanhSachHocPhan;
+use App\Enum\LoaiDangKy;
+use Illuminate\Support\Facades\DB;
 
 class PaymentService
 {
@@ -22,9 +28,10 @@ class PaymentService
         $vnp_HashSecret = "U0ZBWWF07HXOQYZL2ZR823GINKU3X1O7";
 
         $vnp_TxnRef = rand(1,10000);
-        $vnp_OrderInfo = 'Thanh toan hoc phi';
+        $vnp_OrderInfo = $data['order_info'];
         $vnp_OrderType = 'billpayment';
         $vnp_Amount = $data['total_vnpay'] * 100;
+        $vnp_Data_Orther = $data['data_other'] ?? '';
         $vnp_Locale = 'vn';
         // $vnp_BankCode = 'VNPAYQR';
         $vnp_IpAddr = $_SERVER['REMOTE_ADDR'];
@@ -76,12 +83,8 @@ class PaymentService
         'message' => 'success',
         'data' => $vnp_Url
         );
-        if (isset($_POST['redirect'])) {
-        header('Location: ' . $vnp_Url);
-        die();
-        } else {
-        echo json_encode($returnData);
-        }
+        
+        return $vnp_Url;
     }
 
     public function handleReturn(array $inputData): array|string
@@ -115,18 +118,34 @@ class PaymentService
         $secureHash = hash_hmac('sha512', $hashData, $vnp_HashSecret);
 
         if ($secureHash === $vnp_SecureHash) {
+            $orderInfoRaw = $filteredData['vnp_OrderInfo'] ?? '';
+            $orderInfo = json_decode($orderInfoRaw, true);
             $data = [
                 'transactionId' => $filteredData['vnp_TxnRef'] ?? '',
                 'amount' => number_format(($filteredData['vnp_Amount'] ?? 0) / 100, 0, ',', '.') . ' VNĐ',
                 'time' => $filteredData['vnp_PayDate'] 
                     ? \Carbon\Carbon::createFromFormat('YmdHis', $filteredData['vnp_PayDate'])->format('d/m/Y - H:i:s')
                     : '',
-                'orderInfo' => $filteredData['vnp_OrderInfo'] ?? '',
+                'orderInfo' => $orderInfo['message'] ?? '',
                 'paymentMethod' => $filteredData['vnp_CardType'] ?? '',
                 'status' => $filteredData['vnp_ResponseCode'] == '00' ? 'success' : 'failed',
+                'orderType' => $filteredData['vnp_OrderType'] ?? 'other',
+                'type' => $orderInfo['type'] ?? 'other',
+                'so_tien' => $filteredData['vnp_Amount'] / 100 ?? 0,
             ];
+
+
             if($data['status'] == 'success') {
-                $this->updateHocPhi();
+                if($data['type'] == 'hoc_phi') {
+                    $this->updateHocPhi();
+                }
+                if($data['type'] == 'hoc_ghep') {
+                    $this->updateHocPhiHocGhepThiLai($orderInfo['id_lop_hoc_phan'], $data['so_tien'], LoaiDangKy::HOCGHEP->value);
+                    $this->updateDanhSachHocPhan($orderInfo['id_lop_hoc_phan']);
+                }
+                if($data['type'] == 'thi_lai') {
+                    $this->updateHocPhiHocGhepThiLai($orderInfo['id_lop_hoc_phan'], $data['so_tien'], LoaiDangKy::THILAI->value);
+                }
             }
             return view('client.hocphi.result', compact('data'));
 
@@ -152,9 +171,48 @@ class PaymentService
             ->first();
             
             if($hocPhi->trang_thai->value == 0) {
+                $hocPhi->ngay_dong = Carbon::now();
                 $hocPhi->trang_thai = 1;
                 $hocPhi->save();                        
             }
         }
+    }
+
+    protected function updateDanhSachHocPhan($id_lop_hoc_phan): void
+    {
+        $sinhVien = Auth::guard('student')->user();
+
+        $lopHocPhan = LopHocPhan::find($id_lop_hoc_phan);
+        if (!$lopHocPhan) {
+            throw new \Exception('Lớp học phần không tồn tại.');
+        }
+        
+        if($lopHocPhan->gioi_han_dang_ky >= 0)
+        {
+            $lopHocPhan->so_luong_sinh_vien += 1;
+            $lopHocPhan->gioi_han_dang_ky -= 1;
+            
+            $lopHocPhan->save();
+            
+            $danhSachHocPhan = DanhSachHocPhan::create([
+                'id_sinh_vien' => $sinhVien->id,
+                'id_lop_hoc_phan' => $id_lop_hoc_phan,
+                'loai_hoc' => 1,
+                
+            ]);
+            $danhSachHocPhan->save();
+        }
+    }
+
+    protected function updateHocPhiHocGhepThiLai($id_lop_hoc_phan, $amount, $loai_dong): void
+    {
+        $sinhVien = Auth::guard('student')->user();
+        $dangKyHocGhep = DangKyHGTL::create([
+            'id_sinh_vien' => $sinhVien->id,
+            'id_lop_hoc_phan' => $id_lop_hoc_phan,
+            'so_tien' =>  $amount,
+            'loai_dong' =>  $loai_dong, 
+            'trang_thai' => 1, 
+        ]);
     }
 }

@@ -30,6 +30,9 @@ Route::prefix('admin')->name('api.admin.')->group(function () {
         include('nienkhoa.php');
         include('nganhhoc.php');
         include('bomon.php');
-        // include('bienbanshcn.php');
+        include('lophocphan.php');
+        include('bienbanshcn.php');
+        include('thongbao.php');
+        include('chuongtrinhdaotao.php');
     });
 });

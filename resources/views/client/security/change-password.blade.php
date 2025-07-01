@@ -21,7 +21,7 @@
 @section('content')
     <div class="form-change-password mt-5">
         <h5 class="mb-4 text-center">Đổi mật khẩu</h5>
-        <form method="POST" action="{{ route('sinhvien.ho-so.doi-mat-khau.post') }}" data-confirm>
+        <form method="POST" action="{{ route('sinhvien.bao-mat.doi-mat-khau.post') }}" data-confirm>
             @csrf
 
             <div class="mb-3">

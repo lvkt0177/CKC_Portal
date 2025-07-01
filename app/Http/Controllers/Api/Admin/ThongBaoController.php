@@ -72,9 +72,9 @@ class ThongBaoController extends Controller
         $thongbao->load([
             'binhLuans' => function ($q) {
                 $q->whereNull('id_binh_luan_cha')
-                    ->with(['nguoiBinhLuan.hoSo', 'binhLuanCon.nguoiBinhLuan.hoSo'])
+                    ->with(['nguoiBinhLuan.hoSo', 'binhLuanCon.nguoiBinhLuan.hoSo',])
                     ->orderBy('created_at', 'desc');
-            }
+            },'file'
         ]);
 
         return response()->json([

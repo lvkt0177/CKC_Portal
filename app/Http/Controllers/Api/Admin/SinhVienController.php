@@ -15,7 +15,7 @@ use App\Http\Requests\SinhVien\ChucVuRequest;
 class SinhVienController extends Controller
 {
     // Lấy ra danh sách lớp theo Niên khoá hoặc Ngành Học
-    public function index(Request $request)
+    public function index()
     {
         $query = Lop::with(['nienKhoa', 'giangVien.boMon.nganhHoc'])
             ->orderBy('id', 'desc');

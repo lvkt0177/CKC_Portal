@@ -105,9 +105,9 @@
                         class="fas fa-home"></i> TRANG CHỦ</a></li>
 
             <li class="dropdown">
-                <a href="#" class="dropdown-toggle {{ isActiveRoute('sinhvien/giay-xac-nhan') }} {{ isActiveRoute('sinhvien/khung-dao-tao') }} {{ isActiveRoute('sinhvien/bienbanshcn') }}"><i class="fas fa-info-circle"></i> THÔNG TIN CHUNG</a>
-                <ul class="submenu" style="display: {{ isActiveMenuRoute('sinhvien/giay-xac-nhan') }} {{ isActiveMenuRoute('sinhvien/khung-dao-tao') }} {{ isActiveMenuRoute('sinhvien/bienbanshcn') }};">
-                    <li><a class="" href="#">Thông tin sinh viên</a></li>
+                <a href="#" class="dropdown-toggle {{ isActiveRoute('sinhvien/giay-xac-nhan') }} {{ isActiveRoute('sinhvien/khung-dao-tao') }} {{ isActiveRoute('sinhvien/bienbanshcn') }} {{ isActiveRoute('sinhvien/ho-so') }}"><i class="fas fa-info-circle"></i> THÔNG TIN CHUNG</a>
+                <ul class="submenu" style="display: {{ isActiveMenuRoute('sinhvien/giay-xac-nhan') }} {{ isActiveMenuRoute('sinhvien/khung-dao-tao') }} {{ isActiveMenuRoute('sinhvien/ho-so') }} {{ isActiveMenuRoute('sinhvien/bienbanshcn') }};">
+                    <li><a class="{{ isActiveRoute('sinhvien/ho-so') }}" href="{{ route('sinhvien.ho-so.index') }}">Thông tin sinh viên</a></li>
                     <li><a class="{{ isActiveRoute('sinhvien/giay-xac-nhan') }}" href="{{ route('sinhvien.giayxacnhan.index') }}">Đăng ký xác nhận giấy tờ</a></li>
                     <li><a class="{{ isActiveRoute('sinhvien/khung-dao-tao') }}" href="{{ route('sinhvien.khungdaotao.index') }}">Khung chương trình đào tạo</a></li>
                     <li><a class="{{ isActiveRoute('sinhvien/bienbanshcn') }}" href="{{ route('sinhvien.bienbanshcn.index') }}">Biên bản SHCN</a></li>
@@ -115,35 +115,35 @@
             </li>
 
             <li class="dropdown">
-                <a href="#" class="dropdown-toggle"><i class="fas fa-graduation-cap"></i> HỌC TẬP</a>
-                <ul class="submenu">
-                    <li><a href="{{ route('sinhvien.xemdiem.ketquahoctap') }}">Kết quả học tập</a></li>
-                    <li><a href="{{ route('sinhvien.xemdiem.ketquarenluyen') }}">kết quả rèn luyện</a></li>
-                    <li><a href="{{ route('sinhvien.thoikhoabieu.index') }}">Lịch học theo tuần</a></li>
-                    <li><a href="{{ route('sinhvien.lichthi.index') }}">Lịch thi</a></li>
+                <a href="#" class="dropdown-toggle {{ isActiveRoute('sinhvien/xemdiem') }} {{ isActiveRoute('sinhvien/thoikhoabieu') }} {{ isActiveRoute('sinhvien/lichthi') }}"><i class="fas fa-graduation-cap"></i> HỌC TẬP</a>
+                <ul class="submenu" style="display: {{ isActiveMenuRoute('sinhvien/xemdiem') }} {{ isActiveMenuRoute('sinhvien/thoikhoabieu') }} {{ isActiveMenuRoute('sinhvien/lichthi') }};">
+                    <li><a class="{{ isActiveRoute('sinhvien/xemdiemhoctap') }}" href="{{ route('sinhvien.xemdiem.ketquahoctap') }}">Kết quả học tập</a></li>
+                    <li><a class="{{ isActiveRoute('sinhvien/xemdiemrenluyen') }}" href="{{ route('sinhvien.xemdiem.ketquarenluyen') }}">kết quả rèn luyện</a></li>
+                    <li><a class="{{ isActiveRoute('sinhvien/thoikhoabieu') }}" href="{{ route('sinhvien.thoikhoabieu.index') }}">Lịch học theo tuần</a></li>
+                    <li><a class="{{ isActiveRoute('sinhvien/lichthi') }}" href="{{ route('sinhvien.lichthi.index') }}">Lịch thi</a></li>
                 </ul>
             </li>
 
             <li class="dropdown">
-                <a href="#" class="dropdown-toggle"><i class="fas fa-calendar"></i> ĐĂNG KÝ HỌC GHÉP</a>
-                <ul class="submenu">
-                    <li><a href="{{ route('sinhvien.dang-ky-hoc-ghep.index') }}">Lớp học ghép</a></li>
-                    <li><a href="#">Kết quả đăng ký</a></li>
+                <a href="#" class="dropdown-toggle {{ isActiveRoute('sinhvien/dang-ky-hoc-ghep') }} {{ isActiveRoute('sinhvien/lop-dang-ky-hoc-ghep') }}"><i class="fas fa-calendar"></i> ĐĂNG KÝ HỌC GHÉP</a>
+                <ul class="submenu" style="display: {{ isActiveMenuRoute('sinhvien/dang-ky-hoc-ghep') }} {{ isActiveMenuRoute('sinhvien/lop-dang-ky-hoc-ghep') }};">
+                    <li><a class="{{ isActiveRoute('sinhvien/dang-ky-hoc-ghep') }}" href="{{ route('sinhvien.dang-ky-hoc-ghep.index') }}">Lớp học ghép</a></li>
+                    <li><a class="{{ isActiveRoute('sinhvien/lop-dang-ky-hoc-ghep') }}" href="{{ route('sinhvien.dang-ky-hoc-ghep.history') }}">Lịch sử đăng ký học ghép</a></li>
                 </ul>
             </li>
 
             <li class="dropdown">
-                <a href="#" class="dropdown-toggle"><i class="fas fa-file-alt"></i> HỌC PHÍ</a>
-                <ul class="submenu">
+                <a href="#" class="dropdown-toggle {{ isActiveRoute('sinhvien/hocphi') }}"><i class="fas fa-file-alt"></i> HỌC PHÍ</a>
+                <ul class="submenu" style="display: {{ isActiveMenuRoute('sinhvien/hocphi') }};">
                     <li><a href="{{ route('sinhvien.hocphi.index') }}">Tra cứu học phí</a></li>
                 </ul>
             </li>
 
             <li class="dropdown">
-                <a href="#" class="dropdown-toggle {{ isActiveRoute('sinhvien/ho-so') }}"><i
+                <a href="#" class="dropdown-toggle {{ isActiveRoute('sinhvien/bao-mat') }}"><i
                         class="fa-solid fa-user-shield"></i> BẢO MẬT</a>
-                <ul class="submenu">
-                    <li><a href="{{ route('sinhvien.ho-so.doi-mat-khau') }}">Đổi mật khẩu</a></li>
+                <ul class="submenu " style="display: {{ isActiveMenuRoute('sinhvien/bao-mat') }};">
+                    <li><a href="{{ route('sinhvien.bao-mat.doi-mat-khau') }}">Đổi mật khẩu</a></li>
                 </ul>
             </li>
         </ul>

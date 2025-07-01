@@ -86,7 +86,7 @@
 
 
                                                     <td>{{ $dshp->diem_tong_ket ?? '' }}</td>
-                                                    <td>{{ $dshp->loai_sinh_vien == 0 ? 'Chính quy' : 'Học ghép' }}</td>
+                                                    <td>{{ $dshp->loai_hoc == 0 ? 'Chính quy' : 'Học ghép' }}</td>
 
                                                     {{-- Nút --}}
 

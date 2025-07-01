@@ -1,6 +1,6 @@
 @extends('client.layouts.app')
 
-@section('title', 'Đăng Ký học ghép')
+@section('title', 'Lớp học ghép')
 
 @section('css')
     <link rel="stylesheet" href="{{ asset('assets/client/css/danghoclop.css') }}">
@@ -49,13 +49,15 @@
                                                             <div class="score-label">Điểm tổng kết</div>
                                                             <div class="score-value">{{ $mh->diem_tong_ket }}</div>
                                                             <small class="text-muted">Số tín chỉ: {{ $mh->so_tin_chi }}</small>
+                                                            <div class="text-muted"><small class="text-muted">Loại môn học: {{ $mh->loai_mon }}</small></div>
                                                         </div>
                                                         <div class="d-flex justify-content-between align-items-center">
                                                             <span class="status-badge">
                                                                 <i class="fas fa-times-circle"></i>
                                                                 Rớt
                                                             </span>
-                                                            <a class="text-muted" href="">Xem lớp học ghép</a>
+                                                            
+                                                            <a class="text-muted" href="{{ route('sinhvien.dang-ky-hoc-ghep.list', $mh->id_mon_hoc) }}">Xem lớp học ghép</a>
                                                         </div>
                                                     </div>
                                                 </div>

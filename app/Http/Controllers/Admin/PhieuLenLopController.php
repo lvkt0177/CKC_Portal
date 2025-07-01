@@ -133,4 +133,20 @@ class PhieuLenLopController extends Controller
         dd($soLuong);
         return response()->json(['si_so' => $soLuong]);
     }
+
+    /**
+     * L y danh s ch ph i u l n l p v  tr  v  view qua l  ph i u l n l p
+     *
+     * @return \Illuminate\Http\Response
+     */
+    public function quanLyPhieuLenLop()
+    {
+        $phieuLenLop = PhieuLenLop::with([
+            'lopHocPhan', 'lopHocPhan.lop', 'lopHocPhan.giangVien.hoSo', 'phong', 'tuan'
+        ])
+        ->orderBy('ngay')
+        ->get();
+
+        return view('admin.phieulenlop.manage', compact('phieuLenLop'));
+    }
 }

@@ -61,7 +61,7 @@
                                 </div>
 
                                 <form id="registrationForm" action="{{ route('sinhvien.giayxacnhan.dangky') }}"
-                                    method="POST">
+                                    method="POST" data-confirm>
                                     @csrf
                                     <input type="hidden" name="id_sinh_vien" value="{{ $sinhVien->id }}">
                                     <div class="form-group">
@@ -83,9 +83,7 @@
                                 </form>
                             </div>
                             <div class="side">
-                                <div class="calendar" id="calendar">
-
-                                </div>
+                                <div class="calendar" id="calendar"></div>
                             </div>
                         </div>
                     </div>

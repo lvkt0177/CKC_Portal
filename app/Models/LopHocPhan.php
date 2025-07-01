@@ -13,7 +13,7 @@ class LopHocPhan extends Model
         'id_chuong_trinh_dao_tao',
         'id_lop',
         'loai_lop_hoc_phan',
-        'so_luong_dang_ky',
+        'so_luong_sinh_vien',
         'loai_mon',
         'trang_thai',
     ];
@@ -48,8 +48,16 @@ class LopHocPhan extends Model
     {
         return $this->hasMany(ThoiKhoaBieu::class, 'id_lop_hoc_phan', 'id');
     }
+<<<<<<< HEAD
     public function lichThi()
     {
         return $this->hasMany(LichThi::class,'id_lop_hoc_phan','id');
+=======
+
+    //dang ky hoc ghep
+    public function dangKyHocGhep()
+    {
+        return $this->hasOne(DangKyHGTL::class, 'id_lop_hoc_phan', 'id');
+>>>>>>> origin/master
     }
 }

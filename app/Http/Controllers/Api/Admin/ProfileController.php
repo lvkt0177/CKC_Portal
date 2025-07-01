@@ -9,7 +9,7 @@ use App\Http\Requests\Profile\ChangePasswordRequest;
 
 class ProfileController extends Controller
 {
-    public function changePassword(ChangePasswordRequest $request)
+    public function userChangePassword(ChangePasswordRequest $request)
     {
         $user = Auth::user();
 

@@ -22,7 +22,7 @@ class DanhSachHocPhanSeeder extends Seeder
                 "diem_chuyen_can" => null,
                 "diem_qua_trinh" => null,
                 "diem_thi" => null,
-                "diem_tong_ket" => 0,
+                "diem_tong_ket" => null,
                 "loai_hoc" => 0,
             ],
             [
@@ -33,7 +33,7 @@ class DanhSachHocPhanSeeder extends Seeder
                 "diem_chuyen_can" => null,
                 "diem_qua_trinh" => null,
                 "diem_thi" => null,
-                "diem_tong_ket" => 0,
+                "diem_tong_ket" => null,
                 "loai_hoc" => 0,
             ],
             [
@@ -44,7 +44,7 @@ class DanhSachHocPhanSeeder extends Seeder
                 "diem_chuyen_can" => null,
                 "diem_qua_trinh" => null,
                 "diem_thi" => null,
-                "diem_tong_ket" => 0,
+                "diem_tong_ket" => null,
                 "loai_hoc" => 0,
             ],
             [
@@ -55,7 +55,7 @@ class DanhSachHocPhanSeeder extends Seeder
                 "diem_chuyen_can" => null,
                 "diem_qua_trinh" => null,
                 "diem_thi" => null,
-                "diem_tong_ket" => 0,
+                "diem_tong_ket" => null,
                 "loai_hoc" => 0,
             ],
             [
@@ -66,7 +66,7 @@ class DanhSachHocPhanSeeder extends Seeder
                 "diem_chuyen_can" => null,
                 "diem_qua_trinh" => null,
                 "diem_thi" => null,
-                "diem_tong_ket" => 0,
+                "diem_tong_ket" => null,
                 "loai_hoc" => 0,
             ],
         ]);

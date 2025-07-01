@@ -7,7 +7,6 @@ use App\Mail\GuiMatKhauMoi;
 use App\Jobs\SendMailJob;
 use App\Http\Controllers\Payment\PaymentController;
 
-Route::post('/vnpay_payment', [PaymentController::class, 'vnpay_payment'])->name('vnpay.create');
 
 Route::middleware([])->group(function () {
     Route::get('/payment/vnpay', [PaymentController::class, 'createPayment'])->name('vnpay.payment');
@@ -31,5 +30,4 @@ Route::group(['middleware' => 'web'], function () {
 });
 
 include('ckeditor/ckeditor.php');
-   
-   
+include('client/vnpay.php');

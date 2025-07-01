@@ -9,7 +9,7 @@ Route::delete('/thongbao/file/{id}', [ThongBaoController::class, 'destroyFile'])
 
 Route::resource('thongbao', ThongBaoController::class)->except(['create', 'edit']);
 
-// Route::get('/thongbao/file/download/{id}', [ThongBaoController::class, 'download'])->name('file.download');
+Route::get('/thongbao/file/download/{id}', [ThongBaoController::class, 'download'])->name('file.download');
 
 Route::post('/thongbao/send-to-student/{thongbao}', [ThongBaoController::class, 'sendToStudent'])->name('thongbao.send-to-student');
 

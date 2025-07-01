@@ -22,4 +22,9 @@ class HocKy extends Model
     {
         return $this->hasMany(HocPhi::class, 'id_hoc_ky', 'id');
     }
+
+    public function chiTietChuongTrinhDaoTaos()
+    {
+        return $this->hasMany(ChiTietChuongTrinhDaoTao::class, 'id_hoc_ky', 'id');
+    }
 }

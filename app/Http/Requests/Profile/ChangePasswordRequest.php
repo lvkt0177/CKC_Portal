@@ -6,6 +6,7 @@ use Illuminate\Foundation\Http\FormRequest;
 use Illuminate\Validation\Rules\Password;
 use Illuminate\Support\Facades\Auth;
 use Illuminate\Support\Facades\Hash;
+use Illuminate\Support\Facades\Log;
 class ChangePasswordRequest extends FormRequest
 {
     /**
@@ -23,6 +24,7 @@ class ChangePasswordRequest extends FormRequest
      */
     public function rules(): array
     {
+        Log::info(Auth::user());
         return [
             'current_password' => ['required', 'current_password'],
             'new_password' => [
@@ -32,12 +34,7 @@ class ChangePasswordRequest extends FormRequest
                     ->letters()
                     ->mixedCase()
                     ->numbers()
-                    ->symbols(),
-                function ($attribute, $value, $fail) {
-                    if (Hash::check($value, Auth::user()->password ?? Auth::guard('student')->user()->password)) {
-                        $fail('Mật khẩu mới không được trùng với mật khẩu hiện tại.');
-                    }
-                }
+                    ->symbols()
             ],
             'new_password_confirmation' => ['required', 'same:new_password'],
         ];  
