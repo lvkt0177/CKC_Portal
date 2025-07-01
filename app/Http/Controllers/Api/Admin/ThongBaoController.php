@@ -12,6 +12,9 @@ use App\Repositories\ThongBao\ThongBaoRepository;
 use App\Http\Requests\ThongBao\ThongBaoRequest;
 use App\Http\Requests\ThongBao\SendToStudentRequest;
 use Illuminate\Support\Facades\Storage;
+use App\Models\BinhLuan;
+use Illuminate\Support\Facades\Auth;
+use App\Http\Requests\BinhLuan\BinhLuanStoreRequestAPI;
 
 class ThongBaoController extends Controller
 {
@@ -53,7 +56,13 @@ class ThongBaoController extends Controller
 
     public function store(ThongBaoRequest $request)
     {
-        $thongBao = $this->thongBaoRepository->create($request->validated());
+        $data = $request->validated();
+        if(empty($data['ngay_gui']))
+        {
+            $data['ngay_gui'] = now();
+        }
+
+        $thongBao = $this->thongBaoRepository->create($data);
 
         if ($thongBao) {
             return response()->json([
@@ -171,5 +180,39 @@ class ThongBaoController extends Controller
         return response()->json([
             'message' => 'Gửi thông báo tới sinh viên thành công'
         ]);
+    }
+
+    // Comment
+    public function storeComment(BinhLuanStoreRequestAPI $request, ThongBao $thongbao)
+    {
+        $data = $request->validated();
+
+        $comment = BinhLuan::create([
+            'id_thong_bao' => $thongbao->id,
+            'noi_dung' => $data['noi_dung'],
+            'id_binh_luan_cha' => $data['id_binh_luan_cha'] ?? null,
+            'nguoi_binh_luan_id' => Auth::id(),
+            'nguoi_binh_luan_type' => Auth::user()::class,
+        ]);
+
+        if (!$comment) {
+            return response()->json(['message' => 'Tạo bình luận thất bại'], 500);
+        }
+
+        return response()->json([
+            'message' => 'Tạo bình luận thành công',
+            'data' => $comment->load('nguoiBinhLuan.hoSo'),
+        ]);
+    }
+
+    public function deleteComment(BinhLuan $binhLuan)
+    {
+        if (Auth::id() !== $binhLuan->nguoi_binh_luan_id && Auth::user()->chuc_vu != 1) {
+            return response()->json(['message' => 'Không có quyền xoá'], 403);
+        }
+
+        $binhLuan->delete();
+
+        return response()->json(['message' => 'Xoá bình luận thành công']);
     }
 }

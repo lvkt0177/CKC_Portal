@@ -14,3 +14,7 @@ Route::get('/thongbao/file/download/{id}', [ThongBaoController::class, 'download
 Route::post('/thongbao/send-to-student/{thongbao}', [ThongBaoController::class, 'sendToStudent'])->name('thongbao.send-to-student');
 
 Route::get('/thongbao/get-data-cap-tren', [ThongBaoController::class, 'prepareCreateData']);
+
+Route::post('/thongbao/binh-luan/{thongbao}', [ThongBaoController::class, 'storeComment']);
+
+Route::delete('/thongbao/binh-luan/{binhLuan}', [ThongBaoController::class, 'destroyComment']);

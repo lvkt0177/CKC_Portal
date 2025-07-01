@@ -39,6 +39,17 @@ class CTDTController extends Controller
         ]);
     }
 
+    public function getMonHocAndChiTietCTDT()
+    {
+        $ctdt = ChuongTrinhDaoTao::get();
+        $ct_ctdt = ChiTietChuongTrinhDaoTao::with(['monHoc'])->get()->groupBy('id_hoc_ky');
+
+        return response()->json([
+            'status' => 'success',
+            'ctdt' => $ctdt,
+            'ct_ctdt' => $ct_ctdt
+        ]);
+    }
 
     public function create()
     {
@@ -81,7 +92,10 @@ class CTDTController extends Controller
 
         
         if ($year < now()->year) {
-            return redirect()->back()->with('error', 'Không được khởi tạo tuần ở năm này!');
+            return response()->json([
+                'success' => false,
+                'message' => 'Không được khởi tạo tuần ở năm này!'
+            ], 400);
         }
         
         for ($namVongLap = $year; $namVongLap <= $year + 1; $namVongLap++) {
@@ -111,7 +125,10 @@ class CTDTController extends Controller
             }
         }
 
-        return back()->with('success', 'Khởi tạo thành công!');
+        return response()->json([
+            'success' => true,
+            'message' => 'Khởi tạo thành công!'
+        ]);
     }
 
 

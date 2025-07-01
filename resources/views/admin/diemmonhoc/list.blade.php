@@ -16,6 +16,19 @@
 
                     <div class="card-body">
                         <div class="">
+                            @if($selectOptions->isNotEmpty())
+                                <form action="" method="POST">
+                                    @csrf
+                                    @method('PUT')
+                                    <select name="trang_thai" class="form-select">
+                                        @foreach($selectOptions as $option)
+                                            <option value="{{ $option->value }}">{{ $option->getLabel() }}</option>
+                                        @endforeach
+                                    </select>
+                                    <button type="submit" class="btn btn-primary mt-2">Nộp bảng điểm</button>
+                                </form>
+                            @endif
+
                             <div class="d-flex justify-content-end mb-3">
                                 <button class="btn btn-edit btn-sm" onclick="toggleEdit()">
                                     <i class="bi bi-pencil-square"></i> Nhập điểm

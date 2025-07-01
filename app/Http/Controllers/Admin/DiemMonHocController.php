@@ -13,6 +13,7 @@ use App\Models\DanhSachHocPhan;
 use Illuminate\Support\Facades\Auth;
 use Illuminate\Support\Facades\Log;
 use App\Http\Requests\GiangVien\NhapDiemRequest;
+use App\Enum\NopBangDiemStatus;
 
 class DiemMonHocController extends Controller
 {
@@ -46,8 +47,13 @@ class DiemMonHocController extends Controller
         ->orderBy('ma_sv', 'asc')
         ->get();
 
-       
-        return view('admin.diemmonhoc.list', compact('sinhviens', 'lop_HP'));
+        $currentTrangThai = $lop_HP->trang_thai_nop_bang_diem->value;
+
+        $selectOptions = collect(NopBangDiemStatus::cases())
+            ->filter(fn($case) => $case->value > $currentTrangThai)
+            ->values();
+    
+        return view('admin.diemmonhoc.list', compact('sinhviens', 'lop_HP', 'selectOptions'));
     }
     public function capNhat(NhapDiemRequest $request)
     {

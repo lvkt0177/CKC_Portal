@@ -32,7 +32,7 @@ class LopHocPhanController extends Controller
 
     public function index()
     {
-        $lopHocPhans = LopHocPhan::with(['thoiKhoaBieu.phong', 'giangVien.hoSo', 'lop', 'chuongTrinhDaoTao'])
+        $lopHocPhans = LopHocPhan::with(['thoiKhoaBieu.phong', 'giangVien.hoSo', 'lop.nienKhoa', 'chuongTrinhDaoTao.chiTietChuongTrinhDaoTao'])
             ->orderBy('id', 'desc')
             ->get();
         
@@ -49,7 +49,7 @@ class LopHocPhanController extends Controller
 
     public function lopHocPhanTheoGiangVien()
     {
-        $lopHocPhans = LopHocPhan::with(['thoiKhoaBieu.phong', 'giangVien.hoSo', 'lop', 'chuongTrinhDaoTao'])
+        $lopHocPhans = LopHocPhan::with(['thoiKhoaBieu.phong', 'giangVien.hoSo', 'lop.nienKhoa', 'chuongTrinhDaoTao'])
             ->where('id_giang_vien', Auth::user()->id)
             ->orderBy('id', 'desc')
             ->get();
