@@ -48,15 +48,26 @@ class LopHocPhan extends Model
     {
         return $this->hasMany(ThoiKhoaBieu::class, 'id_lop_hoc_phan', 'id');
     }
+<<<<<<< HEAD
 
     public function lichThi()
     {
         return $this->hasMany(LichThi::class,'id_lop_hoc_phan','id');
+=======
+>>>>>>> origin/master
 
     }
     //dang ky hoc ghep
     public function dangKyHocGhep()
     {
         return $this->hasOne(DangKyHGTL::class, 'id_lop_hoc_phan', 'id');
+<<<<<<< HEAD
+=======
+    }
+    
+    public function lichThi()
+    {
+        return $this->hasMany(LichThi::class,'id_lop_hoc_phan','id');
+>>>>>>> origin/master
     }
 }

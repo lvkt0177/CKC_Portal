@@ -25,12 +25,17 @@ class LichThi extends Model
     {
         return $this->belongsTo(LopHocPhan::class, 'id_lop_hoc_phan', 'id');
     }
-    public function giangVien()
-    {
-        return $this->belongsTo(User::class, 'id_gvcn', 'id');
-    }
     public function phong()
     {
         return $this->belongsTo(Phong::class, 'id_phong', 'id');
+    }
+    public function giamThi1()
+    {
+        return $this->belongsTo(User::class, 'id_giam_thi_1');
+    }
+
+    public function giamThi2()
+    {
+        return $this->belongsTo(User::class, 'id_giam_thi_2');
     }
 }

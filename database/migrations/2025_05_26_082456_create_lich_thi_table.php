@@ -33,7 +33,6 @@ return new class extends Migration
             $table->integer('lan_thi')->default(1);
             //trạng thái
             $table->integer('trang_thai')->default(0); // 0: chưa thi, 1: đã thi, 2: kết thúc
-
             
             $table->timestamps();
         });

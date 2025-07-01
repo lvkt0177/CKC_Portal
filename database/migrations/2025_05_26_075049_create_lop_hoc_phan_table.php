@@ -26,13 +26,13 @@ return new class extends Migration {
 
             $table->integer('so_luong_sinh_vien')->default(0);
 
-            $table->integer('gioi_han_dang_ky')->nullable()->default(0);
+            $table->integer('gioi_han_dang_ky')->nullable()->default(20);
             //loai_mon
             $table->integer('loai_mon')->default(0); // 0: lý thuyết, 1: thực hành, 2: mo đun
 
             $table->integer('trang_thai')->default(0);
 
-
+            
 
             $table->timestamps();
         });

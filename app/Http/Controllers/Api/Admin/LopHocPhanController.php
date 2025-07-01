@@ -18,12 +18,13 @@ use App\Enum\LoaiMonHoc;
 use App\Models\DanhSachHocPhan;
 use App\Models\DangKyHGTL;
 use App\Models\PhieuLenLop;
+use App\Models\MonHoc;
 use App\Models\Phong;
 use App\Models\Tuan;
 use App\Acl\Acl;
 use Illuminate\Support\Facades\Gate;
 use Illuminate\Support\Facades\DB;
-
+use App\Http\Requests\LopHocPhan\PhanCongGiangVien;
 use Illuminate\Support\Facades\Auth;
 
 class LopHocPhanController extends Controller
@@ -32,19 +33,42 @@ class LopHocPhanController extends Controller
     public function index()
     {
         $lopHocPhans = LopHocPhan::with(['thoiKhoaBieu.phong', 'giangVien.hoSo', 'lop', 'chuongTrinhDaoTao'])
-            ->where('id_giang_vien', auth()->id())
             ->orderBy('id', 'desc')
             ->get();
         
-        $namVaTuan = Nam::with('tuan')->get();
+        $monHocs = MonHoc::get();
 
-        $chuongTrinhDaoTaos = ChuongTrinhDaoTao::with('chiTietChuongTrinhDaoTao.monHoc')->get();
+        $nienKhoa = NienKhoa::get();
         
         return response()->json([
             'status' => 'success',
             'data' => $lopHocPhans,
-            'namVaTuan' => $namVaTuan,
-            'chuongTrinhDaoTaos' => $chuongTrinhDaoTaos,
+            'nienKhoa' => $nienKhoa,
+        ]);
+    }
+
+    public function lopHocPhanTheoGiangVien()
+    {
+        $lopHocPhans = LopHocPhan::with(['thoiKhoaBieu.phong', 'giangVien.hoSo', 'lop', 'chuongTrinhDaoTao'])
+            ->where('id_giang_vien', Auth::user()->id)
+            ->orderBy('id', 'desc')
+            ->get();
+        
+        return response()->json([
+            'status' => 'success',
+            'data' => $lopHocPhans,
+        ]);
+    }
+
+    public function phanCongGiangVien(PhanCongGiangVien $request, LopHocPhan $lopHocPhan)
+    {
+        $lopHocPhan->id_giang_vien = $request->id_giang_vien;
+        $lopHocPhan->save();
+
+        return response()->json([
+            'status' => 'success',
+            'message' => 'Giảng viên đã được phân công thành công',
+            'data' => $lopHocPhan
         ]);
     }
   
