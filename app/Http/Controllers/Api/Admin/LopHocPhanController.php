@@ -18,6 +18,7 @@ use App\Enum\LoaiMonHoc;
 use App\Models\DanhSachHocPhan;
 use App\Models\DangKyHGTL;
 use App\Models\PhieuLenLop;
+use App\Models\MonHoc;
 use App\Models\Phong;
 use App\Models\Tuan;
 use App\Acl\Acl;
@@ -38,12 +39,18 @@ class LopHocPhanController extends Controller
         $namVaTuan = Nam::with('tuan')->get();
 
         $chuongTrinhDaoTaos = ChuongTrinhDaoTao::with('chiTietChuongTrinhDaoTao.monHoc')->get();
+
+        $monHocs = MonHoc::get();
+
+        $nienKhoa = NienKhoa::get();
         
         return response()->json([
             'status' => 'success',
             'data' => $lopHocPhans,
             'namVaTuan' => $namVaTuan,
             'chuongTrinhDaoTaos' => $chuongTrinhDaoTaos,
+            'monHocs' => $monHocs,
+            'nienKhoa' => $nienKhoa,
         ]);
     }
 
