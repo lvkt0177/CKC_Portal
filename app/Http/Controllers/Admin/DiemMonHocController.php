@@ -49,12 +49,20 @@ class DiemMonHocController extends Controller
 
         $currentTrangThai = $lop_HP->trang_thai_nop_bang_diem->value;
 
-        $selectOptions = collect(NopBangDiemStatus::cases())
-            ->filter(fn($case) => $case->value > $currentTrangThai)
-            ->values();
+        $nextOption = collect(NopBangDiemStatus::cases())
+            ->first(fn($case) => $case->value === $currentTrangThai + 1);
     
-        return view('admin.diemmonhoc.list', compact('sinhviens', 'lop_HP', 'selectOptions'));
+        return view('admin.diemmonhoc.list', compact('sinhviens', 'lop_HP', 'nextOption'));
     }
+
+    public function updateTrangThai(LopHocPhan $lopHocPhan)
+    {
+        $lopHocPhan->trang_thai_nop_bang_diem = NopBangDiemStatus::from($lopHocPhan->trang_thai_nop_bang_diem->value + 1);
+        $lopHocPhan->save();
+
+        return redirect()->back()->with('success', 'Cập nhật trạng thái nộp bảng điểm thành công!');  
+    }
+
     public function capNhat(NhapDiemRequest $request)
     {
        
