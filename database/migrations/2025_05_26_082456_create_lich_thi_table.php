@@ -19,6 +19,10 @@ return new class extends Migration
             $table->foreignId('id_giam_thi_1')->nullable()->constrained('users')->onDelete('set null');
             //id_giam_thi_2
             $table->foreignId('id_giam_thi_2')->nullable()->constrained('users')->onDelete('set null');
+
+            //id_tuan
+            $table->foreignId('id_tuan')->constrained('tuan')->onDelete('cascade');
+            
             //ngay_thi
             $table->date('ngay_thi');
             //gio_bat_dau

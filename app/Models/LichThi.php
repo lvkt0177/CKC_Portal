@@ -11,7 +11,8 @@ class LichThi extends Model
     protected $fillable = [
         'id_lop_hoc_phan',
         'id_giam_thi_1',	
-        'id_giam_thi_2',	
+        'id_giam_thi_2',
+        'id_tuan',
         'id_phong_thi',
         'ngay_thi',
         'gio_bat_dau',	
@@ -37,5 +38,9 @@ class LichThi extends Model
     public function giamThi2()
     {
         return $this->belongsTo(User::class, 'id_giam_thi_2');
+    }
+    public function tuan()
+    {
+        return $this->belongsTo(Tuan::class, 'id_tuan', 'id');
     }
 }

@@ -25,6 +25,7 @@ class LichThiUpdateRequestAPI extends FormRequest
             'id_lop_hoc_phan' => 'required|exists:lop_hoc_phan,id',
             'id_giam_thi_1' => 'required|exists:users,id',
             'id_giam_thi_2' => 'nullable|exists:users,id',
+            'id_tuan' => 'required|exists:tuan,id',
             'ngay_thi' => 'required|date_format:Y-m-d',
             'gio_bat_dau' => 'required|date_format:H:i',
             'thoi_gian_thi' => 'required|integer|min:1',

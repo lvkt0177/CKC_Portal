@@ -16,16 +16,14 @@
 
                     <div class="card-body">
                         <div class="">
-                            @if($selectOptions->isNotEmpty())
-                                <form action="" method="POST">
+                            @if(!is_null($nextOption))
+                                <form action="{{ route('giangvien.diemmonhoc.updateTrangThai', $lop_HP) }}" method="POST">
                                     @csrf
-                                    @method('PUT')
-                                    <select name="trang_thai" class="form-select">
-                                        @foreach($selectOptions as $option)
-                                            <option value="{{ $option->value }}">{{ $option->getLabel() }}</option>
-                                        @endforeach
+                                    <select name="trang_thai" class="form-select" disabled>
+                                        <option value="{{ $nextOption->value }}">{{ $nextOption->getLabel() }}</option>
                                     </select>
-                                    <button type="submit" class="btn btn-primary mt-2">Nộp bảng điểm</button>
+
+                                    <button type="submit" class="btn btn-primary mt-2">Gửi</button>
                                 </form>
                             @endif
 
