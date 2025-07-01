@@ -19,6 +19,17 @@ use App\Services\LichThiService;
 
 class LichThiController extends Controller
 {
+    public function index(){
+        $lichThi = LichThi::with(['lopHocPhan', 'giamThi1', 'giamThi2', 'phong'])
+            ->orderBy('ngay_thi', 'asc')
+            ->get();
+
+        return response()->json([
+            'message' => 'Danh sách lịch thi',
+            'data' => $lichThi
+        ]);
+    }
+
     public function store(LichThiStoreRequestAPI $request, LichThiService $service)
     {
         
