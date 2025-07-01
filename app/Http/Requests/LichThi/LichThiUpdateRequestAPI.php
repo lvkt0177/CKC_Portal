@@ -4,7 +4,7 @@ namespace App\Http\Requests\LichThi;
 
 use Illuminate\Foundation\Http\FormRequest;
 
-class LichThiStoreRequestAPI extends FormRequest
+class LichThiUpdateRequestAPI extends FormRequest
 {
     /**
      * Determine if the user is authorized to make this request.
