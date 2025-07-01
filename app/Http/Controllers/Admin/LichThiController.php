@@ -24,6 +24,7 @@ use App\Models\HocKy;
 use App\Models\ThoiKhoaBieu;
 use App\Models\ChiTietChuongTrinhDaoTao;
 use App\Models\ChuongTrinhDaoTao;
+use App\Models\LichThi;
 
 
 class LichThiController extends Controller
@@ -103,7 +104,11 @@ class LichThiController extends Controller
             }
         }
 
-        //$lichthi = LichThi
+        
+        $lichThi = LichThi::with(['lopHocPhan', 'giamThi1', 'giamThi2', 'phong'])
+            ->orderBy('ngay_thi', 'asc')
+            ->get();
+            
         return view('admin.lichthi.show', compact('ngayTrongTuan','lop','dsHocKy','dsTuan','hocKy','tuanDangChon'));
     }
     public function create(Request $request,Lop $lop)
