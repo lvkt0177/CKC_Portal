@@ -17,6 +17,7 @@ use App\Models\User;
 use App\Enum\LoaiMonHoc;
 use App\Models\DanhSachHocPhan;
 use App\Models\DangKyHGTL;
+use App\Models\LichThi;
 use App\Models\PhieuLenLop;
 use App\Models\Phong;
 use App\Models\Tuan;
@@ -28,9 +29,24 @@ use App\Http\Requests\LichThi\LichThiStoreRequestAPI;
 
 class LichThiController extends Controller
 {
-    public function store()
+    public function store(Request $request)
     {
+        return response()->json([
+            'message' => 'Lịch thi đã được tạo thành công.',
+            'data' => $request->all()
+        ], 201);
+        $lichThi = LichThi::create($request->validated());
 
+        if ($lichThi) {
+            return response()->json([
+                'message' => 'Lịch thi đã được tạo thành công.',
+                'data' => $lichThi
+            ], 201);
+        } else {
+            return response()->json([
+                'message' => 'Không thể tạo lịch thi. Vui lòng thử lại sau.'
+            ], 500);
+        }
     }
 
     public function update()

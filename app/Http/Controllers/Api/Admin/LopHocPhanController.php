@@ -36,10 +36,6 @@ class LopHocPhanController extends Controller
             ->orderBy('id', 'desc')
             ->get();
         
-        $namVaTuan = Nam::with('tuan')->get();
-
-        $chuongTrinhDaoTaos = ChuongTrinhDaoTao::with('chiTietChuongTrinhDaoTao.monHoc')->get();
-
         $monHocs = MonHoc::get();
 
         $nienKhoa = NienKhoa::get();
@@ -47,9 +43,6 @@ class LopHocPhanController extends Controller
         return response()->json([
             'status' => 'success',
             'data' => $lopHocPhans,
-            'namVaTuan' => $namVaTuan,
-            'chuongTrinhDaoTaos' => $chuongTrinhDaoTaos,
-            'monHocs' => $monHocs,
             'nienKhoa' => $nienKhoa,
         ]);
     }
