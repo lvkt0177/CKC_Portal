@@ -30,4 +30,8 @@ class Phong extends Model
     {
         return $this->hasMany(ThoiKhoaBieu::class, 'id_phong', 'id');
     }
+    public function lichThi()
+    {
+        return $this->hasMany(LichThi::class,'id_phong','id');
+    }
 }

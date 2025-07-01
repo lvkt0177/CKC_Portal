@@ -3,6 +3,11 @@
 @section('title', 'Quản lý lịch học của sinh viên')
 
 @section('css')
+    <style>
+        li {
+            margin-block-end: 5px;
+        }
+    </style>
     <link rel="stylesheet" href="{{ asset('assets/admin/css/lich.css') }}">
     <link href="https://cdn.jsdelivr.net/npm/lucide@0.273.0/dist/umd/lucide.min.css" rel="stylesheet">
     <script src="https://cdn.tailwindcss.com"></script>
@@ -41,10 +46,8 @@
                         <input type="hidden" name="hoc_ky" id="selected-hoc-ky" value="{{ $hocKy->id }}">
                     </form>
                     <a href="{{ route('giangvien.lichhoc.index') }}" class="btn btn-primary">Quay lại</a>
+
                 </div>
-
-
-
 
                 @include('admin.lichhoc.partials.schedule-table', [
                     'thoikhoabieu' => $thoikhoabieu,
@@ -56,9 +59,10 @@
                 ])
 
             </div>
+
         </div>
     </div>
-    {{-- Modal chi tiết lớp học --}}
+
     <div class="modal fade" id="classDetailModal" tabindex="-1" aria-labelledby="classDetailLabel" aria-hidden="true">
         <div class="modal-dialog modal-dialog-centered modal-md">
             <div class="modal-content shadow-lg rounded-4">
@@ -72,37 +76,130 @@
                 <div class="modal-body p-4"
                     style="background-image: url('https://giaydantuongsacmau.com/upload/product/2020/12/10/giay-dan-tuong-soc-caro-image-20201210161206-350433-thumb.png')">
                     <ul class="list-unstyled">
-                        <li><strong>Môn học:</strong> <span id="subjectName">---</span></li>
-                        <li><strong>Lớp:</strong> <span id="className">---</span></li>
-                        <li><strong>Tiết:</strong> <span id="period">---</span></li>
-                        <li><strong>Phòng:</strong> <span id="room">---</span></li>
-                        <li><strong>Giảng viên:</strong> <span id="teacher">---</span></li>
-                        <li><strong>Ngày học:</strong> <span id="date">---</span></li>
+                        <li><strong>Môn học: </strong> <span id="subjectName">---</span></li>
+                        <li><strong>Lớp: </strong> <span id="className">---</span></li>
+                        <li><strong>Tiết: </strong> <span id="period">---</span></li>
+                    </ul>
+
+                    <form id="selectOption" style="display: none; width: 100%;"
+                        action="{{ route('giangvien.lichhoc.update') }}" method="POST" data-confirm>
+                        @csrf
+                        <input type="hidden" id="id" name="id_lop_hoc_phan" value="">
+                        <input type="hidden" name="tuan" value="{{ $tuanDangChon->id }}">
+                        <input type="hidden" name="id_lop" value="{{ $lop->id }}">
+                        <input type="hidden" id="day" name="ngay_ban_dau" value="">
+
+                        <ul class="list-unstyled">
+                            <li class="d-flex justify-content-between align-items-center col-8">
+                                <strong class="col-6">Phòng: </strong>
+                                <select class="form-select col-2" name="id_phong">
+                                    <option value="">-- Chọn phòng --</option>
+                                    @foreach ($dsPhong as $phong)
+                                        <option value="{{ $phong->id }}">Phòng {{ $phong->ten }}</option>
+                                    @endforeach
+                                </select>
+                            </li>
+
+                            <li class="d-flex justify-content-between align-items-center col-8">
+                                <strong class="col-6">Giảng viên: </strong>
+                                <select class="form-select col-2" name="id_giao_vien">
+                                    <option value="">-- Chọn giảng viên --</option>
+                                    @foreach ($dsgv as $gv)
+                                        <option value="{{ $gv->id }}">{{ $gv->hoSo->ho_ten }}</option>
+                                    @endforeach
+                                </select>
+                            </li>
+
+                            <li class="d-flex justify-content-between align-items-center col-8">
+                                <strong class="col-6">Ngày học:</strong>
+                                <select class="form-select col-2" name="ngay">
+                                    <option value="">-- Chọn thứ --</option>
+                                    @foreach ($ngayTrongTuan as $ngay)
+                                        <option value="{{ $ngay }}">
+                                            {{ ucfirst(\Carbon\Carbon::parse($ngay)->locale('vi')->isoFormat('dddd')) }}
+                                        </option>
+                                    @endforeach
+                                </select>
+                            </li>
+
+                            <li class="mt-2 d-flex justify-content-end">
+                                <button type="submit" id="saveBtn" class="btn btn-sm btn-outline-success"
+                                    style="display: none;">
+                                    <i class="bi bi-check-square-fill" aria-hidden="true"></i>
+                                </button>
+                                <button type="button" onclick="toggleSelect(false)" id="closeBtn"
+                                    class="btn btn-sm btn-outline-danger" style="display: none;">
+                                    <i class="fa fa-times" aria-hidden="true"></i>
+                                </button>
+                            </li>
+                        </ul>
+                    </form>
+
+                    <ul class="list-unstyled" style="display: block;">
+                        <li><strong>Phòng: </strong> <span id="room">---</span></li>
+                        <li><strong>Giảng viên: </strong><span id="teacher">---</span></li>
+                        <li><strong>Ngày học: </strong> <span id="date">---</span></li>
                     </ul>
                 </div>
-                <div class="modal-footer bg-light rounded-bottom-4">
-                    <button type="button" class="btn btn-back" data-bs-dismiss="modal">Đóng</button>
+                <div class="d-flex justify-content-end m-3" style="gap: 8px;">
+                    <button type="button" onclick="toggleSelect(true)" id="editBtn"
+                        class="btn btn-sm btn-outline-warning">
+                        <i class="fa fa-pencil-square" aria-hidden="true"></i>
+                    </button>
+                    <form action="{{ route('giangvien.lichhoc.destroy') }}" method="POST" data-confirm>
+                        @csrf
+                        <input type="hidden" id="id" name="id_lop_hoc_phan" value="">
+                        <button type="submit" class="btn btn-sm btn-outline-danger">
+                            <i class="fa fa-trash " aria-hidden="true"></i>
+                        </button>
+                    </form>
                 </div>
             </div>
         </div>
     </div>
+
+
 @endsection
 
 @section('js')
+
     <script>
+        function toggleSelect(show) {
+            const span = document.getElementById('teacher'); // span cũ trong ul
+            const selectForm = document.getElementById('selectOption'); // form ẩn/hiện
+            const editBtn = document.getElementById('editBtn');
+            const closeBtn = document.getElementById('closeBtn');
+            const infoList = selectForm.nextElementSibling; // ul kế tiếp form
+
+            if (show) {
+                selectForm.style.display = 'block';
+                infoList.style.display = 'none';
+                editBtn.style.display = 'none';
+                closeBtn.style.display = 'inline-block';
+                saveBtn.style.display = 'inline-block';
+            } else {
+                selectForm.style.display = 'none';
+                infoList.style.display = 'block';
+                editBtn.style.display = 'inline-block';
+                closeBtn.style.display = 'none';
+                saveBtn.style.display = 'none';
+            }
+        }
         const classCards = document.querySelectorAll('.class-card');
         const modalElement = document.getElementById('classDetailModal');
         const modal = new bootstrap.Modal(modalElement);
 
 
 
+
+        const ID = document.getElementById('id');
         const subjectName = document.getElementById('subjectName');
         const className = document.getElementById('className');
         const period = document.getElementById('period');
         const room = document.getElementById('room');
         const teacher = document.getElementById('teacher');
         const date = document.getElementById('date');
-        const content = document.getElementById('content');
+        const day = document.getElementById('day');
 
 
 
@@ -114,9 +211,9 @@
         const container = document.getElementById('dropdown-container');
         const hiddenInput = document.getElementById('selected-hoc-ky');
 
-        // Add interactive functionality
+
         document.addEventListener('DOMContentLoaded', function() {
-            // Add click events to class cards
+
             classCards.forEach(card => {
                 card.addEventListener('click', function() {
                     subjectName.textContent = this.dataset.subject || '---';
@@ -125,23 +222,22 @@
                     room.textContent = this.dataset.room || '---';
                     teacher.textContent = this.dataset.teacher || '---';
                     date.textContent = this.dataset.date || '---';
-
-                    modal.show(); // <-- phải gọi đúng!
+                    ID.value = this.dataset.id || '---';
+                    day.value = this.dataset.day || '---';
+                    modal.show();
                 });
             });
-            // Add navigation functionality
+
             const buttons = document.querySelectorAll('.btn-group .btn');
             buttons.forEach(button => {
                 button.addEventListener('click', function() {
-                    // Remove active class from all buttons
                     this.parentNode.querySelectorAll('.btn').forEach(b => b.classList.remove(
                         'active'));
-                    // Add active class to clicked button
                     this.classList.add('active');
                 });
             });
 
-            // Add hover effects to schedule cells
+
             const scheduleCells = document.querySelectorAll('.schedule-cell');
             scheduleCells.forEach(cell => {
                 if (!cell.querySelector('.class-card')) {
@@ -153,21 +249,38 @@
                     });
                 }
             });
+
+            const modalElement = document.getElementById('classDetailModal');
+            const selectForm = document.getElementById('selectOption');
+            const editBtn = document.getElementById('editBtn');
+            const saveBtn = document.getElementById('saveBtn');
+            const closeBtn = document.getElementById('closeBtn');
+            const infoList = selectForm.nextElementSibling;
+
+
+
+            modalElement.addEventListener('hidden.bs.modal', function() {
+                selectForm.style.display = 'none';
+                infoList.style.display = 'block';
+                editBtn.style.display = 'inline-block';
+                saveBtn.style.display = 'none';
+                closeBtn.style.display = 'none';
+            });
         });
 
-        // Function to navigate weeks
+
         function navigateWeek(direction) {
-            // This would typically connect to a backend to fetch different week data
+
             console.log('Navigate week:', direction);
         }
 
-        // Function to export schedule
+
         function exportSchedule(format) {
             console.log('Export schedule as:', format);
             alert('Xuất lịch học thành công!');
         }
 
-        // Function to print schedule
+
         function printSchedule() {
             window.print();
         }
@@ -206,5 +319,14 @@
                 form.submit();
             });
         });
+
+
+        document.addEventListener('DOMContentLoaded', function() {
+            const tooltipTriggerList = [].slice.call(document.querySelectorAll('[data-bs-toggle="tooltip"]'));
+            tooltipTriggerList.map(function(tooltipTriggerEl) {
+                return new bootstrap.Tooltip(tooltipTriggerEl);
+            });
+        });
     </script>
+
 @endsection

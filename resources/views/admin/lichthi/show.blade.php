@@ -1,6 +1,6 @@
 @extends('admin.layouts.app')
 
-@section('title', 'Quản lý lịch học của sinh viên')
+@section('title', 'Quản lý lịch thi của sinh viên')
 
 @section('css')
     <link rel="stylesheet" href="{{ asset('assets/admin/css/lich.css') }}">
@@ -14,12 +14,12 @@
         <div class="row">
             <div class="card shadow-sm " style="height: 700px;">
                 <div class="card-header d-flex justify-content-between align-items-center">
-                    <form method="GET" action="{{ route('giangvien.lichhoc.list', ['lop' => $lop]) }}" id="week-form">
+                    <form method="GET" action="{{ route('giangvien.lichthi.show', ['lop' => $lop]) }}" id="week-form">
                         <div class="relative min-w-[20rem]" id="dropdown-container">
                             <button type="button" id="dropdown-toggle"
                                 class="w-full px-4 py-3 text-left bg-transparent border-none focus:outline-none focus:ring-0 hover:bg-gray-100 rounded-lg transition flex items-center justify-between gap-2">
                                 <span id="selected-option" class="whitespace-nowrap">
-                                    Lịch học - Lớp {{ $lop->ten_lop }} - {{ $hocKy->ten_hoc_ky }}
+                                    Lịch học - Lớp {{ $lop->ten_lop }} -
                                 </span>
                                 <svg id="chevron" class="h-4 w-4 text-gray-500 transition-transform ml-2" fill="none"
                                     viewBox="0 0 24 24" stroke="currentColor">
@@ -30,31 +30,84 @@
 
                             <div id="dropdown-menu"
                                 class="hidden absolute top-full left-0 w-full mt-1 bg-white rounded-lg shadow-lg border border-gray-200 z-10 ">
-                                @foreach ($dsHocKy as $ky)
-                                    <button type="button" data-value="{{ $ky->id }}"
-                                        class="dropdown-item px-4 py-3 text-left hover:bg-blue-50 hover:text-blue-600 transition">
-                                        Lịch học - Lớp {{ $lop->ten_lop }} - {{ $ky->ten_hoc_ky }}
-                                    </button>
-                                @endforeach
+                            
                             </div>
                         </div>
-                        <input type="hidden" name="hoc_ky" id="selected-hoc-ky" value="{{ $hocKy->id }}">
+                        <input type="hidden" name="hoc_ky" id="selected-hoc-ky" value="">
                     </form>
-                    <a href="{{ route('giangvien.lichhoc.index') }}" class="btn btn-primary">Quay lại</a>
+                    <a href="{{ route('giangvien.lichthi.index') }}" class="btn btn-primary">Quay lại</a>
                 </div>
 
 
+                <div class="schedule-table">
+                    <table class="table table-bordered mb-0">
+                        <thead>
+                            <tr>
+                                <th class="time-column text-white" style="background: #2c3e50;">Ca
+                                    học</th>
+                              
+                            </tr>
+                        </thead>
+                        <tbody>
+                            <!-- Morning Session -->
+                            <tr>
+                                <td class="time-column">Sáng</td>
+                                {{-- @foreach ($ngayTrongTuan as $ngay)
+                                    <td class="schedule-cell"
+                                        style="background-image: url('https://giaydantuongsacmau.com/upload/product/2020/12/10/giay-dan-tuong-soc-caro-image-20201210161206-350433-thumb.png');">
+                                        @php
+                                            $daDung = [];
+                                        @endphp
 
+                                        @for ($so = 1; $so <= 6; $so++)
+                                            @php $rendered = false; @endphp
 
-                @include('admin.lichhoc.partials.schedule-table', [
-                    'thoikhoabieu' => $thoikhoabieu,
-                    'ngayTrongTuan' => $ngayTrongTuan,
-                    'lop' => $lop,
-                    'dsTuan' => $dsTuan,
-                    'tuanDangChon' => $tuanDangChon,
-                    'hocKy' => $hocKy,
-                ])
+                                            @foreach ($ as $tkb)
+                                                @php
+                                                    if (optional($lop->nienKhoas)->nam_bat_dau == now()->year) {
+                                                        dd($lop->nienKhoas->nam_bat_dau);
+                                                    }
+                                                    $bat_dau = $tkb->tiet_bat_dau;
+                                                    $ket_thuc = $tkb->tiet_ket_thuc;
+                                                    $so_tiet = $ket_thuc - $bat_dau + 1;
+                                                @endphp
 
+                                                @if ($tkb->ngay == $ngay->format('Y-m-d'))
+                                                    @if ($so == $bat_dau && !in_array($tkb->id, $daDung))
+                                                        <div class="class-card web-dev mb-2 border-left-{{ $tkb->lopHocPhan->loai_mon->getBadge() }}"
+                                                            data-subject="" data-class="" data-period="" data-room=""
+                                                            data-teacher="" data-date="">
+                                                            <div class="class-title">
+                                                                A
+                                                            </div>
+                                                            <div class="class-details">
+
+                                                            </div>
+                                                        </div>
+                                                        @php
+                                                            $rendered = true;
+                                                            $daDung[] = $tkb->id;
+                                                            break;
+                                                        @endphp
+                                                    @elseif ($so > $bat_dau && $so <= $ket_thuc)
+                                                        @php
+                                                            $rendered = true;
+                                                            break;
+                                                        @endphp
+                                                    @endif
+                                                @endif
+                                            @endforeach
+
+                                            @if (!$rendered)
+                                                <div class=""></div>
+                                            @endif
+                                        @endfor
+                                    </td>
+                                @endforeach --}}
+                            </tr>
+                        </tbody>
+                    </table>
+                </div>
             </div>
         </div>
     </div>

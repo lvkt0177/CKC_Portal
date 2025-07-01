@@ -4,7 +4,7 @@ body {
 }
 
 .btn {
-    padding: 4px 24px;
+
     border: none;
     border-radius: 25px;
     cursor: pointer;
@@ -13,6 +13,12 @@ body {
     transition: all 0.3s ease;
     text-decoration: none;
     display: inline-block;
+}
+
+.btn:hover {
+    transform: translateY(-3px);
+
+    box-shadow: 0 10px 30px rgba(102, 126, 234, 0.3);
 }
 
 .header-section {

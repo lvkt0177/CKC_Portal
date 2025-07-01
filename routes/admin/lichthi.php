@@ -11,3 +11,5 @@ Route::get('/quan-ly-lich-thi', [LichThiController::class, 'index'])->name('lich
 Route::get('/quan-ly-lich-thi/{lop}', [LichThiController::class, 'show'])->name('lichthi.show');
 
 Route::get('/tao-lich-thi/{lop}', [LichThiController::class, 'create'])->name('lichthi.create');
+
+Route::get('/lop/{lop}/du-lieu-hoc-ky', [LichThiController::class, 'duLieuTheoHocKy']);

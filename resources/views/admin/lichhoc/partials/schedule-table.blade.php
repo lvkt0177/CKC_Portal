@@ -11,16 +11,36 @@
                                 <option value="{{ $tuan->id }}"
                                     {{ $tuanDangChon->id == $tuan->id ? 'selected' : '' }}>
                                     Tuần {{ $loop->index + 1 }}
+                                    @php
+                                        $tuanhientai = $tuanDangChon->id;
+                                    @endphp
                                 </option>
                             @endforeach
                         @endif
                     </select>
                 </div>
+                <div class="card-body d-flex justify-content-end ">
+
+                    <button type="button" class="btn btn-sm btn-secondary"
+                        style="border-top-right-radius: 0; border-bottom-right-radius: 0;background: #2c3e50;"
+                        data-bs-toggle="modal" data-bs-target="#modalSaoChep">
+                        <i class="bi bi-copy"></i> Sao chép tuần
+                    </button>
+
+                    <a href="{{ route('giangvien.lichhoc.create', ['lop' => $lop]) }}" title="Tạo thời khóa biểu mới"
+                        class="btn btn-sm btn-primary"
+                        style="border-top-left-radius: 0; border-bottom-left-radius: 0; white-space: nowrap; background: #2c3e50;">
+                        <i class="bi bi-pencil-square"></i> Tạo lịch học
+                    </a>
+
+                </div>
             </div>
         </div>
         <input type="hidden" name="hoc_ky" value="{{ $hocKy->id }}">
+
+
     </form>
-    <div class="container">
+    <div class="container" style="max-width: 1500px;">
         <div class="schedule-table">
             <table class="table table-bordered mb-0">
                 <thead>
@@ -62,12 +82,14 @@
                                         @if ($tkb->ngay == $ngay->format('Y-m-d'))
                                             @if ($so == $bat_dau && !in_array($tkb->id, $daDung))
                                                 <div class="class-card web-dev mb-2 border-left-{{ $tkb->lopHocPhan->loai_mon->getBadge() }}"
+                                                    data-id="{{ $tkb->lopHocPhan->id }}"
                                                     data-subject="{{ $tkb->lopHocPhan->ten_hoc_phan }}"
                                                     data-class="{{ $tkb->lopHocPhan->lop->ten_lop }}"
                                                     data-period="{{ $tkb->tiet_bat_dau }}-{{ $tkb->tiet_ket_thuc }}"
                                                     data-room="{{ $tkb->phong->ten }}"
                                                     data-teacher="{{ $tkb->lopHocPhan->giangVien->hoSo->ho_ten ?? '' }}"
-                                                    data-date="{{ \Carbon\Carbon::parse($tkb->ngay)->format('d/m/Y') }}">
+                                                    data-date="{{ \Carbon\Carbon::parse($tkb->ngay)->format('d/m/Y') }}"
+                                                    data-day="{{ $tkb->ngay }}">
                                                     <div class="class-title">
                                                         {{ $tkb->lopHocPhan->ten_hoc_phan }}
                                                     </div>
@@ -132,7 +154,8 @@
                                                     data-period="{{ $tkb->tiet_bat_dau }}-{{ $tkb->tiet_ket_thuc }}"
                                                     data-room="{{ $tkb->phong->ten }}"
                                                     data-teacher="{{ $tkb->lopHocPhan->giangVien->hoSo->ho_ten ?? '' }}"
-                                                    data-date="{{ \Carbon\Carbon::parse($tkb->ngay)->format('d/m/Y') }}">
+                                                    data-date="{{ \Carbon\Carbon::parse($tkb->ngay)->format('d/m/Y') }}"
+                                                    data-day="{{ $tkb->ngay }}">
                                                     <div class="class-title">
                                                         {{ $tkb->lopHocPhan->ten_hoc_phan }}
                                                     </div>
@@ -197,7 +220,8 @@
                                                     data-period="{{ $tkb->tiet_bat_dau }}-{{ $tkb->tiet_ket_thuc }}"
                                                     data-room="{{ $tkb->phong->ten }}"
                                                     data-teacher="{{ $tkb->lopHocPhan->giangVien->hoSo->ho_ten ?? '' }}"
-                                                    data-date="{{ \Carbon\Carbon::parse($tkb->ngay)->format('d/m/Y') }}">
+                                                    data-date="{{ \Carbon\Carbon::parse($tkb->ngay)->format('d/m/Y') }}"
+                                                    data-day="{{ $tkb->ngay }}">
                                                     <div class="class-title">
                                                         {{ $tkb->lopHocPhan->ten_hoc_phan }}
                                                     </div>
@@ -256,30 +280,47 @@
         </div>
 
     </div>
-    <div class="modal fade" id="classDetailModal" tabindex="-1" aria-labelledby="classDetailLabel" aria-hidden="true">
-        <div class="modal-dialog modal-dialog-centered modal-md">
-            <div class="modal-content shadow-lg rounded-4">
-                <div class="modal-header text-white rounded-top-4" style="background: #2c3e50">
-                    <h5 class="modal-title" id="classDetailLabel">
-                        <i class="bi bi-info-circle-fill me-2"></i> Chi tiết lớp học
-                    </h5>
-                    <button type="button" class="btn-close btn-close-white" data-bs-dismiss="modal"
-                        aria-label="Đóng"></button>
-                </div>
-                <div class="modal-body p-4"
-                    style="background-image: url('https://giaydantuongsacmau.com/upload/product/2020/12/10/giay-dan-tuong-soc-caro-image-20201210161206-350433-thumb.png')">
-                    <ul class="list-unstyled">
-                        <li><strong>Môn học:</strong> <span id="subjectName">---</span></li>
-                        <li><strong>Lớp:</strong> <span id="className">---</span></li>
-                        <li><strong>Tiết:</strong> <span id="period">---</span></li>
-                        <li><strong>Phòng:</strong> <span id="room">---</span></li>
-                        <li><strong>Giảng viên:</strong> <span id="teacher">---</span></li>
-                        <li><strong>Ngày học:</strong> <span id="date">---</span></li>
-                    </ul>
-                </div>
-                <div class="modal-footer bg-light rounded-bottom-4">
-                    <button type="button" class="btn btn-back" data-bs-dismiss="modal">Đóng</button>
-                </div>
+    <div class="modal fade" id="modalSaoChep" tabindex="-1" aria-labelledby="modalSaoChepLabel" aria-hidden="true">
+        <div class="modal-dialog modal-dialog-centered">
+            <div class="modal-content" style="border-radius: 12px">
+                <form action="{{ route('giangvien.lichhoc.copy') }}" method="POST">
+                    @csrf
+                    <div class="modal-header bg-dark text-white" style="background: #2c3e50;">
+                        <h5 class="modal-title" id="modalSaoChepLabel">Sao chép thời khóa biểu</h5>
+                        <button type="button" class="btn-close btn-close-white" data-bs-dismiss="modal"
+                            aria-label="Đóng"></button>
+                    </div>
+
+                    <div class="modal-body">
+                        <input type="hidden" name="id_lop" value="{{ $lop->id }}">
+                        <div class="row">
+                            <input type="hidden" name="id_tuan_hien_tai" value="{{ $tuanhientai }}" readonly>
+                            <div class="mb-3">
+                                <label class="form-label">Bạn có chắc muốn sao chép thời khóa biểu tuần này sang tuần
+                                </label>
+                            </div>
+
+                            <div>
+                                <label for="id_tuan_sao_chep" class="form-label">Tuần cần sao chép</label>
+                                <select class="form-select" name="id_tuan_sao_chep">
+                                    @foreach ($dsTuan as $tuan)
+                                        <option value="{{ $tuan->id }}">
+                                            Tuần {{ $loop->index + 1 }}
+                                        </option>
+                                    @endforeach
+                                </select>
+                            </div>
+                        </div>
+
+
+
+
+                    </div>
+
+                    <div class="modal-footer">
+                        <button type="submit" class="btn btn-primary">Xác nhận</button>
+                    </div>
+                </form>
             </div>
         </div>
     </div>

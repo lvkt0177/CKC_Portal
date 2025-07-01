@@ -23,7 +23,7 @@ use App\Models\Tuan;
 use App\Acl\Acl;
 use Illuminate\Support\Facades\Gate;
 use Illuminate\Support\Facades\DB;
-
+use App\Http\Requests\LopHocPhan\PhanCongGiangVien;
 use Illuminate\Support\Facades\Auth;
 
 class LopHocPhanController extends Controller
@@ -32,7 +32,6 @@ class LopHocPhanController extends Controller
     public function index()
     {
         $lopHocPhans = LopHocPhan::with(['thoiKhoaBieu.phong', 'giangVien.hoSo', 'lop', 'chuongTrinhDaoTao'])
-            ->where('id_giang_vien', auth()->id())
             ->orderBy('id', 'desc')
             ->get();
         
@@ -45,6 +44,31 @@ class LopHocPhanController extends Controller
             'data' => $lopHocPhans,
             'namVaTuan' => $namVaTuan,
             'chuongTrinhDaoTaos' => $chuongTrinhDaoTaos,
+        ]);
+    }
+
+    public function lopHocPhanTheoGiangVien()
+    {
+        $lopHocPhans = LopHocPhan::with(['thoiKhoaBieu.phong', 'giangVien.hoSo', 'lop', 'chuongTrinhDaoTao'])
+            ->where('id_giang_vien', Auth::user()->id)
+            ->orderBy('id', 'desc')
+            ->get();
+        
+        return response()->json([
+            'status' => 'success',
+            'data' => $lopHocPhans,
+        ]);
+    }
+
+    public function phanCongGiangVien(PhanCongGiangVien $request, LopHocPhan $lopHocPhan)
+    {
+        $lopHocPhan->id_giang_vien = $request->id_giang_vien;
+        $lopHocPhan->save();
+
+        return response()->json([
+            'status' => 'success',
+            'message' => 'Giảng viên đã được phân công thành công',
+            'data' => $lopHocPhan
         ]);
     }
   

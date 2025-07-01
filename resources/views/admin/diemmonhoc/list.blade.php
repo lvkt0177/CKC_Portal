@@ -100,10 +100,11 @@
                                     </tbody>
                                     <div class="d-flex justify-content-end mb-3">
                                         <div>
-                                            <button type="submit" class="btn btn-edit btn-sm mx-1 d-none" id="btn-luu">
+                                            <button type="submit" class="btn btn-success btn-sm mx-1 d-none"
+                                                id="btn-luu">
                                                 <i class="bi bi-save"></i> Lưu
                                             </button>
-                                            <button type="button" class="btn btn-back btn-sm d-none" id="btn-huy"
+                                            <button type="button" class="btn btn-danger btn-sm d-none" id="btn-huy"
                                                 onclick="cancelEdit()">
                                                 <i class="bi bi-x-circle"></i> Hủy
                                             </button>

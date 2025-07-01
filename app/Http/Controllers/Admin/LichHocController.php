@@ -5,6 +5,7 @@ namespace App\Http\Controllers\Admin;
 use App\Http\Controllers\Controller;
 use Illuminate\Http\Request;
 use App\Http\Requests\ThoiKhoaBieu\ThoiKhoaBieuRequest;
+use App\Http\Requests\ThoiKhoaBieu\UpdateLichHocRequest;
 use Carbon\Carbon;
 
 //Model
@@ -56,6 +57,7 @@ class LichHocController extends Controller
     {   
         $today = now();
 
+        $dsPhong= Phong::all();
         
         $dsHocKy = HocKy::where('id_nien_khoa', $lop->id_nien_khoa)
                         ->orderBy('ngay_bat_dau')
@@ -116,7 +118,13 @@ class LichHocController extends Controller
         ->where('id_tuan', $tuan->id ?? null)
         ->get();
 
-        return view('admin.lichhoc.list', compact('ngayTrongTuan','thoikhoabieu','lop','dsHocKy','dsTuan','hocKy','tuanDangChon'));
+        $dsgv = User::with('boMon.nganhHoc', 'hoSo')
+        ->whereHas('boMon.nganhHoc', function ($query) use ($lop) {
+            $query->where('id', $lop->id_nganh_hoc);
+        })
+        ->get();
+
+        return view('admin.lichhoc.list', compact('ngayTrongTuan','thoikhoabieu','lop','dsHocKy','dsTuan','hocKy','tuanDangChon','dsgv','dsPhong'));
     }
     public function create(Request $request, Lop $lop)
     {
@@ -318,6 +326,171 @@ class LichHocController extends Controller
         return redirect()->route('giangvien.lichhoc.create',['lop'=>$lop])
         ->with('success', 'Thêm thành công');
     }
+    public function saoChepTuan(Request $request)
+    {   
+        
+        $tuanHienTai = Tuan::find($request->id_tuan_hien_tai);
+        $lop = Lop::find($request->id_lop);
+       
+        if (!$tuanHienTai || !$lop) {
+            return back()->with('error', 'Không tìm thấy tuần hoặc lớp.');
+        }
 
+       
+        $tuanTiepTheo = Tuan::find($request->id_tuan_sao_chep);
+      
+        if (!$tuanTiepTheo) {
+            return back()->with('error', 'Không có tuần kế tiếp.');
+        }
+
+      
+        $dsTKB = ThoiKhoaBieu::where('id_tuan', $tuanHienTai->id)
+            ->whereHas('lopHocPhan', function ($query) use ($lop) {
+                $query->where('id_lop', $lop->id);
+            })
+            ->get();
+
+        foreach ($dsTKB as $tkb) {
+           
+            $thu = \Carbon\Carbon::parse($tkb->ngay)->dayOfWeekIso; 
+            $ngayMoi = \Carbon\Carbon::parse($tuanTiepTheo->ngay_bat_dau)->addDays($thu - 1);
+
+          
+            $trungLich = ThoiKhoaBieu::where('ngay', $ngayMoi->format('Y-m-d'))
+                ->where('id_phong', $tkb->id_phong)
+                ->where(function ($query) use ($tkb) {
+                    $query->whereBetween('tiet_bat_dau', [$tkb->tiet_bat_dau, $tkb->tiet_ket_thuc])
+                        ->orWhereBetween('tiet_ket_thuc', [$tkb->tiet_bat_dau, $tkb->tiet_ket_thuc]);
+                })
+                ->exists();
+
+            if ($trungLich) {
+                continue; 
+            }
+
+            
+            ThoiKhoaBieu::create([
+                'id_tuan'         => $tuanTiepTheo->id,
+                'id_lop_hoc_phan' => $tkb->id_lop_hoc_phan,
+                'id_phong'        => $tkb->id_phong,
+                'tiet_bat_dau'    => $tkb->tiet_bat_dau,
+                'tiet_ket_thuc'   => $tkb->tiet_ket_thuc,
+                'ngay'            => $ngayMoi->format('Y-m-d'),
+            ]);
+        }
+
+        return redirect()->route('giangvien.lichhoc.list',['lop'=>$lop])->with('success', 'Đã sao chép thời khóa biểu sang tuần kế tiếp.');
+    }
+    public function update(UpdateLichHocRequest $request)
+    {
+        
+        $data = $request->validated();
+        
+
+        $idLopHocPhan = $data['id_lop_hoc_phan'];
+        $idGiaoVien   = $data['id_giao_vien'];
+        $idLop        = $data['id_lop'];
+        $tuanId       = $data['tuan'];
+        $ngaybandau   = $data['ngay_ban_dau'];
+        $ngay         = Carbon::parse($data['ngay'])->format('Y-m-d');
+        $idPhong      = $data['id_phong'];
+        dd($ngay);
+        $lop  = Lop::find($idLop);
+        $tuan = Tuan::find($tuanId);
+
+        $lopHocPhan = LopHocPhan::find($idLopHocPhan);
+        $thoikhoabieu = ThoiKhoaBieu::find($idLopHocPhan);
+        
+        if ($lopHocPhan) {
+           
+            $lopHocPhan->update([
+                'id_giang_vien' => $idGiaoVien,
+            ]);
+        }
+        $tkb = ThoiKhoaBieu::where('id_tuan', $tuanId)
+            ->whereDate('ngay',$ngay)
+            ->first();
+        if ($tkb) {
+            $tietBatDau = $tkb->tiet_bat_dau;
+            $tietKetThuc = $tkb->tiet_ket_thuc;
+        }
+       
+        $thoiKhoaBieu = ThoiKhoaBieu::where('id_lop_hoc_phan', $idLopHocPhan)
+                   ->where('id_tuan', $tuanId)
+                   ->whereDate('ngay', Carbon::parse($ngaybandau)->format('Y-m-d'))
+                   ->first();
+                   
+       
+        
+        if ($thoiKhoaBieu && ($idPhong || $ngay)) {
+            
+            $trungLich = ThoiKhoaBieu::where('id_tuan', $tuanId)
+                    ->whereDate('ngay', $ngay)
+                    ->where(function ($query) use ($idPhong, $tietBatDau, $tietKetThuc) {
+                        $query->where('id_phong', $idPhong)
+                            ->where(function ($q) use ($tietBatDau, $tietKetThuc) {
+                                $q->whereBetween('tiet_bat_dau', [$tietBatDau, $tietKetThuc])
+                                    ->orWhereBetween('tiet_ket_thuc', [$tietBatDau, $tietKetThuc])
+                                    ->orWhere(function ($sub) use ($tietBatDau, $tietKetThuc) {
+                                        $sub->where('tiet_bat_dau', '<', $tietBatDau)
+                                            ->where('tiet_ket_thuc', '>', $tietKetThuc);
+                                    });
+                            });
+                    })
+                    ->where('id_lop_hoc_phan', '!=', $idLopHocPhan)  
+                    ->exists();
+            
+
+            dd($trungLich);
+            if ($trungLich) {
+                return redirect()->route('giangvien.lichhoc.list',['lop'=>$lop])
+                ->with('error', 'Trùng phòng hoặc tiết học vào ngày đã chọn!');
+            }
+
+           
+            
+            $updateData = [];
+
+            if ($idPhong) {
+                $updateData['id_phong'] = $idPhong;
+            }
+
+            if ($ngay) {
+                $updateData['ngay'] = $ngay;
+            }
+
+            $thoiKhoaBieu->update($updateData);
+        }
+        return redirect()->route('giangvien.lichhoc.list',['lop'=>$lop])
+        ->with('success', 'Cập nhật thành công.');
+    }
+
+    public function destroy(Request $request)
+    {
+       
+        dd($request->all());
+
+        $idLopHocPhan = $request->id_lop_hoc_phan;
+        $tietBatDau = $request->tiet_bat_dau;
+        $ngay = $request->ngay;
+
+        
+        $lop = Lop::find($request->id_lop);
+
+     
+        $thoiKhoaBieu = ThoiKhoaBieu::where('id_lop_hoc_phan', $idLopHocPhan)
+                            ->where('tiet_bat_dau', $tietBatDau)
+                            ->where('ngay', $ngay)
+                            ->first();
+
+        if ($thoiKhoaBieu) {
+            $thoiKhoaBieu->delete();
+            return redirect()->route('giangvien.lichhoc.list', ['lop' => $lop])
+                            ->with('success', 'Xóa thành công.');
+        }
+
+        return redirect()->route('giangvien.lichhoc.list', ['lop' => $lop])
+                        ->with('error', 'Không tìm thấy, xóa không thành công.');
+    }
 
 }
