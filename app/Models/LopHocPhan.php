@@ -4,6 +4,7 @@ namespace App\Models;
 
 use Illuminate\Database\Eloquent\Model;
 use App\Enum\LoaiMonHoc;
+use App\Enum\NopBangDiemStatus;
 class LopHocPhan extends Model
 {
     protected $table = "lop_hoc_phan";
@@ -15,10 +16,13 @@ class LopHocPhan extends Model
         'loai_lop_hoc_phan',
         'so_luong_sinh_vien',
         'loai_mon',
+        'gioi_han_dang_ky',
         'trang_thai',
+        'trang_thai_nop_bang_diem'
     ];
     protected $casts = [
-        'loai_mon' => LoaiMonHoc::class
+        'loai_mon' => LoaiMonHoc::class,
+        'trang_thai_nop_bang_diem' => NopBangDiemStatus::class,
     ];
     public function giangVien()
     {

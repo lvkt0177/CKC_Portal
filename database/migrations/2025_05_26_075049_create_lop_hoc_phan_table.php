@@ -32,7 +32,8 @@ return new class extends Migration {
 
             $table->integer('trang_thai')->default(0);
 
-            
+            //TRANG_THAI_NOP_BANG_DIEM
+            $table->integer('trang_thai_nop_bang_diem')->default(0);
 
             $table->timestamps();
         });

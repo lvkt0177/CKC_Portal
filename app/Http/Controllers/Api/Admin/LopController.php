@@ -6,6 +6,7 @@ use App\Http\Controllers\Controller;
 use Illuminate\Http\Request;
 use App\Models\Lop;
 use App\Models\SinhVien;
+use App\Models\Nam;
 use App\Models\DiemRenLuyen;
 use App\Http\Requests\GiangVien\NhapDiemRequest;
 use App\Http\Requests\GiangVien\NhapDiemRenLuyenRequest;

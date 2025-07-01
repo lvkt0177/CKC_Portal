@@ -16,7 +16,7 @@ use App\Models\Lop;
 use App\Repositories\ThongBao\ThongBaoRepository;
 use App\Enum\ThongBaoStatus;
 use App\Enum\CapTren;
-use App\Http\Requests\ThongBao\ThongBaoRequest;
+use App\Http\Requests\ThongBao\ThongBaoRequestAPI;
 use App\Http\Requests\ThongBao\SendToStudentRequest;
 use Illuminate\Support\Facades\Auth;
 use Illuminate\Support\Facades\Log;
@@ -61,7 +61,7 @@ class ThongBaoController extends Controller
     /**
      * Store a newly created resource in storage.
      */
-    public function store(ThongBaoRequest $request)
+    public function store(ThongBaoRequestAPI $request)
     {
         $thongBao = $this->thongBaoRepository->create($request->all());
         
