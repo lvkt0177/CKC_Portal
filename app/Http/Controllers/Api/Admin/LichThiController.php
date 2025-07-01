@@ -32,7 +32,6 @@ class LichThiController extends Controller
 
     public function store(LichThiStoreRequestAPI $request, LichThiService $service)
     {
-        
         $data = $request->validated();
 
         if ($service->isTrungLich($data)) {

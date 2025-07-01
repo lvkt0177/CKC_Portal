@@ -34,4 +34,10 @@ class Tuan extends Model
     {
         return $this->hasMany(ThoiKhoaBieu::class, 'id_tuan', 'id');
     }
+
+    //lich thi
+    public function lichThi()
+    {
+        return $this->hasMany(LichThi::class, 'id_tuan', 'id');
+    }
 }
