@@ -14,7 +14,8 @@ class DanhSachHocPhan extends Model
         'diem_md_ly_thuyet',
         'diem_chuyen_can',
         'diem_qua_trinh',
-        'diem_thi',
+        'diem_thi_lan_1',
+        'diem_thi_lan_2',
         'diem_tong_ket',
         'loai_hoc',
     ];

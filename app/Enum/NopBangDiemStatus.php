@@ -8,6 +8,7 @@ enum NopBangDiemStatus:int
     case NOPLANMOT = 1;
     case NOPLANHAI = 2;
     case NOPLANBA = 3;
+    case NOPLANBON = 4;
 
     public function getLabel(): string
     {
@@ -16,6 +17,7 @@ enum NopBangDiemStatus:int
             self::NOPLANMOT => 'Nộp bảng điểm',
             self::NOPLANHAI => 'Nộp bảng điểm thi lần 1',
             self::NOPLANBA => 'Nộp bảng điểm thi lần 2',
+            self::NOPLANBON => '',
         };
     }
 }

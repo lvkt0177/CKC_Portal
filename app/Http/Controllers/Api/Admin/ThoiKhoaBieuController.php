@@ -32,6 +32,42 @@ use Illuminate\Auth\Access\Gate as AuthGate;
 class ThoiKhoaBieuController extends Controller
 {
 
+    public function index()
+    {
+        $thoiKhoaBieus = ThoiKhoaBieu::with([
+            'lopHocPhan.giangVien',
+            'phong',
+            'tuan',
+        ])
+        ->orderBy('id', 'desc')
+        ->get();
+
+        return response()->json([
+            'message' => 'Lấy danh sách thời khóa biểu thành công.',
+            'data' => $thoiKhoaBieus,
+        ]);
+    }
+
+    public function thoiKhoaBieuCuaGiangVien()
+    {
+        $user = Auth::user();
+        $thoiKhoaBieus = ThoiKhoaBieu::with([
+            'lopHocPhan.giangVien',
+            'phong',
+            'tuan',
+        ])->whereHas('lopHocPhan.giangVien', function ($query) use ($user) {
+            $query->where('id', $user->id);
+        })
+        ->orderBy('id', 'desc')
+        ->get();
+        
+
+        return response()->json([
+            'message' => 'Lấy thời khóa biểu của giảng viên thành công.',
+            'data' => $thoiKhoaBieus,
+        ]);
+    }
+
     public function store(ThoiKhoaBieuStoreRequestAPI $request, ThoiKhoaBieuService $service)
     {
         $data = $request->validated();

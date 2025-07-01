@@ -51,7 +51,7 @@ class DiemMonHocController extends Controller
 
         $nextOption = collect(NopBangDiemStatus::cases())
             ->first(fn($case) => $case->value === $currentTrangThai + 1);
-    
+
         return view('admin.diemmonhoc.list', compact('sinhviens', 'lop_HP', 'nextOption'));
     }
 
