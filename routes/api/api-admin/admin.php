@@ -34,5 +34,6 @@ Route::prefix('admin')->name('api.admin.')->group(function () {
         include('bienbanshcn.php');
         include('thongbao.php');
         include('chuongtrinhdaotao.php');
+        include('thoikhoabieu.php');
     });
 });
