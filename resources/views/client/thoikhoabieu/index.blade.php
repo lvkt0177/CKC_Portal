@@ -23,13 +23,13 @@
                 <form method="GET" action="{{ route('sinhvien.thoikhoabieu.index') }}" id="week-form">
                     <input type="hidden" name="action" id="week-action" value="">
 
-                    {{-- Chọn Năm --}}
+
                     @php
                         use App\Models\Nam;
                         use App\Models\Tuan;
 
                         $today = now();
-                        $namHienTai = $today->month <= 7 ? $today->year - 1 : $today->year;
+                        $namHienTai = $today->month <= 7 ? $today->year : $today->year;
 
                         $namDangChon = request('nam', $namHienTai);
 
@@ -98,7 +98,7 @@
                                 </tr>
                             </thead>
                             <tbody>
-                                <!-- Morning Session -->
+
                                 <tr>
                                     <td class="time-column">Sáng</td>
                                     @foreach ($ngayTrongTuan as $ngay)
@@ -163,7 +163,7 @@
                                     @endforeach
                                 </tr>
 
-                                {{--  Afternoon Session --}}
+
                                 <tr>
                                     <td class="time-column">Chiều</td>
                                     @foreach ($ngayTrongTuan as $ngay)
@@ -228,7 +228,7 @@
                                     @endforeach
                                 </tr>
 
-                                {{-- Evening Session --}}
+
                                 <tr>
                                     <td class="time-column">Tối</td>
                                     @foreach ($ngayTrongTuan as $ngay)
@@ -317,7 +317,7 @@
             </div>
         </div>
     </div>
-    {{-- Modal chi tiết lớp học --}}
+
     <div class="modal fade" id="classDetailModal" tabindex="-1" aria-labelledby="classDetailLabel" aria-hidden="true">
         <div class="modal-dialog modal-dialog-centered modal-md">
             <div class="modal-content shadow-lg rounded-4">
@@ -340,7 +340,7 @@
                     </ul>
                 </div>
                 <div class="modal-footer bg-light rounded-bottom-4">
-                    <button type="button" class="btn btn-back" data-bs-dismiss="modal">Đóng</button>
+
                 </div>
             </div>
         </div>

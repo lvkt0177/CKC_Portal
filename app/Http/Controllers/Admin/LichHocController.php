@@ -177,7 +177,7 @@ class LichHocController extends Controller
                             });
                         });
                 })
-                ->where('loai_mon_hoc', '!=', 2)
+                ->where('loai_mon_hoc', '!=', 5)
                 ->get();
         }
 
@@ -301,7 +301,7 @@ class LichHocController extends Controller
                 'loai_lop_hoc_phan' => 0,
                 'so_luong_sinh_vien' => $sinhVienList->count(),
                 'gioi_han_dang_ky' => 20,
-                'loai_mon' => 0,
+                'loai_mon' => $monHoc->loai_mon_hoc,
                 'trang_thai' => 1,
             ]);    
             ThoiKhoaBieu::create([

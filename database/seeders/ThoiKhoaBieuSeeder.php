@@ -15,15 +15,6 @@ class ThoiKhoaBieuSeeder extends Seeder
     public function run(): void
     {
         //
-        ThoiKhoaBieu::insert([
-            [
-            'id_tuan'=> 181,
-            'id_lop_hoc_phan'=>1,
-            'id_phong'=>1,	
-            'tiet_bat_dau'=>1,	
-            'tiet_ket_thuc'=>3,
-            'ngay'=>"2025/6/16",	
-            ],
-        ]);
+        
     }
 }
