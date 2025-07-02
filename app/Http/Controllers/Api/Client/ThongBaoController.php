@@ -15,7 +15,8 @@ use Auth;
 use App\Repositories\ThongBao\ThongBaoRepository;
 use Illuminate\Support\Facades\Log;
 use App\Enum\DocThongBao;
-
+use App\Models\BinhLuan;
+use App\Http\Requests\BinhLuan\BinhLuanStoreRequestAPI;
 
 class ThongBaoController extends Controller
 {
@@ -29,7 +30,8 @@ class ThongBaoController extends Controller
      */
     public function index()
     {
-        $thongbaos = $this->thongBaoRepository->thongBaoSinhVien(Auth::guard('student')->user()->id);
+        $thongbaos = $this->thongBaoRepository->thongBaoSinhVien(Auth::user()->id);
+        $thongbaos->load('binhLuans.nguoiBinhLuan.hoSo');
         return response()->json([
             'status' => 'success',
             'data' => $thongbaos
@@ -94,5 +96,38 @@ class ThongBaoController extends Controller
     public function destroy(string $id)
     {
         //
+    }
+
+    public function storeComment(BinhLuanStoreRequestAPI $request, ThongBao $thongbao)
+    {
+        $data = $request->validated();
+
+        $comment = BinhLuan::create([
+            'id_thong_bao' => $thongbao->id,
+            'noi_dung' => $data['noi_dung'],
+            'id_binh_luan_cha' => $data['id_binh_luan_cha'] ?? null,
+            'nguoi_binh_luan_id' => Auth::id(),
+            'nguoi_binh_luan_type' => Auth::user()::class,
+        ]);
+
+        if (!$comment) {
+            return response()->json(['message' => 'Tạo bình luận thất bại'], 500);
+        }
+
+        return response()->json([
+            'message' => 'Tạo bình luận thành công',
+            'data' => $comment->load('nguoiBinhLuan.hoSo'),
+        ]);
+    }
+
+    public function destroyComment(BinhLuan $binhLuan)
+    {
+        if (Auth::id() !== $binhLuan->nguoi_binh_luan_id) {
+            return response()->json(['message' => 'Không có quyền xoá'], 403);
+        }
+
+        $binhLuan->delete();
+
+        return response()->json(['message' => 'Xoá bình luận thành công']);
     }
 }

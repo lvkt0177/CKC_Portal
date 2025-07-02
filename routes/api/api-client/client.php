@@ -19,6 +19,7 @@ Route::prefix('sinhvien')->name('api.sinhvien.')->group(function () {
             include('khungdaotao.php');
             include('bienbanshcn.php');
             include('hocphi.php');
+            include('thongbao.php');
     });
 });
 

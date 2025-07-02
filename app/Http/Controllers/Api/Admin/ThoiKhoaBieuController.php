@@ -104,6 +104,11 @@ class ThoiKhoaBieuController extends Controller
         ]);
     }
 
+    public function copyWeekToWeek(ThoiKhoaBieu $tkb)
+    {
+        
+    }
+
     public function destroy(ThoiKhoaBieu $tkb)
     {
         $tkb->delete();
