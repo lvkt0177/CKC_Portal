@@ -36,7 +36,9 @@ return new class extends Migration
             $table->float('diem_qua_trinh')->nullable();
 
             //điểm thi
-            $table->float('diem_thi')->nullable();
+            $table->float('diem_thi_lan_1')->nullable();
+            
+            $table->float('diem_thi_lan_2')->nullable();
 
             //điểm tổng kết
             $table->float('diem_tong_ket')->nullable();

@@ -16,15 +16,21 @@
 
                     <div class="card-body">
                         <div class="">
-                            @if(!is_null($nextOption))
-                                <form action="{{ route('giangvien.diemmonhoc.updateTrangThai', $lop_HP) }}" method="POST">
+                            @if(!is_null($nextOption) && $nextOption->value != 4)
+                                <form action="{{ route('giangvien.diemmonhoc.updateTrangThai', $lop_HP) }}" method="POST" class="mb-2" data-confirm>
                                     @csrf
-                                    <select name="trang_thai" class="form-select" disabled>
-                                        <option value="{{ $nextOption->value }}">{{ $nextOption->getLabel() }}</option>
-                                    </select>
-
-                                    <button type="submit" class="btn btn-primary mt-2">Gửi</button>
+                                    <div class="">
+                                        <select name="trang_thai" class="form-select d-none" disabled>
+                                            <option value="{{ $nextOption->value }}">{{ $nextOption->getLabel() }}</option>
+                                        </select>
+    
+                                        <button type="submit" class="btn btn-primary mt-2">{{ $nextOption->getLabel() }}</button>
+                                    </div>
                                 </form>
+                            @else
+                                <div class="alert alert-info">
+                                    <strong>Thông báo:</strong> Lớp học phần này đã hoàn thành.
+                                </div>
                             @endif
 
                             <div class="d-flex justify-content-end mb-3">
@@ -45,7 +51,8 @@
                                             <th>Tên lớp</th>
                                             <th>Điểm chuyên cần</th>
                                             <th>Điểm quá trình</th>
-                                            <th>Điểm thi</th>
+                                            <th>Điểm thi lần 1</th>
+                                            <th>Điểm thi lần 2</th>
                                             <th>Điểm trung bình</th>
                                             <th>Loại sinh viên</th>
 
@@ -73,7 +80,7 @@
                                                             name="diem_chuyen_can[{{ $dshp->id_sinh_vien }}]"
                                                             value="{{ $dshp->diem_chuyen_can }}"
                                                             class="form-control score-input" style="display:none;"
-                                                            oninput="validateScore(this)" />
+                                                            oninput="validateScore(this)" {{ $nextOption->value - 1 == 0 ? '' : 'disabled' }}/>
                                                     </td>
 
                                                     {{-- Quá trình --}}
@@ -83,16 +90,25 @@
                                                             name="diem_qua_trinh[{{ $dshp->id_sinh_vien }}]"
                                                             value="{{ $dshp->diem_qua_trinh }}"
                                                             class="form-control score-input" style="display:none;"
-                                                            oninput="validateScore(this)" />
+                                                            oninput="validateScore(this)" {{ $nextOption->value - 1 == 0 ? '' : 'disabled' }}/>
                                                     </td>
 
-                                                    {{-- Điểm thi --}}
+                                                    {{-- Điểm thi lần 1 --}}
                                                     <td>
-                                                        <span class="score-view">{{ $dshp->diem_thi }}</span>
+                                                        <span class="score-view">{{ $dshp->diem_thi_lan_1 }}</span>
                                                         <input type="number" step="0.1" min="0" max="10"
                                                             name="diem_thi[{{ $dshp->id_sinh_vien }}]"
                                                             value="{{ $dshp->diem_thi }}" class="form-control score-input"
-                                                            style="display:none;" oninput="validateScore(this)" />
+                                                            style="display:none;" oninput="validateScore(this)" {{ $nextOption->value - 1 == 1 ? '' : 'disabled' }}/>
+                                                    </td>
+
+                                                    {{-- Điểm thi lần 2 --}}
+                                                    <td>
+                                                        <span class="score-view">{{ $dshp->diem_thi_lan_2 }}</span>
+                                                        <input type="number" step="0.1" min="0" max="10"
+                                                            name="diem_thi[{{ $dshp->id_sinh_vien }}]"
+                                                            value="{{ $dshp->diem_thi }}" class="form-control score-input"
+                                                            style="display:none;" oninput="validateScore(this)" {{ $nextOption->value - 1 == 2 ? '' : 'disabled' }}/>
                                                     </td>
 
 

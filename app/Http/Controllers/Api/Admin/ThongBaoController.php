@@ -205,7 +205,7 @@ class ThongBaoController extends Controller
         ]);
     }
 
-    public function deleteComment(BinhLuan $binhLuan)
+    public function destroyComment(BinhLuan $binhLuan)
     {
         if (Auth::id() !== $binhLuan->nguoi_binh_luan_id && Auth::user()->chuc_vu != 1) {
             return response()->json(['message' => 'Không có quyền xoá'], 403);
