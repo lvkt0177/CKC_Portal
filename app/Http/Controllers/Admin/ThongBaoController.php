@@ -54,7 +54,14 @@ class ThongBaoController extends Controller
      */
     public function create()
     {
-        $capTren = CapTren::cases();
+        $capTren = collect(CapTren::cases())->filter(function ($cap) {
+            return match ($cap) {
+                CapTren::KHOA => auth()->user()->can('quyen_khoa'),
+                CapTren::PHONG_CTCT => auth()->user()->can('quyen_phong_ctct'),
+                CapTren::GVCN => auth()->user()->can('quyen_gvcn'),
+                CapTren::GVBM => auth()->user()->can('quyen_gvbm'),
+            };
+        });
         return view('admin.thongbao.create', compact('capTren'));
     }
 

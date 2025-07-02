@@ -23,7 +23,7 @@ class  PaymentAPIService
     {
         $code_cart = rand(00, 9999);
         $vnp_Url = "https://sandbox.vnpayment.vn/paymentv2/vpcpay.html";
-        $vnp_Returnurl = route('vnpay.return');
+        $vnp_Returnurl = route('api.vnpay.return');
         $vnp_TmnCode = "U4PG4M2O";
         $vnp_HashSecret = "U0ZBWWF07HXOQYZL2ZR823GINKU3X1O7";
 
@@ -147,7 +147,7 @@ class  PaymentAPIService
                     $this->updateHocPhiHocGhepThiLai($orderInfo['id_lop_hoc_phan'], $data['so_tien'], LoaiDangKy::THILAI->value);
                 }
             }
-            return view('client.hocphi.result', compact('data'));
+            return view('api.payment.payment', compact('data'));
 
         } else {
             return "Chữ ký không hợp lệ!";

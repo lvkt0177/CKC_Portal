@@ -19,6 +19,8 @@ final class Acl
 
     const ROLE_STAFF = 'giảng viên';
 
+    const ROLE_TEACHER = 'giáo viên bộ môn';
+
     //--------------------------------------------------------------------------
     //Quy tắt: PERMISSION_
     const PERMISSION_ASSIGNEE = 'gán vai trò';

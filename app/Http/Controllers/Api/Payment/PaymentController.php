@@ -10,7 +10,7 @@ use App\Models\SinhVien;
 use App\Models\HocKy;
 use App\Models\LopHocPhan;
 use App\Models\Lop;
-use App\Services\PaymentService;
+use App\Services\PaymentAPIService;
 use App\Http\Requests\Payment\PaymentRequest;
 use Illuminate\Support\Facades\DB;
 use Illuminate\Support\Facades\Log;
@@ -19,7 +19,7 @@ class PaymentController extends Controller
 {
     protected $paymentService;
 
-    public function __construct(PaymentService $paymentService)
+    public function __construct(PaymentAPIService $paymentService)
     {
         $this->paymentService = $paymentService;
     }
@@ -79,7 +79,10 @@ class PaymentController extends Controller
             'total_vnpay' => number_format($tien, 2, '.', ''),
         ];
         $url = $this->paymentService->createPaymentUrl($data);
-        return redirect($url);
+        return response()->json([
+            'status' => 'success',
+            'url' => $url,
+        ]);
     }
 
     public function vnpay_thi_lai()
@@ -91,7 +94,10 @@ class PaymentController extends Controller
         ]);
         $data['total_vnpay'] = number_format(50000, 2, '.', ''); 
         $url = $this->paymentService->createPaymentUrl($data);
-        return redirect($url);
+        return response()->json([
+            'status' => 'success',
+            'url' => $url,
+        ]);
     }
 
     public function vnpayReturn(Request $request)
@@ -102,6 +108,10 @@ class PaymentController extends Controller
             return $result;
         }
 
-        return view('client.hocphi.result', ['data' => $result]);
+        return response()->json([
+            'status' => 'success',
+            'message' => 'Payment successful',
+            'data' => $result,
+        ]);
     }
 }
