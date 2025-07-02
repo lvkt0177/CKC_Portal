@@ -108,6 +108,7 @@ class ThoiKhoaBieuController extends Controller
     public function copyWeekToWeek(CopyWeekRequestAPI $request, ThoiKhoaBieu $tkb)
     {
         $data = $request->validated();
+        $idTuan = $data['id_tuan'];
 
         $newTkb = $tkb->replicate();
         $newTkb->tuan_id = $idTuan;
