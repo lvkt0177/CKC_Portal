@@ -50,6 +50,9 @@ class PaymentController extends Controller
 
     public function vnpay_hoc_ghep(Request $request, LopHocPhan $lopHocPhan)
     {
+        if($lopHocPhan->gioi_han_dang_ky == 0) {
+            return redirect()->back()->with('error', 'Lớp học phần này đã đủ số lượng đăng ký.');
+        }
         $idSinhVien = Auth::guard('student')->id();
         
         $monHoc = DB::table('danh_sach_hoc_phan as dshp')
@@ -79,12 +82,12 @@ class PaymentController extends Controller
         return redirect($url);
     }
 
-    public function vnpay_thi_lai()
+    public function vnpay_thi_lai(LopHocPhan $lopHocPhan)
     {
         $data['order_info'] = json_encode([
             'message' => 'Thanh toán thi lại',
             'type' => 'thi_lai',
-            'id_lop_hoc_phan' => 1 //Cập nhật ID lớp học phần
+            'id_lop_hoc_phan' => $lopHocPhan->id
         ]);
         $data['total_vnpay'] = number_format(50000, 2, '.', ''); 
         $url = $this->paymentService->createPaymentUrl($data);

@@ -39,7 +39,7 @@
                 <div class="col-lg-6 class-item" data-status="active">
                     <div class="class-card fade-in">
                         <div class="class-header">
-                            <div class="class-name">{{ $lop->ten_hoc_phan }}</div>
+                            <div class="class-name">{{ $lop->ten_hoc_phan }} - {{ $lop->lop->ten_lop }}</div>
                         </div>
                         <div class="class-body">
                             <div class="info-item">
@@ -98,7 +98,7 @@
                                 </div>
                             </div>
                             
-                            @if($lop->gioi_han_dang_ky != 0)
+                            @if(!$checkDKHG)
                                 <div class="text-center mt-3">
                                     <form action="{{ route('vnpay.payment.hoc-ghep', $lop   ) }}" method="POST">
                                         @csrf

@@ -53,6 +53,7 @@ class PaymentController extends Controller
 
     public function vnpay_hoc_ghep(Request $request, LopHocPhan $lopHocPhan)
     {
+        // check GIoiHanDangKy
         $idSinhVien = Auth::guard('student')->id();
         
         $monHoc = DB::table('danh_sach_hoc_phan as dshp')

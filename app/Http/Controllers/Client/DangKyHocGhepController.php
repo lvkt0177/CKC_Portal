@@ -19,6 +19,7 @@ use Carbon\Carbon;
 use App\Models\LopHocPhan;
 use App\Models\ChuyenNganh;
 use App\Models\DangKyHGTL;
+use App\Models\DangKyHocGhepTL;
 
 class DangKyHocGhepController extends Controller
 {
@@ -65,7 +66,13 @@ class DangKyHocGhepController extends Controller
 
         $lopHocPhanDangMo->load('lop','giangVien.hoSo','thoiKhoaBieu.phong');
 
-        return view('client.dangkyhocghep.list', compact('lopHocPhanDangMo', 'monHoc'));
+        $checkDKHG = DangKyHGTL::whereIn('id_lop_hoc_phan', $lopHocPhanDangMo->pluck('id'))
+            ->where('id_sinh_vien', Auth::guard('student')->id())
+            ->where('trang_thai', 1)
+            ->exists();
+
+        
+        return view('client.dangkyhocghep.list', compact('lopHocPhanDangMo', 'monHoc', 'checkDKHG'));
     }
 
     public function history()

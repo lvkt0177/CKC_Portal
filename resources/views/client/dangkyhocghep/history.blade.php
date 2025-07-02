@@ -53,19 +53,6 @@
                                     </div>
                                 </div>
 
-                                <div class="my-3">
-                                    Đăng ký thi lại
-                                    <form action="{{ route('vnpay.payment.thi-lai') }}" method="POST">
-                                        @csrf
-                                        <input type="hidden" name="id_mon_hoc" value="1">
-                                        <input type="hidden" name="id_lop_hoc_phan" value="1">
-                                        <button class="status-badge status-active border-0">
-                                            <span class="fs-6">
-                                                Đăng ký
-                                            </span>
-                                        </button>
-                                    </form>
-                                </div>
                                 <div class="student-thongtin">
                                     <h5 class="section-title">
                                         <i class="fas fa-money-bill-wave me-2"></i>
