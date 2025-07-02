@@ -85,12 +85,12 @@ class PaymentController extends Controller
         ]);
     }
 
-    public function vnpay_thi_lai()
+    public function vnpay_thi_lai(LopHocPhan $lopHocPhan)
     {
         $data['order_info'] = json_encode([
             'message' => 'Thanh toán thi lại',
             'type' => 'thi_lai',
-            'id_lop_hoc_phan' => 1 //Cập nhật ID lớp học phần
+            'id_lop_hoc_phan' => $lopHocPhan->id 
         ]);
         $data['total_vnpay'] = number_format(50000, 2, '.', ''); 
         $url = $this->paymentService->createPaymentUrl($data);
