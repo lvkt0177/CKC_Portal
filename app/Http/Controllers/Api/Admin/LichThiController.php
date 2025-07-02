@@ -20,7 +20,7 @@ use App\Services\LichThiService;
 class LichThiController extends Controller
 {
     public function index(){
-        $lichThi = LichThi::with(['lopHocPhan', 'giamThi1', 'giamThi2', 'phong'])
+        $lichThi = LichThi::with(['lopHocPhan.lop', 'giamThi1', 'giamThi2', 'phong'])
             ->orderBy('ngay_thi', 'asc')
             ->get();
 
