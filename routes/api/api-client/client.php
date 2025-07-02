@@ -14,7 +14,7 @@ Route::prefix('sinhvien')->name('api.sinhvien.')->group(function () {
         'auth:sanctum',
         ])->group(function () {
         
-        Route::post('/logout', [AuthLoginController::class, 'studentLogout']);
+            Route::post('/logout', [AuthLoginController::class, 'studentLogout']);
             include('giayxacnhan.php');
             include('khungdaotao.php');
             include('bienbanshcn.php');
@@ -22,6 +22,9 @@ Route::prefix('sinhvien')->name('api.sinhvien.')->group(function () {
             include('thongbao.php');
             include('diemrenluyen.php');
             include('thongtingiangvien.php');
+            include('lichthi.php');
+            include('lophocphan.php');
+            include('thoikhoabieu.php');
     });
 });
 

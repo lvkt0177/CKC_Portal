@@ -5,6 +5,7 @@ namespace App\Models;
 use Illuminate\Database\Eloquent\Model;
 use App\Enum\LoaiMonHoc;
 use App\Enum\NopBangDiemStatus;
+use App\Enum\ActiveOrNotStatus;
 class LopHocPhan extends Model
 {
     protected $table = "lop_hoc_phan";

@@ -28,6 +28,7 @@ use App\Http\Requests\ThoiKhoaBieu\ThoiKhoaBieuUpdateRequestAPI;
 use Illuminate\Support\Facades\Auth;
 use App\Services\ThoiKhoaBieuService;
 use Illuminate\Auth\Access\Gate as AuthGate;
+use App\Http\Requests\ThoiKhoaBieu\CopyWeekRequestAPI;
 
 class ThoiKhoaBieuController extends Controller
 {
@@ -104,9 +105,18 @@ class ThoiKhoaBieuController extends Controller
         ]);
     }
 
-    public function copyWeekToWeek(ThoiKhoaBieu $tkb)
+    public function copyWeekToWeek(CopyWeekRequestAPI $request, ThoiKhoaBieu $tkb)
     {
-        
+        $data = $request->validated();
+
+        $newTkb = $tkb->replicate();
+        $newTkb->tuan_id = $idTuan;
+        $newTkb->save();
+
+        return response()->json([
+            'message' => 'Sao chép thời khóa biểu thành công.',
+            'data' => $newTkb,
+        ], 201);
     }
 
     public function destroy(ThoiKhoaBieu $tkb)

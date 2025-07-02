@@ -21,20 +21,18 @@ class LichThi extends Model
         'trang_thai'
         ];
 
-    
     public function lopHocPhan()
     {
         return $this->belongsTo(LopHocPhan::class, 'id_lop_hoc_phan', 'id');
     }
     public function phong()
     {
-        return $this->belongsTo(Phong::class, 'id_phong', 'id');
+        return $this->belongsTo(Phong::class, 'id_phong_thi', 'id');
     }
     public function giamThi1()
     {
         return $this->belongsTo(User::class, 'id_giam_thi_1');
     }
-
     public function giamThi2()
     {
         return $this->belongsTo(User::class, 'id_giam_thi_2');

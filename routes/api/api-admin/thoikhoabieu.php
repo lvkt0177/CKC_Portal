@@ -9,3 +9,4 @@ Route::get('/thoi-khoa-bieu/giang-vien', [ThoiKhoaBieuController::class, 'thoiKh
 Route::post('/thoi-khoa-bieu', [ThoiKhoaBieuController::class, 'store']);
 Route::post('/thoi-khoa-bieu/{tkb}', [ThoiKhoaBieuController::class, 'update']);
 Route::delete('/thoi-khoa-bieu/xoa-thoi-khoa-bieu/{tkb}', [ThoiKhoaBieuController::class, 'destroy']);
+Route::post('/thoi-khoa-bieu/copy-tuan/{tkb}', [ThoiKhoaBieuController::class, 'copyWeekToWeek']);

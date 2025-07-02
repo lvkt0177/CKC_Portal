@@ -290,7 +290,7 @@ class LichHocController extends Controller
             ->first();  
         if (!$lopHocPhan) {
             $lopHocPhan = LopHocPhan::create([
-                'ten_hoc_phan' => $tenMon . ' ' . $lop->ten_lop,
+                'ten_hoc_phan' => $tenMon,
                 'id_lop' => $data['lop_id'],
                 'id_giang_vien' => null,
                 'id_chuong_trinh_dao_tao' => $ct_ctdt->id_chuong_trinh_dao_tao, 
