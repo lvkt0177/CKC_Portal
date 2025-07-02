@@ -11,7 +11,7 @@ use App\Models\DiemRenLuyen;
 use App\Models\Nam;
 use App\Models\User;
 use App\Enum\XepLoaiDRL;
-
+use App\Http\Resources\Api\DiemRenLuyenResource;
 
 class DiemRenLuyenController extends Controller
 {
@@ -23,7 +23,7 @@ class DiemRenLuyenController extends Controller
 
         return response()->json([
             'status' => 'success',
-            'data' => $diemRenLuyens,
+            'data' => DiemRenLuyenResource::collection($diemRenLuyens),
         ]);
     }
 }

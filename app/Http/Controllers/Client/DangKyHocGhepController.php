@@ -33,6 +33,7 @@ class DangKyHocGhepController extends Controller
             ->join('lop_hoc_phan as lhp', 'lhp.id', '=', 'dshp.id_lop_hoc_phan')
             ->join('mon_hoc as mh', 'mh.ten_mon', '=', 'lhp.ten_hoc_phan')
             ->join('chi_tiet_ctdt as ct', 'ct.id_mon_hoc', '=', 'mh.id')
+            ->where('lhp.trang_thai_nop_bang_diem', '>=', 2)
             ->where('dshp.id_sinh_vien', $idSinhVien)
             ->where('dshp.diem_tong_ket', '<', 5)
             ->select(
