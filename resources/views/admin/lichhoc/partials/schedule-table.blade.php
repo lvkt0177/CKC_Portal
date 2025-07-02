@@ -82,7 +82,7 @@
                                         @if ($tkb->ngay == $ngay->format('Y-m-d'))
                                             @if ($so == $bat_dau && !in_array($tkb->id, $daDung))
                                                 <div class="class-card web-dev mb-2 border-left-{{ $tkb->lopHocPhan->loai_mon->getBadge() }}"
-                                                    data-id="{{ $tkb->lopHocPhan->id }}"
+                                                    data-id="{{ $tkb->lopHocPhan->id }}" data-tkb="{{ $tkb->id }}"
                                                     data-subject="{{ $tkb->lopHocPhan->ten_hoc_phan }}"
                                                     data-class="{{ $tkb->lopHocPhan->lop->ten_lop }}"
                                                     data-period="{{ $tkb->tiet_bat_dau }}-{{ $tkb->tiet_ket_thuc }}"
@@ -94,6 +94,7 @@
                                                         {{ $tkb->lopHocPhan->ten_hoc_phan }}
                                                     </div>
                                                     <div class="class-details">
+
                                                         Lớp: {{ $tkb->lopHocPhan->lop->ten_lop }}<br>
                                                         Tiết:
                                                         {{ $tkb->tiet_bat_dau }}-{{ $tkb->tiet_ket_thuc }}<br>
@@ -149,6 +150,8 @@
                                         @if ($tkb->ngay == $ngay->format('Y-m-d'))
                                             @if ($so == $bat_dau && !in_array($tkb->id, $daDung))
                                                 <div class="class-card web-dev mb-2 border-left-{{ $tkb->lopHocPhan->loai_mon->getBadge() }}"
+                                                    data-id="{{ $tkb->lopHocPhan->id }}"
+                                                    data-tkb="{{ $tkb->id }}"
                                                     data-subject="{{ $tkb->lopHocPhan->ten_hoc_phan }}"
                                                     data-class="{{ $tkb->lopHocPhan->lop->ten_lop }}"
                                                     data-period="{{ $tkb->tiet_bat_dau }}-{{ $tkb->tiet_ket_thuc }}"
@@ -215,6 +218,8 @@
                                         @if ($tkb->ngay == $ngay->format('Y-m-d'))
                                             @if ($so == $bat_dau && !in_array($tkb->id, $daDung))
                                                 <div class="class-card web-dev mb-2 border-left-{{ $tkb->lopHocPhan->loai_mon->getBadge() }}"
+                                                    data-id="{{ $tkb->lopHocPhan->id }}"
+                                                    data-tkb="{{ $tkb->id }}"
                                                     data-subject="{{ $tkb->lopHocPhan->ten_hoc_phan }}"
                                                     data-class="{{ $tkb->lopHocPhan->lop->ten_lop }}"
                                                     data-period="{{ $tkb->tiet_bat_dau }}-{{ $tkb->tiet_ket_thuc }}"

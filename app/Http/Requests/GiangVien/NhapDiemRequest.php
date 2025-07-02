@@ -34,8 +34,10 @@ class NhapDiemRequest extends FormRequest
             'diem_qua_trinh' => ['nullable', 'array'],
             'diem_qua_trinh.*' => ['nullable', 'numeric', 'between:0,10'],
 
-            'diem_thi' => ['nullable', 'array'],
-            'diem_thi.*' => ['nullable', 'numeric', 'between:0,10'],
+            'diem_thi_lan_1' => ['nullable', 'array'],
+            'diem_thi_lan_2' => ['nullable', 'array'],
+            'diem_thi_lan_1.*' => ['nullable', 'numeric', 'between:0,10'],
+            'diem_thi_lan_2.*' => ['nullable', 'numeric', 'between:0,10'],
             'nam'=>'numeric',
             //mảng sinh viên
             

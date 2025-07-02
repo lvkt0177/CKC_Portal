@@ -14,27 +14,7 @@
         <div class="row">
             <div class="card shadow-sm " style="height: 700px;">
                 <div class="card-header d-flex justify-content-between align-items-center">
-                    <form method="GET" action="{{ route('giangvien.lichthi.show', ['lop' => $lop]) }}" id="week-form">
-                        <div class="relative min-w-[20rem]" id="dropdown-container">
-                            <button type="button" id="dropdown-toggle"
-                                class="w-full px-4 py-3 text-left bg-transparent border-none focus:outline-none focus:ring-0 hover:bg-gray-100 rounded-lg transition flex items-center justify-between gap-2">
-                                <span id="selected-option" class="whitespace-nowrap">
-                                    Lịch học - Lớp {{ $lop->ten_lop }} -
-                                </span>
-                                <svg id="chevron" class="h-4 w-4 text-gray-500 transition-transform ml-2" fill="none"
-                                    viewBox="0 0 24 24" stroke="currentColor">
-                                    <path stroke-linecap="round" stroke-linejoin="round" stroke-width="6"
-                                        d="M19 9l-7 7-7-7" />
-                                </svg>
-                            </button>
-
-                            <div id="dropdown-menu"
-                                class="hidden absolute top-full left-0 w-full mt-1 bg-white rounded-lg shadow-lg border border-gray-200 z-10 ">
-                            
-                            </div>
-                        </div>
-                        <input type="hidden" name="hoc_ky" id="selected-hoc-ky" value="">
-                    </form>
+                    
                     <a href="{{ route('giangvien.lichthi.index') }}" class="btn btn-primary">Quay lại</a>
                 </div>
 

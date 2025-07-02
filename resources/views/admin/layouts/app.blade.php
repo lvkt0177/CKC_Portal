@@ -57,6 +57,8 @@
                             Công tác giảng dạy
                         </a>
                         <ul class="dropdown-menu">
+                            <li><a class="dropdown-item" href="{{ route('giangvien.giangvien.lichday') }}">
+                                    <i class="bi bi-calendar-fill  me-2"></i>Lịch giảng dạy</a></li>
                             <li><a class="dropdown-item" href="{{ route('giangvien.diemmonhoc.index') }}"><i
                                         class="fas fa-file-invoice me-2"></i>Nhập điểm môn học</a></li>
                             <li><a class="dropdown-item" href="{{ route('giangvien.phieulenlop.index') }}"><i
@@ -64,7 +66,7 @@
                             <li><a class="dropdown-item" href="{{ route('giangvien.thongbao.index') }}"><i
                                         class="fas fa-credit-card me-2"></i>Thông báo cho sinh viên</a></li>
                             <li><a class="dropdown-item" href="{{ route('giangvien.phieulenlop.manage') }}"><i
-                                class="fas fa-credit-card me-2"></i>Quản lý phiếu lên lớp</a></li>
+                                        class="fas fa-credit-card me-2"></i>Quản lý phiếu lên lớp</a></li>
                         </ul>
                     </div>
 
@@ -115,8 +117,8 @@
                     </div>
 
                     <div class="dropdown">
-                        <a class="nav-link dropdown-toggle {{ isActiveRoute('giangvien/testimonial') }}" href="#"
-                            data-bs-toggle="dropdown" aria-expanded="false">
+                        <a class="nav-link dropdown-toggle {{ isActiveRoute('giangvien/testimonial') }}"
+                            href="#" data-bs-toggle="dropdown" aria-expanded="false">
                             Công tác Chính trị HS - SV
                         </a>
                         <ul class="dropdown-menu">

@@ -16,4 +16,4 @@ Route::post('/sao-chep-lich-hoc', [LichHocController::class, 'saoChepTuan'])->na
 
 Route::post('/cap-nhat-lich-hoc', [LichHocController::class,'update'])->name('lichhoc.update');
 
-Route::post('/xoa-lich-hoc', [LichHocController::class, 'destroy'])->name('lichhoc.destroy');
+Route::post('/lich-hoc/xoa-lich-hoc', [LichHocController::class, 'destroy'])->name('lichhoc.destroy');

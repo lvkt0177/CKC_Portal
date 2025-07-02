@@ -1,6 +1,6 @@
-@extends('client.layouts.app')
+@extends('admin.layouts.app')
 
-@section('title', 'Thời Khóa Biểu')
+@section('title', 'Lịch giảng dạy của giảng viên')
 
 @section('css')
     <link rel="stylesheet" href="{{ asset('assets/admin/css/lich.css') }}">
@@ -20,9 +20,8 @@
                     </h3>
                 </div>
 
-                <form method="GET" action="{{ route('sinhvien.thoikhoabieu.index') }}" id="week-form">
+                <form method="GET" action="{{ route('giangvien.giangvien.lichday') }}" id="week-form">
                     <input type="hidden" name="action" id="week-action" value="">
-
 
                     @php
                         use App\Models\Nam;
@@ -98,7 +97,7 @@
                                 </tr>
                             </thead>
                             <tbody>
-
+                                <!-- Morning Session -->
                                 <tr>
                                     <td class="time-column">Sáng</td>
                                     @foreach ($ngayTrongTuan as $ngay)
@@ -163,7 +162,7 @@
                                     @endforeach
                                 </tr>
 
-
+                                {{--  Afternoon Session --}}
                                 <tr>
                                     <td class="time-column">Chiều</td>
                                     @foreach ($ngayTrongTuan as $ngay)
@@ -228,7 +227,7 @@
                                     @endforeach
                                 </tr>
 
-
+                                {{-- Evening Session --}}
                                 <tr>
                                     <td class="time-column">Tối</td>
                                     @foreach ($ngayTrongTuan as $ngay)
@@ -363,9 +362,9 @@
         const date = document.getElementById('date');
         const content = document.getElementById('content');
 
-        // Add interactive functionality
+
         document.addEventListener('DOMContentLoaded', function() {
-            // Add click events to class cards
+
             classCards.forEach(card => {
                 card.addEventListener('click', function() {
                     subjectName.textContent = this.dataset.subject || '---';
@@ -375,22 +374,22 @@
                     teacher.textContent = this.dataset.teacher || '---';
                     date.textContent = this.dataset.date || '---';
 
-                    modal.show(); // <-- phải gọi đúng!
+                    modal.show();
                 });
             });
-            // Add navigation functionality
+
             const buttons = document.querySelectorAll('.btn-group .btn');
             buttons.forEach(button => {
                 button.addEventListener('click', function() {
-                    // Remove active class from all buttons
+
                     this.parentNode.querySelectorAll('.btn').forEach(b => b.classList.remove(
                         'active'));
-                    // Add active class to clicked button
+
                     this.classList.add('active');
                 });
             });
 
-            // Add hover effects to schedule cells
+
             const scheduleCells = document.querySelectorAll('.schedule-cell');
             scheduleCells.forEach(cell => {
                 if (!cell.querySelector('.class-card')) {

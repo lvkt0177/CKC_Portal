@@ -17,7 +17,7 @@
 @section('content')
     <div class="container-fluid">
         <div class="row">
-            <div class="card shadow-sm " style="height: 700px;">
+            <div class="card shadow-sm " style="height: 800px;">
                 <div class="card-header d-flex justify-content-between align-items-center">
                     <form method="GET" action="{{ route('giangvien.lichhoc.list', ['lop' => $lop]) }}" id="week-form">
                         <div class="relative min-w-[20rem]" id="dropdown-container">
@@ -148,7 +148,7 @@
                     </button>
                     <form action="{{ route('giangvien.lichhoc.destroy') }}" method="POST" data-confirm>
                         @csrf
-                        <input type="hidden" id="id" name="id_lop_hoc_phan" value="">
+                        <input type="hidden" id="id_delete" name="id_tkb" value="">
                         <button type="submit" class="btn btn-sm btn-outline-danger">
                             <i class="fa fa-trash " aria-hidden="true"></i>
                         </button>
@@ -165,11 +165,11 @@
 
     <script>
         function toggleSelect(show) {
-            const span = document.getElementById('teacher'); // span cũ trong ul
-            const selectForm = document.getElementById('selectOption'); // form ẩn/hiện
+            const span = document.getElementById('teacher');
+            const selectForm = document.getElementById('selectOption');
             const editBtn = document.getElementById('editBtn');
             const closeBtn = document.getElementById('closeBtn');
-            const infoList = selectForm.nextElementSibling; // ul kế tiếp form
+            const infoList = selectForm.nextElementSibling;
 
             if (show) {
                 selectForm.style.display = 'block';
@@ -193,6 +193,7 @@
 
 
         const ID = document.getElementById('id');
+        const id_delete = document.getElementById('id_delete');
         const subjectName = document.getElementById('subjectName');
         const className = document.getElementById('className');
         const period = document.getElementById('period');
@@ -223,6 +224,7 @@
                     teacher.textContent = this.dataset.teacher || '---';
                     date.textContent = this.dataset.date || '---';
                     ID.value = this.dataset.id || '---';
+                    id_delete.value = this.dataset.tkb || '---';
                     day.value = this.dataset.day || '---';
                     modal.show();
                 });
