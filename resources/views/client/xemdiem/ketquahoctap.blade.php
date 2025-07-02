@@ -74,9 +74,6 @@
                                         <th>STT</th>
                                         <th>Tên môn học</th>
                                         <th>Tín chỉ</th>
-                                        <th>Điểm chuyên cần</th>
-                                        <th>Điểm quá trình</th>
-                                        <th>Điểm thi</th>
                                         <th>Điểm tổng kết</th>
                                     </tr>
                                 </thead>
@@ -86,9 +83,6 @@
                                             <td>{{ $index + 1 }}</td>
                                             <td style="text-align: left">{{ $mon['ten_mon'] }}</td>
                                             <td>{{ $mon['tin_chi'] }}</td>
-                                            <td>{{ $mon['chuyencan'] }}</td>
-                                            <td>{{ $mon['quatrinh'] }}</td>
-                                            <td>{{ $mon['thi'] }}</td>
                                             <td><span class="grade-badge ">{{ $mon['tongket'] }}</span></td>
                                         </tr>
                                     @endforeach
@@ -107,9 +101,16 @@
                                     <div class="value">{{ $thongKeTungKy[$hocKy]['tong_tin_chi'] }}</div>
                                 </div>
                                 <div class="stat-card">
-                                    <h4>Điểm trung bình học kỳ {{ $hocKy }}</h4>
+                                    <h4>Điểm trung bình {{ $tenHocKy }}</h4>
                                     <div class="value">{{ $thongKeTungKy[$hocKy]['diem_trung_binh'] }}</div>
                                 </div>
+                                @if (in_array($thongKeTungKy[$hocKy]['ten_hoc_ky'], ['Học kỳ 2', 'Học kỳ 4', 'Học kỳ 6']))
+                                    <div class="stat-card">
+                                        <h4>Điểm trung bình cả năm</h4>
+                                        <div class="value">{{ $thongKeTungKy[$hocKy]['diem_trung_binh_ca_nam'] ?? '-' }}
+                                        </div>
+                                    </div>
+                                @endif
                             </div>
                         @endif
                     @endforeach

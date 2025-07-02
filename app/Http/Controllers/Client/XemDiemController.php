@@ -5,7 +5,7 @@ namespace App\Http\Controllers\Client;
 use App\Http\Controllers\Controller;
 use Illuminate\Http\Request;
 use Auth;
-
+use Illuminate\Support\Str;
 
 use App\Models\SinhVien;
 use App\Models\Lop;
@@ -17,6 +17,8 @@ use App\Models\DiemRenLuyen;
 use App\Models\LopChuyenNganh;
 use App\Models\ChuyenNganh;
 use App\Models\HocKy;
+use App\Models\LopHocPhan;
+use App\Models\DanhSachHocPhan;
 use Illuminate\Support\Facades\DB;
 
 class XemDiemController extends Controller
@@ -26,6 +28,7 @@ class XemDiemController extends Controller
 
         $sinhVien = SinhVien::with('hoSo', 'lop', 'lopChuyenNganh')->findOrFail($id_sv);
         $lop = $sinhVien->lop;
+        
         $nienkhoa = NienKhoa::findOrFail($lop->id_nien_khoa);
     
         $chuong_trinh_dao_tao = ChuongTrinhDaoTao::whereHas('chuyenNganh', function ($q) use ($lop) {
@@ -44,66 +47,103 @@ class XemDiemController extends Controller
             ->get()
             ->groupBy('id_hoc_ky');
     
-        $tenMons = $ct_ctdt->flatten()->pluck('monHoc.ten_mon')->filter()->unique();
-    
-        $diemHocPhan = DB::table('danh_sach_hoc_phan as dshp')
-            ->join('lop_hoc_phan as lhp', 'lhp.id', '=', 'dshp.id_lop_hoc_phan')
-            ->where('dshp.id_sinh_vien', $id_sv)
-            ->whereIn('lhp.ten_hoc_phan', $tenMons)
-            ->select(
-                'lhp.ten_hoc_phan',
-                'dshp.diem_chuyen_can',
-                'dshp.diem_qua_trinh',
-                'dshp.diem_thi',
-                'dshp.diem_tong_ket'
-            )
-            ->get()
-            ->keyBy('ten_hoc_phan');
-    
-        $gradesData = $ct_ctdt->mapWithKeys(function ($dsMon, $idHocKy) use ($diemHocPhan) {
+        $Mons = $ct_ctdt->flatten()->pluck('monHoc')->filter()->unique();
+       
+     
+        $diemHocPhan = DanhSachHocPhan::where('id_sinh_vien', $id_sv)
+                ->whereHas('lopHocPhan', function ($q) use ($Mons,$lop) {
+                    $q->where('id_lop', $lop->id);
+                    foreach ($Mons as $mon) {
+                        $q->orWhere('ten_hoc_phan', 'like', '%' . $mon->ten_mon . '%');
+                    }
+                })
+                ->with('lopHocPhan')
+                ->get();
+       
+        $gradesData = $ct_ctdt->mapWithKeys(function ($dsMon, $idHocKy) use ($diemHocPhan,$lop) {
             return [
-                $idHocKy => $dsMon->map(function ($ct) use ($diemHocPhan) {
+                $idHocKy => $dsMon->map(function ($ct) use ($diemHocPhan,$lop) {
                     $tenMon = $ct->monHoc->ten_mon ?? '';
-                    $diem = $diemHocPhan[$tenMon] ?? null;
-    
+                    $tenLop = $lop->ten_lop ?? '';
+                    $diem = $diemHocPhan->first(function ($item) use ($tenMon, $tenLop) {
+                        $tenFull = Str::of($tenMon)->trim()->lower();
+                        
+                        $tenTrongDB = Str::of($item->lopHocPhan->ten_hoc_phan)->trim()->lower();
+                        
+                        return $tenTrongDB == $tenFull;
+                    })?? null;  
+                    dd($diem);
                     return [
                         'ten_hoc_ky' => $ct->hocKy->ten_hoc_ky ?? '',
                         'ten_mon' => $tenMon,
                         'tin_chi' => $ct->so_tin_chi,
-                        'chuyencan' => $diem->diem_chuyen_can ?? '-',
-                        'quatrinh'  => $diem->diem_qua_trinh ?? '-',
-                        'thi'       => $diem->diem_thi ?? '-',
                         'tongket'   => $diem->diem_tong_ket ?? '-',
                     ];
                 })
             ];
-        });
-
+        }); 
+        
         $thongKeTungKy = [];
 
         foreach ($ct_ctdt as $idHocKy => $dsMon) {
+            
             $tongTinChi = $dsMon->sum('so_tin_chi');
             $tongTiet = $dsMon->sum('so_tiet');
             $soMon = count($dsMon);
-
+            $tenHK = $dsMon->first()->hocKy->ten_hoc_ky;    
             
-            $dsMonCoDiem = $dsMon->filter(function ($ct) {
-                return is_numeric($ct->diem_tong_ket);
-            });
-
-            $tongDiem = $dsMonCoDiem->sum('diem_tong_ket');
+            $dsMonCoDiem = LopHocPhan::with('danhSachHocPhan')
+                        ->where('id_lop', $lop->id)
+                        ->whereHas('danhSachHocPhan', function ($query) use ($id_sv) {
+                            $query->where('id_sinh_vien', $id_sv)
+                                ->wherenotNull('diem_tong_ket');
+                        })
+                        ->get();
+            
+            foreach($dsMonCoDiem as $item){
+              
+                $tongDiem =$item->danhSachHocPhan->sum('diem_tong_ket');
+            }
+          
+        
+            
             $soMonCoDiem = $dsMonCoDiem->count();
-
+            
             $diemTB = $soMonCoDiem > 0 ? round($tongDiem / $soMonCoDiem, 2) : '-';
+            
 
             $thongKeTungKy[$idHocKy] = [
                 'so_mon' => $soMon,
                 'tong_tin_chi' => $tongTinChi,
-                'diem_trung_binh' => $diemTB
+                'diem_trung_binh' => $diemTB,
+                'ten_hoc_ky' => $tenHK
             ];
-        }
 
-       
+            if (in_array($tenHK, ['Học kỳ 2', 'Học kỳ 4', 'Học kỳ 6'])) {
+
+                preg_match('/\d+/', $tenHK, $matches);
+                
+                $soHocKy = (int)($matches[0] ?? 0);
+
+                $tenKyTruoc = 'Học kỳ ' . ($soHocKy - 1);
+
+           
+                if (
+                    isset($thongKeTungKy[$tenKyTruoc]) &&
+                    is_numeric($thongKeTungKy[$tenKyTruoc]['diem_trung_binh']) &&
+                    is_numeric($diemTB)
+                ) {
+                    $trungBinhCaNam = round(
+                        ($diemTB + $thongKeTungKy[$tenKyTruoc]['diem_trung_binh']) / 2,
+                        2
+                    );
+
+                    $thongKeTungKy[$tenHK]['diem_trung_binh_ca_nam'] = $trungBinhCaNam;
+                } else {
+                    $thongKeTungKy[$tenHK]['diem_trung_binh_ca_nam'] = '-';
+                }
+            }
+        }
         return view("client.xemdiem.ketquahoctap", compact('sinhVien','gradesData','thongKeTungKy'));
     }
     public function ketquarenluyen(Request $request)

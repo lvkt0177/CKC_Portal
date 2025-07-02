@@ -58,8 +58,9 @@ class DiemMonHocController extends Controller
     public function updateTrangThai(LopHocPhan $lopHocPhan)
     {
         $lopHocPhan->trang_thai_nop_bang_diem = NopBangDiemStatus::from($lopHocPhan->trang_thai_nop_bang_diem->value + 1);
+        $this->capNhatTheoTrangThai($lopHocPhan->trang_thai_nop_bang_diem->value, $lopHocPhan);     
         $lopHocPhan->save();
-
+        
         return redirect()->back()->with('success', 'Cập nhật trạng thái nộp bảng điểm thành công!');  
     }
 
@@ -71,27 +72,35 @@ class DiemMonHocController extends Controller
         $idLopHocPhan = $validated['id_lop_hoc_phan'];
         $chuyenCan = $validated['diem_chuyen_can'] ?? [];
         $quaTrinh = $validated['diem_qua_trinh'] ?? [];
-        $thi = $validated['diem_thi'] ?? [];
-       
+        $thi1 = $validated['diem_thi_lan_1'] ?? [];
+        $thi2 = $validated['diem_thi_lan_2'] ?? [];
+        
         foreach ($Students as $idSinhVien) {
-        $idSinhVien = (int)$idSinhVien;
+            $idSinhVien = (int)$idSinhVien;
 
-        $cc = $chuyenCan[$idSinhVien] ?? null;
-        $qt = $quaTrinh[$idSinhVien] ?? null;
-        $dt = $thi[$idSinhVien] ?? null;
+            $cc = $chuyenCan[$idSinhVien] ?? null;
+            $qt = $quaTrinh[$idSinhVien] ?? null;
+            $dt1 = $thi1[$idSinhVien] ?? null;
+            $dt2 = $thi2[$idSinhVien] ?? null;
+            
+            $dt = $dt1;
+            
+            if($dt2 != null){
+                $dt = $dt1 > $dt2 ? $dt1 : $dt2;
+            }
+            $tongKet = (!is_null($cc) && !is_null($qt) && !is_null($dt))
+                ? ($cc * 0.1 + $qt * 0.4 + $dt * 0.5)
+                : null;
 
-        $tongKet = (!is_null($cc) && !is_null($qt) && !is_null($dt))
-            ? ($cc * 0.1 + $qt * 0.4 + $dt * 0.5)
-            : null;
-
-        $updates[] = [
-            'id_sinh_vien' => $idSinhVien,
-            'diem_chuyen_can' => $cc,
-            'diem_qua_trinh' => $qt,
-            'diem_thi' => $dt,
-            'diem_tong_ket' => $tongKet,
-        ];
-    }
+            $updates[] = [
+                'id_sinh_vien' => $idSinhVien,
+                'diem_chuyen_can' => $cc,
+                'diem_qua_trinh' => $qt,
+                'diem_thi_lan_1' => $dt1,
+                'diem_thi_lan_2' => $dt2,
+                'diem_tong_ket' => $tongKet,
+            ];
+        }
    
     foreach ($updates as $data) {
         DanhSachHocPhan::where('id_lop_hoc_phan', $idLopHocPhan)
@@ -99,12 +108,57 @@ class DiemMonHocController extends Controller
             ->update([
                 'diem_chuyen_can' => $data['diem_chuyen_can'],
                 'diem_qua_trinh' => $data['diem_qua_trinh'],
-                'diem_thi' => $data['diem_thi'],
+                'diem_thi_lan_1' => $data['diem_thi_lan_1'],
+                'diem_thi_lan_2' => $data['diem_thi_lan_2'],
                 'diem_tong_ket' => $data['diem_tong_ket'],
             ]);
     }
 
 
         return back()->with('success', 'Cập nhật điểm thành công!');
+    }
+    public function capNhatTheoTrangThai(int $trangThai,LopHocPhan $lopHocPhan){
+       
+        foreach ($lopHocPhan->danhSachHocPhan as $sinhVien) {
+            $idSinhVien = (int)$sinhVien->id_sinh_vien;
+
+            $cc = (float)$sinhVien->diem_chuyen_can ?? 0;
+            $qt = (float)$sinhVien->diem_qua_trinh ?? 0;
+            $dt1 = $sinhVien->diem_thi_lan_1 ?? null;
+            $dt2 = $sinhVien->diem_thi_lan_2 ?? null;
+            
+            $dt = $dt1;
+            
+            if($dt2 != null){
+                $dt = $dt1 > $dt2 ? $dt1 : $dt2;
+            }
+            $tongKet = (!is_null($cc) && !is_null($qt) && !is_null($dt))
+                ? ($cc * 0.1 + $qt * 0.4 + $dt * 0.5)
+                : null;
+
+            $updates[] = [
+                'id_sinh_vien' => $idSinhVien,
+                'diem_chuyen_can' => $cc,
+                'diem_qua_trinh' => $qt,
+                'diem_thi_lan_1' => $dt1,
+                'diem_thi_lan_2' => $dt2,
+                'diem_tong_ket' => $tongKet,
+            ];
+        }
+        
+        if ($trangThai == 1) {
+            foreach ($updates as $data) {
+                DanhSachHocPhan::where('id_lop_hoc_phan', $lopHocPhan->id)
+                    ->where('id_sinh_vien', $data['id_sinh_vien'])
+                    ->update([
+                        'diem_chuyen_can' => $data['diem_chuyen_can'],
+                        'diem_qua_trinh' => $data['diem_qua_trinh'],
+                        'diem_thi_lan_1' => $data['diem_thi_lan_1'],
+                        'diem_thi_lan_2' => $data['diem_thi_lan_2'],
+                        'diem_tong_ket' => $data['diem_tong_ket'],
+                    ]);
+            }
+        }
+        return true;
     }
 }

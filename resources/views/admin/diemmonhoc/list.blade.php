@@ -16,30 +16,31 @@
 
                     <div class="card-body">
                         <div class="">
-                            @if(!is_null($nextOption) && $nextOption->value != 4)
-                                <form action="{{ route('giangvien.diemmonhoc.updateTrangThai', $lop_HP) }}" method="POST" class="mb-2" data-confirm>
+                            @if (!is_null($nextOption) && $nextOption->value != 4)
+                                <form action="{{ route('giangvien.diemmonhoc.updateTrangThai', $lop_HP) }}" method="POST"
+                                    class="mb-2" data-confirm>
                                     @csrf
                                     <div class="">
                                         <select name="trang_thai" class="form-select d-none" disabled>
                                             <option value="{{ $nextOption->value }}">{{ $nextOption->getLabel() }}</option>
                                         </select>
-    
-                                        <button type="submit" class="btn btn-primary mt-2">{{ $nextOption->getLabel() }}</button>
+
+                                        <button type="submit"
+                                            class="btn btn-primary mt-2">{{ $nextOption->getLabel() }}</button>
                                     </div>
                                 </form>
+                                <div class="d-flex justify-content-end mb-3">
+                                    <button class="btn btn-edit btn-sm" onclick="toggleEdit()">
+                                        <i class="bi bi-pencil-square"></i> Nhập điểm
+                                    </button>
+                                </div>
                             @else
                                 <div class="alert alert-info">
                                     <strong>Thông báo:</strong> Lớp học phần này đã hoàn thành.
                                 </div>
                             @endif
 
-                            <div class="d-flex justify-content-end mb-3">
-                                <button class="btn btn-edit btn-sm" onclick="toggleEdit()">
-                                    <i class="bi bi-pencil-square"></i> Nhập điểm
-                                </button>
 
-
-                            </div>
                             <form action="{{ route('giangvien.diemmonhoc.cap-nhat-diem') }}" method="POST" data-confirm>
                                 @csrf
                                 <table class="table table-bordered mb-3" id="room-table">
@@ -73,49 +74,50 @@
                                                     <td>{{ $sv->hoSo->ho_ten }}</td>
                                                     <td>{{ $sv->lop->ten_lop }}</td>
 
-                                                    {{-- Chuyên cần --}}
+
                                                     <td>
                                                         <span class="score-view">{{ $dshp->diem_chuyen_can }}</span>
                                                         <input type="number" step="0.1" min="0" max="10"
                                                             name="diem_chuyen_can[{{ $dshp->id_sinh_vien }}]"
                                                             value="{{ $dshp->diem_chuyen_can }}"
                                                             class="form-control score-input" style="display:none;"
-                                                            oninput="validateScore(this)" {{ $nextOption->value - 1 == 0 ? '' : 'disabled' }}/>
+                                                            {{ $nextOption->value - 1 == 0 ? '' : 'readonly' }} />
                                                     </td>
 
-                                                    {{-- Quá trình --}}
+
                                                     <td>
                                                         <span class="score-view">{{ $dshp->diem_qua_trinh }}</span>
                                                         <input type="number" step="0.1" min="0" max="10"
                                                             name="diem_qua_trinh[{{ $dshp->id_sinh_vien }}]"
                                                             value="{{ $dshp->diem_qua_trinh }}"
                                                             class="form-control score-input" style="display:none;"
-                                                            oninput="validateScore(this)" {{ $nextOption->value - 1 == 0 ? '' : 'disabled' }}/>
+                                                            {{ $nextOption->value - 1 == 0 ? '' : 'readonly' }} />
                                                     </td>
 
-                                                    {{-- Điểm thi lần 1 --}}
                                                     <td>
                                                         <span class="score-view">{{ $dshp->diem_thi_lan_1 }}</span>
                                                         <input type="number" step="0.1" min="0" max="10"
-                                                            name="diem_thi[{{ $dshp->id_sinh_vien }}]"
-                                                            value="{{ $dshp->diem_thi }}" class="form-control score-input"
-                                                            style="display:none;" oninput="validateScore(this)" {{ $nextOption->value - 1 == 1 ? '' : 'disabled' }}/>
+                                                            name="diem_thi_lan_1[{{ $dshp->id_sinh_vien }}]"
+                                                            value="{{ $dshp->diem_thi_lan_1 }}"
+                                                            class="form-control score-input" style="display:none;"
+                                                            {{ $nextOption->value - 1 == 1 ? '' : 'readonly' }} />
                                                     </td>
 
-                                                    {{-- Điểm thi lần 2 --}}
+
                                                     <td>
                                                         <span class="score-view">{{ $dshp->diem_thi_lan_2 }}</span>
                                                         <input type="number" step="0.1" min="0" max="10"
-                                                            name="diem_thi[{{ $dshp->id_sinh_vien }}]"
-                                                            value="{{ $dshp->diem_thi }}" class="form-control score-input"
-                                                            style="display:none;" oninput="validateScore(this)" {{ $nextOption->value - 1 == 2 ? '' : 'disabled' }}/>
+                                                            name="diem_thi_lan_2[{{ $dshp->id_sinh_vien }}]"
+                                                            value="{{ $dshp->diem_thi_lan_2 }}"
+                                                            class="form-control score-input" style="display:none;"
+                                                            {{ $nextOption->value - 1 == 2 ? '' : 'readonly' }} />
                                                     </td>
 
 
                                                     <td>{{ $dshp->diem_tong_ket ?? '' }}</td>
                                                     <td>{{ $dshp->loai_hoc == 0 ? 'Chính quy' : 'Học ghép' }}</td>
 
-                                                    {{-- Nút --}}
+
 
                                                 </tr>
                                             @endforeach
@@ -189,41 +191,29 @@
         }
 
         function toggleEdit() {
-            // Hiện input, ẩn span
+
             document.querySelectorAll('.score-view').forEach(el => el.style.display = 'none');
             document.querySelectorAll('.score-input').forEach(el => el.style.display = 'inline-block');
 
-            // Hiện nút Lưu & Hủy
+
             document.getElementById('btn-luu').classList.remove('d-none');
             document.getElementById('btn-huy').classList.remove('d-none');
 
-            // Ẩn nút Nhập điểm
+
             document.getElementById('btn-nhap-diem').classList.add('d-none');
         }
 
-        function validateScore(input) {
-            // Loại bỏ ký tự không phải số hoặc dấu chấm
-            input.value = input.value.replace(/[^0-9.]/g, '');
-
-            // Chuyển sang float để kiểm tra giá trị
-            let value = parseFloat(input.value);
-            if (isNaN(value) || value < 0 || value > 10) {
-                input.setCustomValidity("Điểm phải từ 0 đến 10");
-            } else {
-                input.setCustomValidity("");
-            }
-        }
 
         function cancelEdit() {
-            // Ẩn input, hiện lại span
+
             document.querySelectorAll('.score-view').forEach(el => el.style.display = '');
             document.querySelectorAll('.score-input').forEach(el => el.style.display = 'none');
 
-            // Ẩn nút Lưu & Hủy
+
             document.getElementById('btn-luu').classList.add('d-none');
             document.getElementById('btn-huy').classList.add('d-none');
 
-            // Hiện lại nút Nhập điểm
+
             document.getElementById('btn-nhap-diem').classList.remove('d-none');
         }
     </script>
