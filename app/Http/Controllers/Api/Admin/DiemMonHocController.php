@@ -59,7 +59,7 @@ class DiemMonHocController extends Controller
 
     public function updateTrangThai(LopHocPhan $lopHocPhan)
     {
-        if($lopHocPhan->trang_thai_nop_bang_diem->value == 4) {
+        if($lopHocPhan->trang_thai_nop_bang_diem->value == 3) {
             return response()->json([
                 'status' => false,
                 'message' => 'Bảng điểm này đã được nộp'
