@@ -43,6 +43,8 @@ class PaymentController extends Controller
                 return $soTinChi * 200000;
             case 1:
                 return $soTinChi * 250000;
+            case 2:
+                return $soTinChi * 200000;
             default:
                 return 0;
         }
@@ -67,7 +69,6 @@ class PaymentController extends Controller
             )
             ->distinct()
             ->first();
-        
         
         $tien = $this->tinhTienTheoTinChi($monHoc->so_tin_chi, $lopHocPhan->loai_mon->value);
         $data = [

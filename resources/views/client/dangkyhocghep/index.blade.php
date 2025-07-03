@@ -50,6 +50,7 @@
                                                             <div class="score-value">{{ $mh->diem_tong_ket }}</div>
                                                             <small class="text-muted">Số tín chỉ: {{ $mh->so_tin_chi }}</small>
                                                             <div class="text-muted"><small class="text-muted">Loại môn học: {{ $mh->loai_mon }}</small></div>
+                                                            <div class="text-muted"><small class="text-muted">Học tại lớp: {{ $mh->ten_lop }}</small></div>
                                                         </div>
                                                         <div class="d-flex justify-content-between align-items-center">
                                                             <span class="status-badge">

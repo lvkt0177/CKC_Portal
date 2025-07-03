@@ -288,7 +288,7 @@ class LichHocController extends Controller
         
         
         
-        $tenHocPhan = $tenMon . ' ' . $lop->ten_lop;
+        $tenHocPhan = $tenMon;
         $lopHocPhan = LopHocPhan::where('ten_hoc_phan', $tenHocPhan)
             ->where('id_lop', $data['lop_id'])
             ->first();  
@@ -304,14 +304,6 @@ class LichHocController extends Controller
                 'loai_mon' => $monHoc->loai_mon_hoc,
                 'trang_thai' => 1,
             ]);    
-            ThoiKhoaBieu::create([
-                'id_tuan'         => $data['id_tuan'],
-                'id_lop_hoc_phan' =>  $lopHocPhan->id,
-                'id_phong'        => $data['id_phong'],
-                'tiet_bat_dau'    => $data['tiet_bat_dau'],
-                'tiet_ket_thuc'   => $tietKetThuc,
-                'ngay'            => $ngayHoc,
-            ]);
             
             foreach ($sinhVienList as $sv) {
                 DanhSachHocPhan::firstOrCreate([
@@ -321,11 +313,17 @@ class LichHocController extends Controller
                     'loai_hoc' => 0, 
                 ]);
             }
-        } else {
-        
-            session()->flash('error', 'Lớp học phần này đã tồn tại. Không thể thêm trùng.');
-            return back();
         }
+        
+        ThoiKhoaBieu::create([
+            'id_tuan'         => $data['id_tuan'],
+            'id_lop_hoc_phan' =>  $lopHocPhan->id,
+            'id_phong'        => $data['id_phong'],
+            'tiet_bat_dau'    => $data['tiet_bat_dau'],
+            'tiet_ket_thuc'   => $tietKetThuc,
+            'ngay'            => $ngayHoc,
+        ]);
+        
 
         
         return redirect()->route('giangvien.lichhoc.create',['lop'=>$lop])

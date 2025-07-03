@@ -61,10 +61,12 @@
                                         \Carbon\Carbon::setLocale('vi');
                                     @endphp
                                     <div class="info-label">Ngày bắt đầu học</div>
-                                    <div class="info-value text-capitalize">
-                                        {{ \Carbon\Carbon::parse($lop->thoiKhoaBieu[0]->ngay)->translatedFormat('l') }},
-                                        {{ \Carbon\Carbon::parse($lop->thoiKhoaBieu[0]->ngay)->format('d-m-Y') }}
-                                    </div>
+                                    @foreach ($dsThoiKhoaBieuDauTien as $tkb)
+                                        <div class="info-value text-capitalize">
+                                            {{ \Carbon\Carbon::parse($tkb->ngay)->translatedFormat('l') }},
+                                            {{ \Carbon\Carbon::parse($tkb->ngay)->format('d-m-Y') }}
+                                        </div>
+                                    @endforeach
                                 </div>
                             </div>
                             
@@ -72,10 +74,13 @@
                                 <div class="info-icon">
                                     <i class="fas fa-map-marker-alt"></i>
                                 </div>
-                                <div class="info-content">
-                                    <div class="info-label">Phòng học</div>
-                                    <div class="info-value">{{ $lop->thoiKhoaBieu[0]->phong->ten }}</div>
-                                </div>
+                                @foreach ($dsThoiKhoaBieuDauTien as $tkb)
+                                    <div class="info-value text-capitalize">
+                                        <div class="info-label">Phòng học</div>
+                                        <div class="info-value">{{ $tkb->phong->ten }}</div>
+                                    </div>
+                                 @endforeach
+                                
                             </div>
                             
                             <div class="info-item">
