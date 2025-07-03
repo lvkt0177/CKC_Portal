@@ -54,13 +54,8 @@
                                     </div>
                                 </div>
                     
-                                {{-- Cột phải: Nút đăng ký --}}
                                 <div class="col-12 col-md-4 text-md-end d-flex align-items-start justify-content-md-end">
-                                    @if($lt->lopHocPhan->danhSachHocPhan[0]->diem_chuyen_can <= 6)
-                                        <button class="btn btn-error" >
-                                            <i class="fas fa-times me-2"></i>Cấm thi
-                                        </button>
-                                    @else
+                                    @if($lt->lopHocPhan->danhSachHocPhan[0]->diem_thi_lan_1)
                                         @if($lt->lopHocPhan->dangKyHocGhepThiLai)
                                             <button class="btn btn-registered text-success" disabled>
                                                 <i class="fas fa-check me-2"></i>Đã đăng ký
