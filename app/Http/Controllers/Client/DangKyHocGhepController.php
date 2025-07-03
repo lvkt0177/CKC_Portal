@@ -73,7 +73,7 @@ class DangKyHocGhepController extends Controller
         $dsThoiKhoaBieuDauTien = $lopHocPhanDangMo->map(function ($lop) {
             return $lop->thoiKhoaBieu->sortBy(fn($tkb) => $tkb->ngay)->first();
         })->filter();
-        
+
         $checkDKHG = DangKyHGTL::whereIn('id_lop_hoc_phan', $lopHocPhanDangMo->pluck('id'))
             ->where('id_sinh_vien', Auth::guard('student')->id())
             ->where('trang_thai', 1)

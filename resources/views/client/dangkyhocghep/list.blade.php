@@ -61,12 +61,10 @@
                                         \Carbon\Carbon::setLocale('vi');
                                     @endphp
                                     <div class="info-label">Ngày bắt đầu học</div>
-                                    @foreach ($dsThoiKhoaBieuDauTien as $tkb)
                                         <div class="info-value text-capitalize">
-                                            {{ \Carbon\Carbon::parse($tkb->ngay)->translatedFormat('l') }},
-                                            {{ \Carbon\Carbon::parse($tkb->ngay)->format('d-m-Y') }}
+                                            {{ \Carbon\Carbon::parse($dsThoiKhoaBieuDauTien[$loop->index]->ngay)->translatedFormat('l') }},
+                                            {{ \Carbon\Carbon::parse($dsThoiKhoaBieuDauTien[$loop->index]->ngay)->format('d-m-Y') }}
                                         </div>
-                                    @endforeach
                                 </div>
                             </div>
                             
@@ -74,12 +72,10 @@
                                 <div class="info-icon">
                                     <i class="fas fa-map-marker-alt"></i>
                                 </div>
-                                @foreach ($dsThoiKhoaBieuDauTien as $tkb)
                                     <div class="info-value text-capitalize">
                                         <div class="info-label">Phòng học</div>
-                                        <div class="info-value">{{ $tkb->phong->ten }}</div>
+                                        <div class="info-value">{{ $dsThoiKhoaBieuDauTien[$loop->index]->phong->ten }}</div>
                                     </div>
-                                 @endforeach
                                 
                             </div>
                             
