@@ -57,11 +57,14 @@ class DiemMonHocController extends Controller
 
     public function updateTrangThai(LopHocPhan $lopHocPhan)
     {
-        $lopHocPhan->trang_thai_nop_bang_diem = NopBangDiemStatus::from($lopHocPhan->trang_thai_nop_bang_diem->value + 1);
-        $this->capNhatTheoTrangThai($lopHocPhan->trang_thai_nop_bang_diem->value, $lopHocPhan);     
-        $lopHocPhan->save();
+        $result = $this->capNhatTheoTrangThai($lopHocPhan->trang_thai_nop_bang_diem->value, $lopHocPhan) ? true : false;     
         
-        return redirect()->back()->with('success', 'Cập nhật trạng thái nộp bảng điểm thành công!');  
+        if($result) {
+            $lopHocPhan->trang_thai_nop_bang_diem = NopBangDiemStatus::from($lopHocPhan->trang_thai_nop_bang_diem->value + 1);
+            $lopHocPhan->save();
+            return redirect()->back()->with('success', 'Nộp bảng điểm thành công!');  
+        }
+        return redirect()->back()->with('error', 'Nộp bảng điểm không thành công!');
     }
 
     public function capNhat(NhapDiemRequest $request)
@@ -118,7 +121,11 @@ class DiemMonHocController extends Controller
         return back()->with('success', 'Cập nhật điểm thành công!');
     }
     public function capNhatTheoTrangThai(int $trangThai,LopHocPhan $lopHocPhan){
-       
+
+        if($lopHocPhan->danhSachHocPhan->count() == 0) {
+            return false;
+        }
+
         foreach ($lopHocPhan->danhSachHocPhan as $sinhVien) {
             $idSinhVien = (int)$sinhVien->id_sinh_vien;
 

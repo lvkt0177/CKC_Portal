@@ -59,19 +59,19 @@ class DiemMonHocController extends Controller
 
     public function updateTrangThai(LopHocPhan $lopHocPhan)
     {
-        if($lopHocPhan->trang_thai_nop_bang_diem->value == 3) {
+        $result = $this->capNhatTheoTrangThai($lopHocPhan->trang_thai_nop_bang_diem->value, $lopHocPhan) ? true : false;     
+        
+        if($result) {
+            $lopHocPhan->trang_thai_nop_bang_diem = NopBangDiemStatus::from($lopHocPhan->trang_thai_nop_bang_diem->value + 1);
+            $lopHocPhan->save();
             return response()->json([
-                'status' => false,
-                'message' => 'Bảng điểm này đã được nộp'
+                'status' => true,
+                'message' => 'Nộp bảng điêm thành công!'
             ]);
         }
-        $lopHocPhan->trang_thai_nop_bang_diem = NopBangDiemStatus::from($lopHocPhan->trang_thai_nop_bang_diem->value + 1);
-        $this->capNhatTheoTrangThai($lopHocPhan->trang_thai_nop_bang_diem->value, $lopHocPhan);     
-        $lopHocPhan->save();
-        
         return response()->json([
-            'status' => true,
-            'message' => 'Nộp bảng điểm thành công!'
+            'status' => false,
+            'message' => 'Nộp bảng điểm thất bại!'
         ]);
     }
 
@@ -124,7 +124,10 @@ class DiemMonHocController extends Controller
     }
 
     public function capNhatTheoTrangThai(int $trangThai,LopHocPhan $lopHocPhan){
-       
+       if($lopHocPhan->danhSachHocPhan->count() == 0) {
+           return false;
+       }
+
         foreach ($lopHocPhan->danhSachHocPhan as $sinhVien) {
             $idSinhVien = (int)$sinhVien->id_sinh_vien;
 
