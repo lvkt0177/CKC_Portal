@@ -29,7 +29,7 @@
                     <div class="card-header d-flex justify-content-between align-items-center">
                         <h3 class="card-title mb-0">Chỉnh sửa biên bản sinh hoạt chủ nhiệm - Lớp
                             {{ $thongTin->lop->ten_lop }}</h3>
-                        <a href="{{ route('giangvien.bienbanshcn.index', $thongTin->id_lop) }}" class="btn btn-back btn-sm">Quay lại</a>
+                        <a href="{{ route('giangvien.bienbanshcn.index', $thongTin->lop_id) }}" class="btn btn-back btn-sm">Quay lại</a>
                     </div>
                     <div class="card-body">
                         <form action="{{ route('giangvien.bienbanshcn.update', $thongTin) }}" method="POST" data-confirm

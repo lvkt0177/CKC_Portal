@@ -17,12 +17,24 @@ class SinhVien extends Authenticatable
 
     protected $fillable = [
         'ma_sv',
-        'id_lop',
+        'lop_type',
+        'lop_id',   
         'id_ho_so',
         'chuc_vu',
         'password',
         'trang_thai'
     ];
+
+    public function getIdLopAttribute()
+    {
+        return $this->attributes['lop_id'];
+    }
+
+    public function setIdLopAttribute($value)
+    {
+        $this->attributes['lop_id'] = $value;
+    }
+
 
     protected $casts = [
         'chuc_vu' => RoleStudent::class,
@@ -36,9 +48,9 @@ class SinhVien extends Authenticatable
     }
 
     //Lớp 1 - N
-    public function lop()
+    public function lop(): MorphTo
     {
-        return $this->belongsTo(Lop::class, 'id_lop', 'id');
+        return $this->morphTo();
     }
     public function dangKyGiay()
     {

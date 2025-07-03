@@ -14,7 +14,7 @@ return new class extends Migration
         Schema::create('bien_ban_shcn', function (Blueprint $table) {
             $table->id();
             //id_lop
-            $table->foreignId('id_lop')->constrained('lop')->onDelete('cascade');
+            $table->nullableMorphs('lop'); 
 
             //id_sinh_vien
             $table->foreignId('id_sv')->constrained('sinhvien')->onDelete('cascade');

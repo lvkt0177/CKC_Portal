@@ -12,12 +12,12 @@
             <div class="col-md-12">
                 <div class="card shadow-sm teams-section">
                     <div class="card-header d-flex justify-content-between align-items-center">
-                        <h3 class="card-title mb-0">Danh sách Sinh viên - Lớp {{ $lop->ten_lop }}</h3>
+                        <h3 class="card-title mb-0">Danh sách Sinh viên</h3>
                         <a href="{{ route('giangvien.lop.index') }}" class="btn btn-primary">Quay lại</a>
                     </div>
 
                     <div class="teams-section">
-                        <form method="GET" id="week-form" action="{{ route('giangvien.lop.nhap-diem_rl', $lop->id) }}"
+                        <form method="GET" id="week-form" action="{{ route('giangvien.lop.nhap-diem_rl', ['type' => get_class($lop), 'id' => $lop->id]) }}"
                             class="d-flex justify-content-center pt-4 px-3 "
                             style=" background: linear-gradient(180deg, #4891e9 10%, #9bc9ec 90%);">
                             <div class="date-picker-grid">

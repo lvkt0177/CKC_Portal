@@ -29,7 +29,7 @@
                         <a href="javascript:void(0);" class="btn btn-danger btn-sm" onclick="window.close();">Huỷ</a>
                     </div>
                     <div class="card-body">
-                        <form action="{{ route('giangvien.bienbanshcn.store', $lop) }}" method="POST" data-confirm
+                        <form action="{{ route('giangvien.bienbanshcn.store', ['type' => get_class($lop), 'id' => $lop->id]) }}" method="POST" data-confirm
                             enctype="multipart/form-data">
                             @csrf
                             <div class="row g-3">

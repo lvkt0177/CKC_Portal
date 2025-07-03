@@ -3,6 +3,7 @@
 namespace App\Models;
 
 use Illuminate\Database\Eloquent\Model;
+use Illuminate\Database\Eloquent\Relations\MorphMany;
 
 class LopChuyenNganh extends Model
 {
@@ -16,6 +17,22 @@ class LopChuyenNganh extends Model
         'id_chuyen_nganh',
         'si_so',
     ];
+
+    //Sinh viên
+    public function sinhViens(): MorphMany
+    {
+        return $this->morphMany(SinhVien::class, 'lop');
+    }
+    //Bien ban
+    public function bienBan(): MorphMany
+    {
+        return $this->morphMany(BienBan::class, 'lop');
+    }
+    //LopHocPhan
+    public function lopHocPhan(): MorphMany
+    {
+        return $this->morphMany(LopHocPhan::class, 'lop');
+    }
     //nienkhoa
     public function nienKhoa()
     {
@@ -30,11 +47,6 @@ class LopChuyenNganh extends Model
     public function chuyenNganh()
     {
         return $this->belongsTo(ChuyenNganh::class, 'id_chuyen_nganh');
-    }
-    //sinhviens
-    public function sinhViens()
-    {
-        return $this->hasMany(SinhVien::class, 'id_lop', 'id');
     }
 
 }

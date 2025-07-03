@@ -9,6 +9,7 @@ use App\Models\BienBanSHCN;
 use App\Repositories\BienBan\BienBanRepositoryInterface;
 use App\Models\Lop;
 use App\Models\User;
+use Illuminate\Database\Eloquent\Model;
 use App\Enum\BienBanStatus;
 /**
  * The repository for Permission Model
@@ -28,18 +29,23 @@ class BienBanRepository implements BienBanRepositoryInterface
         $this->model = $model;
     }
 
-    public function getByLopWithRelations(Lop $lop)
+    public function getByLopWithRelations(Model $lop)
     {
+        if (!($lop instanceof \App\Models\Lop || $lop instanceof \App\Models\LopChuyenNganh)) {
+            throw new \InvalidArgumentException('Lỗi');
+        }
+
         return BienBanSHCN::with(['lop', 'thuky.hoSo', 'tuan', 'gvcn'])
-            ->where('id_lop', $lop->id)
+            ->where('lop_type', get_class($lop))
+            ->where('lop_id', $lop->id)
             ->orderBy('id', 'desc')
             ->get();
     }
 
-    public function getByLopWithRelationsByIdLop($id_lop, $perPage = 10)
+    public function getByLopWithRelationsByIdLop($lop_id, $perPage = 10)
     {
         return BienBanSHCN::with(['lop', 'thuky.hoSo', 'tuan', 'gvcn.hoSo'])
-            ->where('id_lop', $id_lop)
+            ->where('lop_id', $lop_id)
             ->where('trang_thai', BienBanStatus::ACTIVE)
             ->orderBy('id', 'desc')
             ->paginate($perPage);
@@ -52,9 +58,6 @@ class BienBanRepository implements BienBanRepositoryInterface
 
     public function update($model, array $data)
     {
-        if($data['trang_thai'] == BienBanStatus::ACTIVE){
-            return false;
-        }
         $model->update($data);
         return $model;
     }

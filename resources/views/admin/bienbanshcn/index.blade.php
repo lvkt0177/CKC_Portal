@@ -12,7 +12,7 @@
                     <div class="card-header d-flex justify-content-between align-items-center">
                         <h3 class="card-title mb-0"> Danh sách biên bản sinh hoạt chủ nhiệm - Lớp {{ $lop->ten_lop }} </h3>
                         <div class="">
-                            <a href="{{ route('giangvien.bienbanshcn.create', $lop) }}" target="_blank" class="btn btn-add"><i
+                            <a href="{{ route('giangvien.bienbanshcn.create', ['type' => get_class($lop), 'id' => $lop->id]) }}" target="_blank" class="btn btn-add"><i
                                     class="fa fa-plus" aria-hidden="true"></i> Lập biên bản SHCN</a>
                             <a href="{{ route('giangvien.lop.index') }}" class="btn btn-back">Quay lại</a>
                         </div>

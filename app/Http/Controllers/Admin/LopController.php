@@ -5,6 +5,7 @@ namespace App\Http\Controllers\Admin;
 use App\Http\Controllers\Controller;
 use Illuminate\Http\Request;
 use App\Models\Lop;
+use App\Models\LopChuyenNganh;
 use App\Models\User;
 use App\Models\NienKhoa;
 use App\Models\SinhVien;
@@ -25,42 +26,60 @@ class LopController extends Controller
             ->where('id_gvcn', auth()->user()->id)
             ->orderBy('id', 'desc')
             ->get();
+        
+        $lopChuyenNganhs = LopChuyenNganh::with('giangVien', 'nienKhoa', 'giangVien')
+            ->where('id_gvcn', auth()->user()->id)
+            ->orderBy('id', 'desc')
+            ->get();
+            
 
-        return view('admin.class.index', compact('lops'));
+        return view('admin.class.index', compact('lops','lopChuyenNganhs'));
     }
-    public function list(Lop $lop)
+    public function list(string $type, int $id)
     {
-        $sinhViens = SinhVien::with(['hoSo', 'lop', 'lop.nienKhoa', 'lop.giangVien'])
-            ->where('id_lop', $lop->id)
-            ->orderBy('ma_sv', 'asc')->get();
+        if (!in_array($type, [\App\Models\Lop::class, \App\Models\LopChuyenNganh::class])) {
+            abort(404, 'Loại lớp không hợp lệ');
+        }
+    
+        // Lấy danh sách sinh viên thuộc lớp đó
+        $sinhViens = SinhVien::where('lop_type', $type)
+            ->where('lop_id', $id)
+            ->orderBy('ma_sv')
+            ->get();
 
-        return view('admin.class.list', compact('sinhViens', 'lop'));
+        return view('admin.class.list', compact('sinhViens'));
     }
 
-    public function nhapDiemRL(Lop $lop)
+    public function nhapDiemRL(string $type, int $id)
     {
-       
+         // Xác định lớp morph
+        if (!in_array($type, [\App\Models\Lop::class, \App\Models\LopChuyenNganh::class])) {
+            abort(404, 'Loại lớp không hợp lệ.');
+        }
+
+        $lop = app($type)::findOrFail($id);
+
         $thang = request()->get('thoi_gian', now()->month); 
         $nam = request()->get('nam', now()->year);
 
-        $sinhViens = SinhVien::with([
+        $sinhViens = \App\Models\SinhVien::with([
             'hoSo',
             'lop',
             'lop.nienKhoa',
             'lop.giangVien',
             'diemRenLuyens' => function ($query) use ($thang, $nam) {
-            $query->where('thoi_gian', $thang)
-                ->whereHas('nam', function ($q) use ($nam) {
-                    $q->where('nam_bat_dau', $nam);
-              });
+                $query->where('thoi_gian', $thang)
+                    ->whereHas('nam', function ($q) use ($nam) {
+                        $q->where('nam_bat_dau', $nam);
+                    });
             }
         ])
-        ->where('id_lop', $lop->id)
+        ->where('lop_type', $type)
+        ->where('lop_id', $id)
         ->orderBy('ma_sv', 'asc')
         ->get();
-       
-    return view('admin.class.enter_point_rl', compact('sinhViens', 'thang','lop'));
 
+        return view('admin.class.enter_point_rl', compact('sinhViens', 'thang', 'lop'));
     }
  
     public function capNhatDiemRL(NhapDiemRenLuyenRequest $request)

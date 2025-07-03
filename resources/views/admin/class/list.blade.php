@@ -32,7 +32,7 @@
             <div class="col-md-12">
                 <div class="card shadow-sm teams-section">
                     <div class="card-header d-flex justify-content-between align-items-center">
-                        <h3 class="card-title mb-0">Danh sách Sinh viên - Lớp {{ $lop->ten_lop }}</h3>
+                        <h3 class="card-title mb-0">Danh sách Sinh viên</h3>
                         <a href="{{ route('giangvien.lop.index') }}" class="btn btn-primary">Quay lại</a>
                     </div>
 

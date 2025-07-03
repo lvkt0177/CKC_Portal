@@ -9,6 +9,7 @@ use App\Models\SinhVien;
 use App\Models\User;
 use App\Models\Tuan;
 use App\Models\Lop;
+use App\Models\LopChuyenNganh;
 use App\Models\HoSo;
 use App\Models\ChiTietBienBanSHCN;
 use App\Enum\RoleStudent;
@@ -31,37 +32,51 @@ class BienBanController extends Controller
         //
     }
 
-    public function index(Lop $lop)
-    {   
-        $bienBanSHCN = $this->bienBanRepository->getByLopWithRelations($lop);
+    public function resolveLop(string $type, int $id)
+    {
+        $allowed = [
+            Lop::class,
+            LopChuyenNganh::class,
+        ];
 
+        if (!in_array($type, $allowed)) {
+            abort(404, 'Loại lớp không hợp lệ');
+        }
+
+        return app($type)::findOrFail($id);
+    }
+
+    public function index(string $type, int $id)
+    {
+        $lop = $this->resolveLop($type, $id);
+        $bienBanSHCN = $this->bienBanRepository->getByLopWithRelations($lop);
+    
         return view('admin.bienbanshcn.index', compact('bienBanSHCN', 'lop'));
     }
     
-    /**
-     * Show the form for creating a new resource.
-     */
-    public function create(Lop $lop)
+    public function create(string $type, int $id)
     {
-        $thuKy = SinhVien::where('id_lop', $lop->id)->where('chuc_vu', RoleStudent::SECRETARY)->get();
+        $lop = $this->resolveLop($type, $id);
+        $thuKy = SinhVien::where('lop_type', $type)->where('lop_id', $lop->id)->where('chuc_vu', RoleStudent::SECRETARY)->get();
         $tuans = Tuan::all();
-        $sinhViens = SinhVien::where('id_lop', $lop->id)->get();
-
-        return view('admin.bienbanshcn.create', compact('lop', 'thuKy', 'tuans','sinhViens'));
+        $sinhViens = SinhVien::where('lop_type', $type)->where('lop_id', $lop->id)->get();
+    
+        return view('admin.bienbanshcn.create', compact('lop', 'thuKy', 'tuans', 'sinhViens'));
     }
-
-    /**
-     * Store a newly created resource in storage.
-     */
-    public function store(BienBanRequest $request, Lop $lop, BienBanService $bienBanService)
+    
+    public function store(BienBanRequest $request, string $type, int $id, BienBanService $bienBanService)
     {
+        $lop = $this->resolveLop($type, $id);
+    
         $result = $bienBanService->storeBienBanVaChiTiet($request->all(), $lop);
-        
-        if($result) {
-            return redirect()->route('giangvien.bienbanshcn.index', $lop->id)->with('success', 'Thêm biên bản thành công');
+    
+        if ($result) {
+            return redirect()->route('giangvien.bienbanshcn.index', ['type' => $type, 'id' => $lop->id])
+                             ->with('success', 'Thêm biên bản thành công');
         }
-
-        return redirect()->route('giangvien.bienbanshcn.index', $lop->id)->with('error', 'Thêm biên bản thất bại');
+    
+        return redirect()->route('giangvien.bienbanshcn.index', ['type' => $type, 'id' => $lop->id])
+                         ->with('error', 'Thêm biên bản thất bại');
     }
 
     /**
@@ -70,7 +85,7 @@ class BienBanController extends Controller
     public function show(BienBanSHCN $bienBanSHCN)
     {
         $bienBanSHCN->load('lop', 'tuan', 'thuky.hoSo', 'gvcn.hoSo', 'chiTietBienBanSHCN.sinhVien.hoSo');
-
+        dd($bienBanSHCN);
         return view('admin.bienbanshcn.show', ['thongTin' => $bienBanSHCN]);
     }
 
@@ -80,7 +95,7 @@ class BienBanController extends Controller
     public function edit(BienBanSHCN $bienbanshcn)
     {
         $bienbanshcn->load('lop.sinhViens.hoSo','thuky.hoSo', 'tuan', 'gvcn.hoSo', 'chiTietBienBanSHCN.sinhVien.hoSo');
-        $thuKy = SinhVien::where('id_lop', $bienbanshcn->lop->id)->where('chuc_vu', RoleStudent::SECRETARY)->get();
+        $thuKy = SinhVien::where('lop_id', $bienbanshcn->lop->id)->where('chuc_vu', RoleStudent::SECRETARY)->get();
         $tuans = Tuan::all();
 
         return view('admin.bienbanshcn.edit', ['thongTin' => $bienbanshcn, 'tuans' => $tuans,'thuKy' => $thuKy]);

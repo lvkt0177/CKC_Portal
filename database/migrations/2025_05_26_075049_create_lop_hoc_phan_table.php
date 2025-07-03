@@ -20,7 +20,7 @@ return new class extends Migration {
 
             $table->foreignId('id_chuong_trinh_dao_tao')->nullable()->constrained('chuong_trinh_dao_tao')->onDelete('cascade');
 
-            $table->foreignId('id_lop')->nullable()->constrained('lop')->onDelete('cascade');
+            $table->nullableMorphs('lop'); 
 
             $table->integer('loai_lop_hoc_phan')->default(0);
 

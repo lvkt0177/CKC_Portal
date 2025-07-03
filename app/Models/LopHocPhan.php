@@ -29,10 +29,9 @@ class LopHocPhan extends Model
     {
         return $this->belongsTo(User::class, 'id_giang_vien', 'id');
     }
-
     public function lop()
     {
-        return $this->belongsTo(Lop::class, 'id_lop', 'id');
+        return $this->morphTo();
     }
     public function chuongTrinhDaoTao()
     {

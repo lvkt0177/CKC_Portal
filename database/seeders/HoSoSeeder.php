@@ -14,40 +14,6 @@ class HoSoSeeder extends Seeder
     {
         //
         HoSo::insert([
-            [
-                'ho_ten' => 'Le Van Khanh Thinh',
-                'email' => 'lvkt@fe.edu.vn',
-                'password' => bcrypt('12345678'),
-                'so_dien_thoai' => '0857853419',
-                'ngay_sinh' => '2000-01-01',
-                'gioi_tinh' => 'Nam',
-                'cccd' => '0621456789',
-                'dia_chi' => '123 Nguyen Van Cu, Hanoi',
-                'anh' => 'assets/admin/images/ho_so/user_image.jpg',
-            ],
-            [
-                'ho_ten' => 'Nguyen Thi Mai',
-                'email' => 'ntm@fe.edu.vn',
-                'password' => bcrypt('12345678'),
-                'so_dien_thoai' => '0987654321',
-                'ngay_sinh' => '2000-01-01',
-                'gioi_tinh' => 'Nu',
-                'cccd' => '0684567890',
-                'dia_chi' => '24 Ly Thuong Kiet, Hanoi',
-                'anh' => 'assets/admin/images/ho_so/user_image.jpg',
-            ],
-            [
-                'ho_ten' => 'Tran Van An',
-                'email' => 'tva@fe.edu.vn',
-                'password' => bcrypt('12345678'),
-                'so_dien_thoai' => '0123456789',
-                'ngay_sinh' => '2000-01-01',
-                'gioi_tinh' => 'Nam',
-                'cccd' => '0690123456',
-                'dia_chi' => '999 Vo Nguyen Giap, Hanoi',
-                'anh' => 'assets/admin/images/ho_so/user_image.jpg',
-            ],
-
             // Sinh viên
             [
                 'ho_ten' => 'Sinh Viên 1',
@@ -171,7 +137,40 @@ class HoSoSeeder extends Seeder
                 'dia_chi' => 'Loc Ninh, Binh Phuoc',
                 'anh' => 'assets/admin/images/ho_so/user_image.jpg',
             ],
-            
+            [
+                'ho_ten' => 'Le Van Khanh Thinh',
+                'email' => 'lvkt@fe.edu.vn',
+                'password' => bcrypt('12345678'),
+                'so_dien_thoai' => '0857853419',
+                'ngay_sinh' => '2000-01-01',
+                'gioi_tinh' => 'Nam',
+                'cccd' => '0621456789',
+                'dia_chi' => '123 Nguyen Van Cu, Hanoi',
+                'anh' => 'assets/admin/images/ho_so/user_image.jpg',
+            ],
+            [
+                'ho_ten' => 'Nguyen Thi Mai',
+                'email' => 'ntm@fe.edu.vn',
+                'password' => bcrypt('12345678'),
+                'so_dien_thoai' => '0987654321',
+                'ngay_sinh' => '2000-01-01',
+                'gioi_tinh' => 'Nu',
+                'cccd' => '0684567890',
+                'dia_chi' => '24 Ly Thuong Kiet, Hanoi',
+                'anh' => 'assets/admin/images/ho_so/user_image.jpg',
+            ],
+            [
+                'ho_ten' => 'Tran Van An',
+                'email' => 'tva@fe.edu.vn',
+                'password' => bcrypt('12345678'),
+                'so_dien_thoai' => '0123456789',
+                'ngay_sinh' => '2000-01-01',
+                'gioi_tinh' => 'Nam',
+                'cccd' => '0690123456',
+                'dia_chi' => '999 Vo Nguyen Giap, Hanoi',
+                'anh' => 'assets/admin/images/ho_so/user_image.jpg',
+            ],
+
 
 
 

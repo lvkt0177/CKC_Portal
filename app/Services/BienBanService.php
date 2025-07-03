@@ -25,7 +25,8 @@ class BienBanService
     public function storeBienBanVaChiTiet(array $data, Lop $lop)
     {
         $bienBan = $this->bienBanRepository->create([
-            'id_lop' => $lop->id,
+            'lop_id' => $lop->id,
+            'lop_type' => Lop::class,
             'id_sv' => $data['id_sv'],
             'id_gvcn' => User::find($lop->id_gvcn)->id,
             'id_tuan' => $data['id_tuan'],
@@ -57,7 +58,8 @@ class BienBanService
             return false;
         }
         $this->bienBanRepository->update($bienBan, [
-            'id_lop' => $bienBan->id_lop,
+            'lop_id' => $bienBan->lop_id,
+            'lop_type' => Lop::class,
             'id_sv' => $data['id_sv'],
             'id_gvcn' => User::find($bienBan->lop->id_gvcn)->id,
             'id_tuan' => $data['id_tuan'],

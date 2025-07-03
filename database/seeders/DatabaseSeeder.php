@@ -15,8 +15,6 @@ class DatabaseSeeder extends Seeder
     {
         // User::factory(10)->create();
         $this->call([
-
-
             NienKhoaSeeder::class,
             NamSeeder::class,
             TuanSeeder::class,
@@ -31,21 +29,41 @@ class DatabaseSeeder extends Seeder
             MonHocSeeder::class,
             ChiTietChuongTrinhDaoTaoSeeder::class,
             ChuyenNganhSeeder::class,
+            SinhVienSeeder::class,
             UserSeeder::class,
             LopChuyenNganhSeeder::class,
             LopSeeder::class,
-            LopHocPhanSeeder::class,
-            PhieuLenLopSeeder::class,
-            SinhVienSeeder::class,
-            DanhSachHocPhanSeeder::class,
-            LoaiGiaySeeder::class,
-            DangKytGiaySeeder::class,
+
+
+            // NienKhoaSeeder::class,
+            // NamSeeder::class,
+            // TuanSeeder::class,
+            // PhongSeeder::class,
+            // HoSoSeeder::class,
+            // KhoaSeeder::class,
+            // NganhHocSeeder::class,
+            // ChuyenNganhSeeder::class,
+            // BoMonSeeder::class,
+            // ChuongTrinhDaoTaoSeeder::class,
+            // HocKySeeder::class,
+            // MonHocSeeder::class,
+            // ChiTietChuongTrinhDaoTaoSeeder::class,
+            // ChuyenNganhSeeder::class,
+            // UserSeeder::class,
+            // LopChuyenNganhSeeder::class,
+            // LopSeeder::class,
+            // LopHocPhanSeeder::class,
+            // PhieuLenLopSeeder::class,
+            // SinhVienSeeder::class,
+            // DanhSachHocPhanSeeder::class,
+            // LoaiGiaySeeder::class,
+            // DangKytGiaySeeder::class,
             RolePermissionSeeder::class,
-            BienBanSHCNSeeder::class,
-            ThongBaoSeeder::class,
-            BinhLuanSeeder::class,
-            DiemRenLuyenSeeder::class,
-            ThoiKhoaBieuSeeder::class,
+            // BienBanSHCNSeeder::class,
+            // ThongBaoSeeder::class,
+            // BinhLuanSeeder::class,
+            // DiemRenLuyenSeeder::class,
+            // ThoiKhoaBieuSeeder::class,
         ]);
 
     }

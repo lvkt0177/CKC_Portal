@@ -46,7 +46,7 @@ class SinhVienController extends Controller
     public function showlist(int $id)
     {
         $sinhviens = SinhVien::with(['hoSo', 'lop', 'lop.nienKhoa'])
-            ->where('id_lop', $id)
+            ->where('lop_id', $id)
             ->orderBy('ma_sv', 'asc')
             ->get();
 
@@ -72,7 +72,7 @@ class SinhVienController extends Controller
             $sinhVien->save();
         }
         
-        $thuKy = SinhVien::where('id_lop', $sinhVien->id_lop)
+        $thuKy = SinhVien::where('lop_id', $sinhVien->lop_id)
             ->where('chuc_vu', RoleStudent::SECRETARY)
             ->where('id', '!=', $sinhVien->id)
             ->first();

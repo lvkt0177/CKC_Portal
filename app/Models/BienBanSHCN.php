@@ -11,7 +11,8 @@ class BienBanSHCN extends Model
     protected $table = 'bien_ban_shcn';
     
     protected $fillable = [
-        'id_lop',
+        'lop_id',
+        'lop_type',
         'id_gvcn',
         'id_sv',
         'id_tuan',
@@ -35,8 +36,9 @@ class BienBanSHCN extends Model
 
     public function lop()
     {
-        return $this->belongsTo(Lop::class, 'id_lop', 'id');
+        return $this->morphTo();
     }
+
 
     public function tuan()
     {
