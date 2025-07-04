@@ -16,10 +16,10 @@
                         <a href="{{ route('giangvien.lop.index') }}" class="btn btn-primary">Quay lại</a>
                     </div>
 
-                    <div class="teams-section">
+                    <div class="teams-section "
+                        style=" background: linear-gradient(180deg, #4891e9 10%, #9bc9ec 90%); border-radius: 25px;">
                         <form method="GET" id="week-form" action="{{ route('giangvien.lop.nhap-diem_rl', $lop->id) }}"
-                            class="d-flex justify-content-center pt-4 px-3 "
-                            style=" background: linear-gradient(180deg, #4891e9 10%, #9bc9ec 90%);">
+                            class="d-flex justify-content-center pt-4 px-3 ">
                             <div class="date-picker-grid">
                                 @php
                                     $namHienTai = now()->year;
@@ -29,7 +29,7 @@
                                 @endphp
                                 <div class="date-picker-field">
                                     <label>Chọn năm:</label>
-                                    <select id="namSelect" name="nam"
+                                    <select id="namSelect" name="nam" class="select form-control"
                                         onchange="document.getElementById('week-form').submit()">
                                         @for ($i = 0; $i < 4; $i++)
                                             @php $nam = $namHienTai - $i; @endphp
@@ -50,7 +50,7 @@
                             </div>
                         </form>
                         <div class="design-section" id="bulkFormContainer" style="display: none;">
-                            <div class="modern-form-container">
+                            <div class="modern-form-container" style="border-radius: 25px">
                                 <h2 class="design-title">Xếp loại hàng loạt</h2>
                                 <form action="{{ route('giangvien.lop.cap-nhat-diem-checked') }}" method="POST"
                                     data-confirm>
@@ -83,100 +83,100 @@
                                 </form>
                             </div>
                         </div>
-                        <div class="my-3"></div>
-                        <table class="team-table " id="room-table">
-                            <thead class="table-center">
-                                <tr class="text-center">
-                                    @if ($namDangChon == now()->year && $thang == now()->month)
-                                        <th><input type="checkbox" id="checkAll" style="left: 0"></th>
-                                    @endif
-                                    <th>No.</th>
-                                    <th>MSSV</th>
-                                    <th>Họ tên sinh viên</th>
-                                    <th>Rèn luyện</th>
 
-                                    <th></th>
-                                </tr>
-                            </thead>
-                            <tbody>
 
-                                @foreach ($sinhViens as $sv)
-                                    <tr id="view-row-{{ $sv->id }}" class="text-center">
-                                        @if ($namDangChon == now()->year && $thang == now()->month)
-                                            <td>
-                                                <input type="checkbox" class="student-checkbox" name="selected_students[]"
-                                                    value="{{ $sv->id }}">
-                                            </td>
-                                        @endif
-                                        <td>{{ $loop->index + 1 }}</td>
-                                        <td>{{ $sv->ma_sv }}</td>
-                                        <td>{{ $sv->hoSo->ho_ten }}</td>
-                                        <td>
-                                            @php
-                                                $diemRL = $sv->diemRenLuyens->first();
-                                            @endphp
-                                            @if ($diemRL)
-                                                @if ($namDangChon == now()->year && $thang == now()->month)
-                                                    <form action="{{ route('giangvien.lop.cap-nhat-diem_rl') }}"
-                                                        method="POST" data-confirm>
-                                                        @csrf
-                                                        <input type="hidden" name="id_sinh_vien"
-                                                            value="{{ $sv->id }}">
-                                                        <input type="hidden" name="thoi_gian" value="{{ $thang }}">
-                                                        <input type="hidden" name="nam" value="{{ $namDangChon }}">
-                                                        <select class="modern-select" name="xep_loai"
-                                                            onchange="form.submit()">
-                                                            @foreach ([1, 2, 3, 4] as $loai)
-                                                                <option value="{{ $loai }}"
-                                                                    {{ $loai != $diemRL->xep_loai->value ? '' : 'selected' }}>
-                                                                    {{ \App\Enum\XepLoaiDRL::from($loai)->getLabel() }}
-                                                                </option>
-                                                            @endforeach
-                                                        </select>
-                                                    </form>
-                                                @else
-                                                    <span> {{ $diemRL->xep_loai->getLabel() }}</span>
-                                                @endif
-                                            @else
-                                                @if ($namDangChon == now()->year && $thang == now()->month)
-                                                    <form action="{{ route('giangvien.lop.cap-nhat-diem_rl') }}"
-                                                        method="POST" data-confirm>
-                                                        @csrf
-                                                        <input type="hidden" name="id_sinh_vien"
-                                                            value="{{ $sv->id }}">
-                                                        <input type="hidden" name="thoi_gian" value="{{ $thang }}">
-                                                        <input type="hidden" name="nam" value="{{ $namDangChon }}">
-                                                        <select class="modern-select" name="xep_loai"
-                                                            onchange="form.submit()">
-                                                            @foreach ([0, 1, 2, 3, 4] as $loai)
-                                                                <option value="{{ $loai }}">
-                                                                    {{ \App\Enum\XepLoaiDRL::from($loai)->getLabel() }}
-                                                                </option>
-                                                            @endforeach
-                                                        </select>
-                                                    </form>
-                                                @else
-                                                    <span></span>
-                                                @endif
-                                            @endif
-                                        </td>
-                                        <td>
-                                            @error('xep_loai')
-                                                <span class="text-danger">{{ $message }}</span>
-                                            @enderror
-                                        </td>
-                                    </tr>
-                                @endforeach
-                            </tbody>
-                        </table>
                     </div>
+                    <div class="my-3"></div>
+                    <table class="team-table " id="room-table">
+                        <thead class="table-center">
+                            <tr class="text-center">
+                                @if ($namDangChon == now()->year && $thang == now()->month)
+                                    <th><input type="checkbox" id="checkAll" style="left: 0"></th>
+                                @endif
+                                <th>No.</th>
+                                <th>MSSV</th>
+                                <th>Họ tên sinh viên</th>
+                                <th>Rèn luyện</th>
 
+                                <th></th>
+                            </tr>
+                        </thead>
+                        <tbody>
+
+                            @foreach ($sinhViens as $sv)
+                                <tr id="view-row-{{ $sv->id }}" class="text-center">
+                                    @if ($namDangChon == now()->year && $thang == now()->month)
+                                        <td>
+                                            <input type="checkbox" class="student-checkbox" name="selected_students[]"
+                                                value="{{ $sv->sinhVien->id }}">
+                                        </td>
+                                    @endif
+                                    <td>{{ $loop->index + 1 }}</td>
+                                    <td>{{ $sv->sinhVien->ma_sv }}</td>
+                                    <td>{{ $sv->sinhvien->hoSo->ho_ten }}</td>
+                                    <td>
+                                        @php
+                                            $diemRL = $sv->sinhVien->diemRenLuyens->first();
+                                        @endphp
+                                        @if ($diemRL)
+                                            @if ($namDangChon == now()->year && $thang == now()->month)
+                                                <form action="{{ route('giangvien.lop.cap-nhat-diem_rl') }}" method="POST"
+                                                    data-confirm>
+                                                    @csrf
+                                                    <input type="hidden" name="id_sinh_vien"
+                                                        value="{{ $sv->sinhVien->id }}">
+                                                    <input type="hidden" name="thoi_gian" value="{{ $thang }}">
+                                                    <input type="hidden" name="nam" value="{{ $namDangChon }}">
+                                                    <select class="modern-select" name="xep_loai" onchange="form.submit()">
+                                                        @foreach ([1, 2, 3, 4] as $loai)
+                                                            <option value="{{ $loai }}"
+                                                                {{ $loai != $diemRL->xep_loai->value ? '' : 'selected' }}>
+                                                                {{ \App\Enum\XepLoaiDRL::from($loai)->getLabel() }}
+                                                            </option>
+                                                        @endforeach
+                                                    </select>
+                                                </form>
+                                            @else
+                                                <span> {{ $diemRL->xep_loai->getLabel() }}</span>
+                                            @endif
+                                        @else
+                                            @if ($namDangChon == now()->year && $thang == now()->month)
+                                                <form action="{{ route('giangvien.lop.cap-nhat-diem_rl') }}" method="POST"
+                                                    data-confirm>
+                                                    @csrf
+                                                    <input type="hidden" name="id_sinh_vien"
+                                                        value="{{ $sv->sinhVien->id }}">
+                                                    <input type="hidden" name="thoi_gian" value="{{ $thang }}">
+                                                    <input type="hidden" name="nam" value="{{ $namDangChon }}">
+                                                    <select class="modern-select" name="xep_loai"
+                                                        onchange="form.submit()">
+                                                        @foreach ([0, 1, 2, 3, 4] as $loai)
+                                                            <option value="{{ $loai }}">
+                                                                {{ \App\Enum\XepLoaiDRL::from($loai)->getLabel() }}
+                                                            </option>
+                                                        @endforeach
+                                                    </select>
+                                                </form>
+                                            @else
+                                                <span></span>
+                                            @endif
+                                        @endif
+                                    </td>
+                                    <td>
+                                        @error('xep_loai')
+                                            <span class="text-danger">{{ $message }}</span>
+                                        @enderror
+                                    </td>
+                                </tr>
+                            @endforeach
+                        </tbody>
+                    </table>
                 </div>
             </div>
         </div>
 
     </div>
-
+    </div>
 @endsection
 @section('js')
     <script>
@@ -185,16 +185,16 @@
 
         function capNhatDanhSachThang() {
             const namHienTai = new Date().getFullYear();
-            const thangHienTai = new Date().getMonth() + 1; // Tháng trong JS bắt đầu từ 0
+            const thangHienTai = new Date().getMonth() + 1;
             const namDangChon = parseInt(namSelect.value);
             const thangToiDa = (namDangChon === namHienTai) ? thangHienTai : 12;
 
-            const thangDangChon = parseInt({{ $thang }}); // giá trị ban đầu từ server
+            const thangDangChon = parseInt({{ $thang }});
 
-            // Xóa tất cả option cũ
+
             thangSelect.innerHTML = '';
 
-            // Tạo option mới
+
             for (let i = 1; i <= thangToiDa; i++) {
                 const option = document.createElement('option');
                 option.value = i;
@@ -269,19 +269,19 @@
             toggleBulkForm();
         });
 
-        // Khi tick vào từng checkbox
+
         studentCheckboxes.forEach(cb => {
             cb.addEventListener('change', toggleBulkForm);
         });
-        // Khi bấm "Hủy Bỏ"
+
         cancelBtn.addEventListener('click', function() {
-            checkAll.checked = false; // bỏ tick checkAll
-            studentCheckboxes.forEach(cb => cb.checked = false); // bỏ tick tất cả
-            toggleBulkForm(); // ẩn form
+            checkAll.checked = false;
+            studentCheckboxes.forEach(cb => cb.checked = false);
+            toggleBulkForm();
         });
 
         function toggleBulkForm() {
-            // Kiểm tra nếu có ít nhất 1 checkbox được chọn
+
             const hasChecked = [...studentCheckboxes].some(cb => cb.checked);
             bulkFormContainer.style.display = hasChecked ? 'block' : 'none';
         }

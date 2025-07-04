@@ -9,7 +9,8 @@
             <div class="col-md-12">
                 <div class="card shadow-sm">
                     <div class="card-header d-flex justify-content-between align-items-center">
-                        <h3 class="card-title mb-0"> Danh sách Sinh Viên Lớp {{ $lop_HP->ten_hoc_phan ?? '' }} {{ $lop_HP->lop->ten_lop ?? '' }} </h3>
+                        <h3 class="card-title mb-0"> Danh sách Sinh Viên Lớp {{ $lop_HP->ten_hoc_phan ?? '' }}
+                            {{ $lop_HP->lop->ten_lop ?? '' }} </h3>
                         <a class="btn btn-back" href="{{ route('giangvien.diemmonhoc.index') }}">Quay lại</a>
 
                     </div>
@@ -43,13 +44,13 @@
 
                             <form action="{{ route('giangvien.diemmonhoc.cap-nhat-diem') }}" method="POST" data-confirm>
                                 @csrf
-                                <table class="table table-bordered mb-3" id="{{ $sinhviens->count() > 0 ? 'room-table' : '' }}">
+                                <table class="table table-bordered mb-3"
+                                    id="{{ $sinhviens->count() > 0 ? 'room-table' : '' }}">
                                     <thead>
                                         <tr>
                                             <th>No.1</th>
                                             <th>Mã SV</th>
                                             <th>Họ tên</th>
-                                            <th>Tên lớp</th>
                                             <th>Điểm chuyên cần</th>
                                             <th>Điểm quá trình</th>
                                             <th>Điểm thi lần 1</th>
@@ -60,6 +61,7 @@
                                         </tr>
                                     </thead>
                                     <tbody>
+                                        {{ $nextOption->value - 1 }}
                                         @forelse ($sinhviens as $sv)
                                             @foreach ($sv->danhSachHocPhans as $dshp)
                                                 <tr>
@@ -72,7 +74,7 @@
                                                     <td>{{ $loop->parent->iteration }}</td>
                                                     <td>{{ $sv->ma_sv }}</td>
                                                     <td>{{ $sv->hoSo->ho_ten }}</td>
-                                                    <td>{{ $sv->lop->ten_lop }}</td>
+
 
 
                                                     <td>

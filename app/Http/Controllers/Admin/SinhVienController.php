@@ -6,48 +6,57 @@ use App\Http\Controllers\Controller;
 
 use Illuminate\Http\Request;
 use App\Models\SinhVien;
+use App\Models\DanhSachSinhVien;
 use App\Models\HoSo;
 use App\Models\Lop;
 use App\Models\BoMon;
 use App\Models\NienKhoa;
+use App\Models\ChuyenNganh;
 use App\Http\Requests\SinhVien\ChucVuRequest;
 use App\Enum\RoleStudent;
 use App\Acl\Acl;
 use \Spatie\Permission\Models\Role;
 use \Spatie\Permission\Models\Permission;
 
+
 class SinhVienController extends Controller
 {
     public function index(Request $request)
     {
-
+       
         $id_lop = $request->input('id_lop');
         $nienKhoas = NienKhoa::orderBy('id', 'desc')->get();
-        $nganhHocs = ChuyenNganh::orderBy('id', 'desc')->get();
+        $nganhHocs = ChuyenNganh::select('ten_chuyen_nganh')
+                ->distinct()
+                ->get();
 
+
+        $ten_chuyen_nganh = $request->input('ten_chuyen_nganh');
+                
         $id_nien_khoa = $request->input('id_nien_khoa') ?? NienKhoa::where('nam_bat_dau', '<', Carbon::now()->year)
             ->where('nam_ket_thuc', '>=', Carbon::now()->year)
             ->orderByDesc('nam_ket_thuc')
             ->first()?->id;
-        $id_nganh_hoc = $request->input('id_nganh_hoc');
-        $lops = Lop::with(['nienKhoa', 'giangVien', 'giangVien.boMon.chuyenNganh'])
+        
+        $lops = Lop::with(['nienKhoa', 'giangVien', 'chuyenNganh'])
             ->where('id_nien_khoa', $id_nien_khoa)
-            ->when($id_nganh_hoc, function ($query) use ($id_nganh_hoc) {
-                return $query->whereHas('giangVien.boMon.chuyenNganh', function ($q) use ($id_nganh_hoc) {
-                    $q->where('id', $id_nganh_hoc);
+            ->when($ten_chuyen_nganh, function ($query) use ($ten_chuyen_nganh) {
+                $query->whereHas('chuyenNganh', function ($q) use ($ten_chuyen_nganh) {
+                    $q->where('ten_chuyen_nganh', $ten_chuyen_nganh);
                 });
             })
-            ->orderBy('id', 'desc')
+            ->orderByDesc('id')
             ->get();
 
-        return view('admin.student.index', compact('lops', 'id_lop', 'nienKhoas', 'id_nien_khoa', 'id_nganh_hoc', 'nganhHocs'));
+        return view('admin.student.index', compact('lops', 'id_lop', 'nienKhoas', 'id_nien_khoa', 'ten_chuyen_nganh', 'nganhHocs'));
 
     }
     public function showlist(int $id)
     {
-        $sinhviens = SinhVien::with(['hoSo', 'lop', 'lop.nienKhoa'])
+        $sinhviens = DanhSachSinhVien::with(['sinhVien.hoSo','lop.nienKhoa'])
             ->where('id_lop', $id)
-            ->orderBy('ma_sv', 'asc')
+            ->whereHas('sinhVien', function ($query) {
+                $query->orderBy('ma_sv', 'asc'); }) 
             ->get();
 
         $lop = Lop::find($id);

@@ -32,7 +32,7 @@ class LopSeeder extends Seeder
             [
                 "ten_lop" => "CD TH 23A",
                 "id_nien_khoa" => 2,
-                "id_gvcn" => 3,
+                "id_gvcn" => 7,
                 "id_chuyen_nganh"=> 1,
                 "si_so" => 0,
             ],
@@ -52,9 +52,9 @@ class LopSeeder extends Seeder
                 "si_so" => 0,
             ],
             [
-                "ten_lop" => "CD TH 24A",
+                "ten_lop" => "CD TH 24B",
                 "id_nien_khoa" => 3,
-                "id_gvcn" => 1,
+                "id_gvcn" => 4,
                 "id_chuyen_nganh"=> 1,
                 "si_so" => 0,
             ],

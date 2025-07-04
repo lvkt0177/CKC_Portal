@@ -49,11 +49,11 @@
                                     @forelse ($sinhviens as $sv)
                                         <tr>
                                             <td>{{ $loop->index + 1 }}</td>
-                                            <td>{{ $sv->hoSo->ho_ten }}</td>
-                                            <td>{{ $sv->ma_sv }}</td>
+                                            <td>{{ $sv->sinhVien->hoSo->ho_ten }}</td>
+                                            <td>{{ $sv->sinhVien->ma_sv }}</td>
                                             <td>{{ $sv->lop->ten_lop }}</td>
-                                            <td>{{ $sv->hoSo->email }}</td>
-                                            <td>{{ $sv->hoSo->so_dien_thoai }}</td>
+                                            <td>{{ $sv->sinhVien->hoSo->email }}</td>
+                                            <td>{{ $sv->sinhVien->hoSo->so_dien_thoai }}</td>
                                             <td>{{ $sv->lop->nienKhoa->ten_nien_khoa }}</td>
                                         </tr>
                                     @empty

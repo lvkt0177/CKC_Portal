@@ -13,10 +13,12 @@ use Carbon\Carbon;
 use Illuminate\Support\Facades\Auth;
 use App\Models\Lop;
 use App\Models\DanhSachHocPhan;
+use App\Models\ChuyenNganh;
 use App\Models\Phong;
 use App\Models\LopHocPhan;
 use App\Models\User;
 use App\Models\SinhVien;
+use App\Models\DanhSachSinhVien;
 use App\Models\NienKhoa;
 
 use App\Models\MonHoc;
@@ -31,27 +33,30 @@ class LichHocController extends Controller
 {
     //
     public function index(Request $request)
-    {
+    {   
         $nienKhoas = NienKhoa::orderBy('id', 'desc')->get();
-        $nganhHocs = ChuyenNganh::orderBy('id', 'desc')->get();
+        $nganhHocs = ChuyenNganh::select('ten_chuyen_nganh')
+                ->distinct()
+                ->get();
 
+
+        $ten_chuyen_nganh = $request->input('ten_chuyen_nganh');
+                
         $id_nien_khoa = $request->input('id_nien_khoa') ?? NienKhoa::where('nam_bat_dau', '<', Carbon::now()->year)
             ->where('nam_ket_thuc', '>=', Carbon::now()->year)
             ->orderByDesc('nam_ket_thuc')
             ->first()?->id;
-        $id_nganh_hoc = $request->input('id_nganh_hoc');
         
-        $lops = Lop::with([
-           'giangVien','giangVien.hoSo'
-        ])->where('id_nien_khoa', $id_nien_khoa)
-            ->when($id_nganh_hoc, function ($query) use ($id_nganh_hoc) {
-                return $query->whereHas('giangVien.boMon.chuyenNganh', function ($q) use ($id_nganh_hoc) {
-                    $q->where('id', $id_nganh_hoc);
+        $lops = Lop::with(['nienKhoa', 'giangVien', 'chuyenNganh'])
+            ->where('id_nien_khoa', $id_nien_khoa)
+            ->when($ten_chuyen_nganh, function ($query) use ($ten_chuyen_nganh) {
+                $query->whereHas('chuyenNganh', function ($q) use ($ten_chuyen_nganh) {
+                    $q->where('ten_chuyen_nganh', $ten_chuyen_nganh);
                 });
             })
-            ->orderBy('id', 'desc')
+            ->orderByDesc('id')
             ->get();
-        return view('admin.lichhoc.index', compact('lops', 'nienKhoas', 'id_nien_khoa', 'id_nganh_hoc', 'nganhHocs'));
+        return view('admin.lichhoc.index', compact('lops', 'nienKhoas', 'id_nien_khoa', 'ten_chuyen_nganh', 'nganhHocs'));
     }
 
     public function list(Request $request,Lop $lop)
@@ -61,10 +66,11 @@ class LichHocController extends Controller
         $dsPhong= Phong::all();
         
         $dsHocKy = HocKy::where('id_nien_khoa', $lop->id_nien_khoa)
+                        ->where('ngay_ket_thuc','>=',$today)
                         ->orderBy('ngay_bat_dau')
                         ->get();
 
-    
+        
         $hocKy = null;
 
         if ($request->filled('hoc_ky')) {
@@ -73,10 +79,7 @@ class LichHocController extends Controller
         }
 
         if (!$hocKy) {
-            $hocKy = HocKy::where('id_nien_khoa', $lop->id_nien_khoa)
-                        ->where('ngay_bat_dau', '<=', $today)
-                        ->where('ngay_ket_thuc', '>=', $today)
-                        ->first();
+            $hocKy = $dsHocKy->first();
         }
 
         if (!$hocKy) {
@@ -121,10 +124,10 @@ class LichHocController extends Controller
         })
         ->where('id_tuan', $tuan->id ?? null)
         ->get();
-
+       
         $dsgv = User::with('boMon.chuyenNganh', 'hoSo')
         ->whereHas('boMon.chuyenNganh', function ($query) use ($lop) {
-            $query->where('id', $lop->id_nganh_hoc);
+            $query->where('id', $lop->id_chuyen_nganh);
         })
         ->get();
         
@@ -144,6 +147,7 @@ class LichHocController extends Controller
 
     
         $dsHocKy = HocKy::where('id_nien_khoa', $lop->id_nien_khoa)
+            ->where('ngay_ket_thuc','>=',$today)
             ->orderBy('ngay_bat_dau')
             ->get();
 
@@ -169,18 +173,15 @@ class LichHocController extends Controller
      
         $monHoc = collect();
         if ($id_hoc_ky) {
-            $monHoc = MonHoc::whereHas('chiTietChuongTrinhDaoTaos', function ($query) use ($lop, $id_hoc_ky) {
+            $monHoc =  MonHoc::whereHas('chiTietChuongTrinhDaoTaos', function ($query) use ($lop,$id_hoc_ky) {
                     $query->where('id_hoc_ky', $id_hoc_ky)
-                        ->whereHas('chuongTrinhDaoTao', function ($q) use ($lop) {
-                            $q->whereHas('chuyenNganh', function ($sub) use ($lop) {
-                                $sub->where('id_nganh_hoc', $lop->id_nganh_hoc);
-                            });
+                        ->whereHas('chuongTrinhDaoTao', function ($subQuery) use ($lop) {
+                            $subQuery->where('id_chuyen_nganh', $lop->id_chuyen_nganh);
                         });
                 })
                 ->where('loai_mon_hoc', '!=', 5)
                 ->get();
         }
-
         $phong = Phong::all();
 
         $ngayTrongTuan = collect();
@@ -223,6 +224,7 @@ class LichHocController extends Controller
 
     public function store(ThoiKhoaBieuRequest  $request)
     {
+        
         $data = $request->validated();
         
         $lop = Lop::find( $data['lop_id'] );
@@ -275,7 +277,7 @@ class LichHocController extends Controller
 
 
 
-        $sinhVienList = SinhVien::where('id_lop', $data['lop_id'])->get();
+        $sinhVienList = DanhSachSinhVien::where('id_lop', $data['lop_id'])->get();
       
 
         $tenMon = MonHoc::find($data['mon_hoc'])->ten_mon ?? 'Môn học';
@@ -310,7 +312,7 @@ class LichHocController extends Controller
            
             foreach ($sinhVienList as $sv) {
                 DanhSachHocPhan::firstOrCreate([
-                    'id_sinh_vien'    => $sv->id,
+                    'id_sinh_vien'    => $sv->sinhVien->id,
                     'id_lop_hoc_phan' =>  $lopHocPhan->id,
                 ], [
                     'loai_hoc' => 0, 
@@ -398,7 +400,7 @@ class LichHocController extends Controller
     {
         
         $data = $request->validated();
-        
+       
 
         $idLopHocPhan = $data['id_lop_hoc_phan'];
         $idGiaoVien   = $data['id_giao_vien'];
@@ -417,42 +419,76 @@ class LichHocController extends Controller
         $lopHocPhan = LopHocPhan::find($idLopHocPhan);
         $thoikhoabieu = ThoiKhoaBieu::find($idLopHocPhan);
         
+        
+        
+       
+        $tkb = ThoiKhoaBieu::where('id_tuan', $tuanId)
+            ->whereDate('ngay',$ngaybandau) ->first();
+       
+        if(!$tkb)
+        {
+            $tkb = ThoiKhoaBieu::where('id_tuan', $tuanId)
+                ->whereDate('ngay',$ngay) ->first();
+        }
+       
+     
+        $tietBatDau = null;
+        $tietKetThuc = null;
+        if ($tkb) {
+            
+            $tietBatDau = (int)$tkb->tiet_bat_dau;
+            $tietKetThuc = (int)$tkb->tiet_ket_thuc;
+            
+        }
+        
         if ($lopHocPhan) {
            
             if($idGiaoVien){
+                if($tietBatDau||$tietKetThuc){
+                    $gvTrung = $tkb
+                        ->whereHas('lopHocPhan', function ($q) use ($idGiaoVien) {
+                            $q->where('id_giang_vien', $idGiaoVien);
+                        })
+                        ->where(function ($query) use ($tietBatDau, $tietKetThuc) {
+                            $query->where(function ($q) use ($tietBatDau, $tietKetThuc) {
+                                $q->where('tiet_bat_dau', '<=', $tietKetThuc)
+                                ->where('tiet_ket_thuc', '>=', $tietBatDau);
+                            });
+                        })
+                        ->exists();
+                    
+                    if ($gvTrung) {
+                        return redirect()->back()->with('error', 'Giáo viên đã có lịch học trong tiết này.');
+                    }
+                }
                     $lopHocPhan->update([
                     'id_giang_vien' => $idGiaoVien,
                 ]);
             }
         }
-       
-
-
-        $tkb = ThoiKhoaBieu::where('id_tuan', $tuanId)
-            ->whereDate('ngay',$ngay)
-            ->first();
-
-            $tietBatDau = null;
-            $tietKetThuc = null;
-        if ($tkb) {
-            
-            $tietBatDau = $tkb->tiet_bat_dau;
-            $tietKetThuc = $tkb->tiet_ket_thuc;
-            
+        
+    
+        if($idPhong){  
+            if($tietBatDau||$tietKetThuc){
+                $phongTrung = $tkb
+                        ->where('id_phong', $idPhong)
+                        ->where(function ($query) use ($tietBatDau, $tietKetThuc) {
+                            $query->where('tiet_bat_dau', '<=', $tietKetThuc)
+                                ->where('tiet_ket_thuc', '>=', $tietBatDau);
+                        })
+                        ->exists();
+                dd($phongTrung);
+                if ($phongTrung) {
+                    return redirect()->back()->with('error', 'Phòng đã có lịch học trong tiết này.');
+                }
+            }   
+            $idPhong = $thoiKhoaBieu->id_phong;
         }
-      
-       
-        $thoiKhoaBieu = ThoiKhoaBieu::where('id_lop_hoc_phan', $idLopHocPhan)
+    
+            $thoiKhoaBieu = ThoiKhoaBieu::where('id_lop_hoc_phan', $idLopHocPhan)
                    ->where('id_tuan', $tuanId)
                    ->whereDate('ngay', Carbon::parse($ngaybandau)->format('Y-m-d'))
                    ->first();
-        if($thoiKhoaBieu){
-            if(!$idPhong){     
-                $idPhong = $thoiKhoaBieu->id_phong;
-            }
-        }           
-      
-        
         if ($thoiKhoaBieu && ($idPhong || $ngay)) {
            
             if($tietBatDau||$tietKetThuc){

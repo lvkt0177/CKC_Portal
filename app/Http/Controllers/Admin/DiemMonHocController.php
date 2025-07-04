@@ -36,7 +36,6 @@ class DiemMonHocController extends Controller
         
         $sinhviens = SinhVien::with([
             'hoSo',
-            'lop.nienKhoa',
             'danhSachHocPhans' => function ($query) use ($id) {
                 $query->where('id_lop_hoc_phan', $id)->with('lopHocPhan');
             }
@@ -152,8 +151,8 @@ class DiemMonHocController extends Controller
                 'diem_tong_ket' => $tongKet,
             ];
         }
-        
-        if ($trangThai == 1) {
+      
+        if ($trangThai == 0     ) {
             foreach ($updates as $data) {
                 DanhSachHocPhan::where('id_lop_hoc_phan', $lopHocPhan->id)
                     ->where('id_sinh_vien', $data['id_sinh_vien'])
