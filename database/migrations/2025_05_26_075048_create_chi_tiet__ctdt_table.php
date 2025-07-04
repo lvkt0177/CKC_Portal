@@ -17,8 +17,6 @@ return new class extends Migration {
 
             $table->foreignId('id_mon_hoc')->constrained('mon_hoc')->onDelete('cascade');
 
-            $table->foreignId('id_bo_mon')->nullable()->constrained('bo_mon')->onDelete('cascade');
-
             $table->foreignId('id_hoc_ky')->constrained('hoc_ky')->onDelete('cascade');
 
             $table->integer('so_tiet')->nullable()->default(0);

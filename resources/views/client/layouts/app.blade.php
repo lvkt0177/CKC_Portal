@@ -122,6 +122,7 @@
             </li>
 
             <li class="dropdown">
+<<<<<<< HEAD
                 <a href="#"
                     class="dropdown-toggle {{ isActiveRoute('sinhvien/xemdiem') }} {{ isActiveRoute('sinhvien/thoikhoabieu') }} {{ isActiveRoute('sinhvien/lichthi') }}"><i
                         class="fas fa-graduation-cap"></i> HỌC TẬP</a>
@@ -135,6 +136,14 @@
                             href="{{ route('sinhvien.thoikhoabieu.index') }}">Lịch học theo tuần</a></li>
                     <li><a class="{{ isActiveRoute('sinhvien/lichthi') }}"
                             href="{{ route('sinhvien.lichthi.index') }}">Lịch thi</a></li>
+=======
+                <a href="#" class="dropdown-toggle {{ isActiveRoute('sinhvien/xemdiem') }} {{ isActiveRoute('sinhvien/thoikhoabieu') }} {{ isActiveRoute('sinhvien/lichthi') }}"><i class="fas fa-graduation-cap"></i> HỌC TẬP</a>
+                <ul class="submenu" style="display: {{ isActiveMenuRoute('sinhvien/xemdiem') }} {{ isActiveMenuRoute('sinhvien/thoikhoabieu') }} {{ isActiveMenuRoute('sinhvien/lichthi') }};">
+                    <li><a class="{{ isActiveRoute('sinhvien/xemdiemhoctap') }}" href="{{ route('sinhvien.xemdiem.ketquahoctap') }}">Kết quả học tập</a></li>
+                    <li><a class="{{ isActiveRoute('sinhvien/xemdiemrenluyen') }}" href="{{ route('sinhvien.xemdiem.ketquarenluyen') }}">Kết quả rèn luyện</a></li>
+                    <li><a class="{{ isActiveRoute('sinhvien/thoikhoabieu') }}" href="{{ route('sinhvien.thoikhoabieu.index') }}">Lịch học theo tuần</a></li>
+                    <li><a class="{{ isActiveRoute('sinhvien/lichthi') }}" href="{{ route('sinhvien.lichthi.index') }}">Lịch thi</a></li>
+>>>>>>> origin/master
                 </ul>
             </li>
 

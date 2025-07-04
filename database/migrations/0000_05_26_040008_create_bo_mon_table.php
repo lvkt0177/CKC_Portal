@@ -13,10 +13,7 @@ return new class extends Migration
     {
         Schema::create('bo_mon', function (Blueprint $table) {
             $table->id();
-            //ID Ngành học
-            $table->foreignId('id_nganh_hoc')
-                ->constrained('nganh_hoc')
-                ->onDelete('cascade');
+            $table->foreignId('id_chuyen_nganh')->constrained('chuyen_nganh')->onDelete('cascade');
             $table->string('ten_bo_mon')->unique();
             $table->timestamps();
         });

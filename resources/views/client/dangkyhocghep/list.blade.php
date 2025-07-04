@@ -39,7 +39,7 @@
                 <div class="col-lg-6 class-item" data-status="active">
                     <div class="class-card fade-in">
                         <div class="class-header">
-                            <div class="class-name">{{ $lop->ten_hoc_phan }}</div>
+                            <div class="class-name">{{ $lop->ten_hoc_phan }} - {{ $lop->lop->ten_lop }}</div>
                         </div>
                         <div class="class-body">
                             <div class="info-item">
@@ -61,10 +61,10 @@
                                         \Carbon\Carbon::setLocale('vi');
                                     @endphp
                                     <div class="info-label">Ngày bắt đầu học</div>
-                                    <div class="info-value text-capitalize">
-                                        {{ \Carbon\Carbon::parse($lop->thoiKhoaBieu[0]->ngay)->translatedFormat('l') }},
-                                        {{ \Carbon\Carbon::parse($lop->thoiKhoaBieu[0]->ngay)->format('d-m-Y') }}
-                                    </div>
+                                        <div class="info-value text-capitalize">
+                                            {{ \Carbon\Carbon::parse($dsThoiKhoaBieuDauTien[$loop->index]->ngay)->translatedFormat('l') }},
+                                            {{ \Carbon\Carbon::parse($dsThoiKhoaBieuDauTien[$loop->index]->ngay)->format('d-m-Y') }}
+                                        </div>
                                 </div>
                             </div>
                             
@@ -72,10 +72,11 @@
                                 <div class="info-icon">
                                     <i class="fas fa-map-marker-alt"></i>
                                 </div>
-                                <div class="info-content">
-                                    <div class="info-label">Phòng học</div>
-                                    <div class="info-value">{{ $lop->thoiKhoaBieu[0]->phong->ten }}</div>
-                                </div>
+                                    <div class="info-value text-capitalize">
+                                        <div class="info-label">Phòng học</div>
+                                        <div class="info-value">{{ $dsThoiKhoaBieuDauTien[$loop->index]->phong->ten }}</div>
+                                    </div>
+                                
                             </div>
                             
                             <div class="info-item">
@@ -98,7 +99,7 @@
                                 </div>
                             </div>
                             
-                            @if($lop->gioi_han_dang_ky != 0)
+                            @if(!$checkDKHG)
                                 <div class="text-center mt-3">
                                     <form action="{{ route('vnpay.payment.hoc-ghep', $lop   ) }}" method="POST">
                                         @csrf

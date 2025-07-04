@@ -60,7 +60,7 @@ class LopHocPhan extends Model
 
     }
     //dang ky hoc ghep
-    public function dangKyHocGhep()
+    public function dangKyHocGhepThiLai()
     {
         return $this->hasOne(DangKyHGTL::class, 'id_lop_hoc_phan', 'id');
     }

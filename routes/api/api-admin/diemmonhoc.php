@@ -11,3 +11,5 @@ Route::get('/diem-mon-hoc', [DiemMonHocController::class, 'index']);
 Route::get('/diem-mon-hoc/{id}', [DiemMonHocController::class, 'list']);
 
 Route::post('/diem-mon-hoc/cap-nhat', [DiemMonHocController::class, 'capNhat']);
+
+Route::post('/diem-mon-hoc/nop-bang-diem/{lopHocPhan}', [DiemMonHocController::class, 'updateTrangThai']);

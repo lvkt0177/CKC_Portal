@@ -15,18 +15,27 @@ class ChuyenNganhSeeder extends Seeder
     {
         ChuyenNganh::insert([
             [
-                'id_nganh_hoc' => 1,
+                'ten_chuyen_nganh' => 'Công nghệ thông tin',
+                'id_khoa' => 1,
+                'id_chuyen_nganh_cha' => null,
+                'trang_thai' => 0
+            ],
+            [
                 'ten_chuyen_nganh' => 'Lập trình Website',
+                'id_khoa' => 1,
+                'id_chuyen_nganh_cha' => 1,
                 'trang_thai' => 0
             ],
             [
-                'id_nganh_hoc' => 1,
                 'ten_chuyen_nganh' => 'Lập trình Di động',
+                'id_khoa' => 1,
+                'id_chuyen_nganh_cha' => 1,
                 'trang_thai' => 0
             ],
             [
-                'id_nganh_hoc' => 1,
                 'ten_chuyen_nganh' => 'Mạng máy tính',
+                'id_khoa' => 1,
+                'id_chuyen_nganh_cha' => 1,
                 'trang_thai' => 0
             ],
         ]);

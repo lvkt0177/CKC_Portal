@@ -36,16 +36,24 @@ class LichThiController extends Controller
 
     public function listLichThiLanHai()
     {
-        $sinhVien = Auth::user();
+        $sinhVien = Auth::guard('student')->user();
         
-        $lichThi = LichThi::with('giamThi1.hoSo', 'giamThi2.hoSo','phong', 'lopHocPhan')
-            ->whereHas('lopHocPhan', function ($query) use ($sinhVien) {
-                $query->where('id_lop', $sinhVien->id_lop);
+        $lichThi = LichThi::with([
+            'giamThi1.hoSo',
+            'giamThi2.hoSo',
+            'phong',
+            'lopHocPhan.dangKyHocGhepThiLai',
+            'lopHocPhan.danhSachHocPhan' => function ($query) use ($sinhVien) {
+                $query->where('id_sinh_vien', $sinhVien->id);
+            },
+        ])
+            ->whereHas('lopHocPhan.danhSachHocPhan', function ($query) use ($sinhVien) {
+                $query->where('id_sinh_vien', $sinhVien->id);
             })
             ->where('lan_thi', 2)
             ->orderBy('ngay_thi')
             ->get();
-
+        
         return response()->json([
             'status' => true,
             'data' => $lichThi

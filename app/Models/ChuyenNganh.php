@@ -7,9 +7,11 @@ use Illuminate\Database\Eloquent\Model;
 class ChuyenNganh extends Model
 {
     protected $table = "chuyen_nganh";
+    
     protected $fillable = [
         'ten_chuyen_nganh',
-        'id_nganh_hoc',
+        'id_khoa',
+        'id_chuyen_nganh_cha',
         'trang_thai'
     ];
 
@@ -17,12 +19,14 @@ class ChuyenNganh extends Model
     {
         return $this->hasMany(ChuongTrinhDaoTao::class, 'id_chuyen_nganh', 'id');
     }
-    public function nganhHoc()
+    
+    public function chuyenNganhCha(): BelongsTo
     {
-        return $this->belongsTo(NganhHoc::class, 'id_nganh_hoc', 'id');
+        return $this->belongsTo(ChuyenNganh::class, 'id_chuyen_nganh_cha');
     }
-        public function lopChuyenNganh()
+
+    public function chuyenNganhCon()
     {
-        return $this->hasMany(LopChuyenNganh::class, 'id_chuyen_nganh', 'id');
+        return $this->hasMany(ChuyenNganh::class, 'id_chuyen_nganh_cha');
     }
 }

@@ -38,8 +38,9 @@ class BienBanController extends Controller
     {   
         $sinhVien = Auth::user();
 
-        $bienBanSHCN = BienBanSHCN::with(['lop', 'thuky.hoSo', 'tuan', 'gvcn'])
+        $bienBanSHCN = BienBanSHCN::with(['lop', 'thuky.hoSo', 'tuan', 'gvcn.hoSo', 'chiTietBienBanSHCN.sinhVien.hoSo'])
         ->where('id_lop', $sinhVien->id_lop)
+        ->where('trang_thai', BienBanStatus::ACTIVE)
         ->orderBy('id', 'desc')
         ->get();
 

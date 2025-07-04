@@ -19,8 +19,6 @@ return new class extends Migration
             $table->foreignId('id_lop')->constrained('lop')->onDelete('cascade');
 
             $table->foreignId('id_ho_so')->constrained('ho_so')->onDelete('cascade');
-            //idlopchuyenganh
-            $table->foreignId('id_lop_chuyen_nganh')->nullable()->constrained('lop_chuyen_nganh')->onDelete('cascade');
             // CHỨC VỤ
             $table->integer('chuc_vu')->default(0); // 0: sinh viên, 1: thư ký
             

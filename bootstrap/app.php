@@ -9,6 +9,8 @@ use Spatie\Permission\Middleware\RoleOrPermissionMiddleware;
 use App\Http\Middleware\AuthenticateAdmin;
 use App\Http\Middleware\AuthenticateStudentApi;
 use App\Http\Middleware\RoleSecretary;
+use Illuminate\Support\Facades\Schedule;
+use App\Console\Kernel;
 
 return Application::configure(basePath: dirname(__DIR__))
     ->withRouting(
@@ -31,4 +33,5 @@ return Application::configure(basePath: dirname(__DIR__))
     })
     ->withExceptions(function (Exceptions $exceptions) {
         //
-    })->create();
+    })
+    ->create(Kernel::class);

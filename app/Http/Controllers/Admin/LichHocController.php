@@ -307,7 +307,11 @@ class LichHocController extends Controller
                 'loai_mon' => $monHoc->loai_mon_hoc,
                 'trang_thai' => 1,
             ]);    
+<<<<<<< HEAD
            
+=======
+            
+>>>>>>> origin/master
             foreach ($sinhVienList as $sv) {
                 DanhSachHocPhan::firstOrCreate([
                     'id_sinh_vien'    => $sv->id,
@@ -317,6 +321,7 @@ class LichHocController extends Controller
                 ]);
             }
         }
+<<<<<<< HEAD
         $tongSoTiet = ThoiKhoaBieu::where('id_lop_hoc_phan', $lopHocPhan->id)
         ->get()
         ->sum(function ($tkb) {
@@ -335,6 +340,19 @@ class LichHocController extends Controller
                 'ngay'            => $ngayHoc,
             ]);
             
+=======
+        
+        ThoiKhoaBieu::create([
+            'id_tuan'         => $data['id_tuan'],
+            'id_lop_hoc_phan' =>  $lopHocPhan->id,
+            'id_phong'        => $data['id_phong'],
+            'tiet_bat_dau'    => $data['tiet_bat_dau'],
+            'tiet_ket_thuc'   => $tietKetThuc,
+            'ngay'            => $ngayHoc,
+        ]);
+        
+
+>>>>>>> origin/master
         
         return redirect()->route('giangvien.lichhoc.create',['lop'=>$lop])
         ->with('success', 'Thêm thành công');

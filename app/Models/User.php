@@ -100,11 +100,7 @@ class User extends Authenticatable
     {
         return $this->hasMany(YeuCauCapLaiMatKhau::class, 'id_giang_vien', 'id');
     }
-   
-    public function lopChuyenNganh()
-    {
-        return $this->hasMany(LopChuyenNganh::class, 'id_gvcn', 'id');
-    }
+ 
     public function lichThi()
     {
         return $this->hasMany(LichThi::class,'id_giam_thi_','id');

@@ -15,8 +15,10 @@ return new class extends Migration
             $table->id();
 
             $table->string('ten_chuyen_nganh', 100);
+
+            $table->foreignId('id_khoa')->constrained('khoa')->onDelete('cascade');
             
-            $table->foreignId('id_nganh_hoc')->constrained('nganh_hoc')->onDelete('cascade');
+            $table->foreignId('id_chuyen_nganh_cha')->nullable()->constrained('chuyen_nganh')->onDelete('cascade');
 
             $table->integer('trang_thai')->default(0);
 

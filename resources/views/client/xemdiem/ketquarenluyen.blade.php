@@ -48,13 +48,12 @@
                                 <div class="thongtin-item col-6 py-1">
                                     <span class="thongtin-label">Lớp, Lớp chuyên ngành:</span>
                                     <span class="thongtin-value">{{ $sinhVien->lop->ten_lop ?? 'Chưa có' }}
-                                        {{ optional($sinhVien->lopChuyenNganh)->ten_lop ? ', ' . optional($sinhVien->lopChuyenNganh)->ten_lop : '' }}
+                                      
                                     </span>
                                 </div>
                                 <div class="thongtin-item col-6 py-1">
                                     <span class="thongtin-label">Ngành, chuyên ngành:</span>
                                     <span class="thongtin-value">
-                                        {{ $sinhVien->lop->nganhHoc->ten_nganh ?? 'Chưa có' }}{{ optional(optional($sinhVien->lopChuyenNganh)->chuyenNganh)->ten_chuyen_nganh ? ', ' . optional($sinhVien->lopChuyenNganh->chuyenNganh)->ten_chuyen_nganh : '' }}
                                     </span>
                                 </div>
                             </div>

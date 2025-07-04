@@ -14,6 +14,7 @@ use App\Models\ChuongTrinhDaoTao;
 use App\Models\ChiTietChuongTrinhDaoTao;
 use App\Models\NienKhoa;
 use App\Models\DiemRenLuyen;
+use App\Models\LopHocPhan;
 use Illuminate\Support\Facades\DB;
 
 class HomeController extends Controller
@@ -21,7 +22,7 @@ class HomeController extends Controller
     /**
      * Display a listing of the resource.
      */
-    public function index(Request $request)
+    public function index()
     {
         return view('client.home.index');
     }

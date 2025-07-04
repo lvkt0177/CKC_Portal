@@ -20,7 +20,7 @@ return new class extends Migration
             
             $table->foreignId('id_gvcn')->constrained('users')->onDelete('cascade');
             //id ngành học
-            $table->foreignId('id_nganh_hoc')->nullable()->constrained('nganh_hoc')->onDelete('cascade');
+            $table->foreignId('id_chuyen_nganh')->nullable()->constrained('chuyen_nganh')->onDelete('cascade');
             
             $table->integer('si_so')->default(0);
 

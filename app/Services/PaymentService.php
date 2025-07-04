@@ -89,7 +89,6 @@ class PaymentService
 
     public function handleReturn(array $inputData): array|string
     {
-        dd("Controller");
         $vnp_HashSecret = "U0ZBWWF07HXOQYZL2ZR823GINKU3X1O7";
 
         $vnp_SecureHash = $inputData['vnp_SecureHash'] ?? null;

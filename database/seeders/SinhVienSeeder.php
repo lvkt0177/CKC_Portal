@@ -66,45 +66,10 @@ class SinhVienSeeder extends Seeder
                 "trang_thai" => 0,
             ],
         ]);
-        $lopChuyenNganh = [
-            ['lop_id' => 3, 'lop_chuyen_nganh_id' => 1],
-            ['lop_id' => 3, 'lop_chuyen_nganh_id' => 2],
-            ['lop_id' => 3, 'lop_chuyen_nganh_id' => 3],
-        ];
 
         $hoTenMau = ['Nguyễn Văn A', 'Trần Thị B', 'Lê Văn C', 'Phạm Thị D'];
         $maSVBatDau = 306300;
         $hoSoId = 15; // Bắt đầu từ ID hồ sơ 15
-
-        foreach ($lopChuyenNganh as $index => $lop) {
-            for ($i = 0; $i < 4; $i++) {
-                $ten = $hoTenMau[$i];
-                $email = 'sv' . $hoSoId . '@fe.edu.vn';
-
-                // Tạo hồ sơ
-                HoSo::create([
-                    'ho_ten' => $ten,
-                    'email' => $email,
-                    'so_dien_thoai' => '0987' . rand(100000, 999999),
-                    'ngay_sinh' => '2003-01-01',
-                    'gioi_tinh' => ($i % 2 == 0) ? 'Nam' : 'Nữ',
-                    'cccd' => '00120300' . rand(1000, 9999),
-                    'dia_chi' => 'Hà Nội',
-                    'anh' => 'assets/admin/images/ho_so/user_image.jpg',
-                    'password' => Hash::make('12345678'),
-                ]);
-
-                // Tạo sinh viên
-                SinhVien::create([
-                    'ma_sv' => $maSVBatDau++,
-                    'id_lop' => $lop['lop_id'],
-                    'id_lop_chuyen_nganh' => $lop['lop_chuyen_nganh_id'],
-                    'id_ho_so' => $hoSoId++,
-                    'chuc_vu' => 0,
-                    'password' => Hash::make('Thinh3988@'),
-                    'trang_thai' => 0,
-                ]);
-            }
-        }
+        
     }
 }

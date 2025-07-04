@@ -25,6 +25,7 @@ Route::prefix('sinhvien')->name('api.sinhvien.')->group(function () {
             include('lichthi.php');
             include('lophocphan.php');
             include('thoikhoabieu.php');
+            include('ketquahoctap.php');
     });
 });
 

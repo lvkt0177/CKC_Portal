@@ -45,7 +45,8 @@ class DKGiayController extends Controller
     // api/sinhvien/dang-ky-giay
     public function store(Request $request)
     {
-        $sinhVien = Auth::guard('student')->user();
+        $sinhVien = Auth::user();
+        
         $giayIds = $request->input('document_type', []);
 
         if (empty($giayIds)) {
