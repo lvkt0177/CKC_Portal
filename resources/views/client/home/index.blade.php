@@ -32,13 +32,13 @@
                         <div class="row">
                             <div class="col-sm-6">
                                 <p><strong>MSSV:</strong> {{ Auth::guard('student')->user()->ma_sv }}</p>
-                                <p><strong>Lớp học:</strong> {{ Auth::guard('student')->user()->lop->ten_lop }}</p>
+                                <p><strong>Lớp học:</strong> {{ Auth::guard('student')->user() }}</p>
                                 <p><strong>Hệ đào tạo:</strong> Cao đẳng</p>
                                 <p><strong>Giới tính:</strong> {{ Auth::guard('student')->user()->hoSo->gioi_tinh }}</p>
                             </div>
                             <div class="col-sm-6">
                                 <p><strong>Niên khoá:</strong>
-                                    {{ Auth::guard('student')->user()->lop->nienKhoa->ten_nien_khoa }}</p>
+                                    {{ Auth::guard('student')->user()->lop }}</p>
                                 <p><strong>Ngày sinh:</strong> {{ Auth::guard('student')->user()->hoSo->ngay_sinh }} </p>
                                 <p><strong>Ngành:</strong> Hệ thống thông tin</p>
                             </div>

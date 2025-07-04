@@ -39,8 +39,8 @@ class Lop extends Model
         return $this->belongsTo(ChuyenNganh::class, 'id_chuyen_nganh', 'id');
     }
     // Danh sach lop
-    public function danhSachLop()
+    public function danhSachSinhVien()
     {
-        return $this->hasMany(DanhSachLop::class, 'id_lop', 'id');
+        return $this->hasMany(DanhSachSinhVien::class, 'id_lop', 'id');
     }
 }

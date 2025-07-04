@@ -30,7 +30,6 @@ class SinhVienSeeder extends Seeder
             ["ma_sv" => "03062210", "id_ho_so" => 10, "password" => Hash::make('Thinh3988@'), "trang_thai" => 0],
             ["ma_sv" => "03062211", "id_ho_so" => 11, "password" => Hash::make('Thinh3988@'), "trang_thai" => 0],
             ["ma_sv" => "03062212", "id_ho_so" => 12, "password" => Hash::make('Thinh3988@'), "trang_thai" => 0],
-
             
             // Lớp thường - Khoá 23 - 12 SV
             ["ma_sv" => "03062301", "id_ho_so" => 13, "password" => Hash::make('Thinh3988@'), "trang_thai" => 0],

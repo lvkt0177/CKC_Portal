@@ -5,9 +5,9 @@ namespace App\Models;
 use Illuminate\Database\Eloquent\Model;
 use App\Enum\RoleStudent;
 
-class DanhSachLop extends Model
+class DanhSachSinhVien extends Model
 {
-    protected $table = "danh_sach_lop";
+    protected $table = "danh_sach_sinh_vien";
     protected $fillable = [
         'id_lop',
         'id_sinh_vien',

@@ -66,9 +66,9 @@ class SinhVien extends Authenticatable
     {
         return $this->hasMany(DangKyHGTL::class, 'id_sinh_vien', 'id');
     }
-    public function danhSachLop()
+    public function danhSachSinhVien()
     {
-        return $this->hasMany(DanhSachLop::class, 'id_sinh_vien', 'id');
+        return $this->hasMany(DanhSachSinhVien::class, 'id_sinh_vien', 'id');
     }
 
 }

@@ -44,7 +44,7 @@ class DatabaseSeeder extends Seeder
             BinhLuanSeeder::class,
             DiemRenLuyenSeeder::class,
             ThoiKhoaBieuSeeder::class,
-            DanhSachLopSeeder::class
+            DanhSachSinhVienSeeder::class
         ]);
 
     }

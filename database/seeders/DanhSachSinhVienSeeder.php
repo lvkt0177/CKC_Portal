@@ -4,16 +4,16 @@ namespace Database\Seeders;
 
 use Illuminate\Database\Console\Seeds\WithoutModelEvents;
 use Illuminate\Database\Seeder;
-use App\Models\DanhSachLop;
+use App\Models\DanhSachSinhVien;
 
-class DanhSachLopSeeder extends Seeder
+class DanhSachSinhVienSeeder extends Seeder
 {
     /**
      * Run the database seeds.
      */
     public function run(): void
     {
-        DanhSachLop::insert([
+        DanhSachSinhVien::insert([
             // Lớp TH 22A
             ["id_sinh_vien" => 1, "id_lop" => 1, "chuc_vu" => 1],
             ["id_sinh_vien" => 2, "id_lop" => 1, "chuc_vu" => 0],
