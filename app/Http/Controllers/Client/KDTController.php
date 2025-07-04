@@ -26,7 +26,7 @@ class KDTController extends Controller
 
         
         $chuong_trinh_dao_tao = ChuongTrinhDaoTao::whereHas('chuyenNganh', function ($q) use ($sinhvien) {
-            $q->where('id_nganh_hoc', $sinhvien->lop->id_nganh_hoc);
+            $q->where('id_chuyen_nganh', $sinhvien->lop->id_chuyen_nganh);
         })->orderBy('id', 'asc')->get();
        
 

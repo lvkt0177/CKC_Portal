@@ -5,6 +5,8 @@ namespace Database\Seeders;
 use Illuminate\Database\Console\Seeds\WithoutModelEvents;
 use Illuminate\Database\Seeder;
 use App\Models\HoSo;
+use Illuminate\Support\Facades\Hash;
+use Faker\Factory as Faker;
 class HoSoSeeder extends Seeder
 {
     /**
@@ -12,11 +14,43 @@ class HoSoSeeder extends Seeder
      */
     public function run(): void
     {
-        //
+        
+        $vietnamese_first_names = ["Nguyễn", "Trần", "Lê", "Phạm", "Hoàng", "Phan", "Vũ", "Đặng", "Bùi", "Đỗ"];
+        $vietnamese_middle_names = ["Văn", "Hữu", "Đức", "Thanh", "Công", "Ngọc", "Minh", "Xuân"];
+        $vietnamese_last_names = ["Nam", "Tú", "Dũng", "Hưng", "Phong", "Hiếu", "Hải", "Sơn", "Khánh", "Long"];
+
+        $faker = Faker::create('vi_VN');
+        $users = [];
+
+        $baseEmailNumber = 177; 
+
+        for ($i = 1; $i < 37; $i++) {
+            $ho = $vietnamese_first_names[array_rand($vietnamese_first_names)];
+            $dem = $vietnamese_middle_names[array_rand($vietnamese_middle_names)];
+            $ten = $vietnamese_last_names[array_rand($vietnamese_last_names)];
+            $full_name = "$ho $dem $ten";
+
+            $emailNumber = $baseEmailNumber + $i - 1;
+            $email = "lvkt0" . str_pad($emailNumber, 3, '0', STR_PAD_LEFT) . "@gmail.com";
+
+            $users[] = [
+                'ho_ten' => $full_name,
+                'email' => $email,
+                'password' => bcrypt('Thinh3988@'),
+                'so_dien_thoai' => '090' . str_pad($i, 7, '0', STR_PAD_LEFT),
+                'ngay_sinh' => $faker->date('Y-m-d', '-18 years'),
+                'gioi_tinh' => 'Nam',
+                'cccd' => '0011' . str_pad($i, 8, '0', STR_PAD_LEFT),
+                'dia_chi' => $faker->address(),
+                'anh' => 'assets/admin/images/ho_so/user_image.jpg',
+            ];
+        }
+        HoSo::insert($users);
+                
         HoSo::insert([
             [
                 'ho_ten' => 'Le Van Khanh Thinh',
-                'email' => 'lvkt@fe.edu.vn',
+                'email' => 'lethinh3988@gmail.com',
                 'password' => bcrypt('12345678'),
                 'so_dien_thoai' => '0857853419',
                 'ngay_sinh' => '2000-01-01',
@@ -46,63 +80,6 @@ class HoSoSeeder extends Seeder
                 'cccd' => '0690123456',
                 'dia_chi' => '999 Vo Nguyen Giap, Hanoi',
                 'anh' => 'assets/admin/images/ho_so/user_image.jpg',
-            ],
-
-            // Sinh viên
-            [
-                'ho_ten' => 'Sinh Viên 1',
-                'email' => 'sv_1@fe.edu.vn',
-                'password' => bcrypt('12345678'),
-                'so_dien_thoai' => '0123456700',
-                'ngay_sinh' => '2000-01-01',
-                'gioi_tinh' => 'Nam',
-                'cccd' => '06901234001',
-                'dia_chi' => '999 Vo Nguyen Giap, Hanoi',
-                'anh' => 'assets/fe/images/ho_so/profile.jpg',
-            ],
-            [
-                'ho_ten' => 'Sinh Viên 2',
-                'email' => 'sv_2@fe.edu.vn',
-                'password' => bcrypt('12345678'),
-                'so_dien_thoai' => '0123456701',
-                'ngay_sinh' => '2000-01-01',
-                'gioi_tinh' => 'Nam',
-                'cccd' => '06901234002',
-                'dia_chi' => '999 Nguyễn Tất Thành, Hanoi',
-                'anh' => 'assets/fe/images/ho_so/profile.jpg',
-            ],
-            [
-                'ho_ten' => 'Sinh Viên 3',
-                'email' => 'sv_3@fe.edu.vn',
-                'password' => bcrypt('12345678'),
-                'so_dien_thoai' => '0123456703',
-                'ngay_sinh' => '2000-01-01',
-                'gioi_tinh' => 'Nam',
-                'cccd' => '06901234003',
-                'dia_chi' => '9 Nguyễn Tất Thành, Hanoi',
-                'anh' => 'assets/fe/images/ho_so/profile.jpg',
-            ],
-            [
-                'ho_ten' => 'Giảng Viên 1',
-                'email' => 'gv_1@fe.edu.vn',
-                'password' => bcrypt('12345678'),
-                'so_dien_thoai' => '012345673333',
-                'ngay_sinh' => '2000-01-01',
-                'gioi_tinh' => 'Nam',
-                'cccd' => '06901234009',
-                'dia_chi' => '9 Hội An, Đà Nẵng',
-                'anh' => 'assets/fe/images/ho_so/profile.jpg',
-            ],
-            [
-                'ho_ten' => 'Giảng Viên 2',
-                'email' => 'gv_2@fe.edu.vn',
-                'password' => bcrypt('12345678'),
-                'so_dien_thoai' => '01234569904',
-                'ngay_sinh' => '2000-01-01',
-                'gioi_tinh' => 'Nam',
-                'cccd' => '06901234008',
-                'dia_chi' => '9 Yên Lãng, Hanoi',
-                'anh' => 'assets/fe/images/ho_so/profile.jpg',
             ],
 
             [
@@ -160,20 +137,7 @@ class HoSoSeeder extends Seeder
                 'dia_chi' => '42 Lang Ha, Hanoi',
                 'anh' => 'assets/admin/images/ho_so/user_image.jpg',
             ],
-            [
-                'ho_ten' => 'Ho Ngoc Minh Tu',
-                'email' => 'hnmt@fe.edu.vn',
-                'password' => bcrypt('12345678'),
-                'so_dien_thoai' => '0979993000',
-                'ngay_sinh' => '1998-05-12',
-                'gioi_tinh' => 'Nam',
-                'cccd' => '43431413413',
-                'dia_chi' => 'Loc Ninh, Binh Phuoc',
-                'anh' => 'assets/admin/images/ho_so/user_image.jpg',
-            ],
-            
-
-
+  
 
         ]);
     }
