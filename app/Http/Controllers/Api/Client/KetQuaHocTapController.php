@@ -22,7 +22,7 @@ class KetQuaHocTapController extends Controller
     {
         $sinhVien = Auth::user();
 
-        $sinhVien->load('hoSo', 'lop', 'lopChuyenNganh');
+        $sinhVien->load('hoSo', 'lop');
         if (!$sinhVien) {
             return response()->json([
                 'success' => false,

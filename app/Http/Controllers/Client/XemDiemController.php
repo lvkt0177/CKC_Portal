@@ -14,7 +14,6 @@ use App\Models\ChuongTrinhDaoTao;
 use App\Models\ChiTietChuongTrinhDaoTao;
 use App\Models\NienKhoa;
 use App\Models\DiemRenLuyen;
-use App\Models\LopChuyenNganh;
 use App\Models\ChuyenNganh;
 use App\Models\HocKy;
 use App\Models\LopHocPhan;
@@ -26,7 +25,7 @@ class XemDiemController extends Controller
     public function ketquahoctap(){
         $id_sv = Auth::guard('student')->user()->id;
 
-        $sinhVien = SinhVien::with('hoSo', 'lop', 'lopChuyenNganh')->findOrFail($id_sv);
+        $sinhVien = SinhVien::with('hoSo', 'lop')->findOrFail($id_sv);
         $lop = $sinhVien->lop;
         
         $nienkhoa = NienKhoa::findOrFail($lop->id_nien_khoa);
@@ -150,7 +149,7 @@ class XemDiemController extends Controller
     {
         $id_sv = Auth::guard('student')->user()->id;
 
-        $sinhVien = SinhVien::with('hoSo', 'lop','lopChuyenNganh.chuyenNganh')->find($id_sv);
+        $sinhVien = SinhVien::with('hoSo', 'lop')->find($id_sv);
 
         $nienKhoa = NienKhoa::find($sinhVien->lop->id_nien_khoa);
         

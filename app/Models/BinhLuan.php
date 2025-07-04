@@ -42,6 +42,4 @@ class BinhLuan extends Model
     {
         return $this->hasMany(BinhLuan::class, 'id_binh_luan_cha');
     }
-
-    
 }

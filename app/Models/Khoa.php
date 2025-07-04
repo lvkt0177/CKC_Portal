@@ -10,6 +10,11 @@ class Khoa extends Model
     protected $fillable = [
         "ten_khoa"
     ];
+    /**
+     * L t c c ng nh thu c khoa
+     *
+     * @return \Illuminate\Database\Eloquent\Relations\HasMany
+     */
     public function nganhHoc()
     {
         return $this->hasMany(Khoa::class, 'id_khoa', 'id');

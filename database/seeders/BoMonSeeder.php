@@ -15,19 +15,19 @@ class BoMonSeeder extends Seeder
     {
         BoMon::insert([
             [
-                "id_nganh_hoc" => 1,
+                "id_chuyen_nganh" => 1,
                 "ten_bo_mon" => "Tin Học Phần Cứng",
             ],
             [
-                "id_nganh_hoc" => 1,
+                "id_chuyen_nganh" => 1,
                 "ten_bo_mon" => "Tin Học Phần Mềm",
             ],
             [
-                "id_nganh_hoc" => 2,
+                "id_chuyen_nganh" => 2,
                 "ten_bo_mon" => "CNKT Điện công nghiệp",
             ],
             [
-                "id_nganh_hoc" => 2,
+                "id_chuyen_nganh" => 2,
                 "ten_bo_mon" => "CNKT Điện tử công nghiệp",
             ],
         ]);

@@ -55,7 +55,7 @@
                                 <div class="thongtin-item col-6 py-1">
                                     <span class="thongtin-label">Ngành, chuyên ngành:</span>
                                     <span class="thongtin-value">
-                                        {{ $sinhVien->lop->nganhHoc->ten_nganh ?? 'Chưa có' }}{{ optional(optional($sinhVien->lopChuyenNganh)->chuyenNganh)->ten_chuyen_nganh ? ', ' . optional($sinhVien->lopChuyenNganh->chuyenNganh)->ten_chuyen_nganh : '' }}
+                                        {{ $sinhVien->lop->nganhHoc->ten_nganh ?? 'Chưa có' }}
                                     </span>
                                 </div>
                             </div>

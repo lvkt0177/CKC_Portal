@@ -16,18 +16,24 @@ class ChuongTrinhDaoTaoSeeder extends Seeder
         ChuongTrinhDaoTao::insert([
             [
                 'id_chuyen_nganh' => 1,
-                'ten_chuong_trinh_dao_tao' => 'Chương trình đào tạo Lập trình Website',
+                'ten_chuong_trinh_dao_tao' => 'Công nghệ thông tin',
                 'tong_tin_chi' => 153,
                 'thoi_gian' => 3,
             ],
             [
                 'id_chuyen_nganh' => 2,
+                'ten_chuong_trinh_dao_tao' => 'Chương trình đào tạo Lập trình Website',
+                'tong_tin_chi' => 153,
+                'thoi_gian' => 3,
+            ],
+            [
+                'id_chuyen_nganh' => 3,
                 'ten_chuong_trinh_dao_tao' => 'Chương trình đào tạo Lập trình Di động',
                 'tong_tin_chi' => 150,
                 'thoi_gian' => 3,
             ],
             [
-                'id_chuyen_nganh' => 3,
+                'id_chuyen_nganh' => 4,
                 'ten_chuong_trinh_dao_tao' => 'Chương trình đào tạo Mạng máy tính',
                 'tong_tin_chi' => 160,
                 'thoi_gian' => 3,
