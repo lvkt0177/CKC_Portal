@@ -15,12 +15,6 @@ class Lop extends Model
         'si_so'
     ];
 
-    // Sinh Vien
-    public function sinhViens()
-    {
-        return $this->hasMany(SinhVien::class, 'id_lop', 'id');
-    }
-
     // Nien Khoa
     public function nienKhoa()
     {
@@ -43,5 +37,10 @@ class Lop extends Model
     public function chuyenNganh()
     {
         return $this->belongsTo(ChuyenNganh::class, 'id_chuyen_nganh', 'id');
+    }
+    // Danh sach lop
+    public function danhSachLop()
+    {
+        return $this->hasMany(DanhSachLop::class, 'id_lop', 'id');
     }
 }

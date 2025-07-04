@@ -17,59 +17,54 @@ class SinhVienSeeder extends Seeder
     public function run(): void
     {
         SinhVien::insert([
-            [
-                "ma_sv" => "0306221",
-                "id_lop" => 1,
-                "id_ho_so" => 4,
-                "chuc_vu" => 0,
-                'password' => Hash::make('Thinh3988@'),
-                "trang_thai" => 0,
-            ],
-            [
-                "ma_sv" => "0306229",
-                "id_lop" => 1,
-                "id_ho_so" => 14,
-                "chuc_vu" => 0,
-                "mat_khau" => Hash::make('1a@'),
-                "trang_thai" => 0,
-            ],
-            [
-                "ma_sv" => "0306222",
-                "id_lop" => 2,
-                "id_ho_so" => 5,
-                "chuc_vu" => 0,
-                'password' => Hash::make('Thinh3988@'),
-                "trang_thai" => 0,
-            ],
-            [
-                "ma_sv" => "0306231",
-                "id_lop" => 3,
-                "id_ho_so" => 6,
-                "chuc_vu" => 0,
-                'password' => Hash::make('Thinh3988@'),
-                "trang_thai" => 0,
-            ],
-            [
-                "ma_sv" => "0306232",
-                "id_lop" => 3,
-                "id_ho_so" => 7,
-                "chuc_vu" => 0,
-                'password' => Hash::make('Thinh3988@'),
-                "trang_thai" => 0,
-            ],
-            [
-                "ma_sv" => "0306233",
-                "id_lop" => 3,
-                "id_ho_so" => 8,
-                "chuc_vu" => 0,
-                'password' => Hash::make('Thinh3988@'),
-                "trang_thai" => 0,
-            ],
-        ]);
+            // Lớp thường - Khoá 22 - 12 SV
+            ["ma_sv" => "03062201", "id_ho_so" => 1,  "password" => Hash::make('Thinh3988@'), "trang_thai" => 0],
+            ["ma_sv" => "03062202", "id_ho_so" => 2,  "password" => Hash::make('Thinh3988@'), "trang_thai" => 0],
+            ["ma_sv" => "03062203", "id_ho_so" => 3,  "password" => Hash::make('Thinh3988@'), "trang_thai" => 0],
+            ["ma_sv" => "03062204", "id_ho_so" => 4,  "password" => Hash::make('Thinh3988@'), "trang_thai" => 0],
+            ["ma_sv" => "03062205", "id_ho_so" => 5,  "password" => Hash::make('Thinh3988@'), "trang_thai" => 0],
+            ["ma_sv" => "03062206", "id_ho_so" => 6,  "password" => Hash::make('Thinh3988@'), "trang_thai" => 0],
+            ["ma_sv" => "03062207", "id_ho_so" => 7,  "password" => Hash::make('Thinh3988@'), "trang_thai" => 0],
+            ["ma_sv" => "03062208", "id_ho_so" => 8,  "password" => Hash::make('Thinh3988@'), "trang_thai" => 0],
+            ["ma_sv" => "03062209", "id_ho_so" => 9,  "password" => Hash::make('Thinh3988@'), "trang_thai" => 0],
+            ["ma_sv" => "03062210", "id_ho_so" => 10, "password" => Hash::make('Thinh3988@'), "trang_thai" => 0],
+            ["ma_sv" => "03062211", "id_ho_so" => 11, "password" => Hash::make('Thinh3988@'), "trang_thai" => 0],
+            ["ma_sv" => "03062212", "id_ho_so" => 12, "password" => Hash::make('Thinh3988@'), "trang_thai" => 0],
 
-        $hoTenMau = ['Nguyễn Văn A', 'Trần Thị B', 'Lê Văn C', 'Phạm Thị D'];
-        $maSVBatDau = 306300;
-        $hoSoId = 15; // Bắt đầu từ ID hồ sơ 15
+            
+            // Lớp thường - Khoá 23 - 12 SV
+            ["ma_sv" => "03062301", "id_ho_so" => 13, "password" => Hash::make('Thinh3988@'), "trang_thai" => 0],
+            ["ma_sv" => "03062302", "id_ho_so" => 14, "password" => Hash::make('Thinh3988@'), "trang_thai" => 0],
+            ["ma_sv" => "03062303", "id_ho_so" => 15, "password" => Hash::make('Thinh3988@'), "trang_thai" => 0],
+            ["ma_sv" => "03062304", "id_ho_so" => 16, "password" => Hash::make('Thinh3988@'), "trang_thai" => 0],
+            ["ma_sv" => "03062305", "id_ho_so" => 17, "password" => Hash::make('Thinh3988@'), "trang_thai" => 0],
+            ["ma_sv" => "03062306", "id_ho_so" => 18, "password" => Hash::make('Thinh3988@'), "trang_thai" => 0],
+            ["ma_sv" => "03062307", "id_ho_so" => 19, "password" => Hash::make('Thinh3988@'), "trang_thai" => 0],
+            ["ma_sv" => "03062308", "id_ho_so" => 20, "password" => Hash::make('Thinh3988@'), "trang_thai" => 0],
+            ["ma_sv" => "03062309", "id_ho_so" => 21, "password" => Hash::make('Thinh3988@'), "trang_thai" => 0],
+            ["ma_sv" => "03062310", "id_ho_so" => 22, "password" => Hash::make('Thinh3988@'), "trang_thai" => 0],
+            ["ma_sv" => "03062311", "id_ho_so" => 23, "password" => Hash::make('Thinh3988@'), "trang_thai" => 0],
+            ["ma_sv" => "03062312", "id_ho_so" => 24, "password" => Hash::make('Thinh3988@'), "trang_thai" => 0],
+
+
+            // Lớp thường - Kháo 24
+            ["ma_sv" => "03062401", "id_ho_so" => 25, "password" => Hash::make('Thinh3988@'), "trang_thai" => 0],
+            ["ma_sv" => "03062402", "id_ho_so" => 26, "password" => Hash::make('Thinh3988@'), "trang_thai" => 0],
+            ["ma_sv" => "03062403", "id_ho_so" => 27, "password" => Hash::make('Thinh3988@'), "trang_thai" => 0],
+            ["ma_sv" => "03062404", "id_ho_so" => 28, "password" => Hash::make('Thinh3988@'), "trang_thai" => 0],
+            ["ma_sv" => "03062405", "id_ho_so" => 29, "password" => Hash::make('Thinh3988@'), "trang_thai" => 0],
+            ["ma_sv" => "03062406", "id_ho_so" => 30, "password" => Hash::make('Thinh3988@'), "trang_thai" => 0],
+            ["ma_sv" => "03062407", "id_ho_so" => 31, "password" => Hash::make('Thinh3988@'), "trang_thai" => 0],
+            ["ma_sv" => "03062408", "id_ho_so" => 32, "password" => Hash::make('Thinh3988@'), "trang_thai" => 0],
+            ["ma_sv" => "03062409", "id_ho_so" => 33, "password" => Hash::make('Thinh3988@'), "trang_thai" => 0],
+            ["ma_sv" => "03062410", "id_ho_so" => 34, "password" => Hash::make('Thinh3988@'), "trang_thai" => 0],
+            ["ma_sv" => "03062411", "id_ho_so" => 35, "password" => Hash::make('Thinh3988@'), "trang_thai" => 0],
+            ["ma_sv" => "03062412", "id_ho_so" => 36, "password" => Hash::make('Thinh3988@'), "trang_thai" => 0],
+
+
+
+            // 
+        ]);
         
     }
 }

@@ -59,7 +59,7 @@
                                         <!-- Footer -->
                                         <div class="card-footer d-flex justify-content-between gap-2 align-items-center"
                                             style="background-color: #f8f9fa; border-top: 1.5px solid #ced4da !important;">
-                                            <p><b>Ngành:</b> {{ $lop->giangVien->boMon->chuyenNganh->ten_chuyen_nganh }}</p>
+                                            <p><b>Ngành:</b> {{ $lop->chuyenNganh->ten_chuyen_nganh }}</p>
                                             <div class="d-flex">
                                                 <a href="{{ route('giangvien.lop.sinhvien', $lop) }}"
                                                     class="btn btn-dark text-white btn-sm">
