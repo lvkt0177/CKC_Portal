@@ -42,9 +42,8 @@ class LopController extends Controller
         $thang = request()->get('thoi_gian', now()->month); 
         $nam = request()->get('nam', now()->year);
 
-        $sinhViens = SinhVien::with([
+        $sinhViens = Danh::with([
             'hoSo',
-            'lop',
             'lop.nienKhoa',
             'lop.giangVien',
             'diemRenLuyens' => function ($query) use ($thang, $nam) {
