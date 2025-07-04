@@ -17,7 +17,7 @@ use App\Models\Nam;
 use App\Models\User;
 use App\Models\HoSo;
 use App\Models\BoMon;
-use App\Models\NganhHoc;
+
 use App\Models\Khoa;
 use \Spatie\Permission\Models\Role;
 use \Spatie\Permission\Models\Permission;
@@ -32,7 +32,7 @@ class GiangVienController extends Controller
     }
     public function index()
     {
-        $users = User::with('hoSo', 'boMon', 'boMon.nganhHoc.khoa')
+        $users = User::with('hoSo', 'boMon', 'boMon.chuyenNganh.khoa')
             ->orderBy('id', 'desc')
             ->get();
 
@@ -42,7 +42,7 @@ class GiangVienController extends Controller
     //show
     public function show($id)
     {
-        $data = User::with('hoSo', 'boMon', 'boMon.nganhHoc.khoa')
+        $data = User::with('hoSo', 'boMon', 'boMon.chuyenNganh.khoa')
             ->where('id', $id)
             ->orderBy('id', 'desc')
             ->get();

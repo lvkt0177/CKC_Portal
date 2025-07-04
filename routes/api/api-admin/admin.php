@@ -28,7 +28,7 @@ Route::prefix('admin')->name('api.admin.')->group(function () {
         include('lop.php');
         include('diemmonhoc.php');
         include('nienkhoa.php');
-        include('nganhhoc.php');
+        include('chuyennganh.php');
         include('bomon.php');
         include('lophocphan.php');
         include('bienbanshcn.php');

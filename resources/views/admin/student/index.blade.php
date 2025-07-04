@@ -54,7 +54,7 @@
 
                             @foreach ($nganhHocs as $nh)
                                 @foreach ($lops as $l)
-                                    @if ($l->giangVien->boMon->nganhHoc->id == $nh->id)
+                                    @if ($l->giangVien->boMon->chuyenNganh->id == $nh->id)
                                         <div class=" col-md-6 col-lg-4 col-sm-6 mb-4">
                                             <div class="card h-100 shadow-sm"
                                                 style="border-radius: 15px; overflow: hidden; border: 1.5px solid #ced4da;">
@@ -85,7 +85,7 @@
                                                 <!-- Footer -->
                                                 <div class="card-footer d-flex justify-content-between gap-2 align-items-center"
                                                     style="background-color: #f8f9fa; border-top: 1.5px solid #ced4da !important;">
-                                                    <p><b>Ngành:</b> {{ $l->giangVien->boMon->nganhHoc->ten_nganh }}</p>
+                                                    <p><b>Ngành:</b> {{ $l->giangVien->boMon->chuyenNganh->ten_nganh }}</p>
                                                     <a href="{{ route('giangvien.student.list', ['id' => $l->id]) }}"
                                                         class="btn btn-dark text-white btn-sm">
                                                         <i class="fas fa-solid fa-eye"></i>

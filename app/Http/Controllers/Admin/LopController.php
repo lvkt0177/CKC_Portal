@@ -21,11 +21,11 @@ class LopController extends Controller
      */
     public function index()
     {
-        $lops = Lop::with('giangVien', 'nienKhoa', 'giangVien.boMon.nganhHoc')
+        $lops = Lop::with('giangVien', 'nienKhoa', 'giangVien.boMon.chuyenNganh','chuyenNganh')
             ->where('id_gvcn', auth()->user()->id)
             ->orderBy('id', 'desc')
             ->get();
-
+        dd($lops);
         return view('admin.class.index', compact('lops'));
     }
     public function list(Lop $lop)

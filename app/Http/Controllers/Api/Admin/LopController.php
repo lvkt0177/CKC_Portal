@@ -17,7 +17,7 @@ class LopController extends Controller
     // Lấy danh sách lớp của giảng viên đang đăng nhập
     public function index()
     {
-        $lops = Lop::with('giangVien', 'nienKhoa', 'giangVien.boMon.nganhHoc')
+        $lops = Lop::with('giangVien', 'nienKhoa', 'giangVien.boMon.chuyenNganh')
             ->where('id_gvcn', auth()->id())
             ->orderBy('id', 'desc')
             ->get();

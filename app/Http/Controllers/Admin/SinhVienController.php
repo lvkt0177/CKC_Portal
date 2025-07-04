@@ -3,7 +3,7 @@
 namespace App\Http\Controllers\Admin;
 use Carbon\Carbon;
 use App\Http\Controllers\Controller;
-use App\Models\NganhHoc;
+
 use Illuminate\Http\Request;
 use App\Models\SinhVien;
 use App\Models\HoSo;
@@ -23,17 +23,17 @@ class SinhVienController extends Controller
 
         $id_lop = $request->input('id_lop');
         $nienKhoas = NienKhoa::orderBy('id', 'desc')->get();
-        $nganhHocs = NganhHoc::orderBy('id', 'desc')->get();
+        $nganhHocs = ChuyenNganh::orderBy('id', 'desc')->get();
 
         $id_nien_khoa = $request->input('id_nien_khoa') ?? NienKhoa::where('nam_bat_dau', '<', Carbon::now()->year)
             ->where('nam_ket_thuc', '>=', Carbon::now()->year)
             ->orderByDesc('nam_ket_thuc')
             ->first()?->id;
         $id_nganh_hoc = $request->input('id_nganh_hoc');
-        $lops = Lop::with(['nienKhoa', 'giangVien', 'giangVien.boMon.nganhHoc'])
+        $lops = Lop::with(['nienKhoa', 'giangVien', 'giangVien.boMon.chuyenNganh'])
             ->where('id_nien_khoa', $id_nien_khoa)
             ->when($id_nganh_hoc, function ($query) use ($id_nganh_hoc) {
-                return $query->whereHas('giangVien.boMon.nganhHoc', function ($q) use ($id_nganh_hoc) {
+                return $query->whereHas('giangVien.boMon.chuyenNganh', function ($q) use ($id_nganh_hoc) {
                     $q->where('id', $id_nganh_hoc);
                 });
             })

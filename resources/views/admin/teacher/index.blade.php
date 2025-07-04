@@ -73,7 +73,7 @@
                                                             <td>{{ $gv->hoSo->dia_chi }}</td>
                                                             <td>{{ $gv->hoSo->so_dien_thoai }}</td>
                                                             <td>{{ $gv->boMon->ten_bo_mon }}</td>
-                                                            <td>{{ $gv->boMon->nganhHoc->khoa->ten_khoa }}</td>
+                                                            <td>{{ $gv->boMon->chuyenNganh->khoa->ten_khoa }}</td>
                                                             <td>
                                                                 <a href="{{ route('giangvien.giangvien.show', $gv->id) }}"
                                                                     class="btn btn-warning"><i class="la la-eye"></i></a>
@@ -124,7 +124,7 @@
                                                                         {{ $gv->hoSo->so_dien_thoai }}</p>
                                                                     <hr class="my-3">
                                                                     <p class="mb-0 text-dark" style="font-size: 18px">
-                                                                        {{ $gv->boMon->nganhHoc->khoa->ten_khoa }}</p>
+                                                                        {{ $gv->boMon->chuyenNganh->khoa->ten_khoa }}</p>
                                                                 </div>
                                                             </div>
                                                         </a>

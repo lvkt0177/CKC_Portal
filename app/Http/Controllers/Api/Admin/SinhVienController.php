@@ -3,7 +3,7 @@
 namespace App\Http\Controllers\Api\Admin;
 
 use App\Http\Controllers\Controller;
-use App\Models\NganhHoc;
+
 use Illuminate\Http\Request;
 use App\Models\SinhVien;
 use App\Models\HoSo;
@@ -17,7 +17,7 @@ class SinhVienController extends Controller
     // Lấy ra danh sách lớp theo Niên khoá hoặc Ngành Học
     public function index()
     {
-        $query = Lop::with(['nienKhoa', 'giangVien.boMon.nganhHoc'])
+        $query = Lop::with(['nienKhoa', 'giangVien.boMon.chuyenNganh'])
             ->orderBy('id', 'desc');
     
         $lops = $query->get();

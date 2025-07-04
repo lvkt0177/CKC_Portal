@@ -12,7 +12,7 @@ use App\Models\DanhSachHocPhan;
 use App\Models\ChiTietChuongTrinhDaoTao;
 use App\Models\MonHoc;
 use App\Models\ChuyenNganh;
-use App\Models\NganhHoc;
+
 use App\Models\NienKhoa;
 use App\Models\ChuongTrinhDaoTao;
 use App\Models\LopHocPhan;
@@ -29,7 +29,7 @@ class CTDTController extends Controller
         $id_chuong_trinh_dao_tao = $request->input('id_chuong_trinh_dao_tao');
 
         // Danh sách ngành + niên khóa
-        $dsNganh = NganhHoc::all();
+        $dsNganh = ChuyenNganh::all();
         $dsNienKhoa = NienKhoa::orderByDesc('nam_bat_dau')->get();
 
         // Lọc chuyên ngành theo ngành

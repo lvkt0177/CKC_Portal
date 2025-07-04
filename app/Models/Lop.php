@@ -11,7 +11,7 @@ class Lop extends Model
         'ten_lop',
         'id_nien_khoa',
         'id_gvcn',
-        'id_nganh_hoc',
+        'id_chuyen_nganh',
         'si_so'
     ];
 
@@ -26,7 +26,6 @@ class Lop extends Model
     {
         return $this->belongsTo(NienKhoa::class, 'id_nien_khoa', 'id');
     }
-
     // Biên Bản Sinh Hoạt Chủ Nhiệm
     public function bienBanSHCN()
     {
@@ -41,8 +40,8 @@ class Lop extends Model
         return $this->hasMany(LopHocPhan::class, 'id_lop', 'id');
     }
     // Nganh hoc
-    public function nganhHoc()
+    public function chuyenNganh()
     {
-        return $this->belongsTo(NganhHoc::class, 'id_nganh_hoc', 'id');
+        return $this->belongsTo(ChuyenNganh::class, 'id_chuyen_nganh', 'id');
     }
 }

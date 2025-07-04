@@ -153,7 +153,7 @@
                                                 <div class="mb-3">
                                                     <label class="form-label text-secondary">Khoa</label>
                                                     <input type="text" class="form-control"
-                                                        value="{{ $user->boMon->nganhHoc->khoa->ten_khoa }}"
+                                                        value="{{ $user->boMon->chuyenNganh->khoa->ten_khoa }}"
                                                         style="pointer-events: none">
                                                 </div>
 

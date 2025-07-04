@@ -11,14 +11,14 @@ use App\Http\Requests\LichThi\LichThiRequest;
 //Models
 use Illuminate\Support\Facades\Auth;
 use App\Models\Lop;
-use App\Models\LopChuyenNganh;
+
 use App\Models\DanhSachHocPhan;
 use App\Models\Phong;
 use App\Models\LopHocPhan;
 use App\Models\User;
 use App\Models\SinhVien;
 use App\Models\NienKhoa;
-use App\Models\NganhHoc;
+
 use App\Models\MonHoc;
 use App\Models\Nam;
 use App\Models\Tuan;
@@ -35,7 +35,7 @@ class LichThiController extends Controller
     public function index(Request $request)
     {
         $nienKhoas = NienKhoa::orderBy('id', 'desc')->get();
-        $nganhHocs = NganhHoc::orderBy('id', 'desc')->get();
+        $nganhHocs = ChuyenNganh::orderBy('id', 'desc')->get();
 
         $id_nien_khoa = $request->input('id_nien_khoa') ?? NienKhoa::where('nam_bat_dau', '<', Carbon::now()->year)
             ->where('nam_ket_thuc', '>=', Carbon::now()->year)
@@ -47,7 +47,7 @@ class LichThiController extends Controller
            'giangVien','giangVien.hoSo'
         ])->where('id_nien_khoa', $id_nien_khoa)
             ->when($id_nganh_hoc, function ($query) use ($id_nganh_hoc) {
-                return $query->whereHas('giangVien.boMon.nganhHoc', function ($q) use ($id_nganh_hoc) {
+                return $query->whereHas('giangVien.boMon.chuyenNganh', function ($q) use ($id_nganh_hoc) {
                     $q->where('id', $id_nganh_hoc);
                 });
             })
@@ -56,7 +56,7 @@ class LichThiController extends Controller
 
         $lopChuyenNganhs = LopChuyenNganh::with(['giangVien.hoSo'])->where('id_nien_khoa', $id_nien_khoa)
         ->when($id_nganh_hoc, function ($query) use ($id_nganh_hoc) {
-                return $query->whereHas('giangVien.boMon.nganhHoc', function ($q) use ($id_nganh_hoc) {
+                return $query->whereHas('giangVien.boMon.chuyenNganh', function ($q) use ($id_nganh_hoc) {
                     $q->where('id', $id_nganh_hoc);
                 });
             })
@@ -170,8 +170,8 @@ class LichThiController extends Controller
         $tuan = $tuanDangChon;
         
     
-        $giam_thi = User::with('boMon.nganhHoc')
-        ->whereHas('boMon.nganhHoc', function ($query) use ($lop) {
+        $giam_thi = User::with('boMon.chuyenNganh')
+        ->whereHas('boMon.chuyenNganh', function ($query) use ($lop) {
             $query->where('id_nganh_hoc', $lop->id_nganh_hoc);
         })
         ->get(); 

@@ -10,7 +10,7 @@ use App\Models\DanhSachHocPhan;
 use App\Models\ChiTietChuongTrinhDaoTao;
 use App\Models\MonHoc;
 use App\Models\ChuyenNganh;
-use App\Models\NganhHoc;
+
 use App\Models\NienKhoa;
 use App\Models\ChuongTrinhDaoTao;
 use App\Models\LopHocPhan;
@@ -22,7 +22,7 @@ class CTDTController extends Controller
 {
     public function index()
     {
-        $dsNganh = NganhHoc::all();
+        $dsNganh = ChuyenNganh::all();
         $dsNienKhoa = NienKhoa::orderByDesc('nam_bat_dau')->get();
         $chuyenNganhs = ChuyenNganh::all();
         $ctdt = ChuongTrinhDaoTao::orderByDesc('id')->get();

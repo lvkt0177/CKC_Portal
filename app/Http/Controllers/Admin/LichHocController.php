@@ -18,7 +18,7 @@ use App\Models\LopHocPhan;
 use App\Models\User;
 use App\Models\SinhVien;
 use App\Models\NienKhoa;
-use App\Models\NganhHoc;
+
 use App\Models\MonHoc;
 use App\Models\Nam;
 use App\Models\Tuan;
@@ -33,7 +33,7 @@ class LichHocController extends Controller
     public function index(Request $request)
     {
         $nienKhoas = NienKhoa::orderBy('id', 'desc')->get();
-        $nganhHocs = NganhHoc::orderBy('id', 'desc')->get();
+        $nganhHocs = ChuyenNganh::orderBy('id', 'desc')->get();
 
         $id_nien_khoa = $request->input('id_nien_khoa') ?? NienKhoa::where('nam_bat_dau', '<', Carbon::now()->year)
             ->where('nam_ket_thuc', '>=', Carbon::now()->year)
@@ -45,7 +45,7 @@ class LichHocController extends Controller
            'giangVien','giangVien.hoSo'
         ])->where('id_nien_khoa', $id_nien_khoa)
             ->when($id_nganh_hoc, function ($query) use ($id_nganh_hoc) {
-                return $query->whereHas('giangVien.boMon.nganhHoc', function ($q) use ($id_nganh_hoc) {
+                return $query->whereHas('giangVien.boMon.chuyenNganh', function ($q) use ($id_nganh_hoc) {
                     $q->where('id', $id_nganh_hoc);
                 });
             })
@@ -122,8 +122,8 @@ class LichHocController extends Controller
         ->where('id_tuan', $tuan->id ?? null)
         ->get();
 
-        $dsgv = User::with('boMon.nganhHoc', 'hoSo')
-        ->whereHas('boMon.nganhHoc', function ($query) use ($lop) {
+        $dsgv = User::with('boMon.chuyenNganh', 'hoSo')
+        ->whereHas('boMon.chuyenNganh', function ($query) use ($lop) {
             $query->where('id', $lop->id_nganh_hoc);
         })
         ->get();
@@ -307,11 +307,7 @@ class LichHocController extends Controller
                 'loai_mon' => $monHoc->loai_mon_hoc,
                 'trang_thai' => 1,
             ]);    
-<<<<<<< HEAD
            
-=======
-            
->>>>>>> origin/master
             foreach ($sinhVienList as $sv) {
                 DanhSachHocPhan::firstOrCreate([
                     'id_sinh_vien'    => $sv->id,
@@ -321,7 +317,6 @@ class LichHocController extends Controller
                 ]);
             }
         }
-<<<<<<< HEAD
         $tongSoTiet = ThoiKhoaBieu::where('id_lop_hoc_phan', $lopHocPhan->id)
         ->get()
         ->sum(function ($tkb) {
@@ -340,19 +335,6 @@ class LichHocController extends Controller
                 'ngay'            => $ngayHoc,
             ]);
             
-=======
-        
-        ThoiKhoaBieu::create([
-            'id_tuan'         => $data['id_tuan'],
-            'id_lop_hoc_phan' =>  $lopHocPhan->id,
-            'id_phong'        => $data['id_phong'],
-            'tiet_bat_dau'    => $data['tiet_bat_dau'],
-            'tiet_ket_thuc'   => $tietKetThuc,
-            'ngay'            => $ngayHoc,
-        ]);
-        
-
->>>>>>> origin/master
         
         return redirect()->route('giangvien.lichhoc.create',['lop'=>$lop])
         ->with('success', 'Thêm thành công');

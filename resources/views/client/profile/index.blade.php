@@ -41,7 +41,7 @@
                         </div>
                         <div class="info-item">
                             <span class="info-label">Khoa:</span>
-                            <span class="info-value">{{ $sinhVien->lop->nganhHoc->khoa->ten_khoa  }}</span>
+                            <span class="info-value"></span>
                         </div>
                         <div class="info-item">
                             <span class="info-label">Khóa học:</span>
@@ -64,7 +64,7 @@
                         </div>
                         <div class="info-item">
                             <span class="info-label">Ngành:</span>
-                            <span class="info-value">{{ $sinhVien->lop->nganhHoc->ten_nganh }}</span>
+                            <span class="info-value">{{ $sinhVien->lop->chuyenNganh->ten_nganh }}</span>
                         </div>
                     </div>
                 </div>

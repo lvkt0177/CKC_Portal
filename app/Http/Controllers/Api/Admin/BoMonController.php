@@ -22,7 +22,7 @@ class BoMonController extends Controller
      */
     public function getBoMonWithRelation()
     {
-        $bomon = BoMon::with('nganhHoc.khoa')->get();
+        $bomon = BoMon::with('chuyenNganh.khoa')->get();
         return response()->json([
             'status' => true,
             'bomon' => $bomon

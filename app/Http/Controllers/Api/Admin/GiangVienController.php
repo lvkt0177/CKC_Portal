@@ -8,7 +8,7 @@ use Illuminate\Support\Facades\DB;
 use App\Models\User;
 use App\Models\HoSo;
 use App\Models\BoMon;
-use App\Models\NganhHoc;
+
 use App\Models\Khoa;
 use \Spatie\Permission\Models\Role;
 
@@ -17,7 +17,7 @@ class GiangVienController extends Controller
     //api/giangvien/giangvien
     public function index()
     {
-        $users = User::with('hoSo', 'boMon.nganhHoc.khoa', 'roles.permissions')
+        $users = User::with('hoSo', 'boMon.chuyenNganh.khoa', 'roles.permissions')
             ->orderBy('id', 'desc')
             ->get();
 
@@ -27,7 +27,7 @@ class GiangVienController extends Controller
     //api/giangvien/giangvien/{id}
     public function show(int $id)
     {
-        $data = User::with('hoSo','boMon.nganhHoc.khoa','roles.permissions')
+        $data = User::with('hoSo','boMon.chuyenNganh.khoa','roles.permissions')
         ->where('id', $id)
         ->orderBy('id', 'desc')
         ->get();
