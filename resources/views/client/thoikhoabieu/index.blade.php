@@ -125,7 +125,7 @@
                                                                 data-class="{{ $tkb->lopHocPhan->lop->ten_lop }}"
                                                                 data-period="{{ $tkb->tiet_bat_dau }}-{{ $tkb->tiet_ket_thuc }}"
                                                                 data-room="{{ $tkb->phong->ten }}"
-                                                                data-teacher="{{ $tkb->lopHocPhan->giangVien->hoSo->ho_ten }}"
+                                                                data-teacher="{{ $tkb->lopHocPhan->giangVien->hoSo->ho_ten ?? 'Đang cập nhật' }}"
                                                                 data-date="{{ \Carbon\Carbon::parse($tkb->ngay)->format('d/m/Y') }}">
                                                                 <div class="class-title">
                                                                     {{ $tkb->lopHocPhan->ten_hoc_phan }}
@@ -136,7 +136,7 @@
                                                                     {{ $tkb->tiet_bat_dau }}-{{ $tkb->tiet_ket_thuc }}<br>
                                                                     Phòng: {{ $tkb->phong->ten }}<br>
                                                                     GV:
-                                                                    {{ $tkb->lopHocPhan->giangVien->hoSo->ho_ten }}<br>
+                                                                    {{ $tkb->lopHocPhan->giangVien->hoSo->ho_ten ?? 'Đang cập nhật' }}<br>
                                                                     Ngày:
                                                                     {{ \Carbon\Carbon::parse($tkb->ngay)->format('d/m/Y') }}
                                                                 </div>
@@ -190,7 +190,7 @@
                                                                 data-class="{{ $tkb->lopHocPhan->lop->ten_lop }}"
                                                                 data-period="{{ $tkb->tiet_bat_dau }}-{{ $tkb->tiet_ket_thuc }}"
                                                                 data-room="{{ $tkb->phong->ten }}"
-                                                                data-teacher="{{ $tkb->lopHocPhan->giangVien->hoSo->ho_ten }}"
+                                                                data-teacher="{{ $tkb->lopHocPhan->giangVien->hoSo->ho_ten ?? 'Đang cập nhật' }}"
                                                                 data-date="{{ \Carbon\Carbon::parse($tkb->ngay)->format('d/m/Y') }}">
                                                                 <div class="class-title">
                                                                     {{ $tkb->lopHocPhan->ten_hoc_phan }}
@@ -201,7 +201,7 @@
                                                                     {{ $tkb->tiet_bat_dau }}-{{ $tkb->tiet_ket_thuc }}<br>
                                                                     Phòng: {{ $tkb->phong->ten }}<br>
                                                                     GV:
-                                                                    {{ $tkb->lopHocPhan->giangVien->hoSo->ho_ten }}<br>
+                                                                    {{ $tkb->lopHocPhan->giangVien->hoSo->ho_ten ?? 'Đang cập nhật' }}<br>
                                                                     Ngày:
                                                                     {{ \Carbon\Carbon::parse($tkb->ngay)->format('d/m/Y') }}
                                                                 </div>
@@ -255,7 +255,7 @@
                                                                 data-class="{{ $tkb->lopHocPhan->lop->ten_lop }}"
                                                                 data-period="{{ $tkb->tiet_bat_dau }}-{{ $tkb->tiet_ket_thuc }}"
                                                                 data-room="{{ $tkb->phong->ten }}"
-                                                                data-teacher="{{ $tkb->lopHocPhan->giangVien->hoSo->ho_ten }}"
+                                                                data-teacher="{{ $tkb->lopHocPhan->giangVien->hoSo->ho_ten ?? 'Đang cập nhật' }}"
                                                                 data-date="{{ \Carbon\Carbon::parse($tkb->ngay)->format('d/m/Y') }}">
                                                                 <div class="class-title">
                                                                     {{ $tkb->lopHocPhan->ten_hoc_phan }}
@@ -266,7 +266,7 @@
                                                                     {{ $tkb->tiet_bat_dau }}-{{ $tkb->tiet_ket_thuc }}<br>
                                                                     Phòng: {{ $tkb->phong->ten }}<br>
                                                                     GV:
-                                                                    {{ $tkb->lopHocPhan->giangVien->hoSo->ho_ten }}<br>
+                                                                    {{ $tkb->lopHocPhan->giangVien->hoSo->ho_ten ?? 'Đang cập nhật' }}<br>
                                                                     Ngày:
                                                                     {{ \Carbon\Carbon::parse($tkb->ngay)->format('d/m/Y') }}
                                                                 </div>

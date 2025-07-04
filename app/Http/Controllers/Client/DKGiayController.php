@@ -59,12 +59,30 @@ class DKGiayController extends Controller
                 ->where('id_loai_giay', $id_giay)
                 ->where('trang_thai', 0)
                 ->exists();
-
+            $tranhSpam = DangKyGiay::where('id_sinh_vien', $sinhVien->id)
+                ->where('id_loai_giay', $id_giay)
+                ->first();
+            
             if ($daDangKy) {
                 $daTonTai[] = $id_giay;
                 continue;
             }
 
+            if ($tranhSpam) {
+                if ($tranhSpam->trang_thai === 0) {
+                    $daTonTai[] = $id_giay;
+                    continue;
+                }
+
+                if ($tranhSpam->trang_thai === 1) {
+                    $ngayHienTai = \Carbon\Carbon::now();
+                    $ngayDangKyLai = \Carbon\Carbon::parse($tranhSpam->ngay_nhan)->addWeeks(2);
+                    
+                    if ($ngayHienTai<=$ngayDangKyLai) {
+                        return redirect()->back()->with('error', 'Chưa được đăng ký lại!.');
+                    }
+                }
+            }
             DangKyGiay::create([
                 'id_sinh_vien' => $sinhVien->id,
                 'id_giang_vien' => null,
@@ -77,7 +95,7 @@ class DKGiayController extends Controller
             $daDangKyMoi[] = $id_giay;
         }
 
-        // Xử lý thông báo
+        
         if (count($daTonTai) === count($giayIds)) {
             return redirect()->back()->with('error', 'Các giấy đã chọn đều đã được đăng ký và đang chờ xử lý.');
         }

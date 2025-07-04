@@ -51,8 +51,7 @@
                                                         use App\Models\Tuan;
 
                                                         $today = now();
-                                                        $namHienTai =
-                                                            $today->month <= 7 ? $today->year - 1 : $today->year;
+                                                        $namHienTai = $today->month <= 7 ? $today->year : $today->year;
 
                                                         $namDangChon = request('nam', $namHienTai);
 

@@ -204,9 +204,6 @@
                     <a href="{{ route('giangvien.lichhoc.list', ['lop' => $lop]) }}" class="btn btn-info">Xem lịch
                         học</a>
                 </div>
-                {{-- <div id="list-container" style="display: none; margin-top: 20px;">
-                    <livewire:lich-hoc.lich-hoc :lop="$lop" :idTuan="$tuanDangChon->id" :hocKyId="$hocKy->id" />
-                </div> --}}
             </div>
         </div>
     </div>

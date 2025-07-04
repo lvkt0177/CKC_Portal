@@ -66,13 +66,13 @@ class XemDiemController extends Controller
                     $tenMon = $ct->monHoc->ten_mon ?? '';
                     $tenLop = $lop->ten_lop ?? '';
                     $diem = $diemHocPhan->first(function ($item) use ($tenMon, $tenLop) {
-                        $tenFull = Str::of($tenMon)->trim()->lower();
+                        $tenFull = Str::of($tenMon . ' ' . $tenLop)->trim()->lower();
                         
                         $tenTrongDB = Str::of($item->lopHocPhan->ten_hoc_phan)->trim()->lower();
                         
                         return $tenTrongDB == $tenFull;
                     })?? null;  
-                    dd($diem);
+                  
                     return [
                         'ten_hoc_ky' => $ct->hocKy->ten_hoc_ky ?? '',
                         'ten_mon' => $tenMon,
@@ -81,7 +81,7 @@ class XemDiemController extends Controller
                     ];
                 })
             ];
-        }); 
+        });
         
         $thongKeTungKy = [];
 

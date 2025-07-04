@@ -21,27 +21,19 @@ class PhieuLenLopRequest extends FormRequest
      */
     public function rules(): array
     {
+        $lopHocPhan = \App\Models\LopHocPhan::find($this->input('id_lop_hoc_phan'));
+        $siSo = $lopHocPhan?->so_luong_sinh_vien ?? 0;
         return [
-            //
             'id_lop_hoc_phan' => 'required|exists:lop_hoc_phan,id',
-            'tiet_bat_dau' => 'required|integer',
-            'so_tiet' => 'required|integer',
-            'ngay' => 'required|date',
-            'id_phong' => 'required|exists:phong,id',
-            'si_so' => 'required|integer|min:0',
-            'hien_dien' => 'required|integer|min:0|max:' . $this->input('si_so'),
+            'hien_dien' => 'required|integer|min:0|max:' . $siSo,
             'noi_dung' => 'nullable|string|max:1000',
         ];
     }
     public function messages(): array
     {
         return [
-            'id_lop_hoc_phan.required' => 'Lớp học phần khóa',
+            'id_lop_hoc_phan.required' => 'Chọn lớp học phần',
             'id_lop_hoc_phan.exists' => 'Lớp học phần khóa khóa',
-            'id_phong.required' => 'Phòng khóa',
-            'id_phong.exists' => 'Phòng khóa khóa',
-            'tiet_bat_dau.required' => 'Chọn tiết bắt đầu',
-            'so_tiet.required' => 'Chọn số tiết',
             'hien_dien.required' => 'Nhập hiện diện',
             'hien_dien.integer' => 'Hiện diện phái lớn hơn 0',
             'hien_dien.max' => 'Hiện diện phải bé hơn bằng sỉ số',

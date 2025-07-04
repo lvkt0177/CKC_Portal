@@ -192,7 +192,7 @@ class LichHocController extends Controller
                 $bat_dau->addDay();
             }
         }
-
+       
         $thoikhoabieu = ThoiKhoaBieu::with([
             'lopHocPhan',
             'lopHocPhan.lop',
@@ -286,12 +286,15 @@ class LichHocController extends Controller
 
         $ctdt = $ct_ctdt->ChuongTrinhDaoTao->first();
         
+        $soTiet = ChiTietChuongTrinhDaoTao::where('id_mon_hoc', $monHoc->id)
+            ->value('so_tiet');
         
         
-        $tenHocPhan = $tenMon . ' ' . $lop->ten_lop;
+        $tenHocPhan = $tenMon;
         $lopHocPhan = LopHocPhan::where('ten_hoc_phan', $tenHocPhan)
             ->where('id_lop', $data['lop_id'])
-            ->first();  
+            ->first(); 
+        
         if (!$lopHocPhan) {
             $lopHocPhan = LopHocPhan::create([
                 'ten_hoc_phan' => $tenMon,
@@ -304,15 +307,7 @@ class LichHocController extends Controller
                 'loai_mon' => $monHoc->loai_mon_hoc,
                 'trang_thai' => 1,
             ]);    
-            ThoiKhoaBieu::create([
-                'id_tuan'         => $data['id_tuan'],
-                'id_lop_hoc_phan' =>  $lopHocPhan->id,
-                'id_phong'        => $data['id_phong'],
-                'tiet_bat_dau'    => $data['tiet_bat_dau'],
-                'tiet_ket_thuc'   => $tietKetThuc,
-                'ngay'            => $ngayHoc,
-            ]);
-            
+           
             foreach ($sinhVienList as $sv) {
                 DanhSachHocPhan::firstOrCreate([
                     'id_sinh_vien'    => $sv->id,
@@ -321,19 +316,32 @@ class LichHocController extends Controller
                     'loai_hoc' => 0, 
                 ]);
             }
-        } else {
-        
-            session()->flash('error', 'Lớp học phần này đã tồn tại. Không thể thêm trùng.');
-            return back();
         }
-
+        $tongSoTiet = ThoiKhoaBieu::where('id_lop_hoc_phan', $lopHocPhan->id)
+        ->get()
+        ->sum(function ($tkb) {
+            return $tkb->tiet_ket_thuc - $tkb->tiet_bat_dau + 1;
+        });
+        if($tongSoTiet == $soTiet ){
+            return redirect()->route('giangvien.lichhoc.create',['lop'=>$lop])
+        ->with('error', 'Môn học đã hết tiết được tạo!');
+        }
+        ThoiKhoaBieu::create([
+                'id_tuan'         => $data['id_tuan'],
+                'id_lop_hoc_phan' =>  $lopHocPhan->id,
+                'id_phong'        => $data['id_phong'],
+                'tiet_bat_dau'    => $data['tiet_bat_dau'],
+                'tiet_ket_thuc'   => $tietKetThuc,
+                'ngay'            => $ngayHoc,
+            ]);
+            
         
         return redirect()->route('giangvien.lichhoc.create',['lop'=>$lop])
         ->with('success', 'Thêm thành công');
     }
     public function saoChepTuan(Request $request)
     {   
-        
+    
         $tuanHienTai = Tuan::find($request->id_tuan_hien_tai);
         $lop = Lop::find($request->id_lop);
        

@@ -5,11 +5,13 @@ namespace App\Http\Controllers\Admin;
 use App\Http\Controllers\Controller;
 use Illuminate\Http\Request;
 use Carbon\Carbon;
+use App\Http\Requests\LichThi\LichThiRequest;
 
 
 //Models
 use Illuminate\Support\Facades\Auth;
 use App\Models\Lop;
+use App\Models\LopChuyenNganh;
 use App\Models\DanhSachHocPhan;
 use App\Models\Phong;
 use App\Models\LopHocPhan;
@@ -51,7 +53,17 @@ class LichThiController extends Controller
             })
             ->orderBy('id', 'desc')
             ->get();
-        return view('admin.lichthi.index', compact('lops', 'nienKhoas', 'id_nien_khoa', 'id_nganh_hoc', 'nganhHocs'));
+
+        $lopChuyenNganhs = LopChuyenNganh::with(['giangVien.hoSo'])->where('id_nien_khoa', $id_nien_khoa)
+        ->when($id_nganh_hoc, function ($query) use ($id_nganh_hoc) {
+                return $query->whereHas('giangVien.boMon.nganhHoc', function ($q) use ($id_nganh_hoc) {
+                    $q->where('id', $id_nganh_hoc);
+                });
+            })
+            ->orderBy('id', 'desc')
+            ->get();
+      
+        return view('admin.lichthi.index', compact('lops', 'nienKhoas', 'id_nien_khoa', 'id_nganh_hoc', 'nganhHocs','lopChuyenNganhs'));
     }
     public function show(Request $request,Lop $lop)
     {
@@ -61,7 +73,6 @@ class LichThiController extends Controller
         $dsHocKy = HocKy::where('id_nien_khoa', $lop->id_nien_khoa)
                         ->orderBy('ngay_bat_dau')
                         ->get();
-
 
         $hocKy = null;
 
@@ -93,7 +104,7 @@ class LichThiController extends Controller
             : $dsTuan->first();
 
         $tuan = $tuanDangChon;
-
+        
         $ngayTrongTuan = collect();
         if ($tuan) {
             $bat_dau = \Carbon\Carbon::parse($tuan->ngay_bat_dau);
@@ -116,44 +127,49 @@ class LichThiController extends Controller
         
         $today = now();
         $dsHocKy = HocKy::where('id_nien_khoa', $lop->id_nien_khoa)
-                        ->where('ngay_bat_dau', '>=', $today)
+                        ->where('ngay_ket_thuc', '>=', $today)
                         ->orderBy('ngay_bat_dau')
                         ->get();
-
+       
         if ($request->filled('hoc_ky')) {
             $hocKy = HocKy::find($request->hoc_ky);
         } else {
             $hocKy = $dsHocKy->first();
         }
-        
+       
+        $monHoc = collect();
+        if ($hocKy) {
+            $monHoc = MonHoc::whereHas('chiTietChuongTrinhDaoTaos', function ($query) use ($lop, $hocKy) {
+                    $query->where('id_hoc_ky', $hocKy->id)
+                        ->whereHas('chuongTrinhDaoTao', function ($q) use ($lop) {
+                            $q->whereHas('chuyenNganh', function ($sub) use ($lop) {
+                                $sub->where('id_nganh_hoc', $lop->id_nganh_hoc);
+                            });
+                        });
+                })
+                ->where('loai_mon_hoc', '!=', 5)
+                ->get();
+        }
+        $tenMonHoc = $monHoc->pluck('ten_mon');        
+
         $dsLopHP = collect();
         $dsLopHP = LopHocPhan::where('id_lop', $lop->id)
-                ->whereHas('chuongTrinhDaoTao.chiTietChuongTrinhDaoTao', function ($query) use ($hocKy) {
-                    $query->where('id_hoc_ky', $hocKy->id);})
-                ->get();
-        dump($dsLopHP);           
+            ->whereIn('ten_hoc_phan', $tenMonHoc)
+            ->get();
+        
         $dsTuan = Tuan::whereDate('ngay_bat_dau', '>=', $hocKy->ngay_bat_dau)
-                    ->whereDate('ngay_ket_thuc', '<=', $hocKy->ngay_ket_thuc)
-                    ->orderBy('tuan')
-                    ->get();
-        
+            ->whereDate('ngay_ket_thuc', '<=', $hocKy->ngay_ket_thuc)
+            ->orderBy('tuan')
+            ->get();
 
-        if ($request->filled('tuan')) {
-            $tuanDangChon = $dsTuan->firstWhere('id', $request->tuan);
-        } else {
-            $tuanDangChon = $dsTuan->slice(16)->first();
-        }
+
+        $tuanDangChon = $request->filled('id_tuan')
+            ? Tuan::find($request->id_tuan)
+            : $dsTuan->first();
+
+        $tuan = $tuanDangChon;
         
-        $ngayTrongTuan = collect();
-        if ($tuanDangChon) {
-            $bat_dau = \Carbon\Carbon::parse($tuanDangChon->ngay_bat_dau);
-            $ket_thuc = \Carbon\Carbon::parse($tuanDangChon->ngay_ket_thuc);
-            while ($bat_dau->lte($ket_thuc)) {
-                $ngayTrongTuan->push($bat_dau->copy());
-                $bat_dau->addDay();
-            }
-        }
-        
+    
         $giam_thi = User::with('boMon.nganhHoc')
         ->whereHas('boMon.nganhHoc', function ($query) use ($lop) {
             $query->where('id_nganh_hoc', $lop->id_nganh_hoc);
@@ -165,18 +181,16 @@ class LichThiController extends Controller
             'lop',
             'phong',
             'giam_thi',
-            'dsHocKy',
             'hocKy',
             'dsLopHP',
             'dsTuan',
             'tuanDangChon',
-            'ngayTrongTuan'
-            
-        
+            'monHoc'
         ));
     }
-    public function store()
+    public function store(LichThiRequest $request)
     {
+        dd($request->validated());
         return redirect()->route('giangvien.lichthi.create',['lop'=>$lop])
         ->with('success', 'Thêm thành công');
     }

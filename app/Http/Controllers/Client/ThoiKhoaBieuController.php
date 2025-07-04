@@ -49,12 +49,13 @@ class ThoiKhoaBieuController extends Controller
         
         $id_sv = Auth::user()->id;
        
-        $thoikhoabieu=ThoiKhoaBieu::with(['lopHocPhan', 'lopHocPhan.lop', 'lopHocPhan.giangVien.hoSo', 'phong', 'tuan'])
+        $thoikhoabieu=ThoiKhoaBieu::with(['lopHocPhan.lop', 'lopHocPhan.giangVien.hoSo', 'phong', 'tuan'])
         ->whereHas('lopHocPhan.danhSachHocPhan', function ($query) use ($id_sv) {
             $query->where('id_sinh_vien', $id_sv);
         })
+        
         ->where('id_tuan',$tuan->id)->get();
-       
+        
 
 
         return view('client.thoikhoabieu.index',compact('ngayTrongTuan','tuan','thoikhoabieu'));
