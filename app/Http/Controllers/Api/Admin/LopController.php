@@ -7,6 +7,7 @@ use Illuminate\Http\Request;
 use App\Models\Lop;
 use App\Models\SinhVien;
 use App\Models\Nam;
+use App\Models\DanhSachSinhVien;
 use App\Models\DiemRenLuyen;
 use App\Http\Requests\GiangVien\NhapDiemRequest;
 use App\Http\Requests\GiangVien\NhapDiemRenLuyenRequest;
@@ -30,10 +31,7 @@ class LopController extends Controller
     // Lấy danh sách sinh viên trong lớp cụ thể
     public function list(Lop $lop)
     {
-        $sinhViens = SinhVien::with(['hoSo', 'lop', 'lop.nienKhoa', 'lop.giangVien'])
-            ->where('id_lop', $lop->id)
-            ->orderBy('ma_sv', 'asc')
-            ->get();
+        $sinhViens = DanhSachSinhVien::with('sinhVien.hoSo')->where('id_lop', $lop->id)->get();
 
         return response()->json([
             'lop' => $lop,
