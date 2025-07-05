@@ -20,7 +20,7 @@ class HocPhiController extends Controller
     {
         $sinhVien = Auth::user();
 
-        $sinhVien->load('lop');
+        $sinhVien->load('danhSachSinhVien.lop');
         $now = now()->toDateString();
         $nienKhoa = NienKhoa::find($sinhVien->danhSachSinhVien[0]->lop->nienKhoa->id);
 
