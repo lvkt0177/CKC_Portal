@@ -9,7 +9,7 @@
 
 @section('content')
 
-    <div class="container-fluid" style="z-index: -100">
+    <div class="container-fluid">
         <div class="row">
             <div class="col-md-12">
                 <div class="card shadow-sm teams-section">

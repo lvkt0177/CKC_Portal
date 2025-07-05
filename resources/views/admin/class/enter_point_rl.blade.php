@@ -16,8 +16,7 @@
                         <a href="{{ route('giangvien.lop.index') }}" class="btn btn-primary">Quay lại</a>
                     </div>
 
-                    <div class="teams-section "
-                        style=" background: linear-gradient(180deg, #4891e9 10%, #9bc9ec 90%); border-radius: 25px;">
+                    <div class="teams-section" style="background: rgb(234, 234, 234)">
                         <form method="GET" id="week-form" action="{{ route('giangvien.lop.nhap-diem_rl', $lop->id) }}"
                             class="d-flex justify-content-center pt-4 px-3 ">
                             <div class="date-picker-grid">
@@ -49,7 +48,7 @@
                                 </div>
                             </div>
                         </form>
-                        <div class="design-section" id="bulkFormContainer" style="display: none;">
+                        <div class="design-section blur-background" id="bulkFormContainer" style="display: none;">
                             <div class="modern-form-container" style="border-radius: 25px">
                                 <h2 class="design-title">Xếp loại hàng loạt</h2>
                                 <form action="{{ route('giangvien.lop.cap-nhat-diem-checked') }}" method="POST"
@@ -83,8 +82,6 @@
                                 </form>
                             </div>
                         </div>
-
-
                     </div>
                     <div class="my-3"></div>
                     <table class="team-table " id="room-table">
