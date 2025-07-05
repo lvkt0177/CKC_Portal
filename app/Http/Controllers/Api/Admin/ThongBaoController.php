@@ -27,17 +27,24 @@ class ThongBaoController extends Controller
     public function index()
     {
         $thongBaos = $this->thongBaoRepository->all();
-        $thongBaos->load('chiTietThongBao.sinhVien');
-
+        $thongBaos->load('chiTietThongBao.sinhVien.danhSachSinhVien');
         foreach ($thongBaos as $thongbao) {
-            $lopIds = collect($thongbao->chiTietThongBao)
-                ->pluck('sinhVien.id_lop')
+            $lopIds = $thongbao->chiTietThongBao
+                ->map(function ($ct) {
+                    $ds = $ct->sinhVien?->danhSachSinhVien;
+        
+                    return $ds?->sortByDesc('id')->first()?->id_lop;
+                })
                 ->filter()
-                ->unique();
+                ->unique()
+                ->values();
+
             $thongbao->ds_lops = Lop::whereIn('id', $lopIds)->get();
         }
+        $lops = Lop::orderBy('id', 'desc')->get();
 
         return response()->json([
+            'status' => 'success',
             'data' => $thongBaos
         ]);
     }
@@ -156,19 +163,18 @@ class ThongBaoController extends Controller
     {
         $data = $request->validated();
 
-        foreach ($data['lop_ids'] as $lop_id) {
+        foreach($data['lop_ids'] as $lop_id){
             $lop = Lop::find($lop_id);
-
-            foreach ($lop->sinhViens as $sinhvien) {
+            $lop->load('danhSachSinhVien');
+            foreach ($lop->danhSachSinhVien as $sinhvien) {
                 ChiTietThongBao::firstOrCreate([
                     'id_thong_bao' => $thongbao->id,
-                    'id_sinh_vien' => $sinhvien->id,
+                    'id_sinh_vien' => $sinhvien->id_sinh_vien,
                 ], [
                     'trang_thai' => 0,
                 ]);
             }
         }
-
         $result = $this->thongBaoRepository->update($thongbao, ['trang_thai' => 1]);
 
         if (!$result) {

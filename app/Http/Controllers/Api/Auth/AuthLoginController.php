@@ -64,7 +64,7 @@ class AuthLoginController extends Controller
     
         $token = $sinhVien->createToken('student_token')->plainTextToken;
     
-        $sinhVien->load('hoSo', 'danhSachSinhVien');
+        $sinhVien->load('hoSo', 'danhSachSinhVien.lop.chuyenNganh');
     
         return response()->json([
             'success' => true,
