@@ -11,6 +11,7 @@ use App\Models\SinhVien;
 use App\Models\DanhSachSinhVien;
 use App\Models\HoSo;
 use App\Models\Nam;
+use App\Models\HocKy;
 use App\Models\DiemRenLuyen;
 use App\Http\Requests\GiangVien\NhapDiemRenLuyenRequest;
 use Illuminate\Support\Facades\Auth;
@@ -36,7 +37,12 @@ class LopController extends Controller
 
     public function nhapDiemRL(Lop $lop)
     {
-       
+        $nienKhoa = $lop->nienKhoa;
+
+        if ($nienKhoa && $nienKhoa->nam_ket_thuc <= now()->year) {
+            return redirect()->route('giangvien.lop.index')
+                ->with('error', 'Lớp đã hết kỳ để tạo thời khóa biểu');
+        }
         $thang = request()->get('thoi_gian', now()->month); 
         $nam = request()->get('nam', now()->year);
 

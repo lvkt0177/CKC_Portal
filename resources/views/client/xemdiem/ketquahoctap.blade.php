@@ -29,7 +29,7 @@
                                 </div>
                                 <div class="thongtin-item col-6 py-1">
                                     <span class="thongtin-label">CMND/CCCD:</span>
-                                    <span class="thongtin-value">{{ $sinhVien->hoSo->so_cccd ?? '••••••••••' }}</span>
+                                    <span class="thongtin-value">{{ $sinhVien->hoSo->cccd }}</span>
                                 </div>
                                 <div class="thongtin-item col-6 py-1">
                                     <span class="thongtin-label">Họ tên:</span>
@@ -49,13 +49,16 @@
                                     <span class="thongtin-value">{{ $sinhVien->hoSo->dia_chi }}</span>
                                 </div>
                                 <div class="thongtin-item col-6 py-1">
-                                    <span class="thongtin-label">Lớp:</span>
-                                    <span class="thongtin-value">{{ $sinhVien->lop->ten_lop ?? 'Chưa có' }}</span>
+                                    <span class="thongtin-label">Lớp, Lớp chuyên ngành:</span>
+                                    <span class="thongtin-value">{{ $sinhVien->danhSachSinhVien[0]->lop->ten_lop }}
+                                        {{ $lopCuaSinhVien->count() <= 1 ? ' ' : ', ' . $sinhVien->danhSachSinhVien[1]->lop->ten_lop }}
+                                    </span>
                                 </div>
                                 <div class="thongtin-item col-6 py-1">
                                     <span class="thongtin-label">Ngành, chuyên ngành:</span>
                                     <span class="thongtin-value">
-                                        {{ $sinhVien->lop->chuyenNganh->ten_nganh ?? 'Chưa có' }}
+                                        {{ $sinhVien->danhSachSinhVien[0]->lop->chuyenNganh->ten_chuyen_nganh }}
+                                        {{ $lopCuaSinhVien->count() <= 1 ? ' ' : ', ' . $sinhVien->danhSachSinhVien[1]->lop->chuyenNganh->ten_chuyen_nganh }}
                                     </span>
                                 </div>
                             </div>

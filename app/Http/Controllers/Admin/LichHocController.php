@@ -61,6 +61,12 @@ class LichHocController extends Controller
 
     public function list(Request $request,Lop $lop)
     {   
+        $nienKhoa = $lop->nienKhoa;
+
+        if ($nienKhoa && $nienKhoa->nam_ket_thuc <= now()->year) {
+            return redirect()->route('giangvien.lichhoc.index')
+                ->with('error', 'Lớp đã hết kỳ để tạo thời khóa biểu');
+        }
         $today = now();
 
         $dsPhong= Phong::all();
@@ -135,7 +141,7 @@ class LichHocController extends Controller
     }
     public function create(Request $request, Lop $lop)
     {
-        
+
         $nienKhoa = $lop->nienKhoa;
 
         if ($nienKhoa && $nienKhoa->nam_ket_thuc <= now()->year) {
@@ -477,7 +483,7 @@ class LichHocController extends Controller
                                 ->where('tiet_ket_thuc', '>=', $tietBatDau);
                         })
                         ->exists();
-                dd($phongTrung);
+                
                 if ($phongTrung) {
                     return redirect()->back()->with('error', 'Phòng đã có lịch học trong tiết này.');
                 }

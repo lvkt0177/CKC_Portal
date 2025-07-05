@@ -24,15 +24,16 @@
                                 <!-- Ngành học -->
                                 <div>
                                     <label for="id_nganh_hoc" class="form-label fw-bold mb-1">Ngành:</label>
-                                    <select name="id_nganh_hoc" id="id_nganh_hoc" onchange="this.form.submit()"
+                                    <select name="ten_chuyen_nganh" id="id_nganh_hoc" onchange="this.form.submit()"
                                         class="form-control">
-                                        <option value="" {{ $id_nganh_hoc == '' ? 'selected' : '' }}>-- Tất cả ngành
+                                        <option value="" {{ $ten_chuyen_nganh == '' ? 'selected' : '' }}>-- Tất cả
+                                            ngành
                                             --
                                         </option>
                                         @foreach ($nganhHocs as $nh)
-                                            <option value="{{ $nh->id }}"
-                                                {{ $id_nganh_hoc == $nh->id ? 'selected' : '' }}>
-                                                {{ $nh->ten_nganh }}
+                                            <option value="{{ $nh->ten_chuyen_nganh }}"
+                                                {{ $ten_chuyen_nganh == $nh->ten_chuyen_nganh ? 'selected' : '' }}>
+                                                {{ $nh->ten_chuyen_nganh }}
                                             </option>
                                         @endforeach
                                     </select>
@@ -59,14 +60,14 @@
                                     <div class="card h-100 shadow-sm"
                                         style="border-radius: 15px; overflow: hidden; border: 1.5px solid #ced4da;">
 
-                                        <!-- Header -->
+
                                         <div class="class-header" style="  height: 100px; position: relative;">
 
-                                            <!-- Overlay đen nhẹ -->
+
                                             <div style="position: absolute; inset: 0; z-index: 1;">
                                             </div>
 
-                                            <!-- Nội dung -->
+
                                             <div style="position: relative; z-index: 2;">
                                                 <h4 class="text-white fw-bold px-3 pt-3 mb-1">{{ $lop->ten_hoc_phan }}
                                                 </h4>
@@ -75,17 +76,17 @@
                                                 </p>
                                             </div>
 
-                                            <!-- Avatar -->
+
                                             <img src="{{ asset('' . $lop->giangVien->hoSo->anh) }}" alt="Avatar"
                                                 style="width: 70px; height: 70px; object-fit: cover; border-radius: 50%; position: absolute; bottom: 10px; right: 15px; border: 1px solid white; z-index: 3;">
                                         </div>
 
-                                        <!-- Body -->
+
                                         <div class="card-body pt-4" style="background-color: #f8f9fa;">
-                                            {{-- Nội dung khác nếu có --}}
+
                                         </div>
 
-                                        <!-- Footer -->
+
                                         <div class="card-footer d-flex justify-content-between gap-2"
                                             style="background-color: #f8f9fa; border-top: 1.5px solid #ced4da !important; padding-top: 12px;">
                                             <p><b>Lớp:</b> {{ $lop->ten_lop }}</p>

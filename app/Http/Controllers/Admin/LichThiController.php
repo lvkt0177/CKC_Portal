@@ -18,7 +18,7 @@ use App\Models\LopHocPhan;
 use App\Models\User;
 use App\Models\SinhVien;
 use App\Models\NienKhoa;
-
+use App\Models\ChuyenNganh;
 use App\Models\MonHoc;
 use App\Models\Nam;
 use App\Models\Tuan;
@@ -35,41 +35,38 @@ class LichThiController extends Controller
     public function index(Request $request)
     {
         $nienKhoas = NienKhoa::orderBy('id', 'desc')->get();
-        $nganhHocs = ChuyenNganh::orderBy('id', 'desc')->get();
+        $nganhHocs = ChuyenNganh::select('ten_chuyen_nganh')
+                ->distinct()
+                ->get();
 
+
+        $ten_chuyen_nganh = $request->input('ten_chuyen_nganh');
+                
         $id_nien_khoa = $request->input('id_nien_khoa') ?? NienKhoa::where('nam_bat_dau', '<', Carbon::now()->year)
             ->where('nam_ket_thuc', '>=', Carbon::now()->year)
             ->orderByDesc('nam_ket_thuc')
             ->first()?->id;
-        $id_nganh_hoc = $request->input('id_nganh_hoc');
         
-        $lops = Lop::with([
-           'giangVien','giangVien.hoSo'
-        ])->where('id_nien_khoa', $id_nien_khoa)
-            ->when($id_nganh_hoc, function ($query) use ($id_nganh_hoc) {
-                return $query->whereHas('giangVien.boMon.chuyenNganh', function ($q) use ($id_nganh_hoc) {
-                    $q->where('id', $id_nganh_hoc);
+        $lops = Lop::with(['nienKhoa', 'giangVien', 'chuyenNganh'])
+            ->where('id_nien_khoa', $id_nien_khoa)
+            ->when($ten_chuyen_nganh, function ($query) use ($ten_chuyen_nganh) {
+                $query->whereHas('chuyenNganh', function ($q) use ($ten_chuyen_nganh) {
+                    $q->where('ten_chuyen_nganh', $ten_chuyen_nganh);
                 });
             })
-            ->orderBy('id', 'desc')
+            ->orderByDesc('id')
             ->get();
-
-        $lopChuyenNganhs = LopChuyenNganh::with(['giangVien.hoSo'])->where('id_nien_khoa', $id_nien_khoa)
-        ->when($id_nganh_hoc, function ($query) use ($id_nganh_hoc) {
-                return $query->whereHas('giangVien.boMon.chuyenNganh', function ($q) use ($id_nganh_hoc) {
-                    $q->where('id', $id_nganh_hoc);
-                });
-            })
-            ->orderBy('id', 'desc')
-            ->get();
-      
-        return view('admin.lichthi.index', compact('lops', 'nienKhoas', 'id_nien_khoa', 'id_nganh_hoc', 'nganhHocs','lopChuyenNganhs'));
+        return view('admin.lichthi.index', compact('lops', 'nienKhoas', 'id_nien_khoa', 'nganhHocs','ten_chuyen_nganh'));
     }
     public function show(Request $request,Lop $lop)
     {
         $today = now();
+        $nienKhoa = $lop->nienKhoa;
 
-        
+        if ($nienKhoa && $nienKhoa->nam_ket_thuc <= now()->year) {
+            return redirect()->route('giangvien.lichthi.index')
+                ->with('error', 'Lớp đã hết kỳ để tạo thời khóa biểu');
+        }
         $dsHocKy = HocKy::where('id_nien_khoa', $lop->id_nien_khoa)
                         ->orderBy('ngay_bat_dau')
                         ->get();
@@ -124,7 +121,12 @@ class LichThiController extends Controller
     }
     public function create(Request $request,Lop $lop)
     {
-        
+        $nienKhoa = $lop->nienKhoa;
+
+        if ($nienKhoa && $nienKhoa->nam_ket_thuc <= now()->year) {
+            return redirect()->route('giangvien.lichthi.index')
+                ->with('error', 'Lớp đã hết kỳ để tạo thời khóa biểu');
+        }
         $today = now();
         $dsHocKy = HocKy::where('id_nien_khoa', $lop->id_nien_khoa)
                         ->where('ngay_ket_thuc', '>=', $today)
@@ -139,12 +141,10 @@ class LichThiController extends Controller
        
         $monHoc = collect();
         if ($hocKy) {
-            $monHoc = MonHoc::whereHas('chiTietChuongTrinhDaoTaos', function ($query) use ($lop, $hocKy) {
+            $monHoc =  MonHoc::whereHas('chiTietChuongTrinhDaoTaos', function ($query) use ($lop,$hocKy) {
                     $query->where('id_hoc_ky', $hocKy->id)
-                        ->whereHas('chuongTrinhDaoTao', function ($q) use ($lop) {
-                            $q->whereHas('chuyenNganh', function ($sub) use ($lop) {
-                                $sub->where('id_nganh_hoc', $lop->id_nganh_hoc);
-                            });
+                        ->whereHas('chuongTrinhDaoTao', function ($subQuery) use ($lop) {
+                            $subQuery->where('id_chuyen_nganh', $lop->id_chuyen_nganh);
                         });
                 })
                 ->where('loai_mon_hoc', '!=', 5)
@@ -172,7 +172,7 @@ class LichThiController extends Controller
     
         $giam_thi = User::with('boMon.chuyenNganh')
         ->whereHas('boMon.chuyenNganh', function ($query) use ($lop) {
-            $query->where('id_nganh_hoc', $lop->id_nganh_hoc);
+            $query->where('id', $lop->id_chuyen_nganh);
         })
         ->get(); 
 
@@ -188,11 +188,50 @@ class LichThiController extends Controller
             'monHoc'
         ));
     }
-    public function store(LichThiRequest $request)
+    public function store(Lop $lop,LichThiRequest $request)
     {
-        dd($request->validated());
-        return redirect()->route('giangvien.lichthi.create',['lop'=>$lop])
-        ->with('success', 'Thêm thành công');
+        
+        $data=$request->validated();
+        
+        $tuan = Tuan::find($data['id_tuan']);
+            
+        if (!$tuan) {
+            return redirect()->route('giangvien.lichthi.create',['lop'=>$lop])->with('error', 'Tuần không tồn tại');
+        }
+
+        $data['ngay_thi'] = Carbon::parse($tuan->ngay_bat_dau)->addDays($data['thu'] - 2)->format('Y-m-d');
+       
+        if ($this->isTrungLich($data)==false)  {
+            return redirect()->route('giangvien.lichthi.create', ['lop' => $lop])
+                ->with('error', 'Lịch thi bị trùng giờ với lịch thi khác. Vui lòng kiểm tra lại.');
+        }
+        
+        $lichThi = LichThi::create($data);
+
+        if ($lichThi) {
+            return redirect()->route('giangvien.lichthi.create', ['lop' => $lop])
+                ->with('success' , 'Lịch thi đã được tạo thành công.');
+        }
     }
+    public function isTrungLich($data)
+    {
+        $trungLHP = LichThi::where('id_lop_hoc_phan', $data['id_lop_hoc_phan'])
+        ->where('lan_thi', $data['lan_thi'])
+        ->exists();
+        
+        if(!$trungLHP){
+
+            $trungPhong = LichThi::where('id_phong_thi', $data['id_phong_thi'])
+            ->where('ngay_thi', $data['ngay_thi'])
+            ->where('gio_bat_dau', $data['gio_bat_dau'])
+            ->where('id_tuan', $data['id_tuan'])
+            ->exists();
+            if(!$trungPhong){
+                return false;
+            }
+            return true;
+        }
+        return false;
+    }   
     
 }

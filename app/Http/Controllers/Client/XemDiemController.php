@@ -25,30 +25,48 @@ class XemDiemController extends Controller
     public function ketquahoctap(){
         $id_sv = Auth::guard('student')->user()->id;
 
-        $sinhVien = SinhVien::with('hoSo', 'lop')->findOrFail($id_sv);
-        $lop = $sinhVien->lop;
+        $sinhVien = SinhVien::with('hoSo', 'danhSachSinhVien.lop')->findOrFail($id_sv);
         
+        $lopCuaSinhVien = $sinhVien->danhSachSinhVien;
+
+        $lop = $sinhVien->danhSachSinhVien[0]->lop;
+           
+        $lopchuyenNganh = $lopCuaSinhVien->count()>1 
+        ? $sinhVien->danhSachSinhVien[1]->lop
+        : null;
+       
         $nienkhoa = NienKhoa::findOrFail($lop->id_nien_khoa);
     
-        $chuong_trinh_dao_tao = ChuongTrinhDaoTao::whereHas('chuyenNganh', function ($q) use ($lop) {
-            $q->where('id_nganh_hoc', $lop->id_nganh_hoc);
+        $chuong_trinh_dao_tao_md = ChuongTrinhDaoTao::whereHas('chuyenNganh', function ($q) use ($lop) {
+            $q->where('id_chuyen_nganh', $lop->id_chuyen_nganh);
         })->orderBy('id', 'asc')->first();
+        
+        $chuong_trinh_dao_tao_cn = $lopCuaSinhVien->count()>1 ? ChuongTrinhDaoTao::whereHas('chuyenNganh', function ($q) use ($lopchuyenNganh) {
+            $q->where('id_chuyen_nganh', $lopchuyenNganh->id_chuyen_nganh);
+        })->orderBy('id', 'asc')->first():null;
     
-        if (!$chuong_trinh_dao_tao) {
-            return redirect()->back()->with('error', 'Không có chương trình đào tạo nào.');
-        }
-    
-        $ct_ctdt = ChiTietChuongTrinhDaoTao::with(['monHoc', 'chuongTrinhDaoTao', 'hocKy'])
-            ->where('id_chuong_trinh_dao_tao', $chuong_trinh_dao_tao->id)
+        $ct_ctdt_md = ChiTietChuongTrinhDaoTao::with(['monHoc', 'chuongTrinhDaoTao', 'hocKy'])
+            ->where('id_chuong_trinh_dao_tao', $chuong_trinh_dao_tao_md->id)
+            ->whereHas('hocKy', function ($q) use ($nienkhoa) {
+                $q->where('id_nien_khoa', $nienkhoa->id);
+            })
+            ->get();
+        
+        $ct_ctdt_cn = $lopCuaSinhVien->count()>1 ? ChiTietChuongTrinhDaoTao::with(['monHoc', 'chuongTrinhDaoTao', 'hocKy'])
+            ->where('id_chuong_trinh_dao_tao', $chuong_trinh_dao_tao_cn->id)
             ->whereHas('hocKy', function ($q) use ($nienkhoa) {
                 $q->where('id_nien_khoa', $nienkhoa->id);
             })
             ->get()
-            ->groupBy('id_hoc_ky');
+            :collect();    
+           
+        $ct_ctdt_all = $ct_ctdt_md->merge($ct_ctdt_cn);
+        $ct_ctdt_all = $ct_ctdt_all->flatten(1);
+        $ct_ctdt_all = $ct_ctdt_all->groupBy('id_hoc_ky');
     
-        $Mons = $ct_ctdt->flatten()->pluck('monHoc')->filter()->unique();
-       
-     
+        $Mons = $ct_ctdt_all->flatten()->pluck('monHoc')->filter()->unique();
+      
+            
         $diemHocPhan = DanhSachHocPhan::where('id_sinh_vien', $id_sv)
                 ->whereHas('lopHocPhan', function ($q) use ($Mons,$lop) {
                     $q->where('id_lop', $lop->id);
@@ -59,7 +77,7 @@ class XemDiemController extends Controller
                 ->with('lopHocPhan')
                 ->get();
        
-        $gradesData = $ct_ctdt->mapWithKeys(function ($dsMon, $idHocKy) use ($diemHocPhan,$lop) {
+        $gradesData = $ct_ctdt_all->mapWithKeys(function ($dsMon, $idHocKy) use ($diemHocPhan,$lop) {
             return [
                 $idHocKy => $dsMon->map(function ($ct) use ($diemHocPhan,$lop) {
                     $tenMon = $ct->monHoc->ten_mon ?? '';
@@ -84,7 +102,7 @@ class XemDiemController extends Controller
         
         $thongKeTungKy = [];
 
-        foreach ($ct_ctdt as $idHocKy => $dsMon) {
+        foreach ($ct_ctdt_all as $idHocKy => $dsMon) {
             
             $tongTinChi = $dsMon->sum('so_tin_chi');
             $tongTiet = $dsMon->sum('so_tiet');
@@ -143,23 +161,30 @@ class XemDiemController extends Controller
                 }
             }
         }
-        return view("client.xemdiem.ketquahoctap", compact('sinhVien','gradesData','thongKeTungKy'));
+        return view("client.xemdiem.ketquahoctap", compact('sinhVien','gradesData','thongKeTungKy','lopCuaSinhVien'));
     }
     public function ketquarenluyen(Request $request)
     {
         $id_sv = Auth::guard('student')->user()->id;
-
-        $sinhVien = SinhVien::with('hoSo', 'lop')->find($id_sv);
-
-        $nienKhoa = NienKhoa::find($sinhVien->lop->id_nien_khoa);
         
+        $sinhVien = SinhVien::with('hoSo', 'danhSachSinhVien.lop.chuyenNganh')->findOrFail($id_sv);
+       
+        $lopCuaSinhVien = $sinhVien->danhSachSinhVien;
+
+        $lop = $sinhVien->danhSachSinhVien[0]->lop;
+           
+        $lopchuyenNganh = $lopCuaSinhVien->count()>1 
+        ? $sinhVien->danhSachSinhVien[1]->lop
+        : null;
+       
+        $nienKhoa = NienKhoa::findOrFail($lop->id_nien_khoa);
+       
         $dsNam = collect();
 
         if ($nienKhoa) {
             $start = $nienKhoa->nam_bat_dau;
             $end = $nienKhoa->nam_ket_thuc+1;
 
-            // Tạo danh sách các năm từ niên khóa
             for ($year = $start; $year < $end; $year++) {
                 $dsNam->push($year);
             }
@@ -178,7 +203,7 @@ class XemDiemController extends Controller
             $diemThang = $dsDiemRenLuyen->where('thoi_gian', $i);
         }
        
-        return view("client.xemdiem.ketquarenluyen", compact('sinhVien', 'dsDiemRenLuyen', 'dsNam', 'namDangChon'));
+        return view("client.xemdiem.ketquarenluyen", compact('sinhVien', 'dsDiemRenLuyen', 'dsNam', 'namDangChon','lopCuaSinhVien'));
     }
     
 }
