@@ -19,7 +19,7 @@ class LichThiController extends Controller
 {
     public function index()
     {
-        $sinhVien = Auth::user();
+        $sinhVien = Auth::user()->danhSachSinhVien->last();
         
         $lichThi = LichThi::with('giamThi1.hoSo', 'giamThi2.hoSo','phong', 'lopHocPhan')
             ->whereHas('lopHocPhan', function ($query) use ($sinhVien) {
@@ -27,7 +27,7 @@ class LichThiController extends Controller
             })
             ->orderBy('ngay_thi')
             ->get();
-
+        
         return response()->json([
             'status' => true,
             'data' => $lichThi

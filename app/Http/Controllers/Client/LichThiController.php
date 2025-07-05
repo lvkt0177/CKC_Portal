@@ -13,15 +13,14 @@ class LichThiController extends Controller
     //
     public function index()
     {
-        $sinhVien = Auth::guard('student')->user();
-        
+        $sinhVien = Auth::guard('student')->user()->danhSachSinhVien->last();
         $lichThi = LichThi::with('giamThi1.hoSo', 'giamThi2.hoSo','phong', 'lopHocPhan')
             ->whereHas('lopHocPhan', function ($query) use ($sinhVien) {
                 $query->where('id_lop', $sinhVien->id_lop);
             })
             ->orderBy('ngay_thi')
             ->get();
-
+        
         return view("client.lichthi.index", compact('lichThi'));
     }
 
