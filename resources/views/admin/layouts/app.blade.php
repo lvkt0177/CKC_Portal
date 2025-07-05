@@ -281,7 +281,7 @@
                         align: "right"
                     },
                     delay: 3000,
-                    z_index: 9999,
+                    z_index: 99999999,
                     animate: {
                         enter: 'animated fadeInUp',
                         exit: 'animated fadeOutDown'
@@ -305,7 +305,7 @@
                         align: "right"
                     },
                     delay: 3000,
-                    z_index: 9999,
+                    z_index: 9999999,
                     animate: {
                         enter: 'animated fadeInUp',
                         exit: 'animated fadeOutDown'

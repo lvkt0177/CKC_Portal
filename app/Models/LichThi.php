@@ -20,7 +20,7 @@ class LichThi extends Model
         'lan_thi',	
         'trang_thai'
         ];
-
+    
     public function lopHocPhan()
     {
         return $this->belongsTo(LopHocPhan::class, 'id_lop_hoc_phan', 'id');

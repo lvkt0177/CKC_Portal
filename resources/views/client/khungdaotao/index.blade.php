@@ -16,27 +16,6 @@
                     <h3 class="card-title mb-0">Khung Chương Trình Đào Tạo </h3>
                 </div>
                 <!-- Filter Section -->
-                <div class="filter-section">
-                    <div class="filter-header">
-                        <div class="filter-icon">🎓</div>
-                        <h2 class="filter-title">Chọn Chuyên Ngành</h2>
-                    </div>
-
-                    <form method="GET" action="{{ route('sinhvien.khungdaotao.index') }}" id="curriculumForm">
-                        <div class="select-wrapper">
-                            <select name="id_chuong_trinh_dao_tao" id="id_chuong_trinh_dao_tao" class="modern-select"
-                                onchange="handleFormSubmit()">
-                                @foreach ($chuong_trinh_dao_tao as $ctdt)
-                                    <option value="{{ $ctdt->id }}"
-                                        {{ $id_chuong_trinh_dao_tao == $ctdt->id ? 'selected' : '' }}>
-                                        {{ $ctdt->ten_chuong_trinh_dao_tao }}
-                                    </option>
-                                @endforeach
-                            </select>
-                        </div>
-                    </form>
-                </div>
-                <!-- Loading Animation -->
                 <div class="loading" id="loading">
                     <div class="spinner"></div>
                     <p>Đang tải dữ liệu...</p>
@@ -45,10 +24,10 @@
                     $tongMonHoc = 0;
                     $tongSoTinChi = 0;
                     $tongSoTiet = 0;
-                    $tongHocKy = count($ct_ctdt);
+                    $tongHocKy = $ct_ctdt_all->count();
 
-                    foreach ($ct_ctdt as $dsMon) {
-                        $tongMonHoc += count($dsMon);
+                    foreach ($ct_ctdt_all as $dsMon) {
+                        $tongMonHoc += $dsMon->count();
                         $tongSoTinChi += $dsMon->sum('so_tin_chi');
                         $tongSoTiet += $dsMon->sum('so_tiet');
                     }
@@ -85,7 +64,7 @@
                         <!-- Curriculum Grid -->
                         <div class="curriculum-grid">
                             <!-- Semester 1 -->
-                            @foreach ($ct_ctdt as $hocKy => $danhSachMon)
+                            @foreach ($ct_ctdt_all as $hocKy => $danhSachMon)
                                 @php
                                     $tenhocKy = $danhSachMon->first()->hocKy->ten_hoc_ky ?? '';
                                 @endphp
@@ -139,42 +118,52 @@
 @endsection
 @section('js')
     <script>
+        document.addEventListener('DOMContentLoaded', function() {
+            const loading = document.getElementById('loading');
+            const grid = document.getElementById('semester-cards');
+            const cards = document.querySelectorAll('.semester-card');
+
+            // Giai đoạn đầu: ẩn grid, hiện loading
+            loading.classList.add('show');
+            grid.style.opacity = '0.5';
+
+            // Sau 1 giây thì ẩn loading, hiện grid và bắt đầu animation các card
+            setTimeout(() => {
+                loading.classList.remove('show');
+                grid.style.opacity = '1';
+
+                // Animation xuất hiện các card
+                const observer = new IntersectionObserver((entries) => {
+                    entries.forEach(entry => {
+                        if (entry.isIntersecting) {
+                            entry.target.style.opacity = '1';
+                            entry.target.style.transform = 'translateY(0)';
+                        }
+                    });
+                });
+
+                cards.forEach(card => {
+                    card.style.opacity = '0';
+                    card.style.transform = 'translateY(20px)';
+                    card.style.transition = 'opacity 0.6s ease, transform 0.6s ease';
+                    observer.observe(card);
+                });
+            }, 1000);
+        });
+
         function handleFormSubmit() {
             const loading = document.getElementById('loading');
             const grid = document.getElementById('semester-cards');
 
-            // Show loading animation
             loading.classList.add('show');
             grid.style.opacity = '0.5';
 
-            // Simulate form submission delay
             setTimeout(() => {
                 loading.classList.remove('show');
                 grid.style.opacity = '1';
-                // Here you would normally submit the form
+
                 document.getElementById('curriculumForm').submit();
             }, 1000);
         }
-
-        // Add smooth scrolling and animations
-        document.addEventListener('DOMContentLoaded', function() {
-            const cards = document.querySelectorAll('.semester-card');
-
-            const observer = new IntersectionObserver((entries) => {
-                entries.forEach(entry => {
-                    if (entry.isIntersecting) {
-                        entry.target.style.opacity = '1';
-                        entry.target.style.transform = 'translateY(0)';
-                    }
-                });
-            });
-
-            cards.forEach(card => {
-                card.style.opacity = '0';
-                card.style.transform = 'translateY(20px)';
-                card.style.transition = 'opacity 0.6s ease, transform 0.6s ease';
-                observer.observe(card);
-            });
-        });
     </script>
 @endsection
