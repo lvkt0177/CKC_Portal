@@ -10,6 +10,7 @@ use App\Models\User;
 use App\Models\Tuan;
 use App\Models\Lop;
 use App\Models\HoSo;
+use App\Models\DanhSachSinhVien;
 use App\Models\ChiTietBienBanSHCN;
 use App\Enum\RoleStudent;
 use App\Enum\BienBanStatus;
@@ -43,9 +44,10 @@ class BienBanController extends Controller
      */
     public function create(Lop $lop)
     {
-        $thuKy = SinhVien::where('id_lop', $lop->id)->where('chuc_vu', RoleStudent::SECRETARY)->get();
+        $thuKy = DanhSachSinhVien::with('sinhVien.hoSo')->where('id_lop', $lop->id)->where('chuc_vu', RoleStudent::SECRETARY)->get();
         $tuans = Tuan::all();
-        $sinhViens = SinhVien::where('id_lop', $lop->id)->get();
+
+        $sinhViens = DanhSachSinhVien::with('sinhVien.hoSo')->where('id_lop', $lop->id)->get();
 
         return view('admin.bienbanshcn.create', compact('lop', 'thuKy', 'tuans','sinhViens'));
     }
@@ -79,11 +81,12 @@ class BienBanController extends Controller
      */
     public function edit(BienBanSHCN $bienbanshcn)
     {
-        $bienbanshcn->load('lop.sinhViens.hoSo','thuky.hoSo', 'tuan', 'gvcn.hoSo', 'chiTietBienBanSHCN.sinhVien.hoSo');
-        $thuKy = SinhVien::where('id_lop', $bienbanshcn->lop->id)->where('chuc_vu', RoleStudent::SECRETARY)->get();
+        $bienbanshcn->load('thuky.hoSo', 'tuan', 'gvcn.hoSo', 'chiTietBienBanSHCN.sinhVien.hoSo','lop.danhSachSinhVien');
         $tuans = Tuan::all();
+        $thuKy = DanhSachSinhVien::with('sinhVien.hoSo')->where('id_lop', $bienbanshcn->id_lop)->where('chuc_vu', RoleStudent::SECRETARY)->get();
+        $sinhViens = DanhSachSinhVien::with('sinhVien.hoSo')->where('id_lop', $bienbanshcn->id_lop)->get();
 
-        return view('admin.bienbanshcn.edit', ['thongTin' => $bienbanshcn, 'tuans' => $tuans,'thuKy' => $thuKy]);
+        return view('admin.bienbanshcn.edit', ['thongTin' => $bienbanshcn, 'tuans' => $tuans,'thuKy' => $thuKy, 'sinhViens' => $sinhViens]);
     }
 
     /**

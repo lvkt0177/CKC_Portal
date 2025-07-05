@@ -130,8 +130,8 @@
                                             <td>
                                                 <div class="text-muted">
                                                     <div class="fw-semibold">
-                                                        {{ $bienBan->thoi_gian_bat_dau->format('H:i') }}</div>
-                                                    <small>{{ $bienBan->thoi_gian_bat_dau->format('d/m/Y') }}</small>
+                                                        {{ $bienBan->created_at->format('d/m/Y') }}
+                                                    </div>
                                                 </div>
                                             </td>
                                             <td>

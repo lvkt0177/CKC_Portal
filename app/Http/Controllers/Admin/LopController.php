@@ -30,10 +30,7 @@ class LopController extends Controller
     }
     public function list(Lop $lop)
     {
-        $sinhViens = SinhVien::with(['hoSo', 'lop', 'lop.nienKhoa', 'lop.giangVien'])
-            ->where('id_lop', $lop->id)
-            ->orderBy('ma_sv', 'asc')->get();
-
+        $sinhViens = DanhSachSinhVien::with('sinhVien.hoSo')->where('id_lop', $lop->id)->get();
         return view('admin.class.list', compact('sinhViens', 'lop'));
     }
 

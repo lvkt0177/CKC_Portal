@@ -12,7 +12,6 @@
                         <h3 class="card-title mb-0"> Danh sách Sinh Viên Lớp {{ $lop_HP->ten_hoc_phan ?? '' }}
                             {{ $lop_HP->lop->ten_lop ?? '' }} </h3>
                         <a class="btn btn-back" href="{{ route('giangvien.diemmonhoc.index') }}">Quay lại</a>
-
                     </div>
 
                     <div class="card-body">
@@ -26,8 +25,7 @@
                                             <option value="{{ $nextOption->value }}">{{ $nextOption->getLabel() }}</option>
                                         </select>
 
-                                        <button type="submit"
-                                            class="btn btn-primary mt-2">{{ $nextOption->getLabel() }}</button>
+                                        <button type="submit" class="btn btn-primary mt-2">{{ $nextOption->getLabel() }}</button>
                                     </div>
                                 </form>
                                 <div class="d-flex justify-content-end mb-3">
@@ -40,7 +38,6 @@
                                     <strong>Thông báo:</strong> Lớp học phần này đã hoàn thành.
                                 </div>
                             @endif
-
 
                             <form action="{{ route('giangvien.diemmonhoc.cap-nhat-diem') }}" method="POST" data-confirm>
                                 @csrf
@@ -61,7 +58,6 @@
                                         </tr>
                                     </thead>
                                     <tbody>
-                                        {{ $nextOption->value - 1 }}
                                         @forelse ($sinhviens as $sv)
                                             @foreach ($sv->danhSachHocPhans as $dshp)
                                                 <tr>

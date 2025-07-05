@@ -85,7 +85,7 @@
 
                                         <div class="card-footer d-flex justify-content-between gap-2 align-items-center"
                                             style="background-color: #f8f9fa; border-top: 1.5px solid #ced4da !important;">
-                                            <p><b>Ngành:</b> {{ $l->giangVien->boMon->chuyenNganh->ten_nganh }}</p>
+                                            <p><b>Ngành:</b> {{ $l->chuyenNganh->ten_chuyen_nganh }}</p>
                                             <a href="{{ route('giangvien.student.list', ['id' => $l->id]) }}"
                                                 class="btn btn-dark text-white btn-sm">
                                                 <i class="fas fa-solid fa-eye"></i>

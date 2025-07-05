@@ -2,10 +2,7 @@
 
 use Illuminate\Support\Facades\Route;
 use App\Acl\Acl;
-
-
 use App\Http\Controllers\Client\BienBanController;
-
 
 Route::get('/bienbanshcn', [BienBanController::class, 'index'])->name('bienbanshcn.index');
 Route::get('/bienbanshcn/create/{lop}', [BienBanController::class, 'create'])->name('bienbanshcn.create');

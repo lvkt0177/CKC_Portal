@@ -65,13 +65,10 @@
 
                                     <select name="id_sv" id="id_sv"
                                         class="form-control @error('id_sv') is-invalid border-danger text-dark @enderror">
-                                        @foreach ($thuKy as $tk)
-                                            <option value="{{ $tk->id }}"
-                                                {{ old('id_sv') == $tk->id ? 'selected' : '' }}
-                                                {{ $thongTin->id_sv == $tk->id ? 'selected' : '' }}>
-                                                {{ $tk->hoSo->ho_ten }}
-                                            </option>
-                                        @endforeach
+                                        <option value="{{ $thuKy->sinhVien->id }}"
+                                            {{ old('id_sv') == $thuKy->sinhVien->id ? 'selected' : '' }}>
+                                            {{ $thuKy->sinhVien->hoSo->ho_ten }}
+                                        </option>
                                     </select>
                                 </div>
 
@@ -121,7 +118,7 @@
                                     <input type="number"
                                         class="form-control @error('so_luong_sinh_vien') is-invalid border-danger text-dark @enderror"
                                         id="so_luong_sinh_vien" name="so_luong_sinh_vien" min="0"
-                                        value="{{ $thongTin->lop->sinhViens->count() }}" readonly>
+                                        value="{{ $sinhViens->count() }}" readonly>
                                 </div>
 
                                 <div class="col-md-6">
@@ -139,11 +136,11 @@
                                     @endphp
                                     <label for="sinhvien-select" class="form-label">Chọn sinh viên vắng mặt</label>
                                     <select id="sinhvien-select" class="form-control" multiple>
-                                        @foreach ($thongTin->lop->sinhViens as $sv)
-                                            <option value="{{ $sv->id }}"
-                                                data-name="{{ $sv->ma_sv }} - {{ $sv->hoSo->ho_ten }}"
-                                                {{ in_array($sv->id, $sinhVienVang) ? 'selected' : '' }}>
-                                                {{ $sv->ma_sv }} - {{ $sv->hoSo->ho_ten }}
+                                        @foreach ($sinhViens as $sv)
+                                            <option value="{{ $sv->sinhVien->id }}"
+                                                data-name="{{ $sv->sinhVien->ma_sv }} - {{ $sv->sinhVien->hoSo->ho_ten }}"
+                                                {{ in_array($sv->sinhVien->id, $sinhVienVang) ? 'selected' : '' }}>
+                                                {{ $sv->sinhVien->id }} - {{ $sv->sinhVien->hoSo->ho_ten }}
                                             </option>
                                         @endforeach
                                     </select>

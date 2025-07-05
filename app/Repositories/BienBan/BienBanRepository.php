@@ -30,7 +30,7 @@ class BienBanRepository implements BienBanRepositoryInterface
 
     public function getByLopWithRelations(Lop $lop)
     {
-        return BienBanSHCN::with(['lop', 'thuky.hoSo', 'tuan', 'gvcn'])
+        return BienBanSHCN::with(['thuky.hoSo', 'tuan', 'gvcn.hoSo'])
             ->where('id_lop', $lop->id)
             ->orderBy('id', 'desc')
             ->get();
@@ -38,7 +38,7 @@ class BienBanRepository implements BienBanRepositoryInterface
 
     public function getByLopWithRelationsByIdLop($id_lop, $perPage = 10)
     {
-        return BienBanSHCN::with(['lop', 'thuky.hoSo', 'tuan', 'gvcn.hoSo'])
+        return BienBanSHCN::with(['lop', 'thuky.hoSo', 'tuan', 'gvcn.hoSo', 'chiTietBienBanSHCN.sinhVien.hoSo'])
             ->where('id_lop', $id_lop)
             ->where('trang_thai', BienBanStatus::ACTIVE)
             ->orderBy('id', 'desc')
@@ -52,9 +52,10 @@ class BienBanRepository implements BienBanRepositoryInterface
 
     public function update($model, array $data)
     {
-        if($data['trang_thai'] == BienBanStatus::ACTIVE){
+        if($model->trang_thai == BienBanStatus::ACTIVE){
             return false;
         }
+        
         $model->update($data);
         return $model;
     }

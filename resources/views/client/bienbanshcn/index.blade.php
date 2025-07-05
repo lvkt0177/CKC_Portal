@@ -36,7 +36,7 @@
                     </div>
                     <div class="report-time">
                         <i class="far fa-clock"></i>
-                        {{ $bienBan->thoi_gian_bat_dau->format('H:i') }}, ngày {{ $bienBan->thoi_gian_bat_dau->format('d') }} tháng {{ $bienBan->thoi_gian_bat_dau->format('m') }} năm {{ $bienBan->thoi_gian_bat_dau->format('Y') }}
+                        {{ $bienBan->created_at->format('d/m/Y') }}
                     </div>
                     
                 </div>

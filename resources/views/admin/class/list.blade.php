@@ -62,11 +62,11 @@
                                         </td>
                                         <td>{{ $loop->index + 1 }}</td>
                                         <td>{{ $sv->ma_sv }}</td>
-                                        <td>{{ $sv->hoSo->ho_ten }}</td>
-                                        <td>{{ $sv->hoSo->gioi_tinh->getLabel() }}</td>
-                                        <td>{{ $sv->hoSo->ngay_sinh }}</td>
-                                        <td>{{ $sv->hoSo->email }}</td>
-                                        <td>{{ $sv->hoSo->so_dien_thoai }}</td>
+                                        <td>{{ $sv->sinhVien->hoSo->ho_ten }}</td>
+                                        <td>{{ $sv->sinhVien->hoSo->gioi_tinh->getLabel() }}</td>
+                                        <td>{{ $sv->sinhVien->hoSo->ngay_sinh }}</td>
+                                        <td>{{ $sv->sinhVien->hoSo->email }}</td>
+                                        <td>{{ $sv->sinhVien->hoSo->so_dien_thoai }}</td>
                                         <td>
                                             <form method="POST"
                                                 action="{{ route('giangvien.student.doi-chuc-vu', $sv) }}">
@@ -88,7 +88,7 @@
                                                                         data-student-id="{{ $sv->id }}"
                                                                         data-role-value="{{ $role->value }}"
                                                                         data-role-label="{{ $role->getLabel() }}"
-                                                                        data-student-name="{{ addslashes($sv->hoSo->ho_ten) }}">
+                                                                        data-student-name="{{ addslashes($sv->sinhVien->hoSo->ho_ten) }}">
                                                                         {{ $role->getLabel() }}
                                                                     </a>
                                                                 </li>
@@ -103,7 +103,7 @@
 
                                         </td>
 
-                                        <td class="d-flex">
+                                        <td class="">
                                             <a href="" class="btn btn-warning"><i class="fa-solid fa-eye"></i></a>
                                             <span class="mx-1"></span>
                                             {{-- <button class="btn btn-danger btn-lock" data-id="{{ $sv->id }}">{!! $sv->trang_thai->value == 0 ? '<i class="fa-solid fa-lock"></i>' : '<i class="fa-solid fa-lock-open"></i>' !!}

@@ -33,7 +33,7 @@
                         </div>
                         <div class="info-item">
                             <span class="info-label">Lớp học:</span>
-                            <span class="info-value">{{ $sinhVien->lop->ten_lop }}</span>
+                            <span class="info-value">{{ $sinhVien->danhSachSinhVien[1]->lop->ten_lop }}</span>
                         </div>
                         <div class="info-item">
                             <span class="info-label">Bậc đào tạo:</span>
@@ -41,11 +41,11 @@
                         </div>
                         <div class="info-item">
                             <span class="info-label">Khoa:</span>
-                            <span class="info-value"></span>
+                            <span class="info-value">{{ $sinhVien->danhSachSinhVien[1]->lop->chuyenNganh->khoa->ten_khoa }}</span>
                         </div>
                         <div class="info-item">
                             <span class="info-label">Khóa học:</span>
-                            <span class="info-value">{{ $sinhVien->lop->nienKhoa->ten_nien_khoa }}</span>
+                            <span class="info-value">{{ $sinhVien->danhSachSinhVien[1]->lop->nienKhoa->ten_nien_khoa }}</span>
                         </div>
                     </div>
                     
@@ -63,8 +63,15 @@
                             <span class="info-value">Tiến tiến</span>
                         </div>
                         <div class="info-item">
-                            <span class="info-label">Ngành:</span>
-                            <span class="info-value">{{ $sinhVien->lop->chuyenNganh->ten_nganh }}</span>
+                            <span class="info-label">Ngành, Chuyên ngành:</span>
+                            <div class="">
+                                @foreach ( $sinhVien->danhSachSinhVien as $item )
+                                    <div class="item">
+                                        <span class="info-value">{{ $item->lop->chuyenNganh->ten_chuyen_nganh }}</span>
+                                    </div>
+                                @endforeach
+                                </div>
+                            </div>
                         </div>
                     </div>
                 </div>

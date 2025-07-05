@@ -22,7 +22,6 @@ class ThongBao extends Model
     protected $casts = [
         'ngay_gui' => 'date',
         'trang_thai' => ThongBaoStatus::class,
-        'tu_ai' => CapTren::class
     ];
 
     public function file()

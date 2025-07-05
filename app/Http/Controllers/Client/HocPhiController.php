@@ -19,9 +19,9 @@ class HocPhiController extends Controller
     public function index()
     {
         $sinhVien = Auth::guard('student')->user();
-        $sinhVien->load('lop');
+        $sinhVien->load('danhSachSinhVien.lop');
         $now = now()->toDateString();
-        $nienKhoa = NienKhoa::find($sinhVien->lop->id_nien_khoa);
+        $nienKhoa = NienKhoa::find($sinhVien->danhSachSinhVien[0]->lop->nienKhoa->id);
 
         $hocKyHienTai = HocKy::whereDate('ngay_bat_dau', '<=', $now)
             ->whereDate('ngay_ket_thuc', '>=', $now)

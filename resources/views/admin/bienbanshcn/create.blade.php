@@ -59,13 +59,12 @@
 
                                 <div class="col-md-4">
                                     <label class="form-label">Thư ký đại diện</label>
-
                                     <select name="id_sv" id="thuky"
                                         class="form-control @error('id_sv') is-invalid border-danger text-dark @enderror">
                                         @foreach ($thuKy as $tk)
-                                            <option value="{{ $tk->id }}"
-                                                {{ old('id_sv') == $tk->id ? 'selected' : '' }}>
-                                                {{ $tk->hoSo->ho_ten }}
+                                            <option value="{{ $tk->id_sinh_vien }}"
+                                                {{ old('id_sv') == $tk->id_sinh_vien ? 'selected' : '' }}>
+                                                {{ $tk->sinhVien->hoSo->ho_ten }}
                                             </option>
                                         @endforeach
                                     </select>
@@ -117,7 +116,7 @@
                                     <input type="number"
                                         class="form-control @error('so_luong_sinh_vien') is-invalid border-danger text-dark @enderror"
                                         id="so_luong_sinh_vien" name="so_luong_sinh_vien" min="0"
-                                        value="{{ $lop->sinhViens->count() }}" readonly>
+                                        value="{{ $sinhViens->count() }}" readonly>
                                 </div>
 
                                 <div class="col-md-6">
@@ -134,9 +133,9 @@
 
                                     <select id="sinhvien-select" class="form-control" multiple>
                                         @foreach ($sinhViens as $sv)
-                                            <option value="{{ $sv->id }}"
-                                                data-name="{{ $sv->ma_sv }} - {{ $sv->hoSo->ho_ten }}">
-                                                {{ $sv->ma_sv }} - {{ $sv->hoSo->ho_ten }}
+                                            <option value="{{ $sv->sinhVien->id }}"
+                                                data-name="{{ $sv->sinhVien->ma_sv }} - {{ $sv->sinhVien->hoSo->ho_ten }}">
+                                                {{ $sv->sinhVien->ma_sv }} - {{ $sv->sinhVien->hoSo->ho_ten }}
                                             </option>
                                         @endforeach
                                     </select>

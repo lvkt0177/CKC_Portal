@@ -16,7 +16,7 @@ use App\Models\Lop;
 use App\Repositories\ThongBao\ThongBaoRepository;
 use App\Enum\ThongBaoStatus;
 use App\Enum\CapTren;
-use App\Http\Requests\ThongBao\ThongBaoRequestAPI;
+use App\Http\Requests\ThongBao\ThongBaoRequest;
 use App\Http\Requests\ThongBao\SendToStudentRequest;
 use Illuminate\Support\Facades\Auth;
 use Illuminate\Support\Facades\Log;
@@ -53,22 +53,14 @@ class ThongBaoController extends Controller
      * Show the form for creating a new resource.
      */
     public function create()
-    {
-        $capTren = collect(CapTren::cases())->filter(function ($cap) {
-            return match ($cap) {
-                CapTren::KHOA => auth()->user()->can('quyen_khoa'),
-                CapTren::PHONG_CTCT => auth()->user()->can('quyen_phong_ctct'),
-                CapTren::GVCN => auth()->user()->can('quyen_gvcn'),
-                CapTren::GVBM => auth()->user()->can('quyen_gvbm'),
-            };
-        });
-        return view('admin.thongbao.create', compact('capTren'));
+    {     
+        return view('admin.thongbao.create');
     }
 
     /**
      * Store a newly created resource in storage.
      */
-    public function store(ThongBaoRequestAPI $request)
+    public function store(ThongBaoRequest $request)
     {
         $thongBao = $this->thongBaoRepository->create($request->all());
         

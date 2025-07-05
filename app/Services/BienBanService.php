@@ -36,7 +36,6 @@ class BienBanService
             'so_luong_sinh_vien' => $data['so_luong_sinh_vien'],
             'vang_mat' => $data['vang_mat'],
         ]);
-
         if ($bienBan && !empty($data['sinh_vien_vang'])) {
             foreach ($data['sinh_vien_vang'] as $id => $value) {
                 $this->chiTietRepository->create([

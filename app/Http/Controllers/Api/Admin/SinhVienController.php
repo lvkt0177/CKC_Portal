@@ -21,7 +21,7 @@ class SinhVienController extends Controller
             ->orderBy('id', 'desc');
     
         $lops = $query->get();
-    
+        
         return response()->json([
             'success' => true,
             'lops' => $lops,

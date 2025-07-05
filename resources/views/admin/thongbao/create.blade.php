@@ -55,10 +55,7 @@
                                 <div class="col-md-4">
                                     <label for="tu_ai" class="form-label">Từ ai</label>
                                     <select name="tu_ai" id="tu_ai" class="form-control @error('tu_ai') is-invalid border-danger text-dark @enderror" >
-                                        <option value="">-- Chọn --</option>
-                                        @foreach($capTren as $cap)
-                                            <option value="{{ $cap->value }}">{{ $cap->getLabel() }}</option>
-                                        @endforeach
+                                        <option class="" value="{{ auth()->user()->roles[0]->name }}"> {{ auth()->user()->roles[0]->name }}</option>
                                     </select>
                                 </div>
 

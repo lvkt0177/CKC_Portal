@@ -29,4 +29,10 @@ class ChuyenNganh extends Model
     {
         return $this->hasMany(ChuyenNganh::class, 'id_chuyen_nganh_cha');
     }
+
+    //Khoa
+    public function khoa()
+    {
+        return $this->belongsTo(Khoa::class, 'id_khoa');
+    }
 }

@@ -4,7 +4,7 @@ namespace App\Services;
 
 use App\Models\LopHocPhan;
 use Illuminate\Support\Carbon;
-
+use Illuminate\Support\Facades\Log;
 class LopHocPhanService
 {
     public function dongCacLopHetHanDangKy()
@@ -14,7 +14,6 @@ class LopHocPhanService
             'giangVien.hoSo',
             'thoiKhoaBieu.phong'
         ])->where('trang_thai', 1)->get();
-
         foreach ($lopHocPhanDangMo as $lop) {
             $tkbDauTien = $lop->thoiKhoaBieu->sortBy(fn($tkb) => $tkb->ngay)->first();
 

@@ -4,9 +4,13 @@ namespace App\Models;
 
 use Illuminate\Database\Eloquent\Model;
 use App\Enum\RoleStudent;
+use Spatie\Permission\Traits\HasPermissions;
+use Laravel\Sanctum\HasApiTokens;
 
 class DanhSachSinhVien extends Model
 {
+    use HasApiTokens, HasPermissions;
+
     protected $table = "danh_sach_sinh_vien";
     protected $fillable = [
         'id_lop',

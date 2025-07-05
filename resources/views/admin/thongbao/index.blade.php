@@ -36,7 +36,7 @@
                                         <td>{{ $loop->index + 1 }}</td>
                                         <td>{{ $thongbao->tieu_de }}</td>
                                         <td>{{ $thongbao->giangVien->hoSo->ho_ten }}</td>
-                                        <td>{{ $thongbao->tu_ai->getLabel() }}</td>
+                                        <td>{{ $thongbao->tu_ai }}</td>
                                         <td>{{ $thongbao->ngay_gui->format('d/m/Y') }}</td>
                                         <td>
                                             @foreach ($thongbao->ds_lops as $lop)

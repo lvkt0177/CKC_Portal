@@ -14,6 +14,7 @@ class ProfileController extends Controller
     public function index()
     {
         $sinhVien = Auth::guard('student')->user();
+        $sinhVien->load('danhSachSinhVien.lop.chuyenNganh');
         return view('client.profile.index', compact('sinhVien'));
     }
 }

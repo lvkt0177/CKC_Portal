@@ -14,6 +14,7 @@ use App\Models\ChiTietBienBanSHCN;
 use App\Enum\RoleStudent;
 use App\Enum\BienBanStatus;
 use App\Http\Requests\BienBan\BienBanRequest;
+use App\Models\DanhSachSinhVien;
 use Carbon\Carbon;
 use App\Services\BienBanService;
 use App\Repositories\BienBan\BienBanRepository;
@@ -38,27 +39,24 @@ class BienBanController extends Controller
     public function index()
     {   
         $sinhVien = Auth::guard('student')->user();
-        $thuKy = $sinhVien->chuc_vu == RoleStudent::SECRETARY;
+        $thongTin = $sinhVien->danhSachSinhVien->last();
+        $thuKy = $thongTin->chuc_vu == RoleStudent::SECRETARY;
 
         $bienBanSHCN = $this->bienBanRepository
-            ->getByLopWithRelationsByIdLop($sinhVien->id_lop, 10);
+            ->getByLopWithRelationsByIdLop($thongTin->lop->id, 100);
 
-        $lop = Lop::find($sinhVien->id_lop);
-
-        return view('client.bienbanshcn.index', compact('bienBanSHCN', 'lop', 'thuKy'));
+        return view('client.bienbanshcn.index', compact('bienBanSHCN','thuKy'));
     }
 
     public function list()
     {
         $sinhVien = Auth::guard('student')->user();
+        $thongTin = $sinhVien->danhSachSinhVien->last();
         $thuKy = $sinhVien->chuc_vu == RoleStudent::SECRETARY;
-        $lop = Lop::find($sinhVien->id_lop);
-
         $bienBanSHCN = $this->bienBanRepository
             ->getByLopWithRelations($lop);
-
-        $lop = Lop::find($sinhVien->id_lop);
-
+        $lop = Lop::find($thongTin->id_lop);
+        
         return view('client.bienbanshcn.list', compact('bienBanSHCN', 'lop', 'thuKy'));
     }
     
@@ -67,11 +65,12 @@ class BienBanController extends Controller
      */
     public function create(Lop $lop)
     {
-        $thuKy = SinhVien::where('id_lop', $lop->id)->where('chuc_vu', RoleStudent::SECRETARY)->get();
+        $thuKy = Auth::guard('student')->user()->danhSachSinhVien->last();
+        $thuKy->load('sinhVien.hoSo');
         $tuans = Tuan::all();
-        $sinhViens = SinhVien::where('id_lop', $lop->id)->get();
+        $sinhViens = DanhSachSinhVien::with('sinhVien.hoSo')->where('id_lop', $lop->id)->get();
 
-        return view('client.bienbanshcn.create', compact('lop', 'thuKy', 'tuans','sinhViens'));
+        return view('client.bienbanshcn.create', compact('lop', 'thuKy', 'tuans', 'sinhViens'));
     }
 
     /**
@@ -94,6 +93,7 @@ class BienBanController extends Controller
     public function show(BienBanSHCN $bienBanSHCN)
     {
         $bienBanSHCN->load('lop', 'tuan', 'thuky.hoSo', 'gvcn.hoSo', 'chiTietBienBanSHCN.sinhVien.hoSo');
+        
         return view('client.bienbanshcn.show', ['thongTin' => $bienBanSHCN]);
     }
 
@@ -102,14 +102,13 @@ class BienBanController extends Controller
      */
     public function edit(BienBanSHCN $bienbanshcn)
     {
-        if($bienbanshcn->trang_thai == BienBanStatus::ACTIVE) {
-            return redirect()->route('sinhvien.bienbanshcn.list');
-        }
-        $bienbanshcn->load('lop.sinhViens.hoSo','thuky.hoSo', 'tuan', 'gvcn.hoSo', 'chiTietBienBanSHCN.sinhVien.hoSo');
-        $thuKy = SinhVien::where('id_lop', $bienbanshcn->lop->id)->where('chuc_vu', RoleStudent::SECRETARY)->get();
+        $thuKy = Auth::guard('student')->user()->danhSachSinhVien->last();
+        $thuKy->load('sinhVien.hoSo');
+        $bienbanshcn->load('thuky.hoSo', 'tuan', 'gvcn.hoSo', 'chiTietBienBanSHCN.sinhVien.hoSo');
         $tuans = Tuan::all();
+        $sinhViens = DanhSachSinhVien::with('sinhVien.hoSo')->where('id_lop', $bienbanshcn->id_lop)->get();
 
-        return view('client.bienbanshcn.edit', ['thongTin' => $bienbanshcn, 'tuans' => $tuans,'thuKy' => $thuKy]);
+        return view('client.bienbanshcn.edit', ['thongTin' => $bienbanshcn, 'tuans' => $tuans,'thuKy' => $thuKy, 'sinhViens' => $sinhViens]);
     }
 
     /**

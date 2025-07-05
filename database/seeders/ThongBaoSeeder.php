@@ -39,22 +39,7 @@ class ThongBaoSeeder extends Seeder
                 'noi_dung'   => 'Nội dung thông báo 3',
                 'trang_thai' => 1,
             ],
-            [
-                'id_gv'      => 4,
-                'tu_ai'      => 'khoa',
-                'ngay_gui'   => Carbon::now()->subDays(1)->format('Y-m-d'),
-                'tieu_de'    => 'Thông báo 4',
-                'noi_dung'   => 'Nội dung thông báo 4',
-                'trang_thai' => 1,
-            ],
-            [
-                'id_gv'      => 5,
-                'tu_ai'      => 'khoa',
-                'ngay_gui'   => Carbon::now()->format('Y-m-d'),
-                'tieu_de'    => 'Thông báo 5',
-                'noi_dung'   => 'Nội dung thông báo 5',
-                'trang_thai' => 0,
-            ],
+            
         ]);
     }
 }

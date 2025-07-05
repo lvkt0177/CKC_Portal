@@ -46,9 +46,9 @@ class BienBanController extends Controller
      */
     public function create(Lop $lop)
     {
-        $thuKy = SinhVien::where('id_lop', $lop->id)->where('chuc_vu', RoleStudent::SECRETARY)->get();
-        $thuKy->load('hoSo');
+        $thuKy = DanhSachSinhVien::with('sinhVien.hoSo')->where('id_lop', $lop->id)->where('chuc_vu', RoleStudent::SECRETARY)->get();
         $tuans = Tuan::all();
+        $sinhViens = DanhSachSinhVien::with('sinhVien.hoSo')->where('id_lop', $lop->id)->get();
         $lop->load('sinhViens.hoSo');
 
         return response()->json([
@@ -57,6 +57,7 @@ class BienBanController extends Controller
                 'lop' => $lop,
                 'thuKy' => $thuKy,
                 'tuans' => $tuans,
+                'sinhViens' => $sinhViens
             ]
         ]);
     }
@@ -100,9 +101,10 @@ class BienBanController extends Controller
      */
     public function edit(BienBanSHCN $bienbanshcn)
     {
-        $bienbanshcn->load('lop.sinhViens.hoSo','thuky.hoSo', 'tuan', 'gvcn.hoSo', 'chiTietBienBanSHCN.sinhVien.hoSo');
-        $thuKy = SinhVien::where('id_lop', $bienbanshcn->lop->id)->where('chuc_vu', RoleStudent::SECRETARY)->get();
+        $bienbanshcn->load('thuky.hoSo', 'tuan', 'gvcn.hoSo', 'chiTietBienBanSHCN.sinhVien.hoSo','lop.danhSachSinhVien');
         $tuans = Tuan::all();
+        $thuKy = DanhSachSinhVien::with('sinhVien.hoSo')->where('id_lop', $bienbanshcn->id_lop)->where('chuc_vu', RoleStudent::SECRETARY)->get();
+        $sinhViens = DanhSachSinhVien::with('sinhVien.hoSo')->where('id_lop', $bienbanshcn->id_lop)->get();
 
         return response()->json([
             'status' => 'success',
@@ -110,6 +112,7 @@ class BienBanController extends Controller
                 'bienBan' => $bienbanshcn,
                 'thuKy' => $thuKy,
                 'tuans' => $tuans,
+                'sinhViens' => $sinhViens
             ]
         ]);
     }

@@ -18,7 +18,6 @@ use App\Acl\Acl;
 use \Spatie\Permission\Models\Role;
 use \Spatie\Permission\Models\Permission;
 
-
 class SinhVienController extends Controller
 {
     public function index(Request $request)
@@ -47,9 +46,8 @@ class SinhVienController extends Controller
             })
             ->orderByDesc('id')
             ->get();
-
+        
         return view('admin.student.index', compact('lops', 'id_lop', 'nienKhoas', 'id_nien_khoa', 'ten_chuyen_nganh', 'nganhHocs'));
-
     }
     public function showlist(int $id)
     {
@@ -63,8 +61,7 @@ class SinhVienController extends Controller
 
         return view('admin.student.list', compact('sinhviens', 'lop'));
     }
-
-    public function doiChucVu(ChucVuRequest $request, SinhVien $sinhVien)
+    public function doiChucVu(ChucVuRequest $request, DanhSachSinhVien $danhSachSinhVien)
     {
         $permissionId = Permission::where('name', Acl::PERMISSION_SECRETARY_CREATE_REPORT)->value('id');
 
@@ -72,18 +69,18 @@ class SinhVienController extends Controller
             return redirect()->back()->with('error', 'Không tìm thấy quyền thư ký tạo biên bản');
         }
         
-        if($sinhVien) {
-            $sinhVien->chuc_vu = $sinhVien->chuc_vu == RoleStudent::MEMBER ? RoleStudent::SECRETARY : RoleStudent::MEMBER;
-            if($sinhVien->chuc_vu == RoleStudent::MEMBER)
-                $sinhVien->permissions()->detach($permissionId);
+        if($danhSachSinhVien) {
+            $danhSachSinhVien->chuc_vu = $danhSachSinhVien->chuc_vu == RoleStudent::MEMBER ? RoleStudent::SECRETARY : RoleStudent::MEMBER;
+            if($danhSachSinhVien->chuc_vu == RoleStudent::MEMBER)
+                $danhSachSinhVien->permissions()->detach($permissionId);
             else
-                $sinhVien->permissions()->syncWithoutDetaching([$permissionId]);
-            $sinhVien->save();
+                $danhSachSinhVien->permissions()->syncWithoutDetaching([$permissionId]);
+            $danhSachSinhVien->save();
         }
         
-        $thuKy = SinhVien::where('id_lop', $sinhVien->id_lop)
+        $thuKy = DanhSachSinhVien::where('id_lop', $danhSachSinhVien->id_lop)
             ->where('chuc_vu', RoleStudent::SECRETARY)
-            ->where('id', '!=', $sinhVien->id)
+            ->where('id', '!=', $danhSachSinhVien->id)
             ->first();
 
         if ($thuKy) {
@@ -94,7 +91,7 @@ class SinhVienController extends Controller
 
         return redirect()->back()->with(
             'success',
-            'Cập nhật chức vụ cho sinh viên ' . $sinhVien->hoSo->ho_ten . ' thành công'
+            'Cập nhật chức vụ cho sinh viên ' . $danhSachSinhVien->sinhVien->hoSo->ho_ten . ' thành công'
         );
     }
 
@@ -119,5 +116,4 @@ class SinhVienController extends Controller
             'message' => 'Khoá sinh viên không thành công'
         ]);
     }
-
 }

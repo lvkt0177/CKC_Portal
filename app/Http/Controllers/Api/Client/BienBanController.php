@@ -32,17 +32,18 @@ class BienBanController extends Controller
     public function __construct(
         protected BienBanRepository $bienBanRepository
     ) {
+        $this->middleware('auth.scretary', ['only' => ['list','create', 'store', 'edit', 'update','deleteSinhVienVang']]);
     }
 
     public function index()
     {   
         $sinhVien = Auth::user();
+        
+        $thongTin = $sinhVien->danhSachSinhVien->last();
+        $thuKy = $thongTin->chuc_vu == RoleStudent::SECRETARY;
 
-        $bienBanSHCN = BienBanSHCN::with(['lop', 'thuky.hoSo', 'tuan', 'gvcn.hoSo', 'chiTietBienBanSHCN.sinhVien.hoSo'])
-        ->where('id_lop', $sinhVien->id_lop)
-        ->where('trang_thai', BienBanStatus::ACTIVE)
-        ->orderBy('id', 'desc')
-        ->get();
+        $bienBanSHCN = $this->bienBanRepository
+            ->getByLopWithRelationsByIdLop($thongTin->lop->id, 100);
 
         return response()->json([
             'status' => 'success',
@@ -50,22 +51,30 @@ class BienBanController extends Controller
         ]);
     }
 
-    // public function list()
-    // {
-    //     $sinhVien = Auth::user();
-    //     $thuKy = $sinhVien->chuc_vu == RoleStudent::SECRETARY;
-    //     $lop = Lop::find($sinhVien->id_lop);
+    /**
+     * List bien ban SHCN of lop hoc phan of user logined
+     * 
+     * @return \Illuminate\Http\JsonResponse
+     */
+    public function list()
+    {
+        $sinhVien = Auth::user();
+        $thongTin = $sinhVien->danhSachSinhVien->last();
+        $thuKy = $sinhVien->chuc_vu == RoleStudent::SECRETARY;
+        return response()->json([
+            'sinhVien' => $sinhVien
+        ]);
+        $lop = Lop::find($thongTin->id_lop);
+        $bienBanSHCN = $this->bienBanRepository
+            ->getByLopWithRelations($lop);
 
-    //     $bienBanSHCN = $this->bienBanRepository
-    //         ->getByLopWithRelations($lop);
-
-    //     return response()->json([
-    //         'status' => 'success',
-    //         'bienBanSHCN' => $bienBanSHCN,
-    //         'lop' => $lop,
-    //         'thuKy' => $thuKy,
-    //     ]);
-    // }
+        return response()->json([
+            'status' => 'success',
+            'bienBanSHCN' => $bienBanSHCN,
+            'lop' => $lop,
+            'thuKy' => $thuKy,
+        ]);
+    }
     
     /**
      * Show the form for creating a new resource.

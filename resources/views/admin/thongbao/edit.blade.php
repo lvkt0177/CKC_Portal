@@ -56,12 +56,9 @@
                                     <label for="tu_ai" class="form-label">Từ ai</label>
                                     
                                     <select name="tu_ai" id="tu_ai" class="form-control @error('tu_ai') is-invalid border-danger text-dark @enderror">
-                                        @foreach ($capTren as $cap)
-                                            <option value="{{ $cap->value }}"
-                                                {{ old('tu_ai', $thongbao->tu_ai?->value) == $cap->value ? 'selected' : '' }}>
-                                                {{ $cap->getLabel() }}
+                                            <option value="{{ $thongbao->tu_ai }}">
+                                                {{ $thongbao->tu_ai }}
                                             </option>
-                                        @endforeach
                                     </select>
                                 </div>
 

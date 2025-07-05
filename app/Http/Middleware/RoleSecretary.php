@@ -17,7 +17,7 @@ class RoleSecretary
      */
     public function handle(Request $request, Closure $next): Response
     {
-        if(Auth::guard('student')->user()->chuc_vu != RoleStudent::SECRETARY) {
+        if(Auth::user()->danhSachSinhVien->last()->chuc_vu != RoleStudent::SECRETARY) {
             return redirect()->route('sinhvien.bienbanshcn.index');
         }
         return $next($request);

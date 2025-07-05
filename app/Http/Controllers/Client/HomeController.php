@@ -16,15 +16,24 @@ use App\Models\NienKhoa;
 use App\Models\DiemRenLuyen;
 use App\Models\LopHocPhan;
 use Illuminate\Support\Facades\DB;
+use App\Services\LopHocPhanService;
 
 class HomeController extends Controller
 {
     /**
      * Display a listing of the resource.
      */
+    public function __construct(
+        protected LopHocPhanService $lopHocPhanService
+    ) {
+        //
+    }
     public function index()
     {
-        return view('client.home.index');
+        $lopHocPhan = $this->lopHocPhanService->dongCacLopHetHanDangKy();
+        $sinhVien = Auth::guard('student')->user();
+        $sinhVien->load('danhSachSinhVien.lop');
+        return view('client.home.index', compact('sinhVien'));
     }
 
     /**
