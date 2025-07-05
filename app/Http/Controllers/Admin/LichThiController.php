@@ -113,11 +113,36 @@ class LichThiController extends Controller
         }
 
         
-        $lichThi = LichThi::with(['lopHocPhan', 'giamThi1', 'giamThi2', 'phong'])
+            $lichThi = LichThi::with(['lopHocPhan', 'giamThi1', 'giamThi2', 'phong'])
+                ->whereHas('lopHocPhan', function ($query) use ($lop) {
+                    $query->where('id_lop', $lop->id);
+                })
+            ->orderBy('ngay_thi', 'asc')
+            ->get();
+         
+        return view('admin.lichthi.show', compact('ngayTrongTuan','lichThi','lop','dsHocKy','dsTuan','hocKy','tuanDangChon'));
+    }
+
+    public function xemLichThi(Request $request,Lop $lop)
+    {
+        $idTuan = $request->id_tuan; 
+    
+        $lichThi = LichThi::with(['lopHocPhan', 'giamThi1.hoSo', 'giamThi2.hoSo', 'phong'])
+                ->where('id_tuan', $idTuan)
+                ->whereHas('lopHocPhan', function ($query) use ($lop) {
+                    $query->where('id_lop', $lop->id);
+                })
             ->orderBy('ngay_thi', 'asc')
             ->get();
             
-        return view('admin.lichthi.show', compact('ngayTrongTuan','lop','dsHocKy','dsTuan','hocKy','tuanDangChon'));
+        $dsNgay = $lichThi->groupBy('ngay_thi'); 
+        $dsTuan = LichThi:: with(['lopHocPhan', 'giamThi1.hoSo', 'giamThi2.hoSo', 'phong'])
+                ->whereHas('lopHocPhan', function ($query) use ($lop) {
+                    $query->where('id_lop', $lop->id);
+                })
+            ->orderBy('ngay_thi', 'asc')
+            ->get();
+        return view('admin.lichthi.show', compact('dsNgay', 'lichThi','lop','dsTuan'));
     }
     public function create(Request $request,Lop $lop)
     {
@@ -201,9 +226,9 @@ class LichThiController extends Controller
 
         $data['ngay_thi'] = Carbon::parse($tuan->ngay_bat_dau)->addDays($data['thu'] - 2)->format('Y-m-d');
        
-        if ($this->isTrungLich($data)==false)  {
+        if ($this->isTrungLich($data)==true)  {
             return redirect()->route('giangvien.lichthi.create', ['lop' => $lop])
-                ->with('error', 'Lịch thi bị trùng giờ với lịch thi khác. Vui lòng kiểm tra lại.');
+                ->with('error', 'Lịch thi bị trùng. Vui lòng kiểm tra lại.');
         }
         
         $lichThi = LichThi::create($data);
