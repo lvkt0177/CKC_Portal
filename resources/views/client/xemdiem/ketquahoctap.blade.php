@@ -51,26 +51,23 @@
                                 <div class="thongtin-item col-6 py-1">
                                     <span class="thongtin-label">Lớp, Lớp chuyên ngành:</span>
                                     <span class="thongtin-value">{{ $sinhVien->danhSachSinhVien[0]->lop->ten_lop }}
-                                        {{ $lopCuaSinhVien->count() <= 1 ? ' ' : ', ' . $sinhVien->danhSachSinhVien[1]->lop->ten_lop }}
+                                        {{-- {{ $lopCuaSinhVien->count() <= 1 ? ' ' : ', ' . $sinhVien->danhSachSinhVien[1]->lop->ten_lop }} --}}
                                     </span>
                                 </div>
                                 <div class="thongtin-item col-6 py-1">
                                     <span class="thongtin-label">Ngành, chuyên ngành:</span>
                                     <span class="thongtin-value">
                                         {{ $sinhVien->danhSachSinhVien[0]->lop->chuyenNganh->ten_chuyen_nganh }}
-                                        {{ $lopCuaSinhVien->count() <= 1 ? ' ' : ', ' . $sinhVien->danhSachSinhVien[1]->lop->chuyenNganh->ten_chuyen_nganh }}
+                                        {{-- {{ $lopCuaSinhVien->count() <= 1 ? ' ' : ', ' . $sinhVien->danhSachSinhVien[1]->lop->chuyenNganh->ten_chuyen_nganh }} --}}
                                     </span>
                                 </div>
                             </div>
                         </div>
                     </div>
-                    @foreach ($gradesData as $hocKy => $danhSachMon)
-                        @php
-                            $tenHocKy = $gradesData[$hocKy]->first()['ten_hoc_ky'] ?? '';
-                        @endphp
-                        <h5 class="m-4 fs-4">📘{{ $tenHocKy }}
-                        </h5>
-                        <div class="grades-table">
+                    @foreach ($monTheoHocKy as $idHocKy => $dsMon)
+                        <h5 class="m-4 fs-4">📘 Học kỳ {{ $loop->iteration }}</h5>
+                    
+                        <div class="grades-table mb-4">
                             <table>
                                 <thead>
                                     <tr>
@@ -81,42 +78,19 @@
                                     </tr>
                                 </thead>
                                 <tbody>
-                                    @foreach ($danhSachMon as $index => $mon)
+                                    @foreach ($dsMon as $index => $mon)
                                         <tr>
                                             <td>{{ $index + 1 }}</td>
                                             <td style="text-align: left">{{ $mon['ten_mon'] }}</td>
-                                            <td>{{ $mon['tin_chi'] }}</td>
-                                            <td><span class="grade-badge ">{{ $mon['tongket'] }}</span></td>
+                                            <td>{{ $mon['so_tin_chi'] }}</td>
+                                            <td><span class="grade-badge ">{{ $mon['diem_tong_ket'] }}</span></td>
                                         </tr>
                                     @endforeach
                                 </tbody>
                             </table>
                         </div>
-
-                        @if (isset($thongKeTungKy[$hocKy]))
-                            <div class="summary-stats mt-3 mb-5">
-                                <div class="stat-card">
-                                    <h4>Số môn đã học</h4>
-                                    <div class="value">{{ $thongKeTungKy[$hocKy]['so_mon'] }}</div>
-                                </div>
-                                <div class="stat-card">
-                                    <h4>Số tín chỉ đã học</h4>
-                                    <div class="value">{{ $thongKeTungKy[$hocKy]['tong_tin_chi'] }}</div>
-                                </div>
-                                <div class="stat-card">
-                                    <h4>Điểm trung bình {{ $tenHocKy }}</h4>
-                                    <div class="value">{{ $thongKeTungKy[$hocKy]['diem_trung_binh'] }}</div>
-                                </div>
-                                @if (in_array($thongKeTungKy[$hocKy]['ten_hoc_ky'], ['Học kỳ 2', 'Học kỳ 4', 'Học kỳ 6']))
-                                    <div class="stat-card">
-                                        <h4>Điểm trung bình cả năm</h4>
-                                        <div class="value">{{ $thongKeTungKy[$hocKy]['diem_trung_binh_ca_nam'] ?? '-' }}
-                                        </div>
-                                    </div>
-                                @endif
-                            </div>
-                        @endif
                     @endforeach
+                    
                 </div>
             </div>
         </div>

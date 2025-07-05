@@ -21,90 +21,81 @@ class KetQuaHocTapController extends Controller
     public function index()
     {
         $sinhVien = Auth::user();
+        $sinhVien = SinhVien::with('danhSachSinhVien')->findOrFail($sinhVien->id);
+        $sinhVien->load('danhSachSinhVien.lop.nienKhoa');
+        $ids_lop = $sinhVien->danhSachSinhVien->pluck('id_lop');
 
-        $sinhVien->load('hoSo', 'lop');
-        if (!$sinhVien) {
-            return response()->json([
-                'success' => false,
-                'message' => 'Không tìm thấy sinh viên.',
-            ], 404);
-        }
-    
-        $lop = optional($sinhVien->lop);
-        if (!$lop || !$lop->id_nien_khoa) {
-            return response()->json([
-                'success' => false,
-                'message' => 'Sinh viên chưa được phân lớp hoặc lớp thiếu thông tin niên khóa.',
-            ], 400);
-        }
-    
-        $nienkhoa = NienKhoa::find($lop->id_nien_khoa);
-        if (!$nienkhoa) {
-            return response()->json([
-                'success' => false,
-                'message' => 'Không tìm thấy niên khóa.',
-            ], 404);
-        }
-    
-        $chuong_trinh_dao_tao = ChuongTrinhDaoTao::whereHas('chuyenNganh', function ($q) use ($lop) {
-            $q->where('id_nganh_hoc', $lop->id_nganh_hoc);
-        })->orderBy('id', 'asc')->first();
-    
-        if (!$chuong_trinh_dao_tao) {
-            return response()->json([
-                'success' => false,
-                'message' => 'Không có chương trình đào tạo nào.',
-            ]);
-        }
-    
-        $ct_ctdt = ChiTietChuongTrinhDaoTao::with(['monHoc', 'chuongTrinhDaoTao', 'hocKy'])
-            ->where('id_chuong_trinh_dao_tao', $chuong_trinh_dao_tao->id)
-            ->whereHas('hocKy', function ($q) use ($nienkhoa) {
-                $q->where('id_nien_khoa', $nienkhoa->id);
-            })
+        $ids_nien_khoa = $sinhVien->danhSachSinhVien
+            ->pluck('lop')   
+            ->filter()           
+            ->pluck('id_nien_khoa')
+            ->unique()
+            ->values();
+
+        $lopHocPhanDaTao = LopHocPhan::whereIn('id_lop', $ids_lop)->get();
+
+        $id_ctdtsDaTao = $lopHocPhanDaTao->pluck('id_chuong_trinh_dao_tao')->unique()->values();
+        
+        $lopHocPhanChuaTao = Lop::whereIn('id', $ids_lop)
+            ->whereDoesntHave('lopHocPhans')
+            ->first();
+
+        $id_ctdtsChuaTao = $lopHocPhanChuaTao->chuyenNganh->chuongTrinhDaoTao->first();
+        
+        $id_ctdts = $id_ctdtsDaTao->merge($id_ctdtsChuaTao->id)->unique()->values();
+
+        $chiTietCTDT = ChiTietChuongTrinhDaoTao::whereIn('id_chuong_trinh_dao_tao', $id_ctdts)->whereHas('hocKy', fn($q) => $q->where('id_nien_khoa', $ids_nien_khoa))
+        ->get();
+        
+        $diemCacMon = DanhSachHocPhan::with('lopHocPhan')
+            ->where('id_sinh_vien', $sinhVien->id)
+            ->whereHas('lopHocPhan', fn($q) => $q->where('trang_thai_nop_bang_diem', '>=', 3))
             ->get()
-            ->groupBy('id_hoc_ky');
-    
-        $Mons = $ct_ctdt->flatten()->pluck('monHoc')->filter()->unique('id');
-    
-        $diemHocPhan = DanhSachHocPhan::where('id_sinh_vien', $sinhVien->id)
-            ->whereHas('lopHocPhan', function ($q) use ($Mons, $lop) {
-                $q->where('id_lop', $lop->id);
-                if ($Mons->isNotEmpty()) {
-                    foreach ($Mons as $mon) {
-                        if ($mon && $mon->ten_mon) {
-                            $q->orWhere('ten_hoc_phan', 'like', '%' . $mon->ten_mon . '%');
-                        }
+            ->keyBy(fn($item) => optional($item->lopHocPhan)->ten_hoc_phan);
+
+        $monHocs = $chiTietCTDT->map(function ($ct) use ($diemCacMon) {
+            $tenMon = $ct->monHoc->ten_mon;
+            $diem = '-';
+
+            foreach ($diemCacMon as $item) {
+                if ($item->lopHocPhan && $item->lopHocPhan->ten_hoc_phan == $tenMon) {
+                    $diem = $item->diem_tong_ket ?? '-';
+                    break;
+                }
+            }
+
+            return [
+                'ten_mon' => $tenMon,
+                'so_tin_chi' => $ct->so_tin_chi,
+                'diem_tong_ket' => $diem,
+            ];
+        });
+
+        
+
+        $monTheoHocKy = $chiTietCTDT->groupBy('id_hoc_ky')->map(function ($monHocTrongKy) use ($diemCacMon) {
+            return $monHocTrongKy->map(function ($ct) use ($diemCacMon) {
+                $tenMon = $ct->monHoc->ten_mon;
+                $diem = '-';
+        
+                foreach ($diemCacMon as $item) {
+                    if ($item->lopHocPhan && $item->lopHocPhan->ten_hoc_phan == $tenMon) {
+                        $diem = $item->diem_tong_ket ?? '-';
+                        break;
                     }
                 }
-            })
-            ->with('lopHocPhan')
-            ->get();
-    
-        $gradesData = $ct_ctdt->mapWithKeys(function ($dsMon, $idHocKy) use ($diemHocPhan) {
-            return [
-                $idHocKy => $dsMon->map(function ($ct) use ($diemHocPhan) {
-                    $tenMon = optional($ct->monHoc)->ten_mon ?? '';
-    
-                    $diem = $diemHocPhan->first(function ($item) use ($tenMon) {
-                        $tenFull = Str::of($tenMon)->trim()->lower();
-                        $tenTrongDB = Str::of(optional($item->lopHocPhan)->ten_hoc_phan)->trim()->lower();
-                        return $tenTrongDB == $tenFull;
-                    });
-    
-                    return [
-                        'ten_hoc_ky' => optional($ct->hocKy)->ten_hoc_ky ?? '',
-                        'ten_mon' => $tenMon,
-                        'tin_chi' => $ct->so_tin_chi,
-                        'tongket' => optional($diem)->diem_tong_ket ?? '-',
-                    ];
-                }),
-            ];
+        
+                return [
+                    'ten_mon' => $tenMon,
+                    'so_tin_chi' => $ct->so_tin_chi,
+                    'diem_tong_ket' => $diem,
+                ];
+            });
         });
     
         return response()->json([
             'success' => true,
-            'ket_qua' => $gradesData,
+            'monTheoHocKy' => $monTheoHocKy
         ]);
     }
     

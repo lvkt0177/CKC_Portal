@@ -18,151 +18,87 @@ use App\Models\ChuyenNganh;
 use App\Models\HocKy;
 use App\Models\LopHocPhan;
 use App\Models\DanhSachHocPhan;
+use App\Enum\LoaiMonHoc;
 use Illuminate\Support\Facades\DB;
 
 class XemDiemController extends Controller
 {
     public function ketquahoctap(){
-        $id_sv = Auth::guard('student')->user()->id;
+        $id_sv = Auth::guard('student')->id();
 
-        $sinhVien = SinhVien::with('hoSo', 'danhSachSinhVien.lop')->findOrFail($id_sv);
-        
-        $lopCuaSinhVien = $sinhVien->danhSachSinhVien;
+        $sinhVien = SinhVien::with('danhSachSinhVien')->findOrFail($id_sv);
+        $sinhVien->load('danhSachSinhVien.lop.nienKhoa');
+        $ids_lop = $sinhVien->danhSachSinhVien->pluck('id_lop');
 
-        $lop = $sinhVien->danhSachSinhVien[0]->lop;
-           
-        $lopchuyenNganh = $lopCuaSinhVien->count()>1 
-        ? $sinhVien->danhSachSinhVien[1]->lop
-        : null;
-       
-        $nienkhoa = NienKhoa::findOrFail($lop->id_nien_khoa);
-    
-        $chuong_trinh_dao_tao_md = ChuongTrinhDaoTao::whereHas('chuyenNganh', function ($q) use ($lop) {
-            $q->where('id_chuyen_nganh', $lop->id_chuyen_nganh);
-        })->orderBy('id', 'asc')->first();
+        $ids_nien_khoa = $sinhVien->danhSachSinhVien
+            ->pluck('lop')   
+            ->filter()           
+            ->pluck('id_nien_khoa')
+            ->unique()
+            ->values();
+
+        $lopHocPhanDaTao = LopHocPhan::whereIn('id_lop', $ids_lop)->get();
+
+        $id_ctdtsDaTao = $lopHocPhanDaTao->pluck('id_chuong_trinh_dao_tao')->unique()->values();
         
-        $chuong_trinh_dao_tao_cn = $lopCuaSinhVien->count()>1 ? ChuongTrinhDaoTao::whereHas('chuyenNganh', function ($q) use ($lopchuyenNganh) {
-            $q->where('id_chuyen_nganh', $lopchuyenNganh->id_chuyen_nganh);
-        })->orderBy('id', 'asc')->first():null;
-    
-        $ct_ctdt_md = ChiTietChuongTrinhDaoTao::with(['monHoc', 'chuongTrinhDaoTao', 'hocKy'])
-            ->where('id_chuong_trinh_dao_tao', $chuong_trinh_dao_tao_md->id)
-            ->whereHas('hocKy', function ($q) use ($nienkhoa) {
-                $q->where('id_nien_khoa', $nienkhoa->id);
-            })
-            ->get();
+        $lopHocPhanChuaTao = Lop::whereIn('id', $ids_lop)
+            ->whereDoesntHave('lopHocPhans')
+            ->first();
+
+        $id_ctdtsChuaTao = $lopHocPhanChuaTao->chuyenNganh->chuongTrinhDaoTao->first();
         
-        $ct_ctdt_cn = $lopCuaSinhVien->count()>1 ? ChiTietChuongTrinhDaoTao::with(['monHoc', 'chuongTrinhDaoTao', 'hocKy'])
-            ->where('id_chuong_trinh_dao_tao', $chuong_trinh_dao_tao_cn->id)
-            ->whereHas('hocKy', function ($q) use ($nienkhoa) {
-                $q->where('id_nien_khoa', $nienkhoa->id);
-            })
+        $id_ctdts = $id_ctdtsDaTao->merge($id_ctdtsChuaTao->id)->unique()->values();
+
+        $chiTietCTDT = ChiTietChuongTrinhDaoTao::whereIn('id_chuong_trinh_dao_tao', $id_ctdts)->whereHas('hocKy', fn($q) => $q->where('id_nien_khoa', $ids_nien_khoa))
+        ->get();
+        
+        $diemCacMon = DanhSachHocPhan::with('lopHocPhan')
+            ->where('id_sinh_vien', $id_sv)
+            ->whereHas('lopHocPhan', fn($q) => $q->where('trang_thai_nop_bang_diem', '>=', 3))
             ->get()
-            :collect();    
-           
-        $ct_ctdt_all = $ct_ctdt_md->merge($ct_ctdt_cn);
-        $ct_ctdt_all = $ct_ctdt_all->flatten(1);
-        $ct_ctdt_all = $ct_ctdt_all->groupBy('id_hoc_ky');
-    
-        $Mons = $ct_ctdt_all->flatten()->pluck('monHoc')->filter()->unique();
-      
-            
-        $diemHocPhan = DanhSachHocPhan::where('id_sinh_vien', $id_sv)
-                ->whereHas('lopHocPhan', function ($q) use ($Mons,$lop) {
-                    $q->where('id_lop', $lop->id);
-                    foreach ($Mons as $mon) {
-                        $q->orWhere('ten_hoc_phan', 'like', '%' . $mon->ten_mon . '%');
-                    }
-                })
-                ->with('lopHocPhan')
-                ->get();
-       
-        $gradesData = $ct_ctdt_all->mapWithKeys(function ($dsMon, $idHocKy) use ($diemHocPhan,$lop) {
-            return [
-                $idHocKy => $dsMon->map(function ($ct) use ($diemHocPhan,$lop) {
-                    $tenMon = $ct->monHoc->ten_mon ?? '';
-                    $tenLop = $lop->ten_lop ?? '';
-                    $diem = $diemHocPhan->first(function ($item) use ($tenMon, $tenLop) {
-                        $tenFull = Str::of($tenMon . ' ' . $tenLop)->trim()->lower();
-                        
-                        $tenTrongDB = Str::of($item->lopHocPhan->ten_hoc_phan)->trim()->lower();
-                        
-                        return $tenTrongDB == $tenFull;
-                    })?? null;  
-                  
-                    return [
-                        'ten_hoc_ky' => $ct->hocKy->ten_hoc_ky ?? '',
-                        'ten_mon' => $tenMon,
-                        'tin_chi' => $ct->so_tin_chi,
-                        'tongket'   => $diem->diem_tong_ket ?? '-',
-                    ];
-                })
-            ];
-        });
-        
-        $thongKeTungKy = [];
+            ->keyBy(fn($item) => optional($item->lopHocPhan)->ten_hoc_phan);
 
-        foreach ($ct_ctdt_all as $idHocKy => $dsMon) {
-            
-            $tongTinChi = $dsMon->sum('so_tin_chi');
-            $tongTiet = $dsMon->sum('so_tiet');
-            $soMon = count($dsMon);
-            $tenHK = $dsMon->first()->hocKy->ten_hoc_ky;    
-            
-            $dsMonCoDiem = LopHocPhan::with('danhSachHocPhan')
-                        ->where('id_lop', $lop->id)
-                        ->whereHas('danhSachHocPhan', function ($query) use ($id_sv) {
-                            $query->where('id_sinh_vien', $id_sv)
-                                ->wherenotNull('diem_tong_ket');
-                        })
-                        ->get();
-            
-            foreach($dsMonCoDiem as $item){
-              
-                $tongDiem =$item->danhSachHocPhan->sum('diem_tong_ket');
-            }
-          
-        
-            
-            $soMonCoDiem = $dsMonCoDiem->count();
-            
-            $diemTB = $soMonCoDiem > 0 ? round($tongDiem / $soMonCoDiem, 2) : '-';
-            
+        $monHocs = $chiTietCTDT->map(function ($ct) use ($diemCacMon) {
+            $tenMon = $ct->monHoc->ten_mon;
+            $diem = '-';
 
-            $thongKeTungKy[$idHocKy] = [
-                'so_mon' => $soMon,
-                'tong_tin_chi' => $tongTinChi,
-                'diem_trung_binh' => $diemTB,
-                'ten_hoc_ky' => $tenHK
-            ];
-
-            if (in_array($tenHK, ['Học kỳ 2', 'Học kỳ 4', 'Học kỳ 6'])) {
-
-                preg_match('/\d+/', $tenHK, $matches);
-                
-                $soHocKy = (int)($matches[0] ?? 0);
-
-                $tenKyTruoc = 'Học kỳ ' . ($soHocKy - 1);
-
-           
-                if (
-                    isset($thongKeTungKy[$tenKyTruoc]) &&
-                    is_numeric($thongKeTungKy[$tenKyTruoc]['diem_trung_binh']) &&
-                    is_numeric($diemTB)
-                ) {
-                    $trungBinhCaNam = round(
-                        ($diemTB + $thongKeTungKy[$tenKyTruoc]['diem_trung_binh']) / 2,
-                        2
-                    );
-
-                    $thongKeTungKy[$tenHK]['diem_trung_binh_ca_nam'] = $trungBinhCaNam;
-                } else {
-                    $thongKeTungKy[$tenHK]['diem_trung_binh_ca_nam'] = '-';
+            foreach ($diemCacMon as $item) {
+                if ($item->lopHocPhan && $item->lopHocPhan->ten_hoc_phan == $tenMon) {
+                    $diem = $item->diem_tong_ket ?? '-';
+                    break;
                 }
             }
-        }
-        return view("client.xemdiem.ketquahoctap", compact('sinhVien','gradesData','thongKeTungKy','lopCuaSinhVien'));
+
+            return [
+                'ten_mon' => $tenMon,
+                'so_tin_chi' => $ct->so_tin_chi,
+                'diem_tong_ket' => $diem,
+            ];
+        });
+
+        $monTheoHocKy = $chiTietCTDT->groupBy('id_hoc_ky')->map(function ($monHocTrongKy) use ($diemCacMon) {
+            return $monHocTrongKy->map(function ($ct) use ($diemCacMon) {
+                $tenMon = $ct->monHoc->ten_mon;
+                $diem = '-';
+        
+                foreach ($diemCacMon as $item) {
+                    if ($item->lopHocPhan && $item->lopHocPhan->ten_hoc_phan == $tenMon) {
+                        $diem = $item->diem_tong_ket ?? '-';
+                        break;
+                    }
+                }
+        
+                return [
+                    'ten_mon' => $tenMon,
+                    'so_tin_chi' => $ct->so_tin_chi,
+                    'diem_tong_ket' => $diem,
+                ];
+            });
+        });
+        
+        return view("client.xemdiem.ketquahoctap", compact('sinhVien','monTheoHocKy'));
     }
+
     public function ketquarenluyen(Request $request)
     {
         $id_sv = Auth::guard('student')->user()->id;

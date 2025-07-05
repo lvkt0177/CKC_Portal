@@ -24,7 +24,7 @@ class DKGiayController extends Controller
     public function index()
     {
         $id_sv = Auth::guard('student')->user()->id;
-        $sinhVien = SinhVien::with('hoSo','lop')->where('id', $id_sv)->first();
+        $sinhVien = SinhVien::with('hoSo','danhSachSinhVien.lop')->where('id', $id_sv)->first();
         $giayXacNhans =LoaiGiay::get();
         return view('client.giayxacnhan.index', compact('sinhVien','giayXacNhans'));
     }
