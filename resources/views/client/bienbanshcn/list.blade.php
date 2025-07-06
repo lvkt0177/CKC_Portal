@@ -153,7 +153,7 @@
                                         </tr>
                                     @empty
                                         <tr>
-                                            <td colspan="4" class="text-center py-5">
+                                            <td colspan="5" class="text-center py-5">
                                                 <div class="text-muted">
                                                     <i class="fas fa-inbox fa-3x mb-3 opacity-50"></i>
                                                     <h5 class="text-muted">Không có biên bản nào</h5>

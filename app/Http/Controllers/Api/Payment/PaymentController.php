@@ -26,16 +26,18 @@ class PaymentController extends Controller
 
     public function vnpay_payment(PaymentRequest $request)
     {
+        $sinhVien = Auth::user();
         $data = $request->validated();
         $data['order_info'] = json_encode([
             'message' => 'Thanh toán học phí',
             'type' => 'hoc_phi',
+            'sinhVien' => $sinhVien
         ]);
         $url = $this->paymentService->createPaymentUrl($data);
-        Log::info('VNPAY Payment URL: ' . $url);
         
         return response()->json([
             'url' => $url,
+            'sinhVien' => $sinhVien
         ]);
     }
 

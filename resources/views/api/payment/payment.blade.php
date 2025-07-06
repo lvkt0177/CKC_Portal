@@ -16,13 +16,13 @@
 </head>
 
 <body class="mb-5">
-    <div class="container-fluid mt-5">
+    <div class="container-fluid mt-2 p-0">
         <div class="row">
             <div class="">
                 <div>
                     <div>
-                        <div class="container">
-                            <div class="main-content" style=" margin: 0 !important;">
+                        <div class="container-fluid">
+                            <div class="" style=" margin: 0 !important;">
                                 <div class="success-container">
                                     <!-- Header Section -->
                                     <div

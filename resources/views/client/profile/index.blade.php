@@ -33,7 +33,7 @@
                         </div>
                         <div class="info-item">
                             <span class="info-label">Lớp học:</span>
-                            <span class="info-value">{{ $sinhVien->danhSachSinhVien[1]->lop->ten_lop }}</span>
+                            <span class="info-value">{{ $sinhVien->danhSachSinhVien->last()->lop->ten_lop }}</span>
                         </div>
                         <div class="info-item">
                             <span class="info-label">Bậc đào tạo:</span>
@@ -41,11 +41,11 @@
                         </div>
                         <div class="info-item">
                             <span class="info-label">Khoa:</span>
-                            <span class="info-value">{{ $sinhVien->danhSachSinhVien[1]->lop->chuyenNganh->khoa->ten_khoa }}</span>
+                            <span class="info-value">{{ $sinhVien->danhSachSinhVien->last()->lop->chuyenNganh->khoa->ten_khoa }}</span>
                         </div>
                         <div class="info-item">
                             <span class="info-label">Khóa học:</span>
-                            <span class="info-value">{{ $sinhVien->danhSachSinhVien[1]->lop->nienKhoa->ten_nien_khoa }}</span>
+                            <span class="info-value">{{ $sinhVien->danhSachSinhVien->last()->lop->nienKhoa->ten_nien_khoa }}</span>
                         </div>
                     </div>
                     

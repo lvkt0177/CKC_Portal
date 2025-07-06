@@ -8,8 +8,10 @@ Route::prefix('giangvien')->name('giangvien.')->group(function () {
 
     include('profile.php');
     //--------------------------------------
-    Route::middleware(['auth.admin', 'role_or_permission:' . Acl::ROLE_SUPER_ADMIN . '|' . Acl::ROLE_ADMIN . '|' . Acl::ROLE_STAFF])->group(function () {
-        
+    Route::middleware([
+        'auth.admin', 
+        'role_or_permission:' . Acl::ROLE_SUPER_ADMIN . '|' . Acl::ROLE_PHONG_DAO_TAO . '|' . Acl::ROLE_PHONG_CONG_TAC_CHINH_TRI . '|' . Acl::ROLE_GIANG_VIEN_BO_MON . '|' . Acl::ROLE_GIANG_VIEN_CHU_NHIEM . '|' . Acl::ROLE_TRUONG_KHOA
+    ])->group(function () {
         include('portal.php');
         include('role.php');
         include('sinhvien.php');

@@ -50,15 +50,15 @@
                                 </div>
                                 <div class="thongtin-item col-6 py-1">
                                     <span class="thongtin-label">Lớp, Lớp chuyên ngành:</span>
-                                    <span class="thongtin-value">{{ $sinhVien->danhSachSinhVien[0]->lop->ten_lop }}
-                                        {{-- {{ $lopCuaSinhVien->count() <= 1 ? ' ' : ', ' . $sinhVien->danhSachSinhVien[1]->lop->ten_lop }} --}}
+                                    <span class="thongtin-value">{{ $sinhVien->danhSachSinhVien->first()->lop->ten_lop }}
+                                        {{ $sinhVien->danhSachSinhVien->count() <= 1 ? ' ' : ', ' . $sinhVien->danhSachSinhVien->last()->lop->ten_lop }}
                                     </span>
                                 </div>
                                 <div class="thongtin-item col-6 py-1">
                                     <span class="thongtin-label">Ngành, chuyên ngành:</span>
                                     <span class="thongtin-value">
-                                        {{ $sinhVien->danhSachSinhVien[0]->lop->chuyenNganh->ten_chuyen_nganh }}
-                                        {{-- {{ $lopCuaSinhVien->count() <= 1 ? ' ' : ', ' . $sinhVien->danhSachSinhVien[1]->lop->chuyenNganh->ten_chuyen_nganh }} --}}
+                                        {{ $sinhVien->danhSachSinhVien->first()->lop->chuyenNganh->ten_chuyen_nganh }}
+                                        {{ $sinhVien->danhSachSinhVien->count() <= 1 ? ' ' : ', ' . $sinhVien->danhSachSinhVien->last()->lop->chuyenNganh->ten_chuyen_nganh }}
                                     </span>
                                 </div>
                             </div>
@@ -89,6 +89,19 @@
                                 </tbody>
                             </table>
                         </div>
+
+                        <div class="summary-stats mt-3 mb-5">
+                            <div class="stat-card">
+                                <h4>Điểm trung bình học kỳ {{ $loop->iteration }}</h4>
+                                <div class="value">1</div>
+                            </div>
+                            @if($loop->iteration % 2 == 0)
+                                <div class="stat-card">
+                                    <h4>Điểm trung bình cả năm {{ $loop->iteration / 2 }}</h4>
+                                    <div class="value">1</div>
+                                </div>
+                            @endif
+                        </div>
                     @endforeach
                     
                 </div>
@@ -110,5 +123,48 @@
             // Sau khi in xong, reload lại trang để khôi phục các sự kiện JS
             location.reload();
         }
+   
+        document.addEventListener("DOMContentLoaded", function () {
+            const summarySections = document.querySelectorAll('.summary-stats');
+            let nam = 1;
+            let tongNamDiem = 0;
+            let tongNamTinChi = 0;
+
+            summarySections.forEach((section, index) => {
+                const table = section.previousElementSibling.querySelector('table');
+                const rows = table.querySelectorAll('tbody tr');
+                let tongDiem = 0;
+                let tongTinChi = 0;
+
+                rows.forEach(row => {
+                    const diem = row.querySelectorAll('td')[3].innerText.trim();
+                    const tinChi = parseFloat(row.querySelectorAll('td')[2].innerText.trim());
+
+                    if (diem !== "-" && !isNaN(parseFloat(diem))) {
+                        const diemSo = parseFloat(diem);
+                        tongDiem += diemSo * tinChi;
+                        tongTinChi += tinChi;
+                    }
+                });
+
+                const diemTB = tongTinChi > 0 ? (tongDiem / tongTinChi).toFixed(2) : "-";
+                section.querySelectorAll('.value')[0].innerText = diemTB;
+
+                if ((index + 1) % 2 === 0) {
+                    tongNamDiem += tongDiem;
+                    tongNamTinChi += tongTinChi;
+                    const diemNamTB = tongNamTinChi > 0 ? (tongNamDiem / tongNamTinChi).toFixed(2) : "-";
+                    section.querySelectorAll('.value')[1].innerText = diemNamTB;
+
+                    tongNamDiem = 0;
+                    tongNamTinChi = 0;
+                    nam++;
+                } else {
+                    tongNamDiem = tongDiem;
+                    tongNamTinChi = tongTinChi;
+                }
+            });
+        });
     </script>
+
 @endsection

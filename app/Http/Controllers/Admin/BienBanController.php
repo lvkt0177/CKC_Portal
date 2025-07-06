@@ -19,6 +19,9 @@ use Carbon\Carbon;
 use App\Services\BienBanService;
 use App\Repositories\BienBan\BienBanRepository;
 use Illuminate\Support\Facades\Log;
+use \Spatie\Permission\Models\Permission;
+use \Spatie\Permission\Models\Role;
+use App\Acl\Acl;
 
 class BienBanController extends Controller
 {
@@ -29,7 +32,13 @@ class BienBanController extends Controller
     public function __construct(
         protected BienBanRepository $bienBanRepository
     ) {
-        //
+        $this->middleware('permission:' . Acl::PERMISSION_SECRETARY_REPORT_LIST, ['only' => ['index']]);
+        $this->middleware('permission:' . Acl::PERMISSION_SECRETARY_REPORT_SHOW, ['only' => ['show']]);
+        $this->middleware('permission:' . Acl::PERMISSION_SECRETARY_REPORT_CREATE, ['only' => ['create', 'store']]);
+        $this->middleware('permission:' . Acl::PERMISSION_SECRETARY_REPORT_EDIT, ['only' => ['edit', 'update']]);
+        $this->middleware('permission:' . Acl::PERMISSION_SECRETARY_REPORT_DELETE, ['only' => ['destroy']]);
+        $this->middleware('permission:' . Acl::PERMISSION_SECRETARY_REPORT_CONFIRM, ['only' => ['confirmBienBan']]);
+        $this->middleware('permission:' . Acl::PERMISSION_SECRETARY_REPORT_DELETE_ABSENCE_STUDENT, ['only' => ['deleteSinhVienVang']]);
     }
 
     public function index(Lop $lop)

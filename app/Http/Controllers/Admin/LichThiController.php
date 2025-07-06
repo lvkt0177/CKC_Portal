@@ -27,11 +27,18 @@ use App\Models\ThoiKhoaBieu;
 use App\Models\ChiTietChuongTrinhDaoTao;
 use App\Models\ChuongTrinhDaoTao;
 use App\Models\LichThi;
-
+use \Spatie\Permission\Models\Role;
+use \Spatie\Permission\Models\Permission;
+use App\Acl\Acl;
 
 class LichThiController extends Controller
 {
-    //
+    public function __construct() {
+        $this->middleware('permission:' . Acl::PERMISSION_TIMETABLE_EXAM, ['only' => ['index']]);
+        $this->middleware('permission:' . Acl::PERMISSION_TIMETABLE_EXAM_SHOW, ['only' => ['show','xemLichThi']]);
+        $this->middleware('permission:' . Acl::PERMISSION_TIMETABLE_EXAM_CREATE, ['only' => ['create', 'store']]);
+    }
+
     public function index(Request $request)
     {
         $nienKhoas = NienKhoa::orderBy('id', 'desc')->get();

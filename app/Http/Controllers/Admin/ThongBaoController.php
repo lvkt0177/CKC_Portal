@@ -21,13 +21,20 @@ use App\Http\Requests\ThongBao\SendToStudentRequest;
 use Illuminate\Support\Facades\Auth;
 use Illuminate\Support\Facades\Log;
 use Illuminate\Support\Facades\Storage;
+use \Spatie\Permission\Models\Role;
+use \Spatie\Permission\Models\Permission;
 
 class ThongBaoController extends Controller
 {
     public function __construct(
         protected ThongBaoRepository $thongBaoRepository
     ) {
-        //
+        $this->middleware('permission:' . Acl::PERMISSION_NOTICE_LIST, ['only' => ['index']]);
+        $this->middleware('permission:' . Acl::PERMISSION_NOTICE_SHOW, ['only' => ['show']]);
+        $this->middleware('permission:' . Acl::PERMISSION_NOTICE_CREATE, ['only' => ['create', 'store']]);
+        $this->middleware('permission:' . Acl::PERMISSION_NOTICE_EDIT, ['only' => ['edit', 'update']]);
+        $this->middleware('permission:' . Acl::PERMISSION_NOTICE_DELETE, ['only' => ['destroy', 'destroyFile']]);
+        $this->middleware('permission:' . Acl::PERMISSION_NOTICE_CONFIRM, ['only' => ['sendToStudent']]);
     }
 
     public function index()
@@ -137,6 +144,7 @@ class ThongBaoController extends Controller
         $file = File::findOrFail($id);
         return response()->download(storage_path('app/public/' . $file->url), $file->ten_file);
     }
+
 
     public function sendToStudent(SendToStudentRequest $request, ThongBao $thongbao)
     {

@@ -5,6 +5,7 @@
 use Illuminate\Support\Facades\Route;
 use App\Acl\Acl;
 use App\Http\Controllers\Api\Auth\AuthLoginController;
+use App\Http\Controllers\Api\Payment\PaymentController;
 
 Route::prefix('sinhvien')->name('api.sinhvien.')->group(function () {
     
@@ -26,6 +27,8 @@ Route::prefix('sinhvien')->name('api.sinhvien.')->group(function () {
             include('lophocphan.php');
             include('thoikhoabieu.php');
             include('ketquahoctap.php');
+            Route::post('vnpay_payment', [PaymentController::class, 'vnpay_payment'])->name('vnpay.create');
+            
     });
 });
 

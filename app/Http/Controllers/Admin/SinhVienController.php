@@ -20,6 +20,10 @@ use \Spatie\Permission\Models\Permission;
 
 class SinhVienController extends Controller
 {
+    public function __construct() {
+        $this->middleware('permission:' . Acl::PERMISSION_STUDENT_LIST, ['only' => ['index']]);
+        $this->middleware('permission:' . Acl::PERMISSION_STUDENT_EDIT_ROLE, ['only' => ['showlist', 'doiChucVu']]);
+    }
     public function index(Request $request)
     {
        
@@ -94,7 +98,6 @@ class SinhVienController extends Controller
             'Cập nhật chức vụ cho sinh viên ' . $danhSachSinhVien->sinhVien->hoSo->ho_ten . ' thành công'
         );
     }
-
 
     public function khoaSinhVien(SinhVien $sinhVien)
     {

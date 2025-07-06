@@ -15,12 +15,20 @@ use App\Models\HocKy;
 use App\Models\DiemRenLuyen;
 use App\Http\Requests\GiangVien\NhapDiemRenLuyenRequest;
 use Illuminate\Support\Facades\Auth;
+use \Spatie\Permission\Models\Role;
+use \Spatie\Permission\Models\Permission;
+use App\Acl\Acl;
 
 class LopController extends Controller
 {
     /**
      * Display a listing of the resource.
      */
+    public function __construct() {
+        $this->middleware('permission:' . Acl::PERMISSION_CLASS, ['only' => ['index']]);
+        $this->middleware('permission:' . Acl::PERMISSION_CLASS_STUDENT_LIST, ['only' => ['list']]);
+        $this->middleware('permission:' . Acl::PERMISSION_CLASS_INPUT_CONDUCT_SCORE, ['only' => ['nhapDiemRL','capNhatDiemRL','capNhatDiemChecked']]);
+    }
     public function index()
     {
         $lops = Lop::with('giangVien.hoSo', 'nienKhoa','chuyenNganh')

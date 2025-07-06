@@ -49,8 +49,6 @@
                                     <th>Email</th>
                                     <th>Số diện thoại</th>
                                     <th>Chức vụ</th>
-                                    <th>Hành động</th>
-
                                 </tr>
                             </thead>
                             <tbody>
@@ -61,7 +59,7 @@
                                                 value="{{ $sv->id }}">
                                         </td>
                                         <td>{{ $loop->index + 1 }}</td>
-                                        <td>{{ $sv->ma_sv }}</td>
+                                        <td>{{ $sv->sinhVien->ma_sv }}</td>
                                         <td>{{ $sv->sinhVien->hoSo->ho_ten }}</td>
                                         <td>{{ $sv->sinhVien->hoSo->gioi_tinh->getLabel() }}</td>
                                         <td>{{ $sv->sinhVien->hoSo->ngay_sinh }}</td>
@@ -101,13 +99,6 @@
                                                 </div>
                                             </form>
 
-                                        </td>
-
-                                        <td class="">
-                                            <a href="" class="btn btn-warning"><i class="fa-solid fa-eye"></i></a>
-                                            <span class="mx-1"></span>
-                                            {{-- <button class="btn btn-danger btn-lock" data-id="{{ $sv->id }}">{!! $sv->trang_thai->value == 0 ? '<i class="fa-solid fa-lock"></i>' : '<i class="fa-solid fa-lock-open"></i>' !!}
-                                                </button> --}}
                                         </td>
                                     </tr>
                                 @endforeach

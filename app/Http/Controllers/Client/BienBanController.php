@@ -53,9 +53,9 @@ class BienBanController extends Controller
         $sinhVien = Auth::guard('student')->user();
         $thongTin = $sinhVien->danhSachSinhVien->last();
         $thuKy = $sinhVien->chuc_vu == RoleStudent::SECRETARY;
+        $lop = Lop::find($thongTin->id_lop);
         $bienBanSHCN = $this->bienBanRepository
             ->getByLopWithRelations($lop);
-        $lop = Lop::find($thongTin->id_lop);
         
         return view('client.bienbanshcn.list', compact('bienBanSHCN', 'lop', 'thuKy'));
     }

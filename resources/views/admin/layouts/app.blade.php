@@ -52,7 +52,7 @@
                     </div>
 
                     <div class="dropdown">
-                        <a class="nav-link dropdown-toggle {{ isActiveRoute('giangvien/diemmonhoc') }} {{ isActiveRoute('giangvien/phieulenlop') }} {{ isActiveRoute('giangvien/thongbao') }}"
+                        <a class="nav-link dropdown-toggle {{ isActiveRoute('giangvien/diemmonhoc') }} {{ isActiveRoute('giangvien/lich-day') }} {{ isActiveRoute('giangvien/phieulenlop') }}"
                             href="#" data-bs-toggle="dropdown" aria-expanded="false">
                             Công tác giảng dạy
                         </a>
@@ -63,8 +63,6 @@
                                         class="fas fa-file-invoice me-2"></i>Nhập điểm môn học</a></li>
                             <li><a class="dropdown-item" href="{{ route('giangvien.phieulenlop.index') }}"><i
                                         class="fas fa-credit-card me-2"></i>Phiếu lên lớp</a></li>
-                            <li><a class="dropdown-item" href="{{ route('giangvien.thongbao.index') }}"><i
-                                        class="fas fa-credit-card me-2"></i>Thông báo cho sinh viên</a></li>
                             <li><a class="dropdown-item" href="{{ route('giangvien.phieulenlop.manage') }}"><i
                                         class="fas fa-credit-card me-2"></i>Quản lý phiếu lên lớp</a></li>
                         </ul>
@@ -87,7 +85,7 @@
                     </div>
 
                     <div class="dropdown">
-                        <a class="nav-link dropdown-toggle {{ isActiveRoute('giangvien/quan-ly-lich-hoc') }} {{ isActiveRoute('giangvien/ctdt') }}"
+                        <a class="nav-link dropdown-toggle {{ isActiveRoute('giangvien/quan-ly-lich-hoc') }} {{ isActiveRoute('giangvien/quan-ly-lich-thi') }} {{ isActiveRoute('giangvien/ctdt') }}"
                             href="#" data-bs-toggle="dropdown" aria-expanded="false">
                             Quản lý đào tạo
                         </a>
@@ -117,7 +115,13 @@
                     </div>
 
                     <div class="dropdown">
-                        <a class="nav-link dropdown-toggle {{ isActiveRoute('giangvien/testimonial') }}"
+                        <a class="nav-link {{ isActiveRoute('giangvien/thongbao') }}" href="{{ route('giangvien.thongbao.index') }}">
+                            Thông báo tới sinh viên
+                        </a>
+                    </div>
+
+                    <div class="dropdown">
+                        <a class="nav-link dropdown-toggle {{ isActiveRoute('giangvien/testimonial') }} {{ isActiveRoute('giangvien/capmatkhausinhvien') }}"
                             href="#" data-bs-toggle="dropdown" aria-expanded="false">
                             Công tác Chính trị HS - SV
                         </a>
@@ -133,22 +137,6 @@
                 </nav>
 
                 <div class="d-flex align-items-center gap-3">
-                    <div class="dropdown">
-                        <a class="nav-link dropdown-toggle" href="#" data-bs-toggle="dropdown"
-                            aria-expanded="false">
-                            <i class="fas fa-bell"></i>
-                        </a>
-                        <ul class="dropdown-menu">
-                            <li><a class="dropdown-item" href="#"><i
-                                        class="fas fa-book me-2"></i>Documentation</a></li>
-                            <li><a class="dropdown-item" href="#"><i
-                                        class="fas fa-life-ring me-2"></i>Support</a>
-                            </li>
-                            <li><a class="dropdown-item" href="#"><i
-                                        class="fas fa-list-alt me-2"></i>Changelog</a></li>
-                        </ul>
-                    </div>
-
                     <div class="dropdown">
                         <a class="nav-link dropdown-toggle" href="#" data-bs-toggle="dropdown"
                             aria-expanded="false">

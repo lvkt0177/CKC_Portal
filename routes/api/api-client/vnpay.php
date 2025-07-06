@@ -4,7 +4,6 @@ use Illuminate\Support\Facades\Route;
 use App\Http\Controllers\Api\Payment\PaymentController;
 
 
-Route::post('sinhvien/vnpay_payment', [PaymentController::class, 'vnpay_payment'])->name('vnpay.create');
 
 Route::post('sinhvien/payment/vnpay/thi-lai{lopHocPhan}', [PaymentController::class, 'vnpay_thi_lai'])->name('vnpay.payment.thi-lai');
 

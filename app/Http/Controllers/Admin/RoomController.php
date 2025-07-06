@@ -8,10 +8,17 @@ use App\Acl\Acl;
 use App\Models\Phong;
 use App\Http\Requests\Phong\StorePhongRequest;
 use App\Http\Requests\Phong\UpdatePhongRequest;
+use \Spatie\Permission\Models\Role;
+use \Spatie\Permission\Models\Permission;
 
 class RoomController extends Controller
 {
-    //
+    public function __construct() {
+        $this->middleware('permission:' . Acl::PERMISSION_ROOM_LIST, ['only' => ['index']]);
+        $this->middleware('permission:' . Acl::PERMISSION_ROOM_CREATE, ['only' => ['create', 'store']]);
+        $this->middleware('permission:' . Acl::PERMISSION_ROOM_EDIT, ['only' => ['edit', 'update']]);
+    }
+
     public function index()
     {
         $rooms = Phong::all();

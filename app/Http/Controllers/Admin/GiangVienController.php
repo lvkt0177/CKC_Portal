@@ -17,7 +17,6 @@ use App\Models\Nam;
 use App\Models\User;
 use App\Models\HoSo;
 use App\Models\BoMon;
-
 use App\Models\Khoa;
 use \Spatie\Permission\Models\Role;
 use \Spatie\Permission\Models\Permission;
@@ -27,8 +26,8 @@ class GiangVienController extends Controller
 {
     public function __construct()
     {
-        $this->middleware('permission:' . Acl::PERMISSION_USER_LIST, ['only' => ['index', 'show']]);
-        
+        $this->middleware('permission:' . Acl::PERMISSION_TEACHER_LIST, ['only' => ['index', 'show']]);
+        $this->middleware('permission:' . Acl::PERMISSION_TEACHER_SHOW_SCHEDULE, ['only' => ['xemLichDay']]);
     }
     public function index()
     {
@@ -48,7 +47,7 @@ class GiangVienController extends Controller
             ->get();
 
         if ($data->isEmpty()) {
-            return redirect()->route('admin.giangvien.index')->with('error', 'Giảng viên không tồn tại.');
+            return redirect()->route('giangvien.giangvien.index')->with('error', 'Giảng viên không tồn tại.');
         }
 
         $user = $data[0];
@@ -84,13 +83,7 @@ class GiangVienController extends Controller
             $ngayTrongTuan->push($bat_dau->copy());
             $bat_dau->addDay();
         }
-       
-      
-
         $id_gv = Auth::user()->id;
-       
-       
-        
         $thoikhoabieu = ThoiKhoaBieu::with([
         'lopHocPhan.lop',
         'lopHocPhan.giangVien.hoSo',
@@ -103,8 +96,6 @@ class GiangVienController extends Controller
         ->where('id_tuan', $tuan->id)
         ->get();
        
-       
         return view('admin.teacher.lichday',compact('ngayTrongTuan','tuan','thoikhoabieu'));
     }
-   
 }

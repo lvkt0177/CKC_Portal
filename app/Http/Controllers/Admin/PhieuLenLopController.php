@@ -13,10 +13,16 @@ use App\Models\Nam;
 use App\Models\ThoiKhoaBieu;
 use App\Http\Requests\PhieuLenLop\PhieuLenLopRequest;
 use Illuminate\Support\Facades\Auth;
+use \Spatie\Permission\Models\Role;
+use \Spatie\Permission\Models\Permission;
+use App\Acl\Acl;
 
 class PhieuLenLopController extends Controller
 {
-    //
+    public function __construct() {
+        $this->middleware('permission:' . Acl::PERMISSION_VIEW_CLASS_RECORD, ['only' => ['index']]);
+        $this->middleware('permission:' . Acl::PERMISSION_CREATE_CLASS_RECORD, ['only' => ['create', 'store']]);
+    }
     public function index(Request $request)
     {
         $today = now();

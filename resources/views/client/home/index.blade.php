@@ -32,13 +32,13 @@
                         <div class="row">
                             <div class="col-sm-6">
                                 <p><strong>MSSV:</strong> {{ $sinhVien->ma_sv }}</p>
-                                <p><strong>Lớp học:</strong> {{ $sinhVien->danhSachSinhVien[1]->lop->ten_lop }}</p>
+                                <p><strong>Lớp học:</strong> {{ $sinhVien->danhSachSinhVien->last()->lop->ten_lop }}</p>
                                 <p><strong>Hệ đào tạo:</strong> Cao đẳng</p>
                                 <p><strong>Giới tính:</strong> {{ $sinhVien->hoSo->gioi_tinh }}</p>
                             </div>
                             <div class="col-sm-6">
                                 <p><strong>Niên khoá:</strong>
-                                    {{ $sinhVien->danhSachSinhVien[0]->lop->nienKhoa->ten_nien_khoa }}</p>
+                                    {{ $sinhVien->danhSachSinhVien->last()->lop->nienKhoa->ten_nien_khoa }}</p>
                                 <p><strong>Ngày sinh:</strong> {{ $sinhVien->hoSo->ngay_sinh }} </p>
                                 <p><strong>Ngành:</strong> Hệ thống thông tin</p>
                             </div>

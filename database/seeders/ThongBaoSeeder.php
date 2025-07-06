@@ -21,7 +21,7 @@ class ThongBaoSeeder extends Seeder
                 'ngay_gui'   => Carbon::now()->subDays(2)->format('Y-m-d'),
                 'tieu_de'    => 'Thông báo 1',
                 'noi_dung'   => 'Nội dung thông báo 1',
-                'trang_thai' => 1,
+                'trang_thai' => 0,
             ],
             [
                 'id_gv'      => 2,
@@ -37,7 +37,7 @@ class ThongBaoSeeder extends Seeder
                 'ngay_gui'   => Carbon::now()->subDays(6)->format('Y-m-d'),
                 'tieu_de'    => 'Thông báo 3',
                 'noi_dung'   => 'Nội dung thông báo 3',
-                'trang_thai' => 1,
+                'trang_thai' => 0,
             ],
             
         ]);

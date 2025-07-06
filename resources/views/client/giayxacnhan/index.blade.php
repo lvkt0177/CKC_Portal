@@ -55,7 +55,7 @@
                                         </div>
                                         <div class="thongtin-item">
                                             <span class="thongtin-label">Lớp:</span>
-                                            <span class="thongtin-value">{{ $sinhVien->lop->ten_lop ?? 'Chưa có' }}</span>
+                                            <span class="thongtin-value">{{ $sinhVien->danhSachSinhVien->last()->lop->ten_lop }}</span>
                                         </div>
                                     </div>
                                 </div>

@@ -13,10 +13,6 @@
                         <a href="{{ route('giangvien.permissions.index') }}" class="btn btn-primary">Danh sách các quyền</a>
                     </div>
 
-                    <div class="card-header d-flex justify-content-between align-items-center">
-                        <a href="" class="btn btn-primary">Thêm mới vai trò</a>
-                    </div>
-
                     <div class="card-body">
                         <div class="table-responsive">
                             <table class="table table-bordered align-middle mb-0">
@@ -53,19 +49,8 @@
                                             </td>
                                             <td class="d-flex justify-content-center align-items-center gap-1">
                                                 @if ($role->name !== Acl()::ROLE_SUPER_ADMIN)
-                                                    <a href="" class="btn btn-warning btn-sm"><i
+                                                    <a href="{{ route('giangvien.roles.edit', $role) }}" class="btn btn-warning btn-sm"><i
                                                             class="bi bi-pencil"></i></a>
-
-                                                    <div class="mx-1"></div>
-
-                                                    <form action="" method="POST" style="display:inline;">
-                                                        @csrf
-                                                        @method('DELETE')
-                                                        <button type="submit" class="btn btn-danger btn-sm"
-                                                            onclick="return confirm('Bạn có chắc chắn muốn xóa vai trò này không?')">
-                                                            <i class="bi bi-trash3"></i>
-                                                        </button>
-                                                    </form>
                                                 @else
                                                     <span class="text-muted">Không thể thao tác</span>
                                                 @endif

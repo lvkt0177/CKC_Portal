@@ -132,12 +132,12 @@ class  PaymentAPIService
                 'orderType' => $filteredData['vnp_OrderType'] ?? 'other',
                 'type' => $orderInfo['type'] ?? 'other',
                 'so_tien' => $filteredData['vnp_Amount'] / 100 ?? 0,
+                'sinhVien' => $orderInfo['sinhVien'] ?? null
             ];
-
 
             if($data['status'] == 'success') {
                 if($data['type'] == 'hoc_phi') {
-                    $this->updateHocPhi();
+                    $this->updateHocPhi($data['sinhVien']);
                 }
                 if($data['type'] == 'hoc_ghep') {
                     $this->updateHocPhiHocGhepThiLai($orderInfo['id_lop_hoc_phan'], $data['so_tien'], LoaiDangKy::HOCGHEP->value);
@@ -154,20 +154,18 @@ class  PaymentAPIService
         }
     }
 
-    protected function updateHocPhi(): void
+    protected function updateHocPhi(array $data): void
     {
-        $sinhVien = Auth::guard('student')->user();
         $now = now()->toDateString();
-                
+        
         $hocKyHienTai = HocKy::whereDate('ngay_bat_dau', '<=', $now)
         ->where('ngay_ket_thuc', '>=', $now)
         ->first();
                 
         $hocPhi = null;
-                
         if ($hocKyHienTai) {
             $hocPhi = HocPhi::where('id_hoc_ky', $hocKyHienTai->id)
-            ->where('id_sinh_vien', $sinhVien->id)
+            ->where('id_sinh_vien', $data['id'])
             ->first();
             
             if($hocPhi->trang_thai->value == 0) {

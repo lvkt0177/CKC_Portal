@@ -20,7 +20,6 @@ use App\Models\User;
 use App\Models\SinhVien;
 use App\Models\DanhSachSinhVien;
 use App\Models\NienKhoa;
-
 use App\Models\MonHoc;
 use App\Models\Nam;
 use App\Models\Tuan;
@@ -28,10 +27,21 @@ use App\Models\HocKy;
 use App\Models\ThoiKhoaBieu;
 use App\Models\ChiTietChuongTrinhDaoTao;
 use App\Models\ChuongTrinhDaoTao;
+use \Spatie\Permission\Models\Role;
+use \Spatie\Permission\Models\Permission;
+use App\Acl\Acl;
 
 class LichHocController extends Controller
 {
-    //
+    public function __construct() {
+        $this->middleware('permission:' . Acl::PERMISSION_VIEW_TIMETABLE, ['only' => ['index']]);
+        $this->middleware('permission:' . Acl::PERMISSION_TIMETABLE_LIST, ['only' => ['list']]);
+        $this->middleware('permission:' . Acl::PERMISSION_TIMETABLE_CREATE, ['only' => ['create', 'store']]);
+        $this->middleware('permission:' . Acl::PERMISSION_TIMETABLE_UPDATE, ['only' => ['update']]);
+        $this->middleware('permission:' . Acl::PERMISSION_TIMETABLE_DESTROY, ['only' => ['destroy']]);
+        $this->middleware('permission:' . Acl::PERMISSION_TIMETABLE_COPY, ['only' => ['saoChepTuan']]);
+    }
+
     public function index(Request $request)
     {   
         $nienKhoas = NienKhoa::orderBy('id', 'desc')->get();
@@ -75,8 +85,6 @@ class LichHocController extends Controller
                         ->where('ngay_ket_thuc','>=',$today)
                         ->orderBy('ngay_bat_dau')
                         ->get();
-
-        
         $hocKy = null;
 
         if ($request->filled('hoc_ky')) {
@@ -94,13 +102,11 @@ class LichHocController extends Controller
                         ->orderByDesc('ngay_ket_thuc')
                         ->first();
         }
-
        
         $dsTuan = Tuan::whereDate('ngay_bat_dau', '>=', $hocKy->ngay_bat_dau)
                     ->whereDate('ngay_ket_thuc', '<=', $hocKy->ngay_ket_thuc)
                     ->orderBy('tuan')
                     ->get();
-
         
         $tuanDangChon = $request->filled('id_tuan')
             ? Tuan::find($request->id_tuan)
@@ -150,13 +156,11 @@ class LichHocController extends Controller
         }
 
         $today = now();
-
     
         $dsHocKy = HocKy::where('id_nien_khoa', $lop->id_nien_khoa)
             ->where('ngay_ket_thuc','>=',$today)
             ->orderBy('ngay_bat_dau')
             ->get();
-
        
         $id_hoc_ky = $request->hoc_ky ?? $dsHocKy->first()?->id;
         $hocKy = HocKy::find($id_hoc_ky);
@@ -164,7 +168,6 @@ class LichHocController extends Controller
         if (!$hocKy) {
             return back()->with('error', 'Không tìm thấy học kỳ');
         }
-
        
         $dsTuan = Tuan::whereDate('ngay_bat_dau', '>=', $hocKy->ngay_bat_dau)
             ->whereDate('ngay_ket_thuc', '<=', $hocKy->ngay_ket_thuc)
@@ -175,7 +178,6 @@ class LichHocController extends Controller
             : $dsTuan->first();
        
         $tuan = $tuanDangChon;
-
      
         $monHoc = collect();
         if ($id_hoc_ky) {
@@ -227,25 +229,19 @@ class LichHocController extends Controller
         ));
     }
 
-
     public function store(ThoiKhoaBieuRequest  $request)
     {
-        
         $data = $request->validated();
         
         $lop = Lop::find( $data['lop_id'] );
         $tietKetThuc = $data['tiet_bat_dau'] + $data['so_tiet'] - 1;
 
-       
         $tuan = Tuan::find($data['id_tuan']);
         if (!$tuan) {
             return redirect()->route('giangvien.lichhoc.create',['lop'=>$lop])->with('error', 'Tuần không tồn tại');
         }
-
         
         $ngayHoc = Carbon::parse($tuan->ngay_bat_dau)->addDays($data['thu'] - 2)->format('Y-m-d');
-        
-      
         
         $trungLich = ThoiKhoaBieu::where('ngay', $ngayHoc)
             ->where('id_phong', $data['id_phong'])
@@ -281,10 +277,7 @@ class LichHocController extends Controller
             return redirect()->route('giangvien.lichhoc.create',['lop'=>$lop])->with('error','Lớp đã có học phần khác trùng lịch vào thời gian này.');
         }
 
-
-
         $sinhVienList = DanhSachSinhVien::where('id_lop', $data['lop_id'])->get();
-      
 
         $tenMon = MonHoc::find($data['mon_hoc'])->ten_mon ?? 'Môn học';
        
@@ -296,7 +289,6 @@ class LichHocController extends Controller
         
         $soTiet = ChiTietChuongTrinhDaoTao::where('id_mon_hoc', $monHoc->id)
             ->value('so_tiet');
-        
         
         $tenHocPhan = $tenMon;
         $lopHocPhan = LopHocPhan::where('ten_hoc_phan', $tenHocPhan)
@@ -343,7 +335,6 @@ class LichHocController extends Controller
                 'ngay'            => $ngayHoc,
             ]);
             
-        
         return redirect()->route('giangvien.lichhoc.create',['lop'=>$lop])
         ->with('success', 'Thêm thành công');
     }
@@ -356,14 +347,12 @@ class LichHocController extends Controller
         if (!$tuanHienTai || !$lop) {
             return back()->with('error', 'Không tìm thấy tuần hoặc lớp.');
         }
-
        
         $tuanTiepTheo = Tuan::find($request->id_tuan_sao_chep);
       
         if (!$tuanTiepTheo) {
             return back()->with('error', 'Không có tuần kế tiếp.');
         }
-
       
         $dsTKB = ThoiKhoaBieu::where('id_tuan', $tuanHienTai->id)
             ->whereHas('lopHocPhan', function ($query) use ($lop) {
@@ -388,7 +377,6 @@ class LichHocController extends Controller
             if ($trungLich) {
                 continue; 
             }
-
             
             ThoiKhoaBieu::create([
                 'id_tuan'         => $tuanTiepTheo->id,
@@ -404,10 +392,7 @@ class LichHocController extends Controller
     }
     public function update(UpdateLichHocRequest $request)
     {
-        
         $data = $request->validated();
-       
-
         $idLopHocPhan = $data['id_lop_hoc_phan'];
         $idGiaoVien   = $data['id_giao_vien'];
         $idLop        = $data['id_lop'];
@@ -415,18 +400,12 @@ class LichHocController extends Controller
         $ngaybandau   = $data['ngay_ban_dau'];
         $ngay         = $data['ngay'];
         $idPhong      = $data['id_phong'];
-        
-        
-
 
         $lop  = Lop::find($idLop);
         $tuan = Tuan::find($tuanId);
 
         $lopHocPhan = LopHocPhan::find($idLopHocPhan);
         $thoikhoabieu = ThoiKhoaBieu::find($idLopHocPhan);
-        
-        
-        
        
         $tkb = ThoiKhoaBieu::where('id_tuan', $tuanId)
             ->whereDate('ngay',$ngaybandau) ->first();
@@ -436,15 +415,12 @@ class LichHocController extends Controller
             $tkb = ThoiKhoaBieu::where('id_tuan', $tuanId)
                 ->whereDate('ngay',$ngay) ->first();
         }
-       
      
         $tietBatDau = null;
         $tietKetThuc = null;
         if ($tkb) {
-            
             $tietBatDau = (int)$tkb->tiet_bat_dau;
             $tietKetThuc = (int)$tkb->tiet_ket_thuc;
-            
         }
         
         if ($lopHocPhan) {
@@ -472,7 +448,6 @@ class LichHocController extends Controller
                 ]);
             }
         }
-        
     
         if($idPhong){  
             if($tietBatDau||$tietKetThuc){
@@ -514,9 +489,6 @@ class LichHocController extends Controller
                     return redirect()->route('giangvien.lichhoc.list',['lop'=>$lop])->with('error','Phòng đã có lịch học trùng vào thời gian này.');
                 }
             }
-    
-           
-            
             $updateData = [];
 
             if ($idPhong) {
@@ -546,5 +518,4 @@ class LichHocController extends Controller
         return redirect()->back()
                         ->with('error', 'Không tìm thấy, xóa không thành công.');
     }
-
 }

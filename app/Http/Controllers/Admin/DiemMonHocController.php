@@ -14,9 +14,17 @@ use Illuminate\Support\Facades\Auth;
 use Illuminate\Support\Facades\Log;
 use App\Http\Requests\GiangVien\NhapDiemRequest;
 use App\Enum\NopBangDiemStatus;
+use \Spatie\Permission\Models\Role;
+use \Spatie\Permission\Models\Permission;
+use App\Acl\Acl;
 
 class DiemMonHocController extends Controller
 {
+    public function __construct() {
+        $this->middleware('permission:' . Acl::PERMISSION_SCORE_LIST, ['only' => ['index', 'list']]);
+        $this->middleware('permission:' . Acl::PERMISSION_SCORE_EDIT, ['only' => ['updateTrangThai', 'capNhat']]);
+    }
+
     public function index()
     {
         $id_giang_vien = Auth::user()->id;
@@ -47,12 +55,12 @@ class DiemMonHocController extends Controller
         ->get();
 
         $currentTrangThai = $lop_HP->trang_thai_nop_bang_diem->value;
-
         $nextOption = collect(NopBangDiemStatus::cases())
             ->first(fn($case) => $case->value === $currentTrangThai + 1);
 
         return view('admin.diemmonhoc.list', compact('sinhviens', 'lop_HP', 'nextOption'));
     }
+
 
     public function updateTrangThai(LopHocPhan $lopHocPhan)
     {
@@ -115,10 +123,9 @@ class DiemMonHocController extends Controller
                 'diem_tong_ket' => $data['diem_tong_ket'],
             ]);
     }
-
-
         return back()->with('success', 'Cập nhật điểm thành công!');
     }
+
     public function capNhatTheoTrangThai(int $trangThai,LopHocPhan $lopHocPhan){
 
         if($lopHocPhan->danhSachHocPhan->count() == 0) {

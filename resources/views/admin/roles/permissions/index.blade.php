@@ -9,13 +9,12 @@
                 <div class="card shadow-sm">
                     <div class="card-header d-flex justify-content-between align-items-center">
                         <h3 class="card-title mb-0"> Danh sách các quyền theo nhóm </h3>
-
                         <a href="{{ route('giangvien.roles.index') }}" class="btn btn-primary">Quay lại</a>
 
                     </div>
 
                     <div class="card-body">
-                        <div class="row g-4">
+                        <div class="row g-4 mt-1">
                             @foreach ($groupedPermissions as $group => $permissions)
                                 <div class="col-md-6 my-1">
                                     <div class="p-3 border rounded shadow-sm h-100">
