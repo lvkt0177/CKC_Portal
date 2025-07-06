@@ -29,7 +29,7 @@ class XemDiemController extends Controller
         $sinhVien = SinhVien::with('danhSachSinhVien')->findOrFail($id_sv);
         $sinhVien->load('danhSachSinhVien.lop.nienKhoa');
         $ids_lop = $sinhVien->danhSachSinhVien->pluck('id_lop');
-
+        $lopCuaSinhVien = $sinhVien->danhSachSinhVien;
         $ids_nien_khoa = $sinhVien->danhSachSinhVien
             ->pluck('lop')   
             ->filter()           
@@ -96,7 +96,7 @@ class XemDiemController extends Controller
             });
         });
         
-        return view("client.xemdiem.ketquahoctap", compact('sinhVien','monTheoHocKy'));
+        return view("client.xemdiem.ketquahoctap", compact('sinhVien','monTheoHocKy','lopCuaSinhVien'));
     }
 
     public function ketquarenluyen(Request $request)
@@ -106,7 +106,7 @@ class XemDiemController extends Controller
         $sinhVien = SinhVien::with('hoSo', 'danhSachSinhVien.lop.chuyenNganh')->findOrFail($id_sv);
        
         $lopCuaSinhVien = $sinhVien->danhSachSinhVien;
-
+        
         $lop = $sinhVien->danhSachSinhVien[0]->lop;
            
         $lopchuyenNganh = $lopCuaSinhVien->count()>1 

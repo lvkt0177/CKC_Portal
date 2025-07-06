@@ -14,7 +14,7 @@
         <div class="row">
             <div class="card shadow-sm ">
                 <div class="card-header d-flex justify-content-between align-items-center">
-                    <h3>Lịch thi lớp </h3>
+                    <h3>Lịch thi lớp {{ $lop->ten_lop }} </h3>
                     <a href="{{ route('giangvien.lichthi.index') }}" class="btn btn-primary">Quay lại</a>
                 </div>
                 @if ($lichThi->count() > 0)
@@ -71,7 +71,7 @@
                     @endforeach
                 @else
                     <div class="card-body">
-                        <p class="text-center">Khoảng thời gian không có lịch thi nào!</p>
+                        <p class="text-center">{{ $lop->ten_lop }} chhưa có lịch thi nào!</p>
                     </div>
                 @endif
             </div>

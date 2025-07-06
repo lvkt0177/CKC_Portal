@@ -51,14 +51,14 @@
                                 <div class="thongtin-item col-6 py-1">
                                     <span class="thongtin-label">Lớp, Lớp chuyên ngành:</span>
                                     <span class="thongtin-value">{{ $sinhVien->danhSachSinhVien[0]->lop->ten_lop }}
-                                        {{-- {{ $lopCuaSinhVien->count() <= 1 ? ' ' : ', ' . $sinhVien->danhSachSinhVien[1]->lop->ten_lop }} --}}
+                                        {{ $lopCuaSinhVien->count() <= 1 ? ' ' : ', ' . $sinhVien->danhSachSinhVien[1]->lop->ten_lop }}
                                     </span>
                                 </div>
                                 <div class="thongtin-item col-6 py-1">
                                     <span class="thongtin-label">Ngành, chuyên ngành:</span>
                                     <span class="thongtin-value">
                                         {{ $sinhVien->danhSachSinhVien[0]->lop->chuyenNganh->ten_chuyen_nganh }}
-                                        {{-- {{ $lopCuaSinhVien->count() <= 1 ? ' ' : ', ' . $sinhVien->danhSachSinhVien[1]->lop->chuyenNganh->ten_chuyen_nganh }} --}}
+                                        {{ $lopCuaSinhVien->count() <= 1 ? ' ' : ', ' . $sinhVien->danhSachSinhVien[1]->lop->chuyenNganh->ten_chuyen_nganh }}
                                     </span>
                                 </div>
                             </div>
@@ -66,7 +66,7 @@
                     </div>
                     @foreach ($monTheoHocKy as $idHocKy => $dsMon)
                         <h5 class="m-4 fs-4">📘 Học kỳ {{ $loop->iteration }}</h5>
-                    
+
                         <div class="grades-table mb-4">
                             <table>
                                 <thead>
@@ -90,7 +90,7 @@
                             </table>
                         </div>
                     @endforeach
-                    
+
                 </div>
             </div>
         </div>
