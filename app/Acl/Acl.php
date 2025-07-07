@@ -17,12 +17,12 @@ final class Acl
         6. trưởng khoa
     */
     //------------------------
-    const ROLE_SUPER_ADMIN           = 'admin';
-    const ROLE_PHONG_DAO_TAO         = 'Trưởng phòng đào tạo';
-    const ROLE_PHONG_CONG_TAC_CHINH_TRI = 'Trưởng phòng công tác chính trị';
-    const ROLE_GIANG_VIEN_BO_MON     = 'Giảng viên bộ môn';
-    const ROLE_GIANG_VIEN_CHU_NHIEM  = 'Giảng viên chủ nhiệm';
-    const ROLE_TRUONG_KHOA           = 'Trưởng khoa';
+    const ROLE_SUPER_ADMIN = 'admin';
+    const ROLE_PHONG_DAO_TAO = 'trưởng phòng đào tạo';
+    const ROLE_PHONG_CONG_TAC_CHINH_TRI = 'trưởng phòng công tác chính trị';
+    const ROLE_GIANG_VIEN_BO_MON = 'giảng viên bộ môn';
+    const ROLE_GIANG_VIEN_CHU_NHIEM = 'giảng viên chủ nhiệm';
+    const ROLE_TRUONG_KHOA = 'trưởng khoa';
 
     //--------------------------------------------------------------------------
     //Quy tắt: PERMISSION_

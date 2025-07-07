@@ -66,7 +66,7 @@
                     </div>
                     @foreach ($monTheoHocKy as $idHocKy => $dsMon)
                         <h5 class="m-4 fs-4">📘 Học kỳ {{ $loop->iteration }}</h5>
-                    
+
                         <div class="grades-table mb-4">
                             <table>
                                 <thead>
@@ -103,7 +103,7 @@
                             @endif
                         </div>
                     @endforeach
-                    
+
                 </div>
             </div>
         </div>

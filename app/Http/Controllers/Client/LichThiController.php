@@ -4,24 +4,53 @@ namespace App\Http\Controllers\Client;
 
 use App\Http\Controllers\Controller;
 use Illuminate\Http\Request;
+use App\Models\SinhVien;
 use App\Models\LichThi;
+use App\Models\Lop;
 use App\Models\LopHocPhan;
 use Illuminate\Support\Facades\Auth;
 use App\Models\DangKyHGTL;
 class LichThiController extends Controller
 {
     //
-    public function index()
-    {
-        $sinhVien = Auth::guard('student')->user()->danhSachSinhVien->last();
-        $lichThi = LichThi::with('giamThi1.hoSo', 'giamThi2.hoSo','phong', 'lopHocPhan')
-            ->whereHas('lopHocPhan', function ($query) use ($sinhVien) {
-                $query->where('id_lop', $sinhVien->id_lop);
+    public function index(Request $request)
+    {   
+        $id_sinh_vien = Auth::guard('student')->user()->id;
+
+        $lop = Lop::with('danhSachSinhVien')
+            ->whereHas('danhSachSinhVien', function ($query) use ($id_sinh_vien) {
+                $query->where('id_sinh_vien', $id_sinh_vien);
             })
-            ->orderBy('ngay_thi')
             ->get();
+
+        $lopIds = $lop->pluck('id'); 
         
-        return view("client.lichthi.index", compact('lichThi'));
+        $dsTuan = LichThi::with(['lopHocPhan', 'giamThi1.hoSo', 'giamThi2.hoSo', 'phong'])
+        ->where('lan_thi', 1)
+        ->whereHas('lopHocPhan', function ($query) use ($lopIds) {
+            $query->whereIn('id_lop', $lopIds);
+        })
+        ->orderBy('ngay_thi', 'asc')
+        ->get();
+
+
+        $idTuan = $request->id_tuan; 
+        if(!$idTuan){
+            $idTuan = $dsTuan->first()->id_tuan;
+        }
+            
+        $lichThi = LichThi::with(['lopHocPhan', 'giamThi1.hoSo', 'giamThi2.hoSo', 'phong'])
+        ->where('id_tuan', $idTuan)
+        ->whereHas('lopHocPhan', function ($query) use ($lopIds) {
+            $query->whereIn('id_lop', $lopIds);
+        })
+        ->orderBy('ngay_thi', 'asc')
+        ->get();
+        
+        $dsNgay = $lichThi->groupBy('ngay_thi');
+       
+        
+        return view("client.lichthi.index",  compact('dsNgay', 'lichThi','lop','dsTuan'));
     }
 
     public function listLichThiLanHai()

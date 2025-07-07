@@ -132,8 +132,18 @@ class LichThiController extends Controller
 
     public function xemLichThi(Request $request,Lop $lop)
     {
+
+        $dsTuan = LichThi:: with(['lopHocPhan', 'giamThi1.hoSo', 'giamThi2.hoSo', 'phong'])
+                ->whereHas('lopHocPhan', function ($query) use ($lop) {
+                    $query->where('id_lop', $lop->id);
+                })
+            ->orderBy('ngay_thi', 'asc')
+            ->get();
+
         $idTuan = $request->id_tuan; 
-    
+        if(!$idTuan){
+            $idTuan = $dsTuan->first()->id_tuan;
+        }
         $lichThi = LichThi::with(['lopHocPhan', 'giamThi1.hoSo', 'giamThi2.hoSo', 'phong'])
                 ->where('id_tuan', $idTuan)
                 ->whereHas('lopHocPhan', function ($query) use ($lop) {
@@ -141,14 +151,9 @@ class LichThiController extends Controller
                 })
             ->orderBy('ngay_thi', 'asc')
             ->get();
-            
+          
         $dsNgay = $lichThi->groupBy('ngay_thi'); 
-        $dsTuan = LichThi:: with(['lopHocPhan', 'giamThi1.hoSo', 'giamThi2.hoSo', 'phong'])
-                ->whereHas('lopHocPhan', function ($query) use ($lop) {
-                    $query->where('id_lop', $lop->id);
-                })
-            ->orderBy('ngay_thi', 'asc')
-            ->get();
+        
         return view('admin.lichthi.show', compact('dsNgay', 'lichThi','lop','dsTuan'));
     }
     public function create(Request $request,Lop $lop)
@@ -202,9 +207,9 @@ class LichThiController extends Controller
         $tuan = $tuanDangChon;
         
     
-        $giam_thi = User::with('boMon.chuyenNganh')
-        ->whereHas('boMon.chuyenNganh', function ($query) use ($lop) {
-            $query->where('id', $lop->id_chuyen_nganh);
+        $giam_thi = User::with('boMon.chuyenNganh.khoa')
+        ->whereHas('boMon.chuyenNganh.khoa', function ($query) use ($lop) {
+            $query->where('id', $lop->chuyenNganh->id_khoa);
         })
         ->get(); 
 
@@ -232,7 +237,7 @@ class LichThiController extends Controller
         }
 
         $data['ngay_thi'] = Carbon::parse($tuan->ngay_bat_dau)->addDays($data['thu'] - 2)->format('Y-m-d');
-       
+        
         if ($this->isTrungLich($data)==true)  {
             return redirect()->route('giangvien.lichthi.create', ['lop' => $lop])
                 ->with('error', 'Lịch thi bị trùng. Vui lòng kiểm tra lại.');

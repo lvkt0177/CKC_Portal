@@ -29,8 +29,8 @@ class ThongBaoController extends Controller
     public function __construct(
         protected ThongBaoRepository $thongBaoRepository
     ) {
-        $this->middleware('permission:' . Acl::PERMISSION_NOTICE_LIST, ['only' => ['index']]);
-        $this->middleware('permission:' . Acl::PERMISSION_NOTICE_SHOW, ['only' => ['show']]);
+        $this->middleware('permission:' . Acl::PERMISSION_NOTICE_LIST)->only('index');
+        $this->middleware('permission:' . Acl::PERMISSION_NOTICE_SHOW)->only('show');
         $this->middleware('permission:' . Acl::PERMISSION_NOTICE_CREATE, ['only' => ['create', 'store']]);
         $this->middleware('permission:' . Acl::PERMISSION_NOTICE_EDIT, ['only' => ['edit', 'update']]);
         $this->middleware('permission:' . Acl::PERMISSION_NOTICE_DELETE, ['only' => ['destroy', 'destroyFile']]);

@@ -43,6 +43,9 @@ class LichThiController extends Controller
             'giamThi2.hoSo',
             'phong',
             'lopHocPhan.dangKyHocGhepThiLai',
+            'lopHocPhan.dangKyHocGhepThiLai' => function ($query) use ($sinhVien) {
+                $query->where('id_sinh_vien', $sinhVien->id);
+            },
             'lopHocPhan.danhSachHocPhan' => function ($query) use ($sinhVien) {
                 $query->where('id_sinh_vien', $sinhVien->id);
             },

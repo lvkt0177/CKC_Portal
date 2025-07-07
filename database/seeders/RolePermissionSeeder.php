@@ -33,6 +33,7 @@ class RolePermissionSeeder extends Seeder
         if ($user) {
             $user->assignRole(Acl::ROLE_SUPER_ADMIN);
         }
-        
+
+
     }
 }

@@ -12,9 +12,11 @@ use \Spatie\Permission\Models\Permission;
 use App\Models\User;
 use App\Http\Requests\Role\RoleRequest;
 use App\Http\Requests\Role\UpdateRolePermissionRequest;
+use App\Traits\ClearsPermissionCache;
 
 class RoleController extends Controller
 {
+    use ClearsPermissionCache;
     public function __construct()
     {
         $this->middleware('permission:' . Acl::PERMISSION_ROLE_LIST, ['only' => ['index']]);
@@ -37,6 +39,7 @@ class RoleController extends Controller
 
         if ($role) {
             $user->assignRole($role);
+            $this->clearPermissionCache();
             return redirect()->back()->with('success', 'Vai trò đã được gán cho người dùng '.$user->hoSo->ho_ten);
         }
     }
@@ -45,6 +48,7 @@ class RoleController extends Controller
     {
         $role = Role::where('name', $request->validated())->first();
         $user->removeRole($role);
+        $this->clearPermissionCache();
         return redirect()->back()->with('success', 'Vai trò đã được xóa khỏi người dùng '.$user->hoSo->ho_ten);
     }
 
@@ -61,7 +65,7 @@ class RoleController extends Controller
         }
 
         $rolePermissions = $role->permissions->pluck('id')->toArray();
-
+        $this->clearPermissionCache();
         return view('admin.roles.edit', compact('role', 'groupedPermissions', 'rolePermissions'));
     }
 
@@ -72,7 +76,7 @@ class RoleController extends Controller
         $permissionIds = $request->input('permissions', []);
 
         $role->permissions()->sync($permissionIds);
-
+        $this->clearPermissionCache();
         return back()->with('success', 'Cập nhật quyền cho vai trò thành công.');
     }
 
