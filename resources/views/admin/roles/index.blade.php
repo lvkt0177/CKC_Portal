@@ -14,8 +14,8 @@
                     </div>
 
                     <div class="card-body">
-                        <div class="table-responsive">
-                            <table class="table table-bordered align-middle mb-0">
+                        <div class="">
+                            <table class="team-table align-middle">
                                 <thead class="table-light">
                                     <tr>
                                         <th style="width: 50px">#</th>

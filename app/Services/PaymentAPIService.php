@@ -134,17 +134,16 @@ class  PaymentAPIService
                 'so_tien' => $filteredData['vnp_Amount'] / 100 ?? 0,
                 'sinhVien' => $orderInfo['sinhVien'] ?? null
             ];
-
             if($data['status'] == 'success') {
                 if($data['type'] == 'hoc_phi') {
                     $this->updateHocPhi($data['sinhVien']);
                 }
                 if($data['type'] == 'hoc_ghep') {
-                    $this->updateHocPhiHocGhepThiLai($orderInfo['id_lop_hoc_phan'], $data['so_tien'], LoaiDangKy::HOCGHEP->value);
-                    $this->updateDanhSachHocPhan($orderInfo['id_lop_hoc_phan']);
+                    $this->updateDanhSachHocPhan($orderInfo['id_lop_hoc_phan'], $orderInfo['id_sinh_vien']);
+                    $this->updateHocPhiHocGhepThiLai($orderInfo['id_lop_hoc_phan'], $data['so_tien'], LoaiDangKy::HOCGHEP->value, $orderInfo['id_sinh_vien']);
                 }
                 if($data['type'] == 'thi_lai') {
-                    $this->updateHocPhiHocGhepThiLai($orderInfo['id_lop_hoc_phan'], $data['so_tien'], LoaiDangKy::THILAI->value);
+                    $this->updateHocPhiHocGhepThiLai($orderInfo['id_lop_hoc_phan'], $data['so_tien'], LoaiDangKy::THILAI->value, $orderInfo['id_sinh_vien']);
                 }
             }
             return view('api.payment.payment', compact('data'));
@@ -157,7 +156,6 @@ class  PaymentAPIService
     protected function updateHocPhi(array $data): void
     {
         $now = now()->toDateString();
-        
         $hocKyHienTai = HocKy::whereDate('ngay_bat_dau', '<=', $now)
         ->where('ngay_ket_thuc', '>=', $now)
         ->first();
@@ -176,26 +174,31 @@ class  PaymentAPIService
         }
     }
 
-    protected function updateDanhSachHocPhan($id_lop_hoc_phan): void
+    protected function updateDanhSachHocPhan($id_lop_hoc_phan, $id_sinh_vien): void
     {
-        $sinhVien = Auth::guard('student')->user();
         $lopHocPhan = DanhSachHocPhan::create([
-            'id_sinh_vien' => $sinhVien->id,
+            'id_sinh_vien' => $id_sinh_vien,
             'id_lop_hoc_phan' => $id_lop_hoc_phan,
             'loai_hoc' => 1,
         ]);
         $lopHocPhan->save();
     }
 
-    protected function updateHocPhiHocGhepThiLai($id_lop_hoc_phan, $amount, $loai_dong): void
+    protected function updateHocPhiHocGhepThiLai($id_lop_hoc_phan, $amount, $loai_dong, $id_sinh_vien): void
     {
-        $sinhVien = Auth::guard('student')->user();
-        $dangKyHocGhep = DangKyHGTL::create([
-            'id_sinh_vien' => $sinhVien->id,
-            'id_lop_hoc_phan' => $id_lop_hoc_phan,
-            'so_tien' =>  $amount,
-            'loai_dong' =>  $loai_dong, 
-            'trang_thai' => 1, 
-        ]);
+        $exists = DangKyHGTL::where('id_sinh_vien', $id_sinh_vien)
+        ->where('id_lop_hoc_phan', $id_lop_hoc_phan)
+        ->where('loai_dong', $loai_dong)
+        ->exists();
+
+        if (!$exists) {
+            DangKyHGTL::create([
+                'id_sinh_vien' => $id_sinh_vien,
+                'id_lop_hoc_phan' => $id_lop_hoc_phan,
+                'so_tien' =>  $amount,
+                'loai_dong' =>  $loai_dong,
+                'trang_thai' => 1,
+            ]);
+        }
     }
 }

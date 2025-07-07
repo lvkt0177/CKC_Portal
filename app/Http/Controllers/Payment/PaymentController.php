@@ -14,6 +14,8 @@ use App\Services\PaymentService;
 use App\Http\Requests\Payment\PaymentRequest;
 use Illuminate\Support\Facades\DB;
 use Illuminate\Support\Facades\Log;
+use App\Models\DanhSachHocPhan;
+use App\Models\DangKyHGTL;
 
 class PaymentController extends Controller
 {
@@ -56,7 +58,15 @@ class PaymentController extends Controller
             return redirect()->back()->with('error', 'Lớp học phần này đã đủ số lượng đăng ký.');
         }
         $idSinhVien = Auth::guard('student')->id();
+
+        $exists = DanhSachHocPhan::where('id_sinh_vien', $sinhVien->id)
+        ->where('id_lop_hoc_phan', $lopHocPhan->id)
+        ->exists();
         
+        if ($exists) {
+            return redirect()->back()->with('error', 'Bạn đã đăng ký lớp học phần này rồi!');
+        }
+
         $monHoc = DB::table('danh_sach_hoc_phan as dshp')
             ->join('lop_hoc_phan as lhp', 'lhp.id', '=', 'dshp.id_lop_hoc_phan')
             ->join('mon_hoc as mh', 'mh.ten_mon', '=', 'lhp.ten_hoc_phan')
@@ -85,6 +95,16 @@ class PaymentController extends Controller
 
     public function vnpay_thi_lai(LopHocPhan $lopHocPhan)
     {
+        $sinhVien = Auth::guard('student')->user();
+        
+        $exists = DangKyHGTL::where('id_sinh_vien', $sinhVien->id)->where('id_lop_hoc_phan', $lopHocPhan->id)->where('loai_dong', 1)->exists();
+        if ($exists) {
+            return response()->json([
+                'success' => false,
+                'message' => 'Bạn đã đăng ký thi lại môn này rồi',
+            ]);
+        }
+
         $data['order_info'] = json_encode([
             'message' => 'Thanh toán thi lại',
             'type' => 'thi_lai',

@@ -22,7 +22,7 @@ class HocPhiController extends Controller
 
         $sinhVien->load('danhSachSinhVien.lop');
         $now = now()->toDateString();
-        $nienKhoa = NienKhoa::find($sinhVien->danhSachSinhVien[0]->lop->nienKhoa->id);
+        $nienKhoa = NienKhoa::find($sinhVien->danhSachSinhVien->last()->lop->nienKhoa->id);
 
         $hocKyHienTai = HocKy::whereDate('ngay_bat_dau', '<=', $now)
             ->whereDate('ngay_ket_thuc', '>=', $now)
@@ -45,7 +45,7 @@ class HocPhiController extends Controller
             
             if($hocPhi->trang_thai->value == 1)
             {
-                $hocPhi = null;
+                $hocPhi = [];
             }
         }
         else

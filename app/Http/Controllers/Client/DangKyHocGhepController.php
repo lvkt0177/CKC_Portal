@@ -77,6 +77,7 @@ class DangKyHocGhepController extends Controller
         $checkDKHG = DangKyHGTL::whereIn('id_lop_hoc_phan', $lopHocPhanDangMo->pluck('id'))
             ->where('id_sinh_vien', Auth::guard('student')->id())
             ->where('trang_thai', 1)
+            ->where('loai_dong', 0)
             ->exists();
 
         return view('client.dangkyhocghep.list', compact('lopHocPhanDangMo', 'monHoc', 'checkDKHG', 'dsThoiKhoaBieuDauTien'));

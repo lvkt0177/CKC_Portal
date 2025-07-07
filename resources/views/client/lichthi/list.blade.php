@@ -55,7 +55,7 @@
                                 </div>
                     
                                 <div class="col-12 col-md-4 text-md-end d-flex align-items-start justify-content-md-end">
-                                    @if($lt->lopHocPhan->danhSachHocPhan[0]->diem_thi_lan_1)
+                                    @if($lt->lopHocPhan->danhSachHocPhan->first()->diem_thi_lan_1)
                                         @if($lt->lopHocPhan->dangKyHocGhepThiLai)
                                             <button class="btn btn-registered text-success" disabled>
                                                 <i class="fas fa-check me-2"></i>Đã đăng ký
