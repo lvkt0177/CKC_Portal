@@ -47,7 +47,7 @@
                                                     </div>
                                                 </div>
                                     
-                                                <div class="group-content px-3 py-2" id="{{ $groupId }}">
+                                                <div class="group-content px-3 py-2 show" id="{{ $groupId }}">
                                                     @foreach ($permissions as $permission)
                                                         <div class="permission-item mb-3">
                                                             <div class="form-check">

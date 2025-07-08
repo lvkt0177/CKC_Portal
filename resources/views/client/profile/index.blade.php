@@ -8,7 +8,7 @@
 
 @section('content')
 <div class="container-fluid">
-    <div class="student-card">
+    <div class="student-card m-0 mb-3" style="max-width: 1600px">
         <!-- Phần thông tin học vấn -->
         <div class="profile-section">
             <div class="text-center">

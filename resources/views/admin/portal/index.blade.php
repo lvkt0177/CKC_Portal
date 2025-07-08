@@ -9,7 +9,7 @@
 @section('content')
     <div class="main-container">
         <div class="user-info-card">
-            <h4 class="mb-4 text-white">Thông tin người dùng</h4>
+            <h4 class="mb-4 text-dark">Thông tin người dùng</h4>
             <div class="d-flex align-items-start">
                 <img src="{{ asset('' . auth()->user()->hoSo->anh) }}" alt="Avatar" class="user-avatar">
                 <div class="user-details flex-grow-1">

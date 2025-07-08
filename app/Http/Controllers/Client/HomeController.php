@@ -30,10 +30,34 @@ class HomeController extends Controller
     }
     public function index()
     {
+        $startOfWeek = Carbon::now()->startOfWeek();
+        $endOfWeek = Carbon::now()->endOfWeek(); 
+
         $lopHocPhan = $this->lopHocPhanService->dongCacLopHetHanDangKy();
         $sinhVien = Auth::guard('student')->user();
         $sinhVien->load('danhSachSinhVien.lop');
-        return view('client.home.index', compact('sinhVien'));
+
+        $lichHocTrongTuan = LopHocPhan::with(['thoiKhoaBieu' => function ($query) use ($startOfWeek, $endOfWeek) {
+            $query->whereBetween('ngay', [$startOfWeek->toDateString(), $endOfWeek->toDateString()]);
+        }])
+        ->where('id_lop', $sinhVien->danhSachSinhVien->last()->id_lop)
+        ->get();
+
+        $tongSoLichHoc = $lichHocTrongTuan->sum(function ($lopHocPhan) {
+            return $lopHocPhan->thoiKhoaBieu->count();
+        });
+
+        $lichThiTrongTuan = LopHocPhan::with(['lichThi' => function ($query) use ($startOfWeek, $endOfWeek) {
+            $query->whereBetween('ngay_thi', [$startOfWeek->toDateString(), $endOfWeek->toDateString()]);
+        }])
+        ->where('id_lop', $sinhVien->danhSachSinhVien->last()->id_lop)
+        ->get();
+        
+        $tongSoLichThi = $lichThiTrongTuan->sum(function ($lopHocPhan) {
+            return $lopHocPhan->lichThi->count();
+        });
+        
+        return view('client.home.index', compact('sinhVien', 'tongSoLichHoc', 'tongSoLichThi'));
     }
 
     /**

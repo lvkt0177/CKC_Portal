@@ -16,14 +16,12 @@
                 <div class="card shadow-sm">
                     <div class="card-header d-flex justify-content-between align-items-center">
                         <h3 class="card-title mb-0"> Danh sách Giảng Viên </h3>
-
-                        <a href="" class="btn btn-primary">Thêm Giảng Viên</a>
-
                     </div>
-
+                    
                     <div class="card-header">
                         <div x-data="{ view: 'grid' }">
                             <div class="mb-3  d-flex justify-content-end align-items-center">
+                                
                                 <button class="btn" :class="view === 'grid' ? 'btn-primary' : 'btn-outline-primary'"
                                     @click="view = 'grid'">
                                     <i class="fa fa-th" style="font-size: 17px"></i>
@@ -46,18 +44,18 @@
                                 x-transition:leave-start="opacity-100 translate-y-0"
                                 x-transition:leave-end="opacity-0 translate-y-2" class="">
 
-                                <div class="teams-section">
-                                    <div class="card-body">
-                                        <div class="table-responsive">
-                                            <table class="table table-bordered align-middle mb-0">
+                                <div class="">
+                                    <div class="">
+                                        <div class="teams-section">
+                                            <table class="team-table align-middle mb-4" id="room-table">
                                                 <thead class="table-light">
                                                     <tr class="text-center">
                                                         <th>No.1</th>
                                                         <th>Họ Tên</th>
                                                         <th>Giới tính</th>
                                                         <th>Email</th>
-                                                        <th>Số điện thoại</th>
                                                         <th>Địa chỉ</th>
+                                                        <th>Số điện thoại</th>
                                                         <th>Bộ Môn</th>
                                                         <th>Khoa</th>
                                                         <th>Hành động</th>
@@ -65,21 +63,22 @@
                                                 </thead>
                                                 <tbody>
                                                     @foreach ($users as $gv)
-                                                        <tr class="text-center">
-                                                            <td>{{ $loop->index + 1 }}</td>
-                                                            <td>{{ $gv->hoSo->ho_ten }}</td>
-                                                            <td>{{ $gv->hoSo->gioi_tinh }}</td>
-                                                            <td>{{ $gv->hoSo->email }}</td>
-                                                            <td>{{ $gv->hoSo->dia_chi }}</td>
-                                                            <td>{{ $gv->hoSo->so_dien_thoai }}</td>
-                                                            <td>{{ $gv->boMon->ten_bo_mon }}</td>
-                                                            <td>{{ $gv->boMon->chuyenNganh->khoa->ten_khoa }}</td>
-                                                            <td>
-                                                                <a href="{{ route('giangvien.giangvien.show', $gv->id) }}"
-                                                                    class="btn btn-warning"><i class="la la-eye"></i></a>
-                                                            </td>
-
-                                                        </tr>
+                                                        @if ($gv->getRoleNames()->first() != Acl()::ROLE_SUPER_ADMIN)
+                                                            <tr class="text-center" style="font-weight: 400">
+                                                                <td>{{ $loop->index + 1 }}</td>
+                                                                <td>{{ $gv->hoSo->ho_ten }}</td>
+                                                                <td>{{ $gv->hoSo->gioi_tinh }}</td>
+                                                                <td>{{ $gv->hoSo->email }}</td>
+                                                                <td>{{ $gv->hoSo->dia_chi }}</td>
+                                                                <td>{{ $gv->hoSo->so_dien_thoai }}</td>
+                                                                <td>{{ $gv->boMon->ten_bo_mon }}</td>
+                                                                <td>{{ $gv->boMon->chuyenNganh->khoa->ten_khoa }}</td>
+                                                                <td>
+                                                                    <a href="{{ route('giangvien.giangvien.show', $gv->id) }}"
+                                                                        class="btn btn-warning"><i class="fa fa-eye" aria-hidden="true"></i></i></a>
+                                                                </td>
+                                                            </tr>
+                                                        @endif
                                                     @endforeach
                                                 </tbody>
                                             </table>
@@ -96,12 +95,19 @@
                                 x-transition:leave-start="opacity-100 translate-y-0"
                                 x-transition:leave-end="opacity-0 translate-y-2" class="">
                                 <!-- Nội dung  -->
+                                <div class="mb-3">
+                                    <label for="" class="form-label">Tìm kiếm giảng viên</label>
+                                    <input type="text" id="userSearchInput" class="form-control" placeholder="Tìm kiếm theo tên, email hoặc chuyên ngành...">
+                                </div>
                                 <div class="teams-section">
                                     <div class="card-body">
-                                        <div class="row g-4">
+                                        <div class="row">
                                             @foreach ($users as $gv)
                                                 @if ($gv->getRoleNames()->first() != Acl()::ROLE_SUPER_ADMIN)
-                                                    <div class="col-lg-3 col-md-3 mb-4">
+                                                <div class="col-lg-3 col-md-6 mb-4 user-card"
+                                                        data-name="{{ Str::lower($gv->hoSo->ho_ten) }}"
+                                                        data-email="{{ Str::lower($gv->hoSo->email) }}"
+                                                        data-major="{{ Str::lower($gv->boMon->chuyenNganh->ten_chuyen_nganh ?? '') }}">
                                                         <a href="{{ route('giangvien.giangvien.show', $gv->id) }}"
                                                             class="text-decoration-none" style="text-decoration: none;">
                                                             <div class="card h-100 border-0 position-relative bg-white transition-all"
@@ -147,4 +153,52 @@
         </div>
     </div>
 
+@endsection
+
+@section('js')
+    <script src="https://cdn.datatables.net/1.13.6/js/jquery.dataTables.min.js"></script>
+        <script>
+            $(document).ready(function() {
+                $('#room-table').DataTable({
+                    responsive: true,
+                    ordering: false,
+                    language: {
+                        search: "Tìm kiếm giảng viên:",
+                        lengthMenu: "Hiển thị _MENU_ dòng",
+                        info: "Hiển thị _START_ đến _END_ trong _TOTAL_ dòng",
+                        paginate: {
+                            previous: '<i class="fa-solid fa-arrow-left"></i>',
+                            next: '<i class="fa-solid fa-arrow-right"></i>'
+                        }
+                    },
+                    dom: '<"top"lf>rt<"bottom"ip><"clear">'
+                });
+            });
+
+            $('#room-table').on('error.dt', function(e, settings, techNote, message) {
+                console.error('DataTables Lỗi:', message);
+                alert('Đã có lỗi khi tải bảng: ' + message);
+            });
+        
+        document.addEventListener("DOMContentLoaded", function () {
+            const input = document.getElementById("userSearchInput");
+            const cards = document.querySelectorAll(".user-card");
+
+            input.addEventListener("input", function () {
+                const keyword = this.value.trim().toLowerCase();
+
+                cards.forEach(card => {
+                    const name = card.getAttribute("data-name");
+                    const email = card.getAttribute("data-email");
+                    const major = card.getAttribute("data-major");
+
+                    if (name.includes(keyword) || email.includes(keyword) || major.includes(keyword)) {
+                        card.style.display = "block";
+                    } else {
+                        card.style.display = "none";
+                    }
+                });
+            });
+        });
+    </script>
 @endsection

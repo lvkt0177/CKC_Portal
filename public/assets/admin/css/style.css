@@ -185,7 +185,7 @@ body {
 /* Teams Section */
 .teams-section {
     border-radius: 1rem;
-    padding: 1.5rem;
+    padding: 1rem 1.5rem;
     box-shadow: 0 4px 6px rgba(0, 0, 0, 0.05);
     animation: fadeInLeft 0.8s ease;
 }

@@ -26,10 +26,6 @@
                                                     style="width: 300px; height: 300px; object-fit: cover;">
 
                                             </div>
-                                            <div class="mt-3">
-                                                <button class="btn btn-outline-secondary text-dark btn-sm">Thay đổi
-                                                    ảnh</button>
-                                            </div>
                                         </div>
 
                                         <hr>
@@ -51,26 +47,28 @@
                                                                 color: white;
                                                             ">
                                                                 <span class="me-3">{{ $role }}</span>
-
-                                                                <form
-                                                                    action="{{ route('giangvien.roles.removeRoleForUser', $user) }}"
-                                                                    method="POST" class="m-0 p-0">
-                                                                    @csrf
-                                                                    <input type="hidden" name="name"
-                                                                        value="{{ $role }}">
-                                                                    <button type="submit"
-                                                                        class="btn p-0 px-2 text-white fw-bold"
-                                                                        style="
-                                                                        font-size: 1.2rem; 
-                                                                        line-height: 1;
-                                                                        background: transparent; 
-                                                                        border: none;
-                                                                    "
-                                                                        title="Xoá vai trò {{ $role }}"
-                                                                        onclick="return confirm('Bạn có chắc muốn xoá vai trò {{ $role }}?')">
-                                                                        &times;
-                                                                    </button>
-                                                                </form>
+                                                                 @if(checkPermissions(Acl()::PERMISSION_PERMISSION_LIST))
+                                                                    <form
+                                                                        action="{{ route('giangvien.roles.removeRoleForUser', $user) }}"
+                                                                        method="POST" class="m-0 p-0">
+                                                                        @csrf
+                                                                        <input type="hidden" name="name"
+                                                                            value="{{ $role }}">
+                                                                            
+                                                                        <button type="submit"
+                                                                            class="btn p-0 px-2 text-white fw-bold"
+                                                                            style="
+                                                                            font-size: 1.2rem; 
+                                                                            line-height: 1;
+                                                                            background: transparent; 
+                                                                            border: none;
+                                                                        "
+                                                                            title="Xoá vai trò {{ $role }}"
+                                                                            onclick="return confirm('Bạn có chắc muốn xoá vai trò {{ $role }}?')">
+                                                                            &times;
+                                                                        </button>
+                                                                    </form>
+                                                                @endif
                                                             </div>
                                                         @endforeach
                                                     </div>
@@ -78,10 +76,9 @@
                                             @endif
 
 
-                                            @if ($user->getRoleNames()->first() != Acl()::ROLE_SUPER_ADMIN)
-
+                                            @if(checkPermissions(Acl()::PERMISSION_PERMISSION_LIST))
                                                 <form action="{{ route('giangvien.roles.addRoleForUser', $user) }}"
-                                                    method="post" class="text-capitalize">
+                                                    method="post" class="text-capitalize" data-confirm>
                                                     @csrf
                                                     <label class="form-label text-secondary">Chọn vai trò</label>
                                                     <select name="name" class="form-control">
@@ -102,9 +99,7 @@
                                                         <span class="text-danger">{{ $message }}</span>
                                                     @enderror
 
-                                                    <button
-                                                        onclick="return confirm(`Bạn có chắc muốn gắn vai trò cho người dùng này? `)"
-                                                        class="btn btn-primary w-100 mt-3">Gắn Vai Trò</button>
+                                                    <button class="btn btn-primary w-100 mt-3">Gắn Vai Trò</button>
                                                 </form>
                                             @endif
 
@@ -195,7 +190,7 @@
 
                                                 <div class="row">
                                                     @php
-                                                        $permissions = $user->roles->first()->permissions->values();
+                                                        $permissions = $user->roles->flatMap->permissions->unique('id')->values();
                                                         $half = ceil($permissions->count() / 2);
                                                     @endphp
 

@@ -95,8 +95,8 @@ final class Acl
     const PERMISSION_CLASS_INPUT_CONDUCT_SCORE = 'nhập điểm rèn luyện';
 
     //Phiếu lên lớp
-    const PERMISSION_VIEW_CLASS_RECORD    = 'Xem phiếu lên lớp';
-    const PERMISSION_CREATE_CLASS_RECORD  = 'Tạo phiếu lên lớp';
+    const PERMISSION_VIEW_CLASS_RECORD    = 'Sổ lên lớp';
+    const PERMISSION_CREATE_CLASS_RECORD  = 'Tạo sổ lên lớp';
 
     //Phòng học
     const PERMISSION_ROOM_LIST = 'danh sách phòng học';
@@ -231,12 +231,12 @@ final class Acl
             self::PERMISSION_TIMETABLE_EXAM_SHOW,
             self::PERMISSION_TIMETABLE_EXAM_CREATE,
         ],
-        'Lớp học' => [
+        'Lớp chủ nhiệm' => [
             self::PERMISSION_CLASS,
             self::PERMISSION_CLASS_STUDENT_LIST,
             self::PERMISSION_CLASS_INPUT_CONDUCT_SCORE,
         ],
-        'Phiếu lên lớp' => [
+        'Sổ lên lớp' => [
             self::PERMISSION_VIEW_CLASS_RECORD,
             self::PERMISSION_CREATE_CLASS_RECORD,
         ],

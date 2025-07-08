@@ -28,13 +28,6 @@
 
         <!-- Hiển thị khi màn hình lớn -->
         <div class="d-none d-lg-flex align-items-center ms-auto gap-4">
-            <div class="d-flex align-items-center text-muted">
-                <a href="#" class="text-muted text-decoration-none">
-                    <i class="fas fa-home me-2"></i>
-                    <span>Trang chủ</span>
-                </a>
-            </div>
-
             <div class="d-flex align-items-center position-relative text-muted">
                 <a href="{{ route('sinhvien.thong-bao.index') }}"
                     class="text-muted text-decoration-none position-relative">
@@ -66,16 +59,7 @@
                 <i class="fas fa-ellipsis-v"></i>
             </button>
             <ul class="dropdown-menu dropdown-menu-end animate__animated animate__fadeIn" aria-labelledby="mobileMenu">
-                <li class="dropdown-item d-flex align-items-center text-muted">
-                    <a href="" class="text-muted text-decoration-none">
-                        <i class="fas fa-home me-2"></i> Trang chủ
-                    </a>
-                </li>
-                <li class="dropdown-item d-flex align-items-center text-muted position-relative">
-                    <a href="" class="text-muted text-decoration-none">
-                        <i class="fas fa-bell me-2"></i> Tin tức <span class="badge bg-danger ms-auto">4</span>
-                    </a>
-                </li>
+                <li><a class="dropdown-item text-primary" href="{{ route('sinhvien.thong-bao.index') }}">Thông báo</a></li>
                 <li>
                     <hr class="dropdown-divider">
                 </li>
@@ -84,8 +68,6 @@
                         style="width: 28px; height: 28px; font-weight: bold;">N</div>
                     {{ Auth::guard('student')->user()->hoSo->ho_ten }}
                 </li>
-                <li><a href="{{ route('studentLogout') }}"><i class="fa-solid fa-right-from-bracket text-danger"></i>Đổi
-                        mật khẩu</a></li>
                 <li><a href="{{ route('studentLogout') }}"><i class="fa-solid fa-right-from-bracket text-danger"></i>
                         Đăng xuất</a></li>
             </ul>

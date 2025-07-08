@@ -45,9 +45,9 @@ class XemDiemController extends Controller
             ->whereDoesntHave('lopHocPhans')
             ->first();
 
-        $id_ctdtsChuaTao = $lopHocPhanChuaTao->chuyenNganh->chuongTrinhDaoTao->first();
+        $id_ctdtsChuaTao = $lopHocPhanChuaTao ? $lopHocPhanChuaTao->chuyenNganh->chuongTrinhDaoTao->first() : null;
         
-        $id_ctdts = $id_ctdtsDaTao->merge($id_ctdtsChuaTao->id)->unique()->values();
+        $id_ctdts = $id_ctdtsChuaTao ? $id_ctdtsDaTao->merge($id_ctdtsChuaTao->id)->unique()->values() : $id_ctdtsDaTao->unique()->values();
 
         $chiTietCTDT = ChiTietChuongTrinhDaoTao::whereIn('id_chuong_trinh_dao_tao', $id_ctdts)->whereHas('hocKy', fn($q) => $q->where('id_nien_khoa', $ids_nien_khoa))
         ->get();

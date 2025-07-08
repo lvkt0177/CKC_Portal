@@ -137,7 +137,7 @@ class DiemMonHocController extends Controller
 
             $cc = (float)$sinhVien->diem_chuyen_can ?? 0;
             $qt = (float)$sinhVien->diem_qua_trinh ?? 0;
-            $dt1 = $sinhVien->diem_thi_lan_1 ?? null;
+            $dt1 = $sinhVien->diem_thi_lan_1 ?? 0;
             $dt2 = $sinhVien->diem_thi_lan_2 ?? null;
             
             $dt = $dt1;
@@ -159,7 +159,7 @@ class DiemMonHocController extends Controller
             ];
         }
       
-        if ($trangThai == 0     ) {
+        if ($trangThai == 0) {
             foreach ($updates as $data) {
                 DanhSachHocPhan::where('id_lop_hoc_phan', $lopHocPhan->id)
                     ->where('id_sinh_vien', $data['id_sinh_vien'])

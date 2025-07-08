@@ -20,7 +20,7 @@
                     <!-- Avatar bên trái -->
                     <div class="col-lg-4 col-md-12 col-sm-12 text-center mb-3 mb-md-0">
                         <div class="">
-                            <img src="{{ asset('' . $sinhVien->hoSo->anh) }}" alt="Student Avatar"
+                            <img src="{{ $sinhVien->hoSo->gioi_tinh == 'Nam' ? asset('assets/client/images/logo_nam.jpg') : asset('assets/client/images/logo_nu.jpg') }}" alt="Student Avatar"
                             class="" style="width: auto; height: 200px;">
                             <div class="mt-3"><a class="text-primary text-decoration-none" href="{{ route('sinhvien.ho-so.index') }}">Xem chi tiết</a></div>
                         </div>
@@ -53,53 +53,59 @@
     <div class="stats-grid">
         <div class="stat-card info">
             <div>Lịch học trong tuần</div>
-            <div class="stat-number">3</div>
-            <div class="stat-label"><a href="" class="text-dark fs-6">Xem chi tiết</a></div>
+            <div class="stat-number">{{ $tongSoLichHoc }}</div>
+            <div class="stat-label"><a href="{{ route('sinhvien.thoikhoabieu.index') }}" class="text-dark fs-6">Xem chi tiết</a></div>
         </div>
         <div class="stat-card warning">
             <div>Lịch thi trong tuần</div>
-            <div class="stat-number">0</div>
-            <div class="stat-label"><a href="" class="text-dark fs-6">Xem chi tiết</a></div>
+            <div class="stat-number">{{ $tongSoLichThi }}</div>
+            <div class="stat-label"><a href="{{ route('sinhvien.lichthi.index') }}" class="text-dark fs-6">Xem chi tiết</a></div>
         </div>
     </div>
 
     <!-- Dashboard Grid -->
     <div class="dashboard-grid">
+        <a href="{{ route('sinhvien.xemdiem.ketquahoctap') }}" class="text-decoration-none">
+            <div class="dashboard-item">
+                <i class="fas fa-chart-bar"></i>
+                <span>Kết quả học tập</span>
+            </div>
+        </a>
+        <a href="{{ route('sinhvien.dang-ky-hoc-ghep.index') }}" class="text-decoration-none">
+            <div class="dashboard-item">
+                <i class="fas fa-layer-group"></i>
+                <span>Đăng ký học ghép</span>
+            </div>
+        </a>
+        <a href="{{ route('sinhvien.hocphi.index') }}" class="text-decoration-none">
+            <div class="dashboard-item">
+                <i class="fas fa-file-alt"></i>
+                <span>Tra cứu học phí</span>
+            </div>
+        </a>
         <div class="dashboard-item">
-            <i class="fas fa-calendar"></i>
-            <span>Lịch theo tuần</span>
+            <a href="" class="text-decoration-none">
+                <i class="fas fa-folder"></i>
+                <span>Phiếu thu tổng hợp</span>
+            </a>
         </div>
         <div class="dashboard-item">
-            <i class="fas fa-chart-bar"></i>
-            <span>Kết quả học tập</span>
+            <a href="" class="text-decoration-none">
+                <i class="fas fa-list"></i>
+                <span>Lịch theo tiến độ</span>
+            </a>
         </div>
         <div class="dashboard-item">
-            <i class="fas fa-layer-group"></i>
-            <span>Đăng ký học phần</span>
+            <a href="" class="text-decoration-none">
+                <i class="fas fa-briefcase"></i>
+                <span>Nhắc nhở</span>
+            </a>
         </div>
         <div class="dashboard-item">
-            <i class="fas fa-dollar-sign"></i>
-            <span>Tra cứu công nợ</span>
-        </div>
-        <div class="dashboard-item">
-            <i class="fas fa-file-alt"></i>
-            <span>Thành toán trực tuyến</span>
-        </div>
-        <div class="dashboard-item">
-            <i class="fas fa-folder"></i>
-            <span>Phiếu thu tổng hợp</span>
-        </div>
-        <div class="dashboard-item">
-            <i class="fas fa-list"></i>
-            <span>Lịch theo tiến độ</span>
-        </div>
-        <div class="dashboard-item">
-            <i class="fas fa-briefcase"></i>
-            <span>Nhắc nhở</span>
-        </div>
-        <div class="dashboard-item">
-            <i class="fas fa-clipboard"></i>
-            <span>Khảo sát</span>
+            <a href="" class="text-decoration-none">
+                <i class="fas fa-clipboard"></i>
+                <span>Khảo sát</span>
+            </a>
         </div>
     </div>
 @endsection
