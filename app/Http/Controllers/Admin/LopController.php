@@ -49,7 +49,7 @@ class LopController extends Controller
 
         if ($nienKhoa && $nienKhoa->nam_ket_thuc <= now()->year) {
             return redirect()->route('giangvien.lop.index')
-                ->with('error', 'Lớp đã hết kỳ để tạo thời khóa biểu');
+                ->with('error', 'Lớp đã hết kỳ tồn tại');
         }
         $thang = request()->get('thoi_gian', now()->month); 
         $nam = request()->get('nam', now()->year);

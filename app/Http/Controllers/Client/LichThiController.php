@@ -33,19 +33,20 @@ class LichThiController extends Controller
         ->orderBy('ngay_thi', 'asc')
         ->get();
 
-
         $idTuan = $request->id_tuan; 
-        if(!$idTuan){
+        if (!$idTuan && !$dsTuan->isEmpty()) {
             $idTuan = $dsTuan->first()->id_tuan;
         }
-            
+
+        
         $lichThi = LichThi::with(['lopHocPhan', 'giamThi1.hoSo', 'giamThi2.hoSo', 'phong'])
         ->where('id_tuan', $idTuan)
         ->whereHas('lopHocPhan', function ($query) use ($lopIds) {
             $query->whereIn('id_lop', $lopIds);
         })
         ->orderBy('ngay_thi', 'asc')
-        ->get();
+        ->get();    
+       
         
         $dsNgay = $lichThi->groupBy('ngay_thi');
        
