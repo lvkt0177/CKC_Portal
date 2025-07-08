@@ -62,6 +62,7 @@
                         </div>
                     </div>
                     <form method="GET" class="m-4">
+                        <label for="">Chọn năm: </label>
                         <select name="id_nam" onchange="this.form.submit()" class="form-control">
                             @foreach ($dsNam as $nam)
                                 <option value="{{ $nam }}" {{ $nam == $namDangChon ? 'selected' : '' }}>
@@ -94,7 +95,7 @@
                                             @if ($diemThang)
                                                 {{ $diemThang->xep_loai->getLabel() }}
                                             @else
-                                                <em class="text-muted">Đang cập nhật</em>
+                                                <em class="text-muted">Đang cập nhật...</em>
                                             @endif
                                         </td>
                                     </tr>
