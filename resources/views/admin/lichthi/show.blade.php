@@ -18,27 +18,27 @@
                     <a href="{{ route('giangvien.lichthi.index') }}" class="btn btn-primary">Quay lại</a>
                 </div>
                 @if ($lichThi->count() > 0)
-                <form action="{{ route('giangvien.lichthi.show', $lop) }}" method="GET" class="form-inline mb-3">
-                    <div class="form-group me-2">
-                        <label for="id_tuan" class="me-2">🗓️ Chọn tuần:</label>
-                        <select name="id_tuan" id="id_tuan" class="form-control" onchange="this.form.submit()">
-                            @foreach ($tuanDaCoLich as $tuanItem)
-                                @php
-                                    $tuanModel = $tuanItem->tuan ?? null;
-                                @endphp
-                                @if ($tuanModel)
-                                    <option value="{{ $tuanModel->id }}"
-                                        {{ $tuanModel->id == $idTuan ? 'selected' : '' }}>
-                                        Tuần {{ $loop->iteration }} 
-                                        ({{ \Carbon\Carbon::parse($tuanModel->ngay_bat_dau)->format('d/m') }} -
-                                        {{ \Carbon\Carbon::parse($tuanModel->ngay_ket_thuc)->format('d/m') }})
-                                    </option>
-                                @endif
-                            @endforeach
-                        </select>
-                    </div>
-                </form>
-                
+                    <form action="{{ route('giangvien.lichthi.show', $lop) }}" method="GET" class="form-inline mb-3">
+                        <div class="form-group me-2">
+                            <label for="id_tuan" class="me-2">🗓️ Chọn tuần:</label>
+                            <select name="id_tuan" id="id_tuan" class="form-control" onchange="this.form.submit()">
+                                @foreach ($tuanDaCoLich as $tuanItem)
+                                    @php
+                                        $tuanModel = $tuanItem->tuan ?? null;
+                                    @endphp
+                                    @if ($tuanModel)
+                                        <option value="{{ $tuanModel->id }}"
+                                            {{ $tuanModel->id == $idTuan ? 'selected' : '' }}>
+                                            Tuần {{ $loop->iteration }}
+                                            ({{ \Carbon\Carbon::parse($tuanModel->ngay_bat_dau)->format('d/m') }} -
+                                            {{ \Carbon\Carbon::parse($tuanModel->ngay_ket_thuc)->format('d/m') }})
+                                        </option>
+                                    @endif
+                                @endforeach
+                            </select>
+                        </div>
+                    </form>
+
                     @foreach ($dsNgay as $ngay => $dsLich)
                         <div class="schedule-day">
                             <h3 class="date-header">
@@ -72,10 +72,12 @@
                                                     <td>{{ $lt->giamThi2->hoSo->ho_ten ?? '-' }}</td>
                                                     <td>
                                                         <form action="{{ route('giangvien.lichthi.destroy', $lt) }}"
-                                                            method="POST" class="form-xoa-lich-thi" data-id="{{ $lt->id }}" data-confirm>
+                                                            method="POST" class="form-xoa-lich-thi"
+                                                            data-id="{{ $lt->id }}" data-confirm>
                                                             @csrf
                                                             @method('DELETE')
-                                                            <button type="submit" class="btn btn-danger btn-sm">Xoá</button>
+                                                            <button type="submit"
+                                                                class="btn btn-danger btn-sm">Xoá</button>
                                                         </form>
                                                     </td>
                                                 </tr>
@@ -87,7 +89,7 @@
                     @endforeach
                 @else
                     <div class="card-body">
-                        <p class="text-center">{{ $lop->ten_lop }} chhưa có lịch thi nào!</p>
+                        <p class="text-center">{{ $lop->ten_lop }} chưa có lịch thi nào!</p>
                     </div>
                 @endif
             </div>

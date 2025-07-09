@@ -7,6 +7,7 @@ use Illuminate\Http\Request;
 use App\Models\SinhVien;
 use App\Models\LopHocPhan;
 use App\Models\HoSo;
+use App\Models\NienKhoa;
 use App\Models\DanhSachHocPhan;
 use Illuminate\Support\Facades\Auth;
 use Illuminate\Support\Facades\Log;
@@ -28,12 +29,16 @@ class DiemMonHocController extends Controller
 
     public function index()
     {
+       
         $id_giang_vien = Auth::user()->id;
         $lop_hoc_phan = LopHocPhan::with([
-            'lop',
+            'lop.nienKhoa',
         ])
+        ->whereHas('lop.nienKhoa', function ($query)  {
+            $query->where('nam_ket_thuc','>',now()->year);
+        })
             ->where('id_giang_vien', $id_giang_vien)
-            ->orderBy('id_giang_vien', 'desc')
+            ->orderBy('id', 'desc')
             ->get();
      
         return view('admin.diemmonhoc.index', compact('lop_hoc_phan'));

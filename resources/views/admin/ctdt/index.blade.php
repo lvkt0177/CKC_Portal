@@ -22,11 +22,10 @@
                         <div>
                             <form method="GET" action="{{ route('giangvien.ctdt.index') }}">
 
-                                {{-- Dropdown Ngành học - luôn hiển thị --}}
-                                <label class="form-label fw-bold">Ngành học:</label>
-                                <label class="form-label fw-bold">Ngành học (cha):</label>
+
+                                <label class="form-label fw-bold">Ngành:</label>
                                 <select name="id_chuyen_nganh_cha" class="form-control" onchange="this.form.submit()">
-                                    <option value="">-- Chọn ngành cha --</option>
+                                    <option value="">-- Chọn ngành --</option>
                                     @foreach ($dsChuyenNganhCha as $cha)
                                         <option value="{{ $cha->id }}"
                                             {{ $id_chuyen_nganh_cha == $cha->id ? 'selected' : '' }}>
@@ -37,9 +36,9 @@
 
 
                                 @if ($dsChuyenNganhCon->isNotEmpty())
-                                    <label class="form-label fw-bold mt-2">Ngành học (con):</label>
+                                    <label class="form-label fw-bold mt-2">Chuyên ngành :</label>
                                     <select name="id_chuyen_nganh" class="form-control" onchange="this.form.submit()">
-                                        <option value="">-- Chọn ngành con --</option>
+                                        <option value="">-- Chọn chuyên ngành --</option>
                                         @foreach ($dsChuyenNganhCon as $con)
                                             <option value="{{ $con->id }}"
                                                 {{ $id_chuyen_nganh == $con->id ? 'selected' : '' }}>

@@ -32,21 +32,23 @@ class PhieuLenLopController extends Controller
         if (!$nam) {
             $nam = Nam::where('nam_bat_dau', $today->year)->first();
         }
-    
+       
         $tuanDangChon = $request->id_tuan;
-
         $tuan = Tuan::where('id_nam', $nam->id)
                     ->where('tuan', $tuanDangChon)
                     ->first();
-        
+       
+       
         if (!$tuan) {
             $tuan = Tuan::where('id_nam', $nam->id)
                         ->whereDate('ngay_bat_dau', '<=', $today)
                         ->whereDate('ngay_ket_thuc', '>=', $today)
                         ->first();
         }
+        
         if (!$tuan) {
-            return back()->with('error', 'Không tìm thấy tuần phù hợp.');
+           $tuan = Tuan::where('id_nam', $nam->id)
+                    ->first();
         }
         if ($request->action === 'prev') {
             $tuan = Tuan::where('id_nam', $nam->id)
