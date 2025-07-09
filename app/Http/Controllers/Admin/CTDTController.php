@@ -42,10 +42,11 @@ class CTDTController extends Controller
             $dsChuyenNganhCon = ChuyenNganh::where('id_chuyen_nganh_cha', $id_chuyen_nganh_cha)
             ->get();
         }
-
+        
         $dsNienKhoa = NienKhoa::orderByDesc('nam_bat_dau')->get();
 
         $ctdt = collect();
+        $ct_ctdt = collect();
         if ($dsChuyenNganhCha->isNotEmpty()) {
             $ctdtQuery = ChuongTrinhDaoTao::whereIn('id_chuyen_nganh', $dsChuyenNganhCha->pluck('id'));
 
@@ -57,17 +58,33 @@ class CTDTController extends Controller
 
             $ctdt = $ctdtQuery->orderByDesc('id')->get();
         }
-        $chuong_trinh_dao_tao = CHuongTrinhDaoTao::where('id_chuyen_nganh', $id_chuyen_nganh)->first();
-    
+        $chuong_trinh_dao_tao_md = CHuongTrinhDaoTao::where('id_chuyen_nganh', $id_chuyen_nganh_cha)->first();
+        
+        $chuong_trinh_dao_tao_cn = CHuongTrinhDaoTao::where('id_chuyen_nganh', $id_chuyen_nganh)->first();
+       
+        if ($chuong_trinh_dao_tao_md && $chuong_trinh_dao_tao_cn && $id_nien_khoa) {
+        $ct_ctdt_md = collect();
+        $ct_ctdt_cn = collect();
         $ct_ctdt = collect();
-        if ($chuong_trinh_dao_tao && $id_nien_khoa) {
-            $ct_ctdt = ChiTietChuongTrinhDaoTao::with(['monHoc', 'chuongTrinhDaoTao', 'hocKy'])
-                ->where('id_chuong_trinh_dao_tao', $chuong_trinh_dao_tao->id)
-                ->whereHas('hocKy', function ($q) use ($id_nien_khoa) {
-                    $q->where('id_nien_khoa', $id_nien_khoa);
-                })
-                ->get()
-                ->groupBy('id_hoc_ky');
+        
+        $ct_ctdt_md = ChiTietChuongTrinhDaoTao::with(['monHoc', 'chuongTrinhDaoTao', 'hocKy'])
+            ->where('id_chuong_trinh_dao_tao', $chuong_trinh_dao_tao_md->id)
+            ->whereHas('hocKy', function ($q) use ($id_nien_khoa) {
+                $q->where('id_nien_khoa', $id_nien_khoa);
+            })
+            ->get();
+        
+        $ct_ctdt_cn = $chuong_trinh_dao_tao_cn ? ChiTietChuongTrinhDaoTao::with(['monHoc', 'chuongTrinhDaoTao', 'hocKy'])
+            ->where('id_chuong_trinh_dao_tao', $chuong_trinh_dao_tao_cn->id)
+            ->whereHas('hocKy', function ($q) use ($id_nien_khoa) {
+                $q->where('id_nien_khoa', $id_nien_khoa);
+            })
+            ->get()
+            :collect();    
+           
+        $ct_ctdt = $ct_ctdt_md->merge($ct_ctdt_cn);
+        $ct_ctdt = $ct_ctdt->flatten(1);
+        $ct_ctdt = $ct_ctdt->groupBy('id_hoc_ky');
         }
 
         return view('admin.ctdt.index', compact(

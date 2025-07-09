@@ -77,80 +77,83 @@
                             $tongSoTiet += $dsMon->sum('so_tiet');
                         }
                     @endphp
-                    <div class="semester-card">
+                    @if ($ct_ctdt != collect())
+                        <div class="semester-card">
 
-                        <div class="summary-section">
-                            <div class="summary-header">
-                                <div class="summary-icon">📊</div>
-                                <h2 class="summary-title">Tổng Kết Chương Trình</h2>
-                            </div>
+                            <div class="summary-section">
+                                <div class="summary-header">
+                                    <div class="summary-icon">📊</div>
+                                    <h2 class="summary-title">Tổng Kết Chương Trình</h2>
+                                </div>
 
-                            <div class="summary-grid">
-                                <div class="summary-item">
-                                    <div class="summary-number">{{ $tongMonHoc }}</div>
-                                    <div class="summary-label">Tổng môn học</div>
-                                </div>
-                                <div class="summary-item">
-                                    <div class="summary-number">{{ $tongSoTiet }}</div>
-                                    <div class="summary-label">Tổng số tiết</div>
-                                </div>
-                                <div class="summary-item">
-                                    <div class="summary-number">{{ $tongSoTinChi }}</div>
-                                    <div class="summary-label">Tổng tín chỉ</div>
-                                </div>
-                                <div class="summary-item">
-                                    <div class="summary-number">{{ $tongHocKy }}</div>
-                                    <div class="summary-label">Số học kỳ</div>
+                                <div class="summary-grid">
+                                    <div class="summary-item">
+                                        <div class="summary-number">{{ $tongMonHoc }}</div>
+                                        <div class="summary-label">Tổng môn học</div>
+                                    </div>
+                                    <div class="summary-item">
+                                        <div class="summary-number">{{ $tongSoTiet }}</div>
+                                        <div class="summary-label">Tổng số tiết</div>
+                                    </div>
+                                    <div class="summary-item">
+                                        <div class="summary-number">{{ $tongSoTinChi }}</div>
+                                        <div class="summary-label">Tổng tín chỉ</div>
+                                    </div>
+                                    <div class="summary-item">
+                                        <div class="summary-number">{{ $tongHocKy }}</div>
+                                        <div class="summary-label">Số học kỳ</div>
+                                    </div>
                                 </div>
                             </div>
                         </div>
-                    </div>
 
-                    <div class="curriculum-grid" id="curriculumGrid">
+                        <div class="curriculum-grid" id="curriculumGrid">
 
-                        @foreach ($ct_ctdt as $hocKy => $danhSachMon)
-                            <div class="semester-card">
-                                <div class="semester-header">
-                                    <h3 class="semester-title">
-                                        {{ $ct_ctdt[$hocKy]->first()->hocKy->ten_hoc_ky ?? '---' }}
-                                    </h3>
-                                    <div class="semester-stats">
-                                        <div class="stat-item">
-                                            <div class="stat-icon">📚</div>
-                                            <span>{{ count($danhSachMon) }} môn học</span>
-                                        </div>
-                                        <div class="stat-item">
-                                            <div class="stat-icon">⏱️</div>
-                                            <span>{{ $danhSachMon->sum('so_tiet') }} tiết</span>
-                                        </div>
-                                        <div class="stat-item">
-                                            <div class="stat-icon">🏆</div>
-                                            <span>{{ $danhSachMon->sum('so_tin_chi') }}</span>
+                            @foreach ($ct_ctdt as $hocKy => $danhSachMon)
+                                <div class="semester-card">
+                                    <div class="semester-header">
+                                        <h3 class="semester-title">
+                                            {{ $ct_ctdt[$hocKy]->first()->hocKy->ten_hoc_ky ?? '---' }}
+                                        </h3>
+                                        <div class="semester-stats">
+                                            <div class="stat-item">
+                                                <div class="stat-icon">📚</div>
+                                                <span>{{ count($danhSachMon) }} môn học</span>
+                                            </div>
+                                            <div class="stat-item">
+                                                <div class="stat-icon">⏱️</div>
+                                                <span>{{ $danhSachMon->sum('so_tiet') }} tiết</span>
+                                            </div>
+                                            <div class="stat-item">
+                                                <div class="stat-icon">🏆</div>
+                                                <span>{{ $danhSachMon->sum('so_tin_chi') }}</span>
+                                            </div>
                                         </div>
                                     </div>
-                                </div>
-                                <table class="subjects-table">
-                                    <thead class="table-header">
-                                        <tr>
-                                            <th>Tên môn học</th>
-                                            <th class="text-center">Số tiết</th>
-                                            <th class="text-center">Số tín chỉ</th>
-                                        </tr>
-                                    </thead>
-                                    <tbody class="table-body">
-                                        @foreach ($danhSachMon as $ct)
+                                    <table class="subjects-table">
+                                        <thead class="table-header">
                                             <tr>
-                                                <td class="subject-name">{{ $ct->monHoc->ten_mon ?? 'Chưa có' }}</td>
-                                                <td class="subject-hours">{{ $ct->so_tiet }}</td>
-                                                <td class="subject-credit">{{ $ct->so_tin_chi }}</td>
+                                                <th>Tên môn học</th>
+                                                <th class="text-center">Số tiết</th>
+                                                <th class="text-center">Số tín chỉ</th>
                                             </tr>
-                                        @endforeach
-                                    </tbody>
-                                </table>
-                            </div>
-                        @endforeach
-                    </div>
-
+                                        </thead>
+                                        <tbody class="table-body">
+                                            @foreach ($danhSachMon as $ct)
+                                                <tr>
+                                                    <td class="subject-name">{{ $ct->monHoc->ten_mon ?? 'Chưa có' }}</td>
+                                                    <td class="subject-hours">{{ $ct->so_tiet }}</td>
+                                                    <td class="subject-credit">{{ $ct->so_tin_chi }}</td>
+                                                </tr>
+                                            @endforeach
+                                        </tbody>
+                                    </table>
+                                </div>
+                            @endforeach
+                        </div>
+                    @else
+                        <h6 class="text-center"><em>Chưa có dữ liệu ở niên khóa này!</em></h6>
+                    @endif
                 </div>
             </div>
         </div>
