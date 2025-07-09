@@ -99,10 +99,9 @@
                                     @endforeach
                                 </select>
                             </li>
-
-                            <li class="d-flex justify-content-between align-items-center col-8">
+                            <li class="d-flex justify-content-between align-items-center col-8 ">
                                 <strong class="col-6">Giảng viên: </strong>
-                                <select class="form-select col-2" name="id_giao_vien">
+                                <select class="form-select col-2 select-teacher" name="id_giao_vien">
                                     <option value="">-- Chọn giảng viên --</option>
                                     @foreach ($dsgv as $gv)
                                         <option value="{{ $gv->id }}">{{ $gv->hoSo->ho_ten }}</option>
@@ -188,10 +187,7 @@
         const classCards = document.querySelectorAll('.class-card');
         const modalElement = document.getElementById('classDetailModal');
         const modal = new bootstrap.Modal(modalElement);
-
-
-
-
+        const select_teacher = document.querySelector('.select-teacher');
         const ID = document.getElementById('id');
         const id_delete = document.getElementById('id_delete');
         const subjectName = document.getElementById('subjectName');
@@ -201,10 +197,6 @@
         const teacher = document.getElementById('teacher');
         const date = document.getElementById('date');
         const day = document.getElementById('day');
-
-
-
-
         const toggle = document.getElementById('dropdown-toggle');
         const menu = document.getElementById('dropdown-menu');
         const chevron = document.getElementById('chevron');
@@ -212,16 +204,25 @@
         const container = document.getElementById('dropdown-container');
         const hiddenInput = document.getElementById('selected-hoc-ky');
 
-
         document.addEventListener('DOMContentLoaded', function() {
-
             classCards.forEach(card => {
                 card.addEventListener('click', function() {
                     subjectName.textContent = this.dataset.subject || '---';
                     className.textContent = this.dataset.class || '---';
                     period.textContent = this.dataset.period || '---';
                     room.textContent = this.dataset.room || '---';
-                    teacher.textContent = this.dataset.teacher || '---';
+                    const teacherName = this.dataset.teacher;
+                    console.log(select_teacher);
+
+                    if (teacherName) {
+                        teacher.textContent = teacherName;
+                        select_teacher.style.display = 'none';
+                        console.log(select_teacher);
+                        
+                    } else {
+                        teacher.textContent = '---';
+                        select_teacher.style.display = 'flex';
+                    }
                     date.textContent = this.dataset.date || '---';
                     ID.value = this.dataset.id || '---';
                     id_delete.value = this.dataset.tkb || '---';
