@@ -24,44 +24,42 @@
 
                                 {{-- Dropdown Ngành học - luôn hiển thị --}}
                                 <label class="form-label fw-bold">Ngành học:</label>
-                                <select name="id_nganh_hoc" class="form-control" onchange="this.form.submit()">
-                                    <option value="">-- Chọn ngành --</option>
-                                    @foreach ($dsNganh as $nganh)
-                                        <option value="{{ $nganh->id }}"
-                                            {{ $id_nganh_hoc == $nganh->id ? 'selected' : '' }}>
-                                            {{ $nganh->ten_nganh }}
+                                <label class="form-label fw-bold">Ngành học (cha):</label>
+                                <select name="id_chuyen_nganh_cha" class="form-control" onchange="this.form.submit()">
+                                    <option value="">-- Chọn ngành cha --</option>
+                                    @foreach ($dsChuyenNganhCha as $cha)
+                                        <option value="{{ $cha->id }}"
+                                            {{ $id_chuyen_nganh_cha == $cha->id ? 'selected' : '' }}>
+                                            {{ $cha->ten_chuyen_nganh }}
                                         </option>
                                     @endforeach
                                 </select>
 
-                                {{-- Dropdown CTĐT - chỉ hiện khi đã chọn ngành --}}
-                                @if ($id_nganh_hoc && $ctdt->isNotEmpty())
-                                    <label class="form-label fw-bold mt-2">Chương trình đào tạo:</label>
-                                    <select name="id_chuong_trinh_dao_tao" class="form-control"
-                                        onchange="this.form.submit()">
-                                        <option value="">-- Chọn CTĐT --</option>
-                                        @foreach ($ctdt as $c)
-                                            <option value="{{ $c->id }}"
-                                                {{ $id_chuong_trinh_dao_tao == $c->id ? 'selected' : '' }}>
-                                                {{ $c->ten_chuong_trinh_dao_tao }}
+
+                                @if ($dsChuyenNganhCon->isNotEmpty())
+                                    <label class="form-label fw-bold mt-2">Ngành học (con):</label>
+                                    <select name="id_chuyen_nganh" class="form-control" onchange="this.form.submit()">
+                                        <option value="">-- Chọn ngành con --</option>
+                                        @foreach ($dsChuyenNganhCon as $con)
+                                            <option value="{{ $con->id }}"
+                                                {{ $id_chuyen_nganh == $con->id ? 'selected' : '' }}>
+                                                {{ $con->ten_chuyen_nganh }}
                                             </option>
                                         @endforeach
                                     </select>
                                 @endif
 
-                                {{-- Dropdown Niên khóa - chỉ hiện khi đã chọn CTĐT --}}
-                                @if ($id_nganh_hoc && $id_chuong_trinh_dao_tao)
-                                    <label class="form-label fw-bold mt-2">Niên khóa:</label>
-                                    <select name="id_nien_khoa" class="form-control" onchange="this.form.submit()">
-                                        <option value="">-- Chọn niên khóa --</option>
-                                        @foreach ($dsNienKhoa as $nk)
-                                            <option value="{{ $nk->id }}"
-                                                {{ $id_nien_khoa == $nk->id ? 'selected' : '' }}>
-                                                {{ $nk->ten_nien_khoa }}
-                                            </option>
-                                        @endforeach
-                                    </select>
-                                @endif
+
+                                <label class="form-label fw-bold mt-2">Niên khóa:</label>
+                                <select name="id_nien_khoa" class="form-control" onchange="this.form.submit()">
+                                    <option value="">-- Chọn niên khóa --</option>
+                                    @foreach ($dsNienKhoa as $nk)
+                                        <option value="{{ $nk->id }}"
+                                            {{ $id_nien_khoa == $nk->id ? 'selected' : '' }}>
+                                            {{ $nk->ten_nien_khoa }}
+                                        </option>
+                                    @endforeach
+                                </select>
 
                             </form>
 
@@ -108,9 +106,9 @@
                             </div>
                         </div>
                     </div>
-                    <!-- Curriculum Grid -->
+
                     <div class="curriculum-grid" id="curriculumGrid">
-                        <!-- Semester 1 -->
+
                         @foreach ($ct_ctdt as $hocKy => $danhSachMon)
                             <div class="semester-card">
                                 <div class="semester-header">

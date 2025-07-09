@@ -31,59 +31,53 @@ class CTDTController extends Controller
 
     public function index(Request $request)
     {
-        $id_nganh_hoc = $request->input('id_nganh_hoc');
+        $id_chuyen_nganh_cha = $request->input('id_chuyen_nganh_cha');
+        $id_chuyen_nganh = $request->input('id_chuyen_nganh');
         $id_nien_khoa = $request->input('id_nien_khoa');
-        $id_chuong_trinh_dao_tao = $request->input('id_chuong_trinh_dao_tao');
 
-        $dsNganh = ChuyenNganh::all();
+        $dsChuyenNganhCha = ChuyenNganh::whereNull('id_chuyen_nganh_cha')->get();
+        
+        $dsChuyenNganhCon = collect();
+        if ($id_chuyen_nganh_cha) {
+            $dsChuyenNganhCon = ChuyenNganh::where('id_chuyen_nganh_cha', $id_chuyen_nganh_cha)
+            ->get();
+        }
+
         $dsNienKhoa = NienKhoa::orderByDesc('nam_bat_dau')->get();
 
-        $chuyenNganhs = collect();
-        if ($id_nganh_hoc) {
-            $chuyenNganhs = ChuyenNganh::where('id_nganh_hoc', $id_nganh_hoc)->get();
-        }
-
-        $nienkhoa = null;
-        if ($id_nien_khoa) {
-            $nienkhoa = NienKhoa::find($id_nien_khoa);
-        }
-
         $ctdt = collect();
-        if ($chuyenNganhs->isNotEmpty()) {
-            $ctdtQuery = ChuongTrinhDaoTao::whereIn('id_chuyen_nganh', $chuyenNganhs->pluck('id'));
+        if ($dsChuyenNganhCha->isNotEmpty()) {
+            $ctdtQuery = ChuongTrinhDaoTao::whereIn('id_chuyen_nganh', $dsChuyenNganhCha->pluck('id'));
 
-            if ($nienkhoa) {
-                $ctdtQuery->whereHas('chiTietChuongTrinhDaoTao.hocKy', function ($q) use ($nienkhoa) {
-                    $q->where('id_nien_khoa', $nienkhoa->id);
+            if ($id_nien_khoa) {
+                $ctdtQuery->whereHas('chiTietChuongTrinhDaoTao.hocKy', function ($q) use ($id_nien_khoa) {
+                    $q->where('id_nien_khoa', $id_nien_khoa);
                 });
             }
 
             $ctdt = $ctdtQuery->orderByDesc('id')->get();
         }
-
-        if (!$id_chuong_trinh_dao_tao && $ctdt->isNotEmpty()) {
-            $id_chuong_trinh_dao_tao = $ctdt->first()->id;
-        }
-
+        $chuong_trinh_dao_tao = CHuongTrinhDaoTao::where('id_chuyen_nganh', $id_chuyen_nganh)->first();
+    
         $ct_ctdt = collect();
-        if ($id_chuong_trinh_dao_tao && $nienkhoa) {
+        if ($chuong_trinh_dao_tao && $id_nien_khoa) {
             $ct_ctdt = ChiTietChuongTrinhDaoTao::with(['monHoc', 'chuongTrinhDaoTao', 'hocKy'])
-                ->where('id_chuong_trinh_dao_tao', $id_chuong_trinh_dao_tao)
-                ->whereHas('hocKy', function ($q) use ($nienkhoa) {
-                    $q->where('id_nien_khoa', $nienkhoa->id);
+                ->where('id_chuong_trinh_dao_tao', $chuong_trinh_dao_tao->id)
+                ->whereHas('hocKy', function ($q) use ($id_nien_khoa) {
+                    $q->where('id_nien_khoa', $id_nien_khoa);
                 })
                 ->get()
                 ->groupBy('id_hoc_ky');
         }
 
         return view('admin.ctdt.index', compact(
-            'dsNganh',
+            'dsChuyenNganhCha',
+            'dsChuyenNganhCon',
             'dsNienKhoa',
-            'chuyenNganhs',
-            'ctdt',
-            'id_nganh_hoc',
+            'id_chuyen_nganh_cha',
+            'id_chuyen_nganh',
             'id_nien_khoa',
-            'id_chuong_trinh_dao_tao',
+            'ctdt',
             'ct_ctdt'
         ));
     }
