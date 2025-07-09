@@ -11,6 +11,7 @@
         "laravel/sanctum": "^4.1",
         "laravel/tinker": "^2.10.1",
         "livewire/livewire": "^3.6",
+        "maatwebsite/excel": "^3.1",
         "nesbot/carbon": "^3.9",
         "spatie/laravel-permission": "^6.18",
         "yajra/laravel-datatables-oracle": "^12.3"

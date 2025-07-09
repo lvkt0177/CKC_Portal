@@ -13,3 +13,5 @@ Route::get('/quan-ly-lich-thi/{lop}', [LichThiController::class, 'xemLichThi'])-
 Route::get('/tao-lich-thi/{lop}', [LichThiController::class, 'create'])->name('lichthi.create');
 
 Route::post('/tao-lich-thi/{lop}', [LichThiController::class, 'store'])->name('lichthi.store');
+
+Route::delete('/xoa-lich-thi/{lichThi}', [LichThiController::class, 'destroy'])->name('lichthi.destroy');

@@ -11,7 +11,6 @@ use App\Http\Requests\LichThi\LichThiRequest;
 //Models
 use Illuminate\Support\Facades\Auth;
 use App\Models\Lop;
-
 use App\Models\DanhSachHocPhan;
 use App\Models\Phong;
 use App\Models\LopHocPhan;
@@ -30,6 +29,7 @@ use App\Models\LichThi;
 use \Spatie\Permission\Models\Role;
 use \Spatie\Permission\Models\Permission;
 use App\Acl\Acl;
+use App\Services\LichThiService;
 
 class LichThiController extends Controller
 {
@@ -130,32 +130,42 @@ class LichThiController extends Controller
         return view('admin.lichthi.show', compact('ngayTrongTuan','lichThi','lop','dsHocKy','dsTuan','hocKy','tuanDangChon'));
     }
 
-    public function xemLichThi(Request $request,Lop $lop)
+    public function xemLichThi(Request $request, Lop $lop)
     {
-
-        $dsTuan = LichThi:: with(['lopHocPhan', 'giamThi1.hoSo', 'giamThi2.hoSo', 'phong'])
-                ->whereHas('lopHocPhan', function ($query) use ($lop) {
-                    $query->where('id_lop', $lop->id);
-                })
-            ->orderBy('ngay_thi', 'asc')
+        $tuanDaCoLich = LichThi::whereHas('lopHocPhan', function ($query) use ($lop) {
+                $query->where('id_lop', $lop->id);
+            })
+            ->select('id_tuan')
+            ->distinct()
+            ->with('tuan')
             ->get();
-
-        $idTuan = $request->id_tuan; 
-        if(!$idTuan){
-            $idTuan = $dsTuan->first()->id_tuan;
+    
+        $idTuan = $request->id_tuan;
+    
+        if (!$idTuan && $tuanDaCoLich->isNotEmpty()) {
+            $idTuan = $tuanDaCoLich->first()->id_tuan;
         }
+    
         $lichThi = LichThi::with(['lopHocPhan', 'giamThi1.hoSo', 'giamThi2.hoSo', 'phong'])
-                ->where('id_tuan', $idTuan)
-                ->whereHas('lopHocPhan', function ($query) use ($lop) {
-                    $query->where('id_lop', $lop->id);
-                })
+            ->where('id_tuan', $idTuan)
+            ->whereHas('lopHocPhan', function ($query) use ($lop) {
+                $query->where('id_lop', $lop->id);
+            })
             ->orderBy('ngay_thi', 'asc')
+            ->orderBy('gio_bat_dau', 'asc')
             ->get();
-          
-        $dsNgay = $lichThi->groupBy('ngay_thi'); 
-        
-        return view('admin.lichthi.show', compact('dsNgay', 'lichThi','lop','dsTuan'));
+    
+        $dsNgay = $lichThi->groupBy('ngay_thi');
+    
+        return view('admin.lichthi.show', compact(
+            'dsNgay',
+            'lichThi',
+            'lop',
+            'tuanDaCoLich',
+            'idTuan'
+        ));
     }
+    
     public function create(Request $request,Lop $lop)
     {
         $nienKhoa = $lop->nienKhoa;
@@ -227,9 +237,7 @@ class LichThiController extends Controller
     }
     public function store(Lop $lop,LichThiRequest $request)
     {
-        
         $data=$request->validated();
-        
         $tuan = Tuan::find($data['id_tuan']);
             
         if (!$tuan) {
@@ -238,9 +246,9 @@ class LichThiController extends Controller
 
         $data['ngay_thi'] = Carbon::parse($tuan->ngay_bat_dau)->addDays($data['thu'] - 2)->format('Y-m-d');
         
-        if ($this->isTrungLich($data)==true)  {
+        if ($this->isTrungLich($data) == true)  {
             return redirect()->route('giangvien.lichthi.create', ['lop' => $lop])
-                ->with('error', 'Lịch thi bị trùng. Vui lòng kiểm tra lại.');
+                ->with('error', 'Lịch thi đã bị trùng. Vui lòng kiểm tra lại các thông tin của lịch thi khác.');
         }
         
         $lichThi = LichThi::create($data);
@@ -252,23 +260,66 @@ class LichThiController extends Controller
     }
     public function isTrungLich($data)
     {
-        $trungLHP = LichThi::where('id_lop_hoc_phan', $data['id_lop_hoc_phan'])
-        ->where('lan_thi', $data['lan_thi'])
-        ->exists();
-        
-        if(!$trungLHP){
+        $newStart = Carbon::parse($data['gio_bat_dau']);
+        $newEnd = (clone $newStart)->addMinutes((int) $data['thoi_gian_thi']);
 
-            $trungPhong = LichThi::where('id_phong_thi', $data['id_phong_thi'])
-            ->where('ngay_thi', $data['ngay_thi'])
-            ->where('gio_bat_dau', $data['gio_bat_dau'])
-            ->where('id_tuan', $data['id_tuan'])
+        $trungLHP = LichThi::where('id_lop_hoc_phan', $data['id_lop_hoc_phan'])
+            ->where('lan_thi', $data['lan_thi'])
             ->exists();
-            if(!$trungPhong){
-                return false;
-            }
+
+        if ($trungLHP) {
             return true;
         }
+
+        $lichPhong = LichThi::where('id_phong_thi', $data['id_phong_thi'])
+            ->where('ngay_thi', $data['ngay_thi'])
+            ->where('id_tuan', $data['id_tuan'])
+            ->get();
+
+        foreach ($lichPhong as $lich) {
+            $oldStart = Carbon::parse($lich->gio_bat_dau);
+            $oldEnd = (clone $oldStart)->addMinutes((int) $lich->thoi_gian_thi);
+
+            if ($newStart->lt($oldEnd) && $newEnd->gt($oldStart)) {
+                return true;
+            }
+        }
+
+        $lichTrongNgay = LichThi::where('ngay_thi', $data['ngay_thi'])
+            ->where('id_tuan', $data['id_tuan'])
+            ->get();
+
+        foreach ($lichTrongNgay as $lich) {
+            $oldStart = Carbon::parse($lich->gio_bat_dau);
+            $oldEnd = (clone $oldStart)->addMinutes((int) $lich->thoi_gian_thi);
+
+            $trungGio = $newStart->lt($oldEnd) && $newEnd->gt($oldStart);
+
+            if ($trungGio) {
+                $giamThi1 = $data['id_giam_thi_1'];
+                $giamThi2 = $data['id_giam_thi_2'] ?? null;
+
+                if (
+                    $lich->id_giam_thi_1 == $giamThi1 ||
+                    $lich->id_giam_thi_2 == $giamThi1 ||
+                    ($giamThi2 && (
+                        $lich->id_giam_thi_1 == $giamThi2 ||
+                        $lich->id_giam_thi_2 == $giamThi2
+                    ))
+                ) {
+                    return true;
+                }
+            }
+        }
+
         return false;
-    }   
-    
+    }
+
+    public function destroy(LichThi $lichThi)
+    {
+        if ($lichThi->delete()) {
+            return redirect()->back()->with('success', 'Xóa lịch thi thành công.');
+        }
+        
+    }
 }

@@ -4,8 +4,6 @@ namespace App\Http\Controllers\Admin;
 
 use App\Http\Controllers\Controller;
 use Illuminate\Http\Request;
-
-//Model
 use App\Models\SinhVien;
 use App\Models\LopHocPhan;
 use App\Models\HoSo;
@@ -17,6 +15,9 @@ use App\Enum\NopBangDiemStatus;
 use \Spatie\Permission\Models\Role;
 use \Spatie\Permission\Models\Permission;
 use App\Acl\Acl;
+use App\Exports\BangDiemExport;
+use Maatwebsite\Excel\Facades\Excel;
+use Illuminate\Support\Str;
 
 class DiemMonHocController extends Controller
 {
@@ -173,5 +174,11 @@ class DiemMonHocController extends Controller
             }
         }
         return true;
+    }
+
+    public function exportBangDiem(LopHocPhan $lopHocPhan)
+    {
+        $tieuDeFile = 'bang-diem-' . Str::slug($lopHocPhan->ten_hoc_phan) . '.xlsx';
+        return Excel::download(new BangDiemExport($lopHocPhan), $tieuDeFile);
     }
 }

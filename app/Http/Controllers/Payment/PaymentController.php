@@ -59,7 +59,7 @@ class PaymentController extends Controller
         }
         $idSinhVien = Auth::guard('student')->id();
 
-        $exists = DanhSachHocPhan::where('id_sinh_vien', $sinhVien->id)
+        $exists = DanhSachHocPhan::where('id_sinh_vien', $idSinhVien)
         ->where('id_lop_hoc_phan', $lopHocPhan->id)
         ->exists();
         

@@ -393,7 +393,6 @@ class LichHocController extends Controller
     public function update(UpdateLichHocRequest $request)
     {
         $data = $request->validated();
-        
         $idLopHocPhan = $data['id_lop_hoc_phan'];
         $idGiaoVien   = $data['id_giao_vien'];
         $idLop        = $data['id_lop'];
@@ -406,11 +405,9 @@ class LichHocController extends Controller
         $tuan = Tuan::find($tuanId);
 
         $lopHocPhan = LopHocPhan::find($idLopHocPhan);
-        $thoikhoabieu = ThoiKhoaBieu::find($idLopHocPhan);
        
         $tkb = ThoiKhoaBieu::where('id_tuan', $tuanId)
             ->whereDate('ngay',$ngaybandau) ->first();
-       
         if(!$tkb)
         {
             $tkb = ThoiKhoaBieu::where('id_tuan', $tuanId)
@@ -428,34 +425,28 @@ class LichHocController extends Controller
                    ->where('id_tuan', $tuanId)
                    ->whereDate('ngay', Carbon::parse($ngaybandau)->format('Y-m-d'))
                    ->first();
-        
-
-        $dd =  ThoiKhoaBieu::where('ngay', $ngay)
-                    ->where('tiet_bat_dau', $thoiKhoaBieu->tiet_bat_dau)
-                    ->where('tiet_ket_thuc', $thoiKhoaBieu->tiet_ket_thuc)
                     
-                    ->get();
-        dd($dd);
-        if($idGiaoVien){
-            if($tietBatDau||$tietKetThuc){
-                $gvTrung = $this->kiemTraTrungTiet(ThoiKhoaBieu::where('ngay', $ngay)
-                    ->where('tiet_bat_dau', $thoiKhoaBieu->tiet_bat_dau)
-                    ->where('tiet_ket_thuc', $thoiKhoaBieu->tiet_ket_thuc)
-                    ->whereHas('lopHocPhan', function ($q) use ($idGiaoVien) {
-                        $q->where('id_giang_vien', $idGiaoVien);
-                    }),
-                    $tietBatDau,
-                    $tietKetThuc)
-                    ->exists();
-                  
-                if ($gvTrung) {
-                    return redirect()->back()->with('error', 'Giảng viên đã có lịch học trong tiết này.');
-                }
+        if ($idGiaoVien && ($tietBatDau || $tietKetThuc)) {
+            $gvTrung = ThoiKhoaBieu::where('ngay', $thoiKhoaBieu->ngay)
+                ->where(function ($q) use ($tietBatDau, $tietKetThuc) {
+                    $q->where('tiet_bat_dau', '<=', $tietKetThuc)
+                    ->where('tiet_ket_thuc', '>=', $tietBatDau);
+                })
+                ->whereHas('lopHocPhan', function ($q) use ($idGiaoVien, $lopHocPhan) {
+                    $q->where('id_giang_vien', $idGiaoVien)
+                    ->where('id', '!=', $lopHocPhan->id);
+                })
+                ->exists();
+
+            if ($gvTrung) {
+                return redirect()->back()->with('error', 'Giảng viên đã có lịch học trùng vào thời gian này.');
             }
-                $lopHocPhan->update([
+
+            $lopHocPhan->update([
                 'id_giang_vien' => $idGiaoVien,
             ]);
-        }               
+        }
+       
 
 
         if($idPhong){  

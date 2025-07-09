@@ -31,8 +31,6 @@ class LichThiRequest extends FormRequest
             'thoi_gian_thi' => 'required|integer|min:1',
             'id_phong_thi' => 'required|exists:phong,id',
             'lan_thi' => 'required|integer|in:1,2',
-            
-            
         ];
     }
     public function messages(): array
@@ -67,5 +65,17 @@ class LichThiRequest extends FormRequest
             'lan_thi.in' => 'Lần thi phải là 1 hoặc 2.',
         ];
 
+    }
+
+    public function withValidator($validator)
+    {
+        $validator->after(function ($validator) {
+            $gt1 = $this->input('id_giam_thi_1');
+            $gt2 = $this->input('id_giam_thi_2');
+
+            if (!empty($gt1) && !empty($gt2) && $gt1 == $gt2) {
+                $validator->errors()->add('id_giam_thi_2', 'Giám thị 2 phải khác giám thị 1.');
+            }
+        });
     }
 }

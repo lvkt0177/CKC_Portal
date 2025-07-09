@@ -15,7 +15,14 @@
                     </div>
 
                     <div class="card-body">
+                        
                         <div class="">
+                            <div class="text-end my-3">
+                                <form action="{{ route('giangvien.diemmonhoc.export', $lop_HP) }}" method="get">
+                                    @csrf
+                                    <button class="btn btn-success">Xuất excel</button>
+                                </form>
+                            </div>
                             @if (!is_null($nextOption) && $nextOption->value != 4)
                                 <form action="{{ route('giangvien.diemmonhoc.updateTrangThai', $lop_HP) }}" method="POST"
                                     class="mb-2" data-confirm>
@@ -38,6 +45,7 @@
                                     <strong>Thông báo:</strong> Lớp học phần này đã hoàn thành.
                                 </div>
                             @endif
+                           
 
                             <form action="{{ route('giangvien.diemmonhoc.cap-nhat-diem') }}" method="POST" data-confirm>
                                 @csrf
@@ -70,9 +78,6 @@
                                                     <td>{{ $loop->parent->iteration }}</td>
                                                     <td>{{ $sv->ma_sv }}</td>
                                                     <td>{{ $sv->hoSo->ho_ten }}</td>
-
-
-
                                                     <td>
                                                         <span class="score-view">{{ $dshp->diem_chuyen_can }}</span>
                                                         <input type="number" step="0.1" min="0" max="10"
@@ -81,8 +86,6 @@
                                                             class="form-control score-input" style="display:none;"
                                                             {{ $nextOption->value - 1 == 0 ? '' : 'readonly' }} />
                                                     </td>
-
-
                                                     <td>
                                                         <span class="score-view">{{ $dshp->diem_qua_trinh }}</span>
                                                         <input type="number" step="0.1" min="0" max="10"
@@ -91,7 +94,6 @@
                                                             class="form-control score-input" style="display:none;"
                                                             {{ $nextOption->value - 1 == 0 ? '' : 'readonly' }} />
                                                     </td>
-
                                                     <td>
                                                         <span class="score-view">{{ $dshp->diem_thi_lan_1 }}</span>
                                                         <input type="number" step="0.1" min="0" max="10"
@@ -100,8 +102,6 @@
                                                             class="form-control score-input" style="display:none;"
                                                             {{ $nextOption->value - 1 == 1 ? '' : 'readonly' }} />
                                                     </td>
-
-
                                                     <td>
                                                         <span class="score-view">{{ $dshp->diem_thi_lan_2 }}</span>
                                                         <input type="number" step="0.1" min="0" max="10"
@@ -110,13 +110,8 @@
                                                             class="form-control score-input" style="display:none;"
                                                             {{ $nextOption->value - 1 == 2 ? '' : 'readonly' }} />
                                                     </td>
-
-
                                                     <td>{{ $dshp->diem_tong_ket ?? '' }}</td>
                                                     <td>{{ $dshp->loai_hoc == 0 ? 'Chính quy' : 'Học ghép' }}</td>
-
-
-
                                                 </tr>
                                             @endforeach
                                         @empty
