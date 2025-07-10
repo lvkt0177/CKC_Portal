@@ -4,6 +4,7 @@ use Illuminate\Support\Facades\Route;
 use App\Acl\Acl;
 use App\Http\Controllers\Admin\BienBanController;
 
+Route::get('/bien-ban-shcn/phong-ctct-quan-ly-bien-ban', [BienBanController::class, 'CTCT_Manage'])->name('bienbanshcn.manage');
 Route::get('/bienbanshcn/{lop}', [BienBanController::class, 'index'])->name('bienbanshcn.index');
 Route::get('/bienbanshcn/create/{lop}', [BienBanController::class, 'create'])->name('bienbanshcn.create');
 Route::post('/bienbanshcn/store/{lop}', [BienBanController::class, 'store'])->name('bienbanshcn.store');

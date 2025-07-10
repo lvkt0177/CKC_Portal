@@ -39,7 +39,7 @@
                                         <td><span class="badge bg-{{ $data->trang_thai->getBadge() }}">{{ $data->trang_thai->getLabel() }}</span></td>
                                         <td>
                                             @if($data->trang_thai->value == 0)
-                                                <form action="{{ route('giangvien.capmatkhausinhvien.update', $data) }}" method="post">
+                                                <form action="{{ route('giangvien.capmatkhausinhvien.update', $data) }}" method="post" data-confirm>
                                                     @csrf
                                                     @method('PUT')
                                                     <button type="submit" class="btn btn-warning">Duyệt</button>

@@ -67,7 +67,9 @@ class BienBanController extends Controller
      */
     public function store(BienBanRequest $request, Lop $lop, BienBanService $bienBanService)
     {
-        $result = $bienBanService->storeBienBanVaChiTiet($request->all(), $lop);
+        $data = $request->validated();
+        $data['trang_thai'] = BienBanStatus::GIANGVIEN;
+        $result = $bienBanService->storeBienBanVaChiTiet($data, $lop);
         
         if($result) {
             return response()->json([
@@ -166,13 +168,30 @@ class BienBanController extends Controller
 
     public function confirmBienBan(BienBanSHCN $bienBanSHCN)
     {
-        $bienBanSHCN->trang_thai = BienBanStatus::ACTIVE;
+        if($bienBanSHCN->trang_thai == BienBanStatus::CTCT){
+            return response()->json([
+                'status' => 'error',
+                'message' => 'Cập nhật thất bại'
+            ]);
+        }
+        
+        $bienBanSHCN->trang_thai = BienBanStatus::CTCT;
         $bienBanSHCN->save();
 
         return response()->json([
-            'status' => 'success',
-            'message' => 'Xác nhận biên bản thành công',
-            'data' => $bienBanSHCN,
+            'status' => 'error',
+            'message' => 'Gửi biên bản tới Phòng Công Tác Chính Trị thành công!'
+        ]);
+    }
+
+    public function CTCT_Manage(Request $request)
+    {
+        $bienBanSHCN = BienBanSHCN::where('trang_thai', BienBanStatus::CTCT)
+            ->orderBy('id_tuan', 'desc');
+
+        return response()->json([
+            'status' => 'error',
+            'data' => $bienBanSHCN
         ]);
     }
 }

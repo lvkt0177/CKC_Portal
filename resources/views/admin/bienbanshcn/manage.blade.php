@@ -2,6 +2,11 @@
 
 @section('title', 'Biên bản sinh hoạt chủ nhiệm')
 
+@section('css')
+    <link href="https://cdn.jsdelivr.net/npm/select2@4.1.0-rc.0/dist/css/select2.min.css" rel="stylesheet" />
+    <link href="https://cdn.jsdelivr.net/npm/select2-bootstrap-5-theme@1.3.0/dist/select2-bootstrap-5-theme.min.css" rel="stylesheet" />
+@endsection
+
 @section('content')
 
     <div class="container-fluid teams-section">
@@ -10,12 +15,33 @@
             <div class="col-md-12">
                 <div class="card shadow-sm teams-section">
                     <div class="card-header d-flex justify-content-between align-items-center">
-                        <h3 class="card-title mb-0"> Danh sách biên bản sinh hoạt chủ nhiệm - Lớp {{ $lop->ten_lop }} </h3>
-                        <div class="">
-                            <a href="{{ route('giangvien.bienbanshcn.create', $lop) }}" target="_blank" class="btn btn-add"><i
-                                    class="fa fa-plus" aria-hidden="true"></i> Lập biên bản SHCN</a>
-                            <a href="{{ route('giangvien.lop.index') }}" class="btn btn-back">Quay lại</a>
-                        </div>
+                        <h3 class="card-title mb-0"> Quản lý biên bản Sinh Hoạt Chủ Nhiệm của các lớp</h3>
+                    </div>
+
+                    {{-- Bộ lọc --}}
+                    <div class="my-3">
+                        <form action="{{ route('giangvien.bienbanshcn.manage') }}" method="GET">
+                            <div class="row">
+                                <div class="col-md-12">
+                                    <div class="form-group">
+                                        <label for="lop">Theo Lớp</label>
+                                        <select name="lop[]" id="lop" class="form-control select2" multiple>
+                                            @foreach ($lops as $lop)
+                                                <option value="{{ $lop->id }}"
+                                                    {{ collect(request()->input('lop'))->contains($lop->id) ? 'selected' : '' }}>
+                                                    {{ $lop->ten_lop }}
+                                                </option>
+                                            @endforeach
+                                        </select>
+                                        
+                                    </div>
+                                </div>
+                            </div>
+                            <div class="text-end my-3">
+                                <button class="btn btn-primary">Tìm kiếm</button>
+                            </div>
+                        </form>
+                        
                     </div>
 
                     <div class="teams-section">
@@ -26,6 +52,7 @@
                                     <th>Tiêu đề</th>
                                     <th>Giáo viên chủ nhiệm</th>
                                     <th>Thư ký</th>
+                                    <th>Lớp</th>
                                     <th>Tuần</th>
                                     <th>Ngày tạo</th>
                                     <th>Trạng thái</th>
@@ -39,6 +66,7 @@
                                         <td>{{ $bb->tieu_de }}</td>
                                         <td>{{ $bb->gvcn->hoSo->ho_ten }}</td>
                                         <td>{{ $bb->thuky->hoSo->ho_ten }}</td>
+                                        <td>{{ $bb->lop->ten_lop }}</td>
                                         <td>Tuần {{ $bb->tuan->tuan }}</td>
                                         <td>{{ $bb->created_at }}</td>
                                         <td>{{ $bb->trang_thai->getLabel() }}</td>
@@ -50,16 +78,16 @@
                                                     class="btn btn-warning mx-1"><i class="fa fa-pencil"
                                                         aria-hidden="true"></i></a>
                                                 {{-- Duyệt --}}
-                                                <form action="{{ route('giangvien.bienbanshcn.confirm', $bb) }}" data-confirm
-                                                    method="POST">
+                                                <form action="{{ route('giangvien.bienbanshcn.confirm', $bb) }}"
+                                                    data-confirm method="POST">
                                                     @csrf
-                                                    <button type="submit" class="btn btn-success"><i class="fa fa-paper-plane"
-                                                            aria-hidden="true"></i></button>
+                                                    <button type="submit" class="btn btn-success"><i
+                                                            class="fa fa-paper-plane" aria-hidden="true"></i></button>
                                                 </form>
 
                                                 {{-- Huy --}}
-                                                <form action="{{ route('giangvien.bienbanshcn.destroy', $bb) }}" data-confirm
-                                                    method="POST">
+                                                <form action="{{ route('giangvien.bienbanshcn.destroy', $bb) }}"
+                                                    data-confirm method="POST">
                                                     @csrf
                                                     @method('DELETE')
                                                     <button type="submit" class="btn btn-danger ms-1"><i
@@ -84,12 +112,26 @@
     @endsection
 
     @section('js')
+        <script src="https://cdnjs.cloudflare.com/ajax/libs/jquery/3.6.0/jquery.min.js"></script>
+        <script src="https://cdn.jsdelivr.net/npm/select2@4.1.0-rc.0/dist/js/select2.min.js"></script>
         <script src="https://cdn.datatables.net/1.13.6/js/jquery.dataTables.min.js"></script>
+        <script>
+              $(document).ready(function () {
+                    $('#lop').select2({
+                        placeholder: 'Chọn lớp',
+                        allowClear: true,
+                        theme: 'bootstrap-5',
+                        width: '100%'
+                    });
+                });
+        </script>
+
+        
         <script>
             $(document).ready(function() {
                 $('#room-table').DataTable({
                     responsive: true,
-                    ordering: false,
+                    ordering: true,
                     language: {
                         search: "Tìm kiếm thông tin phòng:",
                         lengthMenu: "Hiển thị _MENU_ dòng",

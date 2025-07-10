@@ -55,7 +55,7 @@ class BienBanController extends Controller
         $thuKy = $sinhVien->chuc_vu == RoleStudent::SECRETARY;
         $lop = Lop::find($thongTin->id_lop);
         $bienBanSHCN = $this->bienBanRepository
-            ->getByLopWithRelations($lop);
+            ->getByLopWithRelationsByIdLop($lop->id, 100);
         
         return view('client.bienbanshcn.list', compact('bienBanSHCN', 'lop', 'thuKy'));
     }
@@ -136,4 +136,17 @@ class BienBanController extends Controller
         $bienBan->save();
         return response()->json(['success' => true, 'message' => 'Xoá sinh viên vắng mặt thành công']);
     }   
+
+    public function guiBienBanDenGVCN(BienBanSHCN $bienBanSHCN)
+    {
+        $bienBanSHCN->trang_thai = BienBanStatus::GIANGVIEN;
+        $bienBanSHCN->save();        
+        return redirect()->back()->with('success', 'Gửi biên bản SHCN đến Giảng Viên Chủ Nhiệm thành công!');
+    }
+
+    public function destroy(BienBanSHCN $bienbanshcn)
+    {
+        $bienbanshcn->delete();
+        return redirect()->back()->with('success', 'Xóa biên bản thành công');
+    }
 }

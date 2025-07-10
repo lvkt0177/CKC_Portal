@@ -31,6 +31,7 @@ class DiemMonHocController extends Controller
     {
        
         $id_giang_vien = Auth::user()->id;
+
         $lop_hoc_phan = LopHocPhan::with([
             'lop.nienKhoa',
         ])
@@ -82,7 +83,6 @@ class DiemMonHocController extends Controller
 
     public function capNhat(NhapDiemRequest $request)
     {
-       
         $validated = $request->validated();
         $Students = $validated['students'] ?? [];
         $idLopHocPhan = $validated['id_lop_hoc_phan'];
@@ -118,18 +118,18 @@ class DiemMonHocController extends Controller
             ];
         }
    
-    foreach ($updates as $data) {
-        DanhSachHocPhan::where('id_lop_hoc_phan', $idLopHocPhan)
-            ->where('id_sinh_vien', $data['id_sinh_vien'])
-            ->update([
-                'diem_chuyen_can' => $data['diem_chuyen_can'],
-                'diem_qua_trinh' => $data['diem_qua_trinh'],
-                'diem_thi_lan_1' => $data['diem_thi_lan_1'],
-                'diem_thi_lan_2' => $data['diem_thi_lan_2'],
-                'diem_tong_ket' => $data['diem_tong_ket'],
-            ]);
-    }
-        return back()->with('success', 'Cập nhật điểm thành công!');
+        foreach ($updates as $data) {
+            DanhSachHocPhan::where('id_lop_hoc_phan', $idLopHocPhan)
+                ->where('id_sinh_vien', $data['id_sinh_vien'])
+                ->update([
+                    'diem_chuyen_can' => $data['diem_chuyen_can'],
+                    'diem_qua_trinh' => $data['diem_qua_trinh'],
+                    'diem_thi_lan_1' => $data['diem_thi_lan_1'],
+                    'diem_thi_lan_2' => $data['diem_thi_lan_2'],
+                    'diem_tong_ket' => $data['diem_tong_ket'],
+                ]);
+        }
+            return back()->with('success', 'Cập nhật điểm thành công!');
     }
 
     public function capNhatTheoTrangThai(int $trangThai,LopHocPhan $lopHocPhan){
@@ -143,7 +143,7 @@ class DiemMonHocController extends Controller
 
             $cc = (float)$sinhVien->diem_chuyen_can ?? 0;
             $qt = (float)$sinhVien->diem_qua_trinh ?? 0;
-            $dt1 = $sinhVien->diem_thi_lan_1 ?? 0;
+            $dt1 = !$sinhVien->diem_chuyen_can ? 0 : $sinhVien->diem_thi_lan_1;
             $dt2 = $sinhVien->diem_thi_lan_2 ?? null;
             
             $dt = $dt1;
@@ -153,7 +153,7 @@ class DiemMonHocController extends Controller
             }
             $tongKet = (!is_null($cc) && !is_null($qt) && !is_null($dt))
                 ? ($cc * 0.1 + $qt * 0.4 + $dt * 0.5)
-                : null;
+                : ($cc * 0.1 + $qt * 0.4 + 0 * 0.5);
 
             $updates[] = [
                 'id_sinh_vien' => $idSinhVien,

@@ -138,10 +138,13 @@ class LichHocController extends Controller
         ->get();
        
         $dsgv = User::with('boMon.chuyenNganh.khoa')
-        ->whereHas('boMon.chuyenNganh.khoa', function ($query) use ($lop) {
-            $query->where('id', $lop->chuyenNganh->id_khoa);
-        })
-        ->get(); 
+            ->whereHas('roles', function ($q) {
+                $q->whereIn('name', [Acl::ROLE_GIANG_VIEN_BO_MON, Acl::ROLE_SUPER_ADMIN]);
+            })
+            ->whereHas('boMon.chuyenNganh.khoa', function ($query) use ($lop) {
+                $query->where('id', $lop->chuyenNganh->id_khoa);
+            })
+            ->get();
         
         return view('admin.lichhoc.list', compact('ngayTrongTuan','thoikhoabieu','lop','dsHocKy','dsTuan','hocKy','tuanDangChon','dsgv','dsPhong'));
     }
@@ -390,110 +393,128 @@ class LichHocController extends Controller
 
         return redirect()->route('giangvien.lichhoc.list',['lop'=>$lop])->with('success', 'Đã sao chép thời khóa biểu sang tuần kế tiếp.');
     }
+
     public function update(UpdateLichHocRequest $request)
     {
         $data = $request->validated();
-        $idLopHocPhan = $data['id_lop_hoc_phan'];
-        $idGiaoVien   = $data['id_giao_vien'];
-        $idLop        = $data['id_lop'];
-        $tuanId       = $data['tuan'];
-        $ngaybandau   = $data['ngay_ban_dau'];
-        $ngay         = $data['ngay'];
-        $idPhong      = $data['id_phong'];
-        
-        $lop  = Lop::find($idLop);
-        $tuan = Tuan::find($tuanId);
 
-        $lopHocPhan = LopHocPhan::find($idLopHocPhan);
-       
-        $tkb = ThoiKhoaBieu::where('id_tuan', $tuanId)
-            ->whereDate('ngay',$ngaybandau) ->first();
-        if(!$tkb)
-        {
-            $tkb = ThoiKhoaBieu::where('id_tuan', $tuanId)
-                ->whereDate('ngay',$ngay) ->first();
+        $idLopHocPhan = $data['id_lop_hoc_phan'];
+        $idGiaoVien   = $data['id_giao_vien'] ?? null;
+        $idLop        = $data['id_lop'];
+        $idPhong      = $data['id_phong'] ?? null;
+        $ngay         = $data['ngay'];
+        $ngayBanDau   = $data['ngay_ban_dau'];
+
+        $lop          = Lop::findOrFail($idLop);
+        $lopHocPhan   = LopHocPhan::findOrFail($idLopHocPhan);
+
+        // Tìm bản ghi TKB cũ
+        $tkb = ThoiKhoaBieu::where('id_lop_hoc_phan', $idLopHocPhan)
+            ->whereDate('ngay', $ngayBanDau)
+            ->first();
+
+        if (!$tkb) {
+            return back()->with('error', 'Không tìm thấy thời khóa biểu để cập nhật.');
         }
-     
-        $tietBatDau = null;
-        $tietKetThuc = null;
-        if ($tkb) {
-            $tietBatDau = (int)$tkb->tiet_bat_dau;
-            $tietKetThuc = (int)$tkb->tiet_ket_thuc;
-        }
-        
-        $thoiKhoaBieu = ThoiKhoaBieu::where('id_lop_hoc_phan', $idLopHocPhan)
-                   ->where('id_tuan', $tuanId)
-                   ->whereDate('ngay', Carbon::parse($ngaybandau)->format('Y-m-d'))
-                   ->first();
-                    
-        if ($idGiaoVien && ($tietBatDau || $tietKetThuc)) {
-            $gvTrung = ThoiKhoaBieu::where('ngay', $thoiKhoaBieu->ngay)
-                ->where(function ($q) use ($tietBatDau, $tietKetThuc) {
-                    $q->where('tiet_bat_dau', '<=', $tietKetThuc)
-                    ->where('tiet_ket_thuc', '>=', $tietBatDau);
-                })
+
+        $tietBatDau  = $tkb->tiet_bat_dau;
+        $tietKetThuc = $tkb->tiet_ket_thuc;
+
+        // Nếu đổi giảng viên, kiểm tra trùng
+        if ($idGiaoVien && $idGiaoVien != $lopHocPhan->id_giang_vien) {
+            $isTrungGV = ThoiKhoaBieu::whereDate('ngay', $ngay ?? $tkb->ngay)
+                ->where('id', '!=', $tkb->id)
+                ->whereBetween('tiet_bat_dau', [$tietBatDau, $tietKetThuc])
+                ->orWhereBetween('tiet_ket_thuc', [$tietBatDau, $tietKetThuc])
                 ->whereHas('lopHocPhan', function ($q) use ($idGiaoVien, $lopHocPhan) {
                     $q->where('id_giang_vien', $idGiaoVien)
                     ->where('id', '!=', $lopHocPhan->id);
                 })
                 ->exists();
 
-            if ($gvTrung) {
-                return redirect()->back()->with('error', 'Giảng viên đã có lịch học trùng vào thời gian này.');
+            if ($isTrungGV) {
+                return back()->with('error', 'Giảng viên đã có lịch trùng thời gian.');
             }
 
-            $lopHocPhan->update([
-                'id_giang_vien' => $idGiaoVien,
-            ]);
+            $lopHocPhan->update(['id_giang_vien' => $idGiaoVien]);
         }
-       
 
+        // Kiểm tra phòng trùng
+        if ($idPhong) {
+            $isTrungPhong = ThoiKhoaBieu::whereDate('ngay', $ngay ?? $tkb->ngay)
+                ->where('id', '!=', $tkb->id)
+                ->where('id_phong', $idPhong)
+                ->where(function ($q) use ($tietBatDau, $tietKetThuc) {
+                    $q->where('tiet_bat_dau', '<=', $tietKetThuc)
+                    ->where('tiet_ket_thuc', '>=', $tietBatDau);
+                })
+                ->exists();
 
-        if($idPhong){  
-            if($tietBatDau||$tietKetThuc){
-                $phongTrung = $this->kiemTraTrungTiet(
-                    ThoiKhoaBieu::where('id_tuan', $tuanId)
-                        ->where('ngay', $ngay)
-                        ->where('id_phong', $idPhong),
-                    $tietBatDau,
-                    $tietKetThuc
-                )->exists();
-                
-                if ($phongTrung) {
-                    return redirect()->back()->with('error', 'Phòng đã có lịch học trong tiết này.');
-                }
-            }   
-           
+            if ($isTrungPhong) {
+                return back()->with('error', 'Phòng đã có lịch trùng vào thời gian này.');
+            }
         }
-    
-        if ($thoiKhoaBieu && ($idPhong || $ngay)) {
-           
-            if($tietBatDau||$tietKetThuc){
-                    $trungLich = $this->kiemTraTrungTiet(ThoiKhoaBieu::where('ngay', $ngay)
-                    ->where('id_phong',$idPhong),
-                    $tietBatDau,
-                    $tietKetThuc
-                    )->exists();
-            
-                if ($trungLich) {
-                    return redirect()->route('giangvien.lichhoc.list',['lop'=>$lop])->with('error','Phòng đã có lịch học trùng vào thời gian này.');
-                }
-            }
-            $updateData = [];
 
-            if ($idPhong) {
-                $updateData['id_phong'] = $idPhong;
-            }
+        // Kiểm tra trùng trong cùng lớp (khác học phần)
+        $trungTrongLop = ThoiKhoaBieu::whereDate('ngay', $ngay ?? $tkb->ngay)
+            ->where('id', '!=', $tkb->id)
+            ->whereHas('lopHocPhan', function ($q) use ($lopHocPhan) {
+                $q->where('id_lop', $lopHocPhan->id_lop)
+                ->where('id', '!=', $lopHocPhan->id);
+            })
+            ->where(function ($q) use ($tietBatDau, $tietKetThuc) {
+                $q->where('tiet_bat_dau', '<=', $tietKetThuc)
+                ->where('tiet_ket_thuc', '>=', $tietBatDau);
+            })
+            ->exists();
 
-            if ($ngay) {
-                $updateData['ngay'] = $ngay;
-            }
-
-            $thoiKhoaBieu->update($updateData);
+        if ($trungTrongLop) {
+            return back()->with('error', 'Lớp này đã có lịch trùng vào thời gian này.');
         }
-        return redirect()->route('giangvien.lichhoc.list',['lop'=>$lop])
-        ->with('success', 'Cập nhật thành công.');
+
+        // Kiểm tra trùng khác lớp (trùng phòng hoặc trùng giảng viên)
+        $trungKhacLop = ThoiKhoaBieu::whereDate('ngay', $ngay ?? $tkb->ngay)
+            ->where('id', '!=', $tkb->id)
+            ->where(function ($q) use ($idPhong, $tietBatDau, $tietKetThuc, $tkb) {
+                $q->where('id_phong', $idPhong ?? $tkb->id_phong)
+                ->where('tiet_bat_dau', '<=', $tietKetThuc)
+                ->where('tiet_ket_thuc', '>=', $tietBatDau);
+            })
+            ->orWhere(function ($q) use ($idGiaoVien, $lopHocPhan, $tietBatDau, $tietKetThuc) {
+                $q->whereHas('lopHocPhan', function ($q2) use ($idGiaoVien, $lopHocPhan) {
+                    $q2->where('id_giang_vien', $idGiaoVien ?? $lopHocPhan->id_giang_vien)
+                    ->where('id_lop', '!=', $lopHocPhan->id_lop);
+                })
+                ->where('tiet_bat_dau', '<=', $tietKetThuc)
+                ->where('tiet_ket_thuc', '>=', $tietBatDau);
+            })
+            ->exists();
+
+        if ($trungKhacLop) {
+            return back()->with('error', 'Lớp khác đã có lịch trùng với phòng hoặc giảng viên.');
+        }
+
+        // Cập nhật dữ liệu
+        $updateData = [];
+        if ($idPhong) $updateData['id_phong'] = $idPhong;
+        if ($ngay) {
+            $updateData['ngay'] = $ngay;
+
+            $tuan = Tuan::where('ngay_bat_dau', '<=', $ngay)
+                ->where('ngay_ket_thuc', '>=', $ngay)
+                ->first();
+
+            if ($tuan) {
+                $updateData['id_tuan'] = $tuan->id;
+            }
+        }
+
+        $tkb->update($updateData);
+
+        return redirect()->route('giangvien.lichhoc.list', ['lop' => $lop])
+            ->with('success', 'Cập nhật thời khóa biểu thành công.');
     }
+
 
     public function destroy(DestroyLichHocRequest $request)
     {
@@ -519,5 +540,41 @@ class LichHocController extends Controller
                     ->where('tiet_ket_thuc', '>=', $tietBatDau );
             });
         });
+    }
+
+    /**
+     * Kiểm tra có bị trùng lịch hay không.
+     *
+     * @param string $ngay              Ngày cần kiểm tra
+     * @param int|null $idPhong         ID phòng học (có thể null)
+     * @param int|null $idGiaoVien      ID giảng viên (có thể null)
+     * @param int $tietBatDau
+     * @param int $tietKetThuc
+     * @param int|null $excludeTkbId    ID thời khóa biểu cần loại trừ (khi update)
+     * @return bool
+     */
+    public function checkLichTrung($ngay, $idPhong, $idGiaoVien, $tietBatDau, $tietKetThuc, $excludeTkbId = null): bool
+    {
+        $query = ThoiKhoaBieu::whereDate('ngay', $ngay)
+            ->where(function ($q) use ($tietBatDau, $tietKetThuc) {
+                $q->where('tiet_bat_dau', '<=', $tietKetThuc)
+                ->where('tiet_ket_thuc', '>=', $tietBatDau);
+            });
+
+        if ($excludeTkbId) {
+            $query->where('id', '!=', $excludeTkbId);
+        }
+
+        if ($idPhong) {
+            $query->where('id_phong', $idPhong);
+        }
+
+        if ($idGiaoVien) {
+            $query->whereHas('lopHocPhan', function ($q) use ($idGiaoVien) {
+                $q->where('id_giang_vien', $idGiaoVien);
+            });
+        }
+
+        return $query->exists();
     }
 }

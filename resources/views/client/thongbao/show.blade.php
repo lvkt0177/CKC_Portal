@@ -33,7 +33,7 @@
                             <b>Files đính kèm:</b>
                             @foreach ($thongbao->file as $file)
                                 <div class="">
-                                    <a href="{{ route('giangvien.file.download', $file->id) }}">{{ $file->ten_file }}</a>
+                                    <a href="{{ route('sinhvien.file.download', $file->id) }}">{{ $file->ten_file }}</a>
                                 </div>
                             @endforeach
                         </div>

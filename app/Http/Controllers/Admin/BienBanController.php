@@ -66,7 +66,9 @@ class BienBanController extends Controller
      */
     public function store(BienBanRequest $request, Lop $lop, BienBanService $bienBanService)
     {
-        $result = $bienBanService->storeBienBanVaChiTiet($request->all(), $lop);
+        $data = $request->validated();
+        $data['trang_thai'] = BienBanStatus::GIANGVIEN;
+        $result = $bienBanService->storeBienBanVaChiTiet($data, $lop);
         
         if($result) {
             return redirect()->route('giangvien.bienbanshcn.index', $lop->id)->with('success', 'Thêm biên bản thành công');
@@ -135,9 +137,32 @@ class BienBanController extends Controller
 
     public function confirmBienBan(BienBanSHCN $bienBanSHCN)
     {
-        $bienBanSHCN->trang_thai = BienBanStatus::ACTIVE;
+        if($bienBanSHCN->trang_thai == BienBanStatus::CTCT){
+            return redirect()->back()->with('error', 'Biên bản đã được gửi lên Phòng Công Tác Chính Trị!');
+        }
+        
+        $bienBanSHCN->trang_thai = BienBanStatus::CTCT;
         $bienBanSHCN->save();
 
-        return redirect()->back()->with('success', 'Gửi biên bản Sinh hoạt chủ nhiệm thành công!');
+        return redirect()->back()->with('success', 'Gửi biên bản SHCN đến Khoa thành công!');
     }
+    
+    public function CTCT_Manage(Request $request)
+    {
+        $lops = Lop::orderBy('id', 'desc')->get();
+
+        $query = BienBanSHCN::where('trang_thai', BienBanStatus::CTCT)
+            ->orderBy('id_tuan', 'desc');
+
+        if ($request->filled('lop')) {
+            $lopIds = is_array($request->lop) ? $request->lop : [$request->lop];
+            $query->whereIn('id_lop', $lopIds);
+        }
+
+        $bienBanSHCN = $query->get();
+
+        return view('admin.bienbanshcn.manage', compact('bienBanSHCN', 'lops'));
+    }
+
+
 }

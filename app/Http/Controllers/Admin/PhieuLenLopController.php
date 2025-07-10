@@ -61,7 +61,6 @@ class PhieuLenLopController extends Controller
                         ->whereDate('ngay_ket_thuc', '>=', $today)
                         ->first() ?? $tuan;
         }
-
         $phieu_len_lop = PhieuLenLop::with([
             'lopHocPhan', 'lopHocPhan.lop', 'lopHocPhan.giangVien.hoSo', 'phong', 'tuan'
         ])
@@ -71,7 +70,6 @@ class PhieuLenLopController extends Controller
         })
         ->orderBy('ngay')
         ->get();
-
         $ngayTrongTuan = collect();
         $bat_dau = \Carbon\Carbon::parse($tuan->ngay_bat_dau);
         $ket_thuc = \Carbon\Carbon::parse($tuan->ngay_ket_thuc);
@@ -93,7 +91,6 @@ class PhieuLenLopController extends Controller
         ->get()
         ->pluck('lopHocPhan') 
         ->filter();
-       
         
         if ($lopHocPhan->isEmpty()) {
         return redirect()->route('giangvien.phieulenlop.index')
@@ -119,7 +116,6 @@ class PhieuLenLopController extends Controller
         $tkb    = ThoiKhoaBieu::where('id_lop_hoc_phan', $id_lhp)
                 ->where('id_tuan', $tuan->id)
                 ->first();
-
         $data['id_tuan']        = $tuan->id;
         $data['tiet_bat_dau']   = $tkb->tiet_bat_dau;
         $data['tiet_ket_thuc']  = $tkb->tiet_ket_thuc;

@@ -17,7 +17,7 @@ class BangDiemExport implements FromCollection, WithHeadings
 
     public function collection()
     {
-        return DanhSachHocPhan::with(['sinhVien', 'lopHocPhan'])
+        return DanhSachHocPhan::with(['sinhVien.hoSo', 'lopHocPhan'])
             ->whereHas('lopHocPhan', function ($query) {
                 $query->where('id', $this->lopHocPhan->id);
                 $query->where('id_lop', $this->lopHocPhan->id_lop);
@@ -26,6 +26,7 @@ class BangDiemExport implements FromCollection, WithHeadings
             ->map(function ($item) {
                 return [
                     'ma_sv'         => $item->sinhVien->ma_sv,
+                    'ten_sv'        => $item->sinhVien->hoSo->ho_ten,
                     'chuyên cần'    => $item->diem_chuyen_can,
                     'quá trình'       => $item->diem_qua_trinh,
                     'điểm thi lần 1'     => $item->diem_thi_lan_1,
@@ -39,6 +40,7 @@ class BangDiemExport implements FromCollection, WithHeadings
     {
         return [
             'Mã SV',
+            'Tên SV',
             'Chuyên cần',
             'Quá trình',
             'Điểm thi lần 1',
