@@ -34,7 +34,7 @@
         </form>
 
         <div class="form-links">
-            <a href="{{ route('login.student') }}">Quên mật khẩu? Liên hệ Phòng CTCT</a>
+            Quên mật khẩu? <a href="{{ route('login.student') }}"> - Liên hệ Phòng CTCT</a>
         </div>
     </div>
 

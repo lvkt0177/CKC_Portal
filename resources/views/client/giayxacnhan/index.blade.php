@@ -21,7 +21,7 @@
                     <div>
                         <div class="form-title">
                             <h2>ĐĂNG KÝ XIN GIẤY XÁC NHẬN</h2>
-                            <p>Vui lòng điền đầy đủ thông tin và chọn loại giấy tờ cần xác nhận</p>
+                            <p>Vui lòng chọn loại giấy tờ cần xác nhận</p>
                         </div>
                         <div class="container">
                             <div class="main-content" style=" margin: 0 !important;">
@@ -33,8 +33,7 @@
                                         </div>
                                         <div class="thongtin-item">
                                             <span class="thongtin-label">CMND/CCCD:</span>
-                                            <span
-                                                class="thongtin-value">{{ $sinhVien->hoSo->so_cccd ?? '••••••••••' }}</span>
+                                            <span class="thongtin-value">{{ $sinhVien->hoSo->cccd }}</span>
                                         </div>
                                         <div class="thongtin-item">
                                             <span class="thongtin-label">Họ tên:</span>
@@ -55,11 +54,18 @@
                                         </div>
                                         <div class="thongtin-item">
                                             <span class="thongtin-label">Lớp:</span>
-                                            <span class="thongtin-value">{{ $sinhVien->danhSachSinhVien->last()->lop->ten_lop }}</span>
+                                            <span
+                                                class="thongtin-value">{{ $sinhVien->danhSachSinhVien->last()->lop->ten_lop }}</span>
                                         </div>
                                     </div>
                                 </div>
-
+                                <p class="text-danger">
+                                    <em> Lưu ý: Trong vòng 2 tuần kể từ ngày nhận mới được đăng ký lại giấy đã đăng ký trước
+                                        đó.
+                                        Xem
+                                        ngày nhận trong danh sách giấy đã đăng ký!
+                                    </em>
+                                </p>
                                 <form id="registrationForm" action="{{ route('sinhvien.giayxacnhan.dangky') }}"
                                     method="POST" data-confirm>
                                     @csrf
