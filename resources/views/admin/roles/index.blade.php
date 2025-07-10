@@ -10,7 +10,6 @@
                 <div class="card shadow-sm">
                     <div class="card-header d-flex justify-content-between align-items-center">
                         <h3 class="card-title mb-0">Phân quyền và vai trò</h3>
-                        <a href="{{ route('giangvien.permissions.index') }}" class="btn btn-primary">Danh sách các quyền</a>
                     </div>
 
                     <div class="card-body">

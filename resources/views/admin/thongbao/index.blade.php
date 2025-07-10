@@ -69,14 +69,14 @@
                                                             <div class="modal-body">
                                                                 <form
                                                                     action="{{ route('giangvien.thongbao.send-to-student', $thongbao) }}"
-                                                                    method="POST">
+                                                                    method="POST" data-confirm>
                                                                     @csrf
                                                                     <div class="mb-3">
                                                                         <label for="selectLop{{ $thongbao->id }}"
                                                                             class="form-label">Chọn lớp</label>
                                                                         <select class="form-select js-select2"
                                                                             name="lop_ids[]"
-                                                                            id="selectLop{{ $thongbao->id }}" multiple>
+                                                                            id="selectLop{{ $thongbao->id }}" multiple required>
                                                                             @foreach ($lops as $lop)
                                                                                 <option value="{{ $lop->id }}">
                                                                                     {{ $lop->ten_lop }}</option>

@@ -15,7 +15,7 @@ use Auth;
 use App\Repositories\ThongBao\ThongBaoRepository;
 use Illuminate\Support\Facades\Log;
 use App\Enum\DocThongBao;
-
+use App\Models\File;
 
 class ThongBaoController extends Controller
 {
@@ -91,5 +91,11 @@ class ThongBaoController extends Controller
     public function destroy(string $id)
     {
         //
+    }
+
+    public function download($id)
+    {
+        $file = File::findOrFail($id);
+        return response()->download(storage_path('app/public/' . $file->url), $file->ten_file);
     }
 }
