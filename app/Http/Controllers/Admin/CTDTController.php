@@ -16,6 +16,8 @@ use App\Models\LopHocPhan;
 use App\Models\Lop;
 use App\Models\Nam;
 use App\Models\Tuan;
+use App\Models\HocKy;
+
 use Illuminate\Support\Facades\Log;
 use \Spatie\Permission\Models\Permission;
 use \Spatie\Permission\Models\Role;
@@ -107,13 +109,26 @@ class CTDTController extends Controller
         }
         $nam = Nam::where('nam_bat_dau', $nam_bat_dau)->firstOrFail();
         $dsTuan = Tuan::where('id_nam', $nam->id)->orderBy('tuan')->get();
-
+        
         return view('admin.ctdt.dstuan', compact('nam', 'dsTuan'));
     }
 
     public function create()
     {
-        return view('admin.ctdt.khoitaotuan');
+        
+        $namHienTai = now()->year;
+
+        $nienKhoa = NienKhoa::where('nam_bat_dau', '<=', $namHienTai)
+                    ->where('nam_ket_thuc', '>=', $namHienTai)
+                    ->get();
+                    
+        $nam = Nam::where('nam_bat_dau', $namHienTai)->first();  
+
+        $ngayKetThucNamHoc = Tuan::where('tuan', 52)
+                        ->where('id_nam', $nam->id)        
+                        ->first(); 
+                    
+        return view('admin.ctdt.khoitaotuan',compact('ngayKetThucNamHoc'));
     }
 
     public function store(TuanRequest $request)
@@ -122,8 +137,9 @@ class CTDTController extends Controller
         [$year, $month, $day] = explode('-', $ngay->format('Y-m-d')); 
         $namBatDau = Nam::where('nam_bat_dau', $year)->first();
 
-        if ($year < now()->year) {
-            return redirect()->back()->with('error', 'Không được khởi tạo tuần ở năm này!');
+        // ✅ Chặn năm hiện tại trở xuống
+        if ($year <= now()->year) {
+            return redirect()->back()->with('error', 'Chỉ được khởi tạo tuần cho năm lớn hơn năm hiện tại!');
         }
         
         for ($namVongLap = $year; $namVongLap <= $year + 1; $namVongLap++) {
@@ -133,6 +149,7 @@ class CTDTController extends Controller
             for ($tuan = 1; $tuan <= 52; $tuan++) {
                 $ngay_bat_dau = $startDate->copy();
                 $ngay_ket_thuc = $startDate->copy()->addDays(6);
+
                 Tuan::updateOrCreate(
                     [
                         'id_nam' => $namModel->id,
@@ -149,4 +166,5 @@ class CTDTController extends Controller
 
         return back()->with('success', 'Khởi tạo thành công!');
     }
+
 }

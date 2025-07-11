@@ -3,6 +3,18 @@
 @section('title', 'Quản lý lịch thi của sinh viên')
 
 @section('css')
+    <style>
+        .table-auto-width {
+            table-layout: fixed;
+            width: 100%;
+        }
+
+        .table-auto-width td,
+        .table-auto-width th {
+            word-wrap: break-word;
+            white-space: normal;
+        }
+    </style>
     <link rel="stylesheet" href="{{ asset('assets/admin/css/lichthi.css') }}">
     <link href="https://cdn.jsdelivr.net/npm/lucide@0.273.0/dist/umd/lucide.min.css" rel="stylesheet">
     <script src="https://cdn.tailwindcss.com"></script>
@@ -40,7 +52,7 @@
                         </div>
                         <div class="form-group me-2 col-6">
                             <label for="id_tuan" class="me-2">Chọn lần thi:</label>
-                            <select name="lan thi" class="form-control" onchange="this.form.submit()">
+                            <select name="lanthi" class="form-control" onchange="this.form.submit()">
                                 @foreach ($lanThiDaCoLich as $lanThiItem)
                                     <option value="{{ $lanThiItem->lan_thi }}">
                                         Lần thi {{ $lanThiItem->lan_thi }}
@@ -57,13 +69,12 @@
                             </h3>
                             <div class="exam-cards" style="display: grid;">
                                 <div class="exam-table">
-                                    <table class="table">
+                                    <table class="table table-auto-width">
                                         <thead>
                                             <tr>
                                                 <th>Môn học</th>
                                                 <th>Giờ thi</th>
                                                 <th>Phòng</th>
-                                                <th>Lớp học phần</th>
                                                 <th>Lần thi</th>
                                                 <th>Giám thị 1</th>
                                                 <th>Giám thị 2</th>
@@ -73,10 +84,10 @@
                                         <tbody>
                                             @foreach ($dsLich as $lt)
                                                 <tr>
-                                                    <td>{{ $lt->lopHocPhan->ten_hoc_phan ?? '---' }}</td>
+                                                    <td>{{ $lt->lopHocPhan->ten_hoc_phan ?? '---' }}
+                                                    </td>
                                                     <td>{{ $lt->gio_bat_dau }} ({{ $lt->thoi_gian_thi }} phút)</td>
                                                     <td>{{ $lt->phong->ten ?? $lt->phong_thi }}</td>
-                                                    <td>{{ $lt->lopHocPhan->ten_hoc_phan ?? '-' }}</td>
                                                     <td>Thi lần {{ $lt->lan_thi }}</td>
                                                     <td>{{ $lt->giamThi1->hoSo->ho_ten ?? '-' }}</td>
                                                     <td>{{ $lt->giamThi2->hoSo->ho_ten ?? '-' }}</td>
@@ -109,5 +120,4 @@
 @endsection
 
 @section('js')
-    <script></script>
 @endsection

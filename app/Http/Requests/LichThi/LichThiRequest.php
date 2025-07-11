@@ -47,8 +47,7 @@ class LichThiRequest extends FormRequest
             'id_tuan.required' => 'Vui lòng chọn tuần thi.',
             'id_tuan.exists' => 'Tuần thi không hợp lệ.',
 
-            'thu.required' => 'Vui lòng nhập ngày thi.',
-            'thu.date_format' => 'Ngày thi không đúng định dạng (Y-m-d).',
+            'thu.required' => 'Vui lòng chọn ngày thi.',
 
             'gio_bat_dau.required' => 'Vui lòng nhập giờ bắt đầu.',
             'gio_bat_dau.date_format' => 'Giờ bắt đầu không đúng định dạng (H:i).',
