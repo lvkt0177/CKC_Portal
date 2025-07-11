@@ -4,10 +4,12 @@ namespace App\Models;
 
 use Illuminate\Database\Eloquent\Model;
 use App\Enum\DocThongBao;
+use App\Traits\CastsIntegerIds;
 
 class ChiTietThongBao extends Model
 {
-    //
+    use CastsIntegerIds;
+
     protected $table = 'chi_tiet_thong_bao';
 
     protected $fillable = [

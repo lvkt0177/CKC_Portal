@@ -3,10 +3,12 @@
 namespace App\Models;
 
 use Illuminate\Database\Eloquent\Model;
+use App\Traits\CastsIntegerIds;
 
 class LichThi extends Model
 {
-    //
+    use CastsIntegerIds;
+
     protected $table = "lich_thi";
     protected $fillable = [
         'id_lop_hoc_phan',

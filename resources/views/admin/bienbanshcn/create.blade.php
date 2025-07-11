@@ -123,7 +123,7 @@
                                     <label for="vang_mat" class="form-label">Số lượng sinh viên vắng mặt</label>
                                     <input type="number"
                                         class="form-control @error('vang_mat') is-invalid border-danger text-dark @enderror"
-                                        id="vang_mat" name="vang_mat" min="0" value="{{ old('vang_mat') }}" readonly>
+                                        id="vang_mat" name="vang_mat" min="0" value="{{ old('vang_mat', 0) }}" readonly>
                                 </div>
 
                                 {{-- Sinh viên vắng mặt --}}

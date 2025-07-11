@@ -4,10 +4,12 @@ namespace App\Models;
 
 use Illuminate\Database\Eloquent\Model;
 use App\Enum\LoaiPhong;
+use App\Traits\CastsIntegerIds;
 
 class Phong extends Model
 {
-    //
+    use CastsIntegerIds;
+
     protected $table = 'phong';
 
     protected $fillable = [

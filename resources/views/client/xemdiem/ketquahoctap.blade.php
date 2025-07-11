@@ -3,8 +3,8 @@
 @section('title', 'Kết quả học tập')
 
 @section('css')
+<link rel="stylesheet" href="{{ asset('assets/client/css/xemdiem.css') }}">
     <link rel="stylesheet" href="{{ asset('assets/client/css/giayxacnhan.css') }}">
-    <link rel="stylesheet" href="{{ asset('assets/client/css/xemdiem.css') }}">
 @endsection
 
 @section('content')

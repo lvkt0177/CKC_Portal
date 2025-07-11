@@ -4,9 +4,12 @@ namespace App\Models;
 
 use Illuminate\Database\Eloquent\Model;
 use App\Enum\HocPhiStatus;
+use App\Traits\CastsIntegerIds;
 
 class HocPhi extends Model
 {
+    use CastsIntegerIds;
+
     protected $table = 'hoc_phi';
 
     protected $fillable = [

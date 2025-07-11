@@ -4,10 +4,12 @@ namespace App\Models;
 
 use Illuminate\Database\Eloquent\Model;
 use App\Enum\BienBanStatus;
+use App\Traits\CastsIntegerIds;
 
 class BienBanSHCN extends Model
 {
-    //
+    use CastsIntegerIds;
+    
     protected $table = 'bien_ban_shcn';
     
     protected $fillable = [

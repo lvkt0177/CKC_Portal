@@ -17,7 +17,7 @@
                             <p>Vui lòng kiểm tra kỹ thông tin cá nhân</p>
                         </div>
                         <div class="container">
-                            <div class="main-content" style=" margin: 0 !important;">
+                            <div class="main-content p-0" style=" margin: 0 !important;">
                                 <div class="student-thongtin">
                                     <div class="thongtin-grid">
                                         <div class="thongtin-item">
@@ -59,34 +59,40 @@
                                         Tình trạng nộp kinh phí của bạn
                                     </h5>
 
-                                    @if($hocPhi)
-                                        <!-- Học phi -->
-                                        <div class="fee-status-card fee-card-{{ $hocPhi->trang_thai->getBadge() }}">
-                                            <div class="fee-status-header">
-                                                <h6 class="fee-title">
-                                                    <i class="fas fa-graduation-cap me-2"></i>
-                                                    Học phí {{ $hocPhi->hocKy->ten_hoc_ky }} | Niên khoá: {{ $hocPhi->hocKy->nienKhoa->ten_nien_khoa }}
-                                                </h6>
-                                                <span class="status-badge status-{{ $hocPhi->trang_thai->getBadge() }}">
-                                                    <i class="{{ $hocPhi->trang_thai->getIcon() }}"></i>
-                                                    {{ $hocPhi->trang_thai->getLabel() }}
-                                                </span>
-                                            </div>
-                                            <div class="fee-details">
-                                                <div class="fee-detail-item">
-                                                    <span class="fee-label fs-5">Số tiền</span>
-                                                    <span class="fee-value text-success">{{ number_format($hocPhi->tong_tien, 0, ',', '.') }} VNĐ</span>
+                                    @if($hocPhiCuaSinhVien)
+                                        @foreach ($hocPhiCuaSinhVien as $hocPhi)
+                                            <div class="fee-status-card fee-card-{{ $hocPhi->trang_thai->getBadge() }}">
+                                                <div class="fee-status-header">
+                                                    <h6 class="fee-title">
+                                                        <i class="fas fa-graduation-cap me-2"></i>
+                                                        Học phí {{ $hocPhi->hocKy->ten_hoc_ky }} | Niên khoá: {{ $hocPhi->hocKy->nienKhoa->ten_nien_khoa }}
+                                                    </h6>
+                                                    <span class="status-badge status-{{ $hocPhi->trang_thai->getBadge() }}">
+                                                        <i class="{{ $hocPhi->trang_thai->getIcon() }}"></i>
+                                                        {{ $hocPhi->trang_thai->getLabel() }}
+                                                    </span>
                                                 </div>
+                                                <div class="fee-details">
+                                                    <div class="fee-detail-item">
+                                                        <span class="fee-label fs-5">Số tiền</span>
+                                                        <span class="fee-value text-success">{{ number_format($hocPhi->tong_tien, 0, ',', '.') }} VNĐ</span>
+                                                    </div>
+                                                </div>
+
+                                                @if ($hocPhi->trang_thai->value == 0)
+                                                    <div class="fee-pay text-end">
+                                                        <form action="{{ url('/vnpay_payment') }}" method="post">
+                                                            @csrf
+                                                            <input type="hidden" name="total_vnpay" value="{{ $hocPhi->tong_tien }}">
+                                                            <input type="hidden" name="id_hoc_phi" value="{{ $hocPhi->id }}">
+                                                            <button type="submit" class="btn btn-success check_out"
+                                                                name="redirect">Thanh toán VNPAY</button>
+                                                        </form>
+                                                    </div>
+                                                @endif
                                             </div>
-                                            <div class="fee-pay text-end">
-                                                <form action="{{ url('/vnpay_payment') }}" method="post">
-                                                    @csrf
-                                                    <input type="hidden" name="total_vnpay" value="{{ $hocPhi->tong_tien }}">
-                                                    <button type="submit" class="btn btn-success check_out"
-                                                        name="redirect">Thanh toán VNPAY</button>
-                                                </form>
-                                            </div>
-                                        </div>
+                                        @endforeach
+
                                     @else
                                         <div class="no-results" id="noResults">
                                             <p class="text-muted">Không có thông tin về việc nợ kinh phí.</p>

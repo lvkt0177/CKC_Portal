@@ -3,17 +3,20 @@
 namespace App\Models;
 
 use Illuminate\Database\Eloquent\Model;
+use App\Traits\CastsIntegerIds;
 
 class ChiTietChuongTrinhDaoTao extends Model
 {
-        protected $table = "chi_tiet_ctdt";
-        protected $fillable = [
-            'id_chuong_trinh_dao_tao',
-            'id_mon_hoc',
-            'id_hoc_ky',
-            'so_tiet',
-            'so_tin_chi',
-        ];
+    use CastsIntegerIds;
+
+    protected $table = "chi_tiet_ctdt";
+    protected $fillable = [
+        'id_chuong_trinh_dao_tao',
+        'id_mon_hoc',
+        'id_hoc_ky',
+        'so_tiet',
+        'so_tin_chi',
+    ];
     public function chuongTrinhDaoTao()
     {
         return $this->belongsTo(ChuongTrinhDaoTao::class, 'id_chuong_trinh_dao_tao', 'id');

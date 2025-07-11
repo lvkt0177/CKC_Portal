@@ -5,9 +5,12 @@ namespace App\Models;
 use Illuminate\Database\Eloquent\Model;
 use Illuminate\Database\Eloquent\Relations\MorphTo;
 use App\Enum\ActiveOrNotStatus;
+use App\Traits\CastsIntegerIds;
 
 class BinhLuan extends Model
 {
+    use CastsIntegerIds;
+
     protected $table = 'binh_luan';
 
     protected $fillable = [

@@ -44,7 +44,7 @@
                                         id="tieu_de" name="tieu_de" required placeholder="Nhập tiêu đề biên bản..."
                                         value="Biên Bản Sinh Hoạt Chủ Nhiệm" readonly>
                                     @error('tieu_de')
-                                        <div class="text-danger">Tieu de bi loi: {{ $message }}</div>
+                                        <div class="text-danger">Tiêu đề bị lỗi: {{ $message }}</div>
                                     @enderror
                                 </div>
 
