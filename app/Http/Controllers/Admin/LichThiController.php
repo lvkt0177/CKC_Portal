@@ -139,22 +139,32 @@ class LichThiController extends Controller
             ->distinct()
             ->with('tuan')
             ->get();
-    
+        $lanThiDaCoLich = LichThi::whereHas('lopHocPhan', function ($query) use ($lop) {
+            $query->where('id_lop', $lop->id);
+            })
+            ->get();
+        
+        $lanthi = $request->lanthi;
+        if(!$lanthi && $lanThiDaCoLich->isNotEmpty()){
+            $lanthi = $lanThiDaCoLich->first()->lan_thi;  
+        }
         $idTuan = $request->id_tuan;
     
         if (!$idTuan && $tuanDaCoLich->isNotEmpty()) {
+            
             $idTuan = $tuanDaCoLich->first()->id_tuan;
         }
     
         $lichThi = LichThi::with(['lopHocPhan', 'giamThi1.hoSo', 'giamThi2.hoSo', 'phong'])
             ->where('id_tuan', $idTuan)
+            ->where('lan_thi', $lanthi)
             ->whereHas('lopHocPhan', function ($query) use ($lop) {
                 $query->where('id_lop', $lop->id);
             })
             ->orderBy('ngay_thi', 'asc')
             ->orderBy('gio_bat_dau', 'asc')
             ->get();
-    
+        
         $dsNgay = $lichThi->groupBy('ngay_thi');
     
         return view('admin.lichthi.show', compact(
@@ -162,7 +172,9 @@ class LichThiController extends Controller
             'lichThi',
             'lop',
             'tuanDaCoLich',
-            'idTuan'
+            'idTuan',
+            'lanthi',
+            'lanThiDaCoLich'
         ));
     }
     

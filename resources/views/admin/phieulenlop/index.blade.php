@@ -375,7 +375,7 @@
     <div class="modal fade" id="classDetailModal" tabindex="-1" aria-labelledby="classDetailLabel" aria-hidden="true">
         <div class="modal-dialog modal-dialog-centered modal-md">
             <div class="modal-content shadow-lg rounded-4">
-                <div class="modal-header text-white rounded-top-4" style="background: var(--primary-color)">
+                <div class="modal-header text-white rounded-top-4" style="background:#2c3e50">
                     <h5 class="modal-title" id="classDetailLabel">
                         <i class="bi bi-info-circle-fill me-2"></i> Chi tiết lớp học
                     </h5>
@@ -393,9 +393,6 @@
                         <li><strong>Ngày học:</strong> <span id="date">---</span></li>
                         <li><strong>Nội dung buổi học:</strong> <span id="content">---</span></li>
                     </ul>
-                </div>
-                <div class="modal-footer bg-light rounded-bottom-4">
-                    <button type="button" class="btn btn-back" data-bs-dismiss="modal">Đóng</button>
                 </div>
             </div>
         </div>

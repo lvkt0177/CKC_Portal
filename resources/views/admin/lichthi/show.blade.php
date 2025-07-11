@@ -18,8 +18,9 @@
                     <a href="{{ route('giangvien.lichthi.index') }}" class="btn btn-primary">Quay lại</a>
                 </div>
                 @if ($lichThi->count() > 0)
-                    <form action="{{ route('giangvien.lichthi.show', $lop) }}" method="GET" class="form-inline mb-3">
-                        <div class="form-group me-2">
+                    <form action="{{ route('giangvien.lichthi.show', $lop) }}" method="GET"
+                        class="form-inline mb-3 d-flex">
+                        <div class="form-group me-2 col-6">
                             <label for="id_tuan" class="me-2">🗓️ Chọn tuần:</label>
                             <select name="id_tuan" id="id_tuan" class="form-control" onchange="this.form.submit()">
                                 @foreach ($tuanDaCoLich as $tuanItem)
@@ -37,6 +38,16 @@
                                 @endforeach
                             </select>
                         </div>
+                        <div class="form-group me-2 col-6">
+                            <label for="id_tuan" class="me-2">Chọn lần thi:</label>
+                            <select name="lan thi" class="form-control" onchange="this.form.submit()">
+                                @foreach ($lanThiDaCoLich as $lanThiItem)
+                                    <option value="{{ $lanThiItem->lan_thi }}">
+                                        Lần thi {{ $lanThiItem->lan_thi }}
+                                    </option>
+                                @endforeach
+                            </select>
+                        </div>
                     </form>
 
                     @foreach ($dsNgay as $ngay => $dsLich)
@@ -44,7 +55,6 @@
                             <h3 class="date-header">
                                 📅 Ngày {{ \Carbon\Carbon::parse($ngay)->format('d/m/Y') }}
                             </h3>
-
                             <div class="exam-cards" style="display: grid;">
                                 <div class="exam-table">
                                     <table class="table">
