@@ -50,14 +50,13 @@ class PaymentService
             "vnp_ReturnUrl" => $vnp_Returnurl,
             "vnp_TxnRef" => $vnp_TxnRef,
         );
-
         if (isset($vnp_BankCode) && $vnp_BankCode != "") {
         $inputData['vnp_BankCode'] = $vnp_BankCode;
         }
         if (isset($vnp_Bill_State) && $vnp_Bill_State != "") {
         $inputData['vnp_Bill_State'] = $vnp_Bill_State;
         }
-
+        
         //var_dump($inputData);
         ksort($inputData);
         $query = "";
@@ -134,10 +133,9 @@ class PaymentService
                 'so_tien' => $filteredData['vnp_Amount'] / 100 ?? 0,
             ];
 
-
             if($data['status'] == 'success') {
                 if($data['type'] == 'hoc_phi') {
-                    $this->updateHocPhi();
+                    $this->updateHocPhi($orderInfo['id_hocPhi']);
                 }
                 if($data['type'] == 'hoc_ghep') {
                     $this->updateHocPhiHocGhepThiLai($orderInfo['id_lop_hoc_phan'], $data['so_tien'], LoaiDangKy::HOCGHEP->value);
@@ -154,28 +152,11 @@ class PaymentService
         }
     }
 
-    protected function updateHocPhi(): void
+    protected function updateHocPhi($id_hoc_phi): void
     {
-        $sinhVien = Auth::guard('student')->user();
-        $now = now()->toDateString();
-                
-        $hocKyHienTai = HocKy::whereDate('ngay_bat_dau', '<=', $now)
-        ->where('ngay_ket_thuc', '>=', $now)
-        ->first();
-                
-        $hocPhi = null;
-                
-        if ($hocKyHienTai) {
-            $hocPhi = HocPhi::where('id_hoc_ky', $hocKyHienTai->id)
-            ->where('id_sinh_vien', $sinhVien->id)
-            ->first();
-            
-            if($hocPhi->trang_thai->value == 0) {
-                $hocPhi->ngay_dong = Carbon::now();
-                $hocPhi->trang_thai = 1;
-                $hocPhi->save();                        
-            }
-        }
+        $result = HocPhi::where('id', $id_hoc_phi)->first();
+        $result->trang_thai = 1;
+        $result->save();
     }
 
     protected function updateDanhSachHocPhan($id_lop_hoc_phan): void

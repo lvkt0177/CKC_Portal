@@ -33,5 +33,5 @@ class ChiTietBienBanSHCN extends Model
         return $this->belongsTo(SinhVien::class, 'id_sinh_vien', 'id');
     }
 
-
+    // public function 
 }

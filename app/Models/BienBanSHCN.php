@@ -55,6 +55,11 @@ class BienBanSHCN extends Model
         return $this->belongsTo(SinhVien::class, 'id_sv', 'id');
     }
 
+    /**
+     * Chi ti t c a biên b n sinh ho t ch  nhi m
+     *
+     * @return \Illuminate\Database\Eloquent\Relations\HasMany
+     */
     public function chiTietBienBanSHCN()
     {
         return $this->hasMany(ChiTietBienBanSHCN::class, 'id_bien_ban_shcn', 'id');

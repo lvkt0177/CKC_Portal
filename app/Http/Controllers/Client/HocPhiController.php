@@ -43,7 +43,7 @@ class HocPhiController extends Controller
                 );
             }
         }
-        $hocPhiCuaSinhVien = HocPhi::where('id_sinh_vien', $sinhVien->id)->orderBy('id_hoc_ky','asc')->get();
+        $hocPhiCuaSinhVien = HocPhi::with('hocKy')->where('id_sinh_vien', $sinhVien->id)->orderBy('id_hoc_ky','asc')->get();
         return view('client.hocphi.index', compact('sinhVien', 'tatCaHocKy', 'hocPhiCuaSinhVien'));
     }
 

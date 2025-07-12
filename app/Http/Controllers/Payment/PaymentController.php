@@ -26,15 +26,15 @@ class PaymentController extends Controller
         $this->paymentService = $paymentService;
     }
 
-    public function vnpay_payment(PaymentRequest $request)
+    public function vnpay_payment(PaymentRequest $request, HocPhi $hocPhi)
     {
         $data = $request->validated();
         $data['order_info'] = json_encode([
             'message' => 'Thanh toán học phí',
             'type' => 'hoc_phi',
+            'id_hocPhi' => $hocPhi->id
         ]);
         $url = $this->paymentService->createPaymentUrl($data);
-        
         return redirect()->away($url);
     }
 

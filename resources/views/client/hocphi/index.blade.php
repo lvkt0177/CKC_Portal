@@ -78,10 +78,14 @@
                                                         <span class="fee-value text-success">{{ number_format($hocPhi->tong_tien, 0, ',', '.') }} VNĐ</span>
                                                     </div>
                                                 </div>
+                                                @php
+                                                    $today = \Carbon\Carbon::today();
+                                                @endphp
 
-                                                @if ($hocPhi->trang_thai->value == 0)
+                                                
+                                                @if ($today->between($hocPhi->hocKy->ngay_bat_dau, $hocPhi->hocKy->ngay_ket_thuc))
                                                     <div class="fee-pay text-end">
-                                                        <form action="{{ url('/vnpay_payment') }}" method="post">
+                                                        <form action="{{ url('/vnpay_payment',$hocPhi) }}" method="post">
                                                             @csrf
                                                             <input type="hidden" name="total_vnpay" value="{{ $hocPhi->tong_tien }}">
                                                             <input type="hidden" name="id_hoc_phi" value="{{ $hocPhi->id }}">
@@ -89,6 +93,13 @@
                                                                 name="redirect">Thanh toán VNPAY</button>
                                                         </form>
                                                     </div>
+                                                @else
+                                                    @if($hocPhi->trang_thai->value == 0)
+                                                        <div class="text-end">
+                                                            <p class="text-muted">Đã quá hạn thanh toán trực tuyến. Vui lòng liên hệ với phòng kế toán để xử lý</p>
+                                                        </div>
+                                                    @endif
+                                                        
                                                 @endif
                                             </div>
                                         @endforeach

@@ -60,14 +60,11 @@ class BienBanController extends Controller
     {
         $sinhVien = Auth::user();
         $thongTin = $sinhVien->danhSachSinhVien->last();
-        $thuKy = $sinhVien->chuc_vu == RoleStudent::SECRETARY;
-        return response()->json([
-            'sinhVien' => $sinhVien
-        ]);
+        $thuKy = $thongTin->chuc_vu == RoleStudent::SECRETARY;
         $lop = Lop::find($thongTin->id_lop);
         $bienBanSHCN = $this->bienBanRepository
             ->getByLopWithRelations($lop);
-
+        $bienBanSHCN->load('chiTietBienBanSHCN.sinhVien.hoSo');
         return response()->json([
             'status' => 'success',
             'bienBanSHCN' => $bienBanSHCN,
