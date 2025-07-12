@@ -15,9 +15,10 @@ use App\Enum\RoleStudent;
 use App\Enum\BienBanStatus;
 use App\Http\Requests\BienBan\BienBanRequest;
 use Carbon\Carbon;
-use App\Services\BienBanService;
+use App\Services\BienBanAPIService;
 use App\Repositories\BienBan\BienBanRepository;
 use Illuminate\Support\Facades\Log;
+use App\Services\BienBanService;
 
 class BienBanController extends Controller
 {
@@ -65,7 +66,7 @@ class BienBanController extends Controller
     /**
      * Store a newly created resource in storage.
      */
-    public function store(BienBanRequest $request, Lop $lop, BienBanService $bienBanService)
+    public function store(BienBanRequest $request, Lop $lop, BienBanAPIService $bienBanService)
     {
         $data = $request->validated();
         $data['trang_thai'] = BienBanStatus::GIANGVIEN;
@@ -122,7 +123,7 @@ class BienBanController extends Controller
     /**
      * Update the specified resource in storage.
      */
-    public function update(BienBanRequest $request, BienBanSHCN $bienbanshcn, BienBanService $bienBanService)
+    public function update(BienBanRequest $request, BienBanSHCN $bienbanshcn, BienBanAPIService $bienBanService)
     {
         $result = $bienBanService->updateBienBanVaChiTiet($request->validated(), $bienbanshcn);
 

@@ -119,6 +119,90 @@ class ThoiKhoaBieuController extends Controller
             'data' => $newTkb,
         ], 201);
     }
+    public function copyWeekToWeeks(Request $request)
+    {
+        try {
+            $data = $request->validate([
+                'tkb_ids' => 'required|array',
+                'tkb_ids.*' => 'integer|exists:thoi_khoa_bieu,id',
+                'start_week_id' => 'required|integer|exists:tuan,id',
+                'end_week_id' => 'required|integer|exists:tuan,id',
+            ]);
+
+            $tkbIds = $data['tkb_ids'];
+            $startWeekId = $data['start_week_id'];
+            $endWeekId = $data['end_week_id'];
+
+            $tuanGoc = Tuan::find($startWeekId);
+            $tuanDich = Tuan::find($endWeekId);
+
+            if (!$tuanGoc || !$tuanDich) {
+                return response()->json(['error' => 'Tuần không hợp lệ'], 400);
+            }
+
+            $tuanTargets = Tuan::whereBetween('id', [$startWeekId, $endWeekId])
+                ->orderBy('id')
+                ->get();
+
+            $tkbs = ThoiKhoaBieu::whereIn('id', $tkbIds)
+                ->where('id_tuan', $startWeekId)
+                ->get();
+
+            $copiedTkb = [];
+           foreach ($tuanTargets as $tuanTarget) {
+    if ($tuanTarget->id == $startWeekId) continue;
+
+    $weeksDiff = $tuanTarget->tuan - $tuanGoc->tuan;
+
+            foreach ($tkbs as $tkb) {
+                $newNgay = \Carbon\Carbon::parse($tkb->ngay)->addWeeks($weeksDiff)->toDateString();
+
+                // ✅ Kiểm tra trùng: cùng lớp, phòng, tiết, ngày
+                $exists = ThoiKhoaBieu::where('id_lop_hoc_phan', $tkb->id_lop_hoc_phan)
+                    ->where('id_phong', $tkb->id_phong)
+                    ->where('ngay', $newNgay)
+                    ->where(function ($query) use ($tkb) {
+                        $query->whereBetween('tiet_bat_dau', [$tkb->tiet_bat_dau, $tkb->tiet_ket_thuc])
+                            ->orWhereBetween('tiet_ket_thuc', [$tkb->tiet_bat_dau, $tkb->tiet_ket_thuc])
+                            ->orWhere(function ($q) use ($tkb) {
+                                $q->where('tiet_bat_dau', '<=', $tkb->tiet_bat_dau)
+                                    ->where('tiet_ket_thuc', '>=', $tkb->tiet_ket_thuc);
+                            });
+                    })
+                    ->exists();
+
+                if ($exists) {
+                    continue; 
+                }
+
+                $newTkb = $tkb->replicate();
+                $newTkb->id_tuan = $tuanTarget->id;
+                $newTkb->ngay = $newNgay;
+                $newTkb->save();
+                $copiedTkb[] = $newTkb;
+            }
+        }
+
+
+            return response()->json([
+                'message' => 'Sao chép thời khóa biểu thành công.',
+                'data' => $copiedTkb,
+            ], 201);
+        } catch (\Illuminate\Validation\ValidationException $e) {
+            return response()->json([
+                'error' => 'Lỗi validate',
+                'message' => $e->getMessage(),
+                'errors' => $e->errors(),
+            ], 422);
+        } catch (\Exception $e) {
+            return response()->json([
+                'error' => 'Lỗi hệ thống',
+                'message' => $e->getMessage(),
+                'trace' => $e->getTrace(),
+            ], 500);
+        }
+    }
+
 
     public function destroy(ThoiKhoaBieu $tkb)
     {

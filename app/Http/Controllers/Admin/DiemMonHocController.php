@@ -11,6 +11,7 @@ use App\Models\DanhSachHocPhan;
 use Illuminate\Support\Facades\Auth;
 use Illuminate\Support\Facades\Log;
 use App\Http\Requests\GiangVien\NhapDiemRequest;
+use App\Http\Requests\GiangVien\GuiBangDiemRequest;
 use App\Enum\NopBangDiemStatus;
 use \Spatie\Permission\Models\Role;
 use \Spatie\Permission\Models\Permission;
@@ -180,5 +181,30 @@ class DiemMonHocController extends Controller
     {
         $tieuDeFile = 'bang-diem-' . Str::slug($lopHocPhan->ten_hoc_phan) . '.xlsx';
         return Excel::download(new BangDiemExport($lopHocPhan), $tieuDeFile);
+    }
+
+    public function guiBangDiemToiSinhVien(GuiBangDiemRequest $request, DanhSachHocPhan $danhSachHocPhan)
+    {
+        $data = $request->validated();
+        
+        foreach($data['lop_ids'] as $lop_id){
+            $lop = Lop::find($lop_id);
+            $lop->load('danhSachSinhVien');
+            foreach ($lop->danhSachSinhVien as $sinhvien) {
+                ChiTietThongBao::firstOrCreate([
+                    'id_thong_bao' => $thongbao->id,
+                    'id_sinh_vien' => $sinhvien->id_sinh_vien,
+                ], [
+                    'trang_thai' => 0,
+                ]);
+            }
+        }
+        $result = $this->thongBaoRepository->update($thongbao, ['trang_thai' => 1]);
+
+        if (!$result) {
+            return redirect()->route('giangvien.thongbao.index')->with('error', 'Gửi thông báo tới sinh viên thất bại');
+        }
+
+        return redirect()->route('giangvien.thongbao.index')->with('success', 'Gửi thông báo tới sinh viên thành công');
     }
 }

@@ -83,7 +83,7 @@
                                                 @endphp
 
                                                 
-                                                @if ($today->between($hocPhi->hocKy->ngay_bat_dau, $hocPhi->hocKy->ngay_ket_thuc))
+                                                @if ($today->between($hocPhi->hocKy->ngay_bat_dau, $hocPhi->hocKy->ngay_ket_thuc) && $hocPhi->trang_thai->value == 0)
                                                     <div class="fee-pay text-end">
                                                         <form action="{{ url('/vnpay_payment',$hocPhi) }}" method="post">
                                                             @csrf

@@ -34,6 +34,6 @@ class Phong extends Model
     }
     public function lichThi()
     {
-        return $this->hasMany(LichThi::class,'id_phong','id');
+        return $this->hasMany(LichThi::class,'id_phong_thi','id');
     }
 }

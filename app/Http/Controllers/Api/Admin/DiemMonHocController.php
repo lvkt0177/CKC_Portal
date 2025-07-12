@@ -57,7 +57,7 @@ class DiemMonHocController extends Controller
         ]);
     }
 
-    public function updateTrangThai(LopHocPhan $lopHocPhan)
+      public function updateTrangThai(LopHocPhan $lopHocPhan)
     {
         $result = $this->capNhatTheoTrangThai($lopHocPhan->trang_thai_nop_bang_diem->value, $lopHocPhan) ? true : false;     
         
@@ -75,7 +75,7 @@ class DiemMonHocController extends Controller
         ]);
     }
 
-    public function capNhat(NhapDiemRequest $request)
+   public function capNhat(NhapDiemRequest $request)
     {
         $validated = $request->validated();
         $Students = $validated['students'] ?? [];
@@ -131,10 +131,10 @@ class DiemMonHocController extends Controller
     }
 
     public function capNhatTheoTrangThai(int $trangThai,LopHocPhan $lopHocPhan){
-       if($lopHocPhan->danhSachHocPhan->count() == 0) {
+        if($lopHocPhan->danhSachHocPhan->count() == 0) {
            return false;
        }
-
+       
         foreach ($lopHocPhan->danhSachHocPhan as $sinhVien) {
             $idSinhVien = (int)$sinhVien->id_sinh_vien;
 

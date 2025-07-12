@@ -10,7 +10,7 @@ use App\Models\DanhSachHocPhan;
 use App\Models\Phong;
 use App\Models\Tuan;
 use App\Models\Nam;
-use App\Http\Requests\PhieuLenLop\PhieuLenLopRequest;
+use App\Http\Requests\PhieuLenLop\PhieuLenLopAPIRequest;
 use Illuminate\Support\Facades\Auth;
 use Carbon\Carbon;
 
@@ -103,7 +103,7 @@ class PhieuLenLopController extends Controller
     }
 
     // api/admin/phieu-len-lop/store - Tham số phải có: id_lop_hoc_phan, tiet_bat_dau, so_tiet, ngay, id_phong, si_so, hien_dien, noi_dung
-    public function store(PhieuLenLopRequest $request)
+    public function store(PhieuLenLopAPIRequest $request)
     {
         $tuan = Tuan::whereDate('ngay_bat_dau', '<=', $request->ngay)
                     ->whereDate('ngay_ket_thuc', '>=', $request->ngay)

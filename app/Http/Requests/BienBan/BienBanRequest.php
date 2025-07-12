@@ -31,6 +31,7 @@ class BienBanRequest extends FormRequest
             'so_luong_sinh_vien' => 'required|integer',
             'vang_mat' => 'required|integer',
             'sinh_vien_vang' => 'array',
+            'trang_thai' => 'nullable|integer'
         ];
     }
 

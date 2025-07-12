@@ -79,7 +79,7 @@ class BienBanController extends Controller
     public function store(BienBanRequest $request, Lop $lop, BienBanService $bienBanService)
     {
         $data = $request->validated();
-        $data['trang_thai'] = BienBanStatus::GIANGVIEN;
+        $data['trang_thai'] = BienBanStatus::THUKY;
         $result = $bienBanService->storeBienBanVaChiTiet($data, $lop);
         
         if($result) {

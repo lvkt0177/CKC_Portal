@@ -15,7 +15,6 @@ use Illuminate\Support\Facades\Auth;
 
 class LopController extends Controller
 {
-    // Lấy danh sách lớp của giảng viên đang đăng nhập
     public function index()
     {
         $lops = Lop::with('giangVien', 'nienKhoa', 'giangVien.boMon.chuyenNganh')
@@ -28,37 +27,50 @@ class LopController extends Controller
         ]);
     }
 
-    // Lấy danh sách sinh viên trong lớp cụ thể
-    public function list(Lop $lop)
-    {
-        $sinhViens = DanhSachSinhVien::with('sinhVien.hoSo')->where('id_lop', $lop->id)->get();
+ public function list(Lop $lop)
+{
+    $sinhViens = DanhSachSinhVien::with('sinhVien.hoSo')
+        ->where('id_lop', $lop->id)
+        ->get()
+        ->map(function ($item) {
+            return [
+                'id' => $item->id,
+                'id_lop' => $item->id_lop,
+                'id_sinh_vien' => $item->id_sinh_vien,
+                'chuc_vu' => $item->chuc_vu, 
+                'sinh_vien' => $item->sinhVien,
+            ];
+        });
 
-        return response()->json([
-            'lop' => $lop,
-            'sinh_viens' => $sinhViens
-        ]);
-    }
+    return response()->json([
+        'lop' => $lop,
+        'sinh_viens' => $sinhViens,
+    ]);
+}
 
-    // Lấy danh sách sinh viên và điểm rèn luyện của từng người theo tháng và năm
+
     public function nhapDiemRL(Request $request, Lop $lop)
     {
         $thang = $request->get('thoi_gian', now()->month);
         $nam =  $request->get('nam', now()->year);
 
         $sinhViens = SinhVien::with([
-            'hoSo',
-            'lop.nienKhoa',
-            'lop.giangVien',
-            'diemRenLuyens' => function ($query) use ($thang, $nam) {
-            $query->where('thoi_gian', $thang)
-                ->whereHas('nam', function ($q) use ($nam) {
-                    $q->where('nam_bat_dau', $nam);
-              });
-            }
-        ])
-        ->where('id_lop', $lop->id)
-        ->orderBy('ma_sv', 'asc')
-        ->get();
+    'hoSo',
+    'danhSachSinhVien.lop.nienKhoa',
+    'danhSachSinhVien.lop.giangVien',
+    'diemRenLuyens' => function ($query) use ($thang, $nam) {
+        $query->where('thoi_gian', $thang)
+            ->whereHas('nam', function ($q) use ($nam) {
+                $q->where('nam_bat_dau', $nam);
+            });
+    }
+    ])
+    ->whereHas('danhSachSinhVien', function ($query) use ($lop) {
+        $query->where('id_lop', $lop->id);
+    })
+    ->orderBy('ma_sv', 'asc')
+    ->get();
+
 
         return response()->json([
             'lop' => $lop,
@@ -118,10 +130,10 @@ class LopController extends Controller
 
         return response()->json([
             'status' => true,
-            'message' => 'Cập nhật điểm hàng loạt thành công!',
+            'message' => 'Cập nhật điểm thành công!',
         ]);
     }
 
 
-  
+
 }

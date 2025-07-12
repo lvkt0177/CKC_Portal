@@ -17,11 +17,43 @@
                     <div class="card-body">
                         
                         <div class="">
-                            <div class="text-end my-3">
+                            <div class="text-end my-3 d-flex">
                                 <form action="{{ route('giangvien.diemmonhoc.export', $lop_HP) }}" method="get">
                                     @csrf
                                     <button class="btn btn-success">Xuất excel</button>
                                 </form>
+
+                                <button type="button" class="btn btn-dark ms-2" data-bs-toggle="modal" data-bs-target="#uploadModal">
+                                    Gửi bảng điểm tới Sinh Viên
+                                </button>
+
+                                <div class="modal fade" id="uploadModal" tabindex="-1" aria-labelledby="uploadModalLabel" aria-hidden="true">
+                                    <div class="modal-dialog">
+                                    <div class="modal-content shadow text-start">
+                                        <div class="modal-header bg-dark text-white">
+                                            <h5 class="modal-title" id="uploadModalLabel">Gửi bảng điểm</h5>
+                                            <button type="button" class="btn-close btn-close-white" data-bs-dismiss="modal" aria-label="Close"></button>
+                                        </div>
+                                        <form action="" method="POST" enctype="multipart/form-data">
+                                            @csrf
+                                            <div class="modal-body">
+                                                <div class="mb-3">
+                                                    <label for="file" class="form-label">Chọn tệp bảng điểm</label>
+                                                    <input class="form-control" type="file" name="file" id="file" required>
+                                                </div>
+                                                <div class="mb-3">
+                                                    <label for="file" class="form-label">Lời nhắn</label>
+                                                    <textarea class="form-control" name="noi_dung" id="" cols="30" rows="10"></textarea>
+                                                </div>
+                                            </div>
+                                            <div class="modal-footer">
+                                                <button type="submit" class="btn btn-primary">Gửi</button>
+                                                <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">Hủy</button>
+                                            </div>
+                                        </form>
+                                    </div>
+                                    </div>
+                                </div>
                             </div>
                             @if (!is_null($nextOption) && $nextOption->value != 4)
                                 <form action="{{ route('giangvien.diemmonhoc.updateTrangThai', $lop_HP) }}" method="POST"
@@ -62,7 +94,6 @@
                                             <th>Điểm thi lần 2</th>
                                             <th>Điểm trung bình</th>
                                             <th>Loại sinh viên</th>
-
                                         </tr>
                                     </thead>
                                     <tbody>
