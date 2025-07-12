@@ -51,6 +51,9 @@ class DiemMonHocController extends Controller
         
         $sinhviens = SinhVien::with([
             'hoSo',
+            'dangKyHocGhepThiLai' => function ($query) use ($id) {
+                $query->where('id_lop_hoc_phan', $id);
+            },
             'danhSachHocPhans' => function ($query) use ($id) {
                 $query->where('id_lop_hoc_phan', $id)->with('lopHocPhan');
             }
@@ -60,7 +63,7 @@ class DiemMonHocController extends Controller
         })
         ->orderBy('ma_sv', 'asc')
         ->get();
-
+        
         $currentTrangThai = $lop_HP->trang_thai_nop_bang_diem->value;
         $nextOption = collect(NopBangDiemStatus::cases())
             ->first(fn($case) => $case->value === $currentTrangThai + 1);

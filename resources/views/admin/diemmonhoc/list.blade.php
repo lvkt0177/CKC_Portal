@@ -15,7 +15,7 @@
                     </div>
 
                     <div class="card-body">
-                        
+
                         <div class="">
                             <div class="text-end my-3">
                                 <form action="{{ route('giangvien.diemmonhoc.export', $lop_HP) }}" method="get">
@@ -32,7 +32,8 @@
                                             <option value="{{ $nextOption->value }}">{{ $nextOption->getLabel() }}</option>
                                         </select>
 
-                                        <button type="submit" class="btn btn-primary mt-2">{{ $nextOption->getLabel() }}</button>
+                                        <button type="submit"
+                                            class="btn btn-primary mt-2">{{ $nextOption->getLabel() }}</button>
                                     </div>
                                 </form>
                                 <div class="d-flex justify-content-end mb-3">
@@ -45,7 +46,7 @@
                                     <strong>Thông báo:</strong> Lớp học phần này đã hoàn thành.
                                 </div>
                             @endif
-                           
+
 
                             <form action="{{ route('giangvien.diemmonhoc.cap-nhat-diem') }}" method="POST" data-confirm>
                                 @csrf
@@ -104,11 +105,21 @@
                                                     </td>
                                                     <td>
                                                         <span class="score-view">{{ $dshp->diem_thi_lan_2 }}</span>
-                                                        <input type="number" step="0.1" min="0" max="10"
-                                                            name="diem_thi_lan_2[{{ $dshp->id_sinh_vien }}]"
-                                                            value="{{ $dshp->diem_thi_lan_2 }}"
-                                                            class="form-control score-input" style="display:none;"
-                                                            {{ $nextOption->value - 1 == 2 ? '' : 'readonly' }} />
+                                                        @php
+                                                            $dktl = $sv->dangKyHocGhepThiLai
+                                                                ->where('loai_dong', 1)
+                                                                ->where('trang_thai', 1)
+                                                                ->first();
+                                                        @endphp
+                                                        @if ($dktl)
+                                                            <input type="number" step="0.1" min="0"
+                                                                max="10"
+                                                                name="diem_thi_lan_2[{{ $dshp->id_sinh_vien }}]"
+                                                                value="{{ $dshp->diem_thi_lan_2 }}"
+                                                                class="form-control score-input" style="display:none;"
+                                                                {{ $nextOption->value - 1 == 2 ? '' : 'readonly' }} />
+                                                        @endif
+
                                                     </td>
                                                     <td>{{ $dshp->diem_tong_ket ?? '' }}</td>
                                                     <td>{{ $dshp->loai_hoc == 0 ? 'Chính quy' : 'Học ghép' }}</td>
