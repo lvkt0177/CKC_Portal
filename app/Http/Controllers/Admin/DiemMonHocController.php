@@ -8,6 +8,7 @@ use App\Models\SinhVien;
 use App\Models\LopHocPhan;
 use App\Models\HoSo;
 use App\Models\DanhSachHocPhan;
+use App\Models\ChiTietThongBao;
 use Illuminate\Support\Facades\Auth;
 use Illuminate\Support\Facades\Log;
 use App\Http\Requests\GiangVien\NhapDiemRequest;
@@ -15,6 +16,7 @@ use App\Http\Requests\GiangVien\GuiBangDiemRequest;
 use App\Enum\NopBangDiemStatus;
 use \Spatie\Permission\Models\Role;
 use \Spatie\Permission\Models\Permission;
+use App\Repositories\ThongBao\ThongBaoRepository;
 use App\Acl\Acl;
 use App\Exports\BangDiemExport;
 use Maatwebsite\Excel\Facades\Excel;
@@ -22,7 +24,9 @@ use Illuminate\Support\Str;
 
 class DiemMonHocController extends Controller
 {
-    public function __construct() {
+    public function __construct(
+        protected ThongBaoRepository $thongBaoRepository,
+    ) {
         $this->middleware('permission:' . Acl::PERMISSION_SCORE_LIST, ['only' => ['index', 'list']]);
         $this->middleware('permission:' . Acl::PERMISSION_SCORE_EDIT, ['only' => ['updateTrangThai', 'capNhat']]);
     }
@@ -60,7 +64,6 @@ class DiemMonHocController extends Controller
         $currentTrangThai = $lop_HP->trang_thai_nop_bang_diem->value;
         $nextOption = collect(NopBangDiemStatus::cases())
             ->first(fn($case) => $case->value === $currentTrangThai + 1);
-
         return view('admin.diemmonhoc.list', compact('sinhviens', 'lop_HP', 'nextOption'));
     }
 
@@ -183,28 +186,30 @@ class DiemMonHocController extends Controller
         return Excel::download(new BangDiemExport($lopHocPhan), $tieuDeFile);
     }
 
-    public function guiBangDiemToiSinhVien(GuiBangDiemRequest $request, DanhSachHocPhan $danhSachHocPhan)
+    public function guiBangDiemToiSinhVien(GuiBangDiemRequest $request)
     {
         $data = $request->validated();
-        
-        foreach($data['lop_ids'] as $lop_id){
-            $lop = Lop::find($lop_id);
-            $lop->load('danhSachSinhVien');
-            foreach ($lop->danhSachSinhVien as $sinhvien) {
-                ChiTietThongBao::firstOrCreate([
-                    'id_thong_bao' => $thongbao->id,
-                    'id_sinh_vien' => $sinhvien->id_sinh_vien,
-                ], [
-                    'trang_thai' => 0,
-                ]);
-            }
+        $files = $request->file('files');
+        $data['files'] = is_array($files) ? $files : [$files];
+        $today = now();
+        $thongBao = $this->thongBaoRepository->create([
+            'tieu_de' => $data['tieu_de'],
+            'tu_ai' => 'Giáo viên bộ môn',
+            'ngay_gui' => $today,
+            'noi_dung' => $data['noi_dung'],
+            'files' => $data['files'],
+            'trang_thai' => 1,
+        ]);
+        $danhSachHocPhan = json_decode($data['danhSachHocPhan'], true);
+        foreach ($danhSachHocPhan as $sinhVien) {
+            ChiTietThongBao::firstOrCreate([
+                'id_thong_bao' => $thongBao->id,
+                'id_sinh_vien' => $sinhVien['id'],
+            ], [
+                'trang_thai' => 0,
+            ]);
         }
-        $result = $this->thongBaoRepository->update($thongbao, ['trang_thai' => 1]);
 
-        if (!$result) {
-            return redirect()->route('giangvien.thongbao.index')->with('error', 'Gửi thông báo tới sinh viên thất bại');
-        }
-
-        return redirect()->route('giangvien.thongbao.index')->with('success', 'Gửi thông báo tới sinh viên thành công');
+        return redirect()->route('giangvien.thongbao.index')->with('success', 'Gửi bảng điểm tới sinh viên thành công');
     }
 }

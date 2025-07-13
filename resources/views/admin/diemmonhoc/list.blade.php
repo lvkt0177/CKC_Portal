@@ -15,7 +15,6 @@
                     </div>
 
                     <div class="card-body">
-                        
                         <div class="">
                             <div class="text-end my-3 d-flex">
                                 <form action="{{ route('giangvien.diemmonhoc.export', $lop_HP) }}" method="get">
@@ -34,21 +33,26 @@
                                             <h5 class="modal-title" id="uploadModalLabel">Gửi bảng điểm</h5>
                                             <button type="button" class="btn-close btn-close-white" data-bs-dismiss="modal" aria-label="Close"></button>
                                         </div>
-                                        <form action="" method="POST" enctype="multipart/form-data">
+                                        <form action="{{ route('giangvien.diemmonhoc.guibandiem')}}" method="POST" enctype="multipart/form-data">
                                             @csrf
+                                            <input type="hidden" name="danhSachHocPhan" value="{{ json_encode($sinhviens) }}">
                                             <div class="modal-body">
                                                 <div class="mb-3">
+                                                    <label for="tieu_de" class="form-label">Tiêu đề</label>
+                                                    <input class="form-control" value="Bảng điểm môn {{ $lop_HP->ten_hoc_phan ?? '' }} - Lớp {{ $lop_HP->lop->ten_lop }}" type="text" id="tieu_de" name="tieu_de" readonly>
+                                                </div>
+                                                <div class="mb-3">
                                                     <label for="file" class="form-label">Chọn tệp bảng điểm</label>
-                                                    <input class="form-control" type="file" name="file" id="file" required>
+                                                    <input class="form-control" type="file" name="files" id="file" required>
                                                 </div>
                                                 <div class="mb-3">
                                                     <label for="file" class="form-label">Lời nhắn</label>
-                                                    <textarea class="form-control" name="noi_dung" id="" cols="30" rows="10"></textarea>
+                                                    <textarea class="form-control" name="noi_dung" id="" cols="30" rows="10" required></textarea>
                                                 </div>
                                             </div>
                                             <div class="modal-footer">
-                                                <button type="submit" class="btn btn-primary">Gửi</button>
                                                 <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">Hủy</button>
+                                                <button type="submit" class="btn btn-primary">Gửi</button>
                                             </div>
                                         </form>
                                     </div>

@@ -14,7 +14,10 @@ class GuiBangDiemRequest extends FormRequest
     public function rules(): array
     {
         return [
-            'file' => 'required|file|mimes:pdf,xlsx,xls|max:10240',
+            'tieu_de' => 'required',
+            'files' => 'required|file|mimes:pdf,xlsx,xls|max:10240',
+            'danhSachHocPhan' => 'required|json',
+            'noi_dung' => 'required'
         ];
     }
 }
