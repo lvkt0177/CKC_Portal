@@ -139,22 +139,37 @@ class LichThiController extends Controller
             ->distinct()
             ->with('tuan')
             ->get();
-    
+            
+        $lanThiDaCoLich = LichThi::whereHas('lopHocPhan', function ($query) use ($lop) {
+            $query->where('id_lop', $lop->id);
+        })
+        ->select('lan_thi') 
+        ->distinct()
+        ->orderBy('lan_thi')
+        ->get();
+
+        
+        $lanthi = $request->lanthi;
+        if(!$lanthi && $lanThiDaCoLich->isNotEmpty()){
+            $lanthi = $lanThiDaCoLich->first()->lan_thi;  
+        }
         $idTuan = $request->id_tuan;
     
         if (!$idTuan && $tuanDaCoLich->isNotEmpty()) {
+            
             $idTuan = $tuanDaCoLich->first()->id_tuan;
         }
     
         $lichThi = LichThi::with(['lopHocPhan', 'giamThi1.hoSo', 'giamThi2.hoSo', 'phong'])
             ->where('id_tuan', $idTuan)
+            ->where('lan_thi', $lanthi)
             ->whereHas('lopHocPhan', function ($query) use ($lop) {
                 $query->where('id_lop', $lop->id);
             })
             ->orderBy('ngay_thi', 'asc')
             ->orderBy('gio_bat_dau', 'asc')
             ->get();
-    
+        
         $dsNgay = $lichThi->groupBy('ngay_thi');
     
         return view('admin.lichthi.show', compact(
@@ -162,7 +177,9 @@ class LichThiController extends Controller
             'lichThi',
             'lop',
             'tuanDaCoLich',
-            'idTuan'
+            'idTuan',
+            'lanthi',
+            'lanThiDaCoLich',
         ));
     }
     
@@ -245,7 +262,7 @@ class LichThiController extends Controller
         }
 
         $data['ngay_thi'] = Carbon::parse($tuan->ngay_bat_dau)->addDays($data['thu'] - 2)->format('Y-m-d');
-        
+       
         if ($this->isTrungLich($data) == true)  {
             return redirect()->route('giangvien.lichthi.create', ['lop' => $lop])
                 ->with('error', 'Lịch thi đã bị trùng. Vui lòng kiểm tra lại các thông tin của lịch thi khác.');
@@ -262,20 +279,20 @@ class LichThiController extends Controller
     {
         $newStart = Carbon::parse($data['gio_bat_dau']);
         $newEnd = (clone $newStart)->addMinutes((int) $data['thoi_gian_thi']);
-
+        
         $trungLHP = LichThi::where('id_lop_hoc_phan', $data['id_lop_hoc_phan'])
             ->where('lan_thi', $data['lan_thi'])
             ->exists();
-
+        
         if ($trungLHP) {
             return true;
         }
-
+        $tuan = Tuan::find($data['id_tuan']);
+        $data['ngay_thi'] = Carbon::parse($tuan->ngay_bat_dau)->addDays($data['thu'] - 2)->format('Y-m-d');
         $lichPhong = LichThi::where('id_phong_thi', $data['id_phong_thi'])
             ->where('ngay_thi', $data['ngay_thi'])
             ->where('id_tuan', $data['id_tuan'])
             ->get();
-
         foreach ($lichPhong as $lich) {
             $oldStart = Carbon::parse($lich->gio_bat_dau);
             $oldEnd = (clone $oldStart)->addMinutes((int) $lich->thoi_gian_thi);
@@ -284,7 +301,7 @@ class LichThiController extends Controller
                 return true;
             }
         }
-
+      
         $lichTrongNgay = LichThi::where('ngay_thi', $data['ngay_thi'])
             ->where('id_tuan', $data['id_tuan'])
             ->get();

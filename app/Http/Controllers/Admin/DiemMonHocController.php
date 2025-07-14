@@ -7,6 +7,7 @@ use Illuminate\Http\Request;
 use App\Models\SinhVien;
 use App\Models\LopHocPhan;
 use App\Models\HoSo;
+use App\Models\NienKhoa;
 use App\Models\DanhSachHocPhan;
 use App\Models\ChiTietThongBao;
 use Illuminate\Support\Facades\Auth;
@@ -33,13 +34,17 @@ class DiemMonHocController extends Controller
 
     public function index()
     {
+       
         $id_giang_vien = Auth::user()->id;
 
         $lop_hoc_phan = LopHocPhan::with([
-            'lop',
+            'lop.nienKhoa',
         ])
+        ->whereHas('lop.nienKhoa', function ($query)  {
+            $query->where('nam_ket_thuc','>',now()->year);
+        })
             ->where('id_giang_vien', $id_giang_vien)
-            ->orderBy('id_giang_vien', 'desc')
+            ->orderBy('id', 'desc')
             ->get();
      
         return view('admin.diemmonhoc.index', compact('lop_hoc_phan'));
@@ -51,6 +56,9 @@ class DiemMonHocController extends Controller
         
         $sinhviens = SinhVien::with([
             'hoSo',
+            'dangKyHocGhepThiLai' => function ($query) use ($id) {
+                $query->where('id_lop_hoc_phan', $id);
+            },
             'danhSachHocPhans' => function ($query) use ($id) {
                 $query->where('id_lop_hoc_phan', $id)->with('lopHocPhan');
             }
@@ -60,7 +68,7 @@ class DiemMonHocController extends Controller
         })
         ->orderBy('ma_sv', 'asc')
         ->get();
-
+        
         $currentTrangThai = $lop_HP->trang_thai_nop_bang_diem->value;
         $nextOption = collect(NopBangDiemStatus::cases())
             ->first(fn($case) => $case->value === $currentTrangThai + 1);

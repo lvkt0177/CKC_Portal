@@ -10,6 +10,8 @@ use App\Models\DanhSachHocPhan;
 use App\Models\Phong;
 use App\Models\Tuan;
 use App\Models\Nam;
+use App\Models\User;
+use App\Models\Khoa;
 use App\Models\ThoiKhoaBieu;
 use App\Http\Requests\PhieuLenLop\PhieuLenLopRequest;
 use Illuminate\Support\Facades\Auth;
@@ -32,21 +34,23 @@ class PhieuLenLopController extends Controller
         if (!$nam) {
             $nam = Nam::where('nam_bat_dau', $today->year)->first();
         }
-    
+       
         $tuanDangChon = $request->id_tuan;
-
         $tuan = Tuan::where('id_nam', $nam->id)
                     ->where('tuan', $tuanDangChon)
                     ->first();
-        
+       
+       
         if (!$tuan) {
             $tuan = Tuan::where('id_nam', $nam->id)
                         ->whereDate('ngay_bat_dau', '<=', $today)
                         ->whereDate('ngay_ket_thuc', '>=', $today)
                         ->first();
         }
+        
         if (!$tuan) {
-            return back()->with('error', 'Không tìm thấy tuần phù hợp.');
+           $tuan = Tuan::where('id_nam', $nam->id)
+                    ->first();
         }
         if ($request->action === 'prev') {
             $tuan = Tuan::where('id_nam', $nam->id)
@@ -120,6 +124,7 @@ class PhieuLenLopController extends Controller
         $data['so_tiet']        = $data['tiet_ket_thuc'] - $data['tiet_bat_dau'] + 1;
         $data['id_phong']       = $tkb->id_phong;
         $data['ngay']           = $tkb->ngay;
+        $data['siso']           = $lhp->danhSachHocPhan->count();
        
         $tietBatDauMoi = $data['tiet_bat_dau'];
         $tietKetThucMoi = $data['tiet_ket_thuc'];
@@ -155,14 +160,60 @@ class PhieuLenLopController extends Controller
      *
      * @return \Illuminate\Http\Response
      */
-    public function quanLyPhieuLenLop()
+    public function quanLyPhieuLenLop(Request $request)
     {
-        $phieuLenLop = PhieuLenLop::with([
-            'lopHocPhan', 'lopHocPhan.lop', 'lopHocPhan.giangVien.hoSo', 'phong', 'tuan'
-        ])
-        ->orderBy('ngay')
-        ->get();
+        
+        $dsKhoa = Khoa::all();
+        
+        $idKhoa = $request->id_khoa;
+        
+        if(!$idKhoa){
+            $idKhoa = $dsKhoa->first()->id;
+        }
+       
+        $users = User::with('hoSo', 'boMon', 'boMon.chuyenNganh.khoa')
+            ->whereHas('roles', function ($q) {
+                $q->whereIn('name', [Acl::ROLE_GIANG_VIEN_BO_MON]);
+            })
+            ->whereHas('boMon', function ($query) use($idKhoa) {
+                $query->whereHas('chuyenNganh', function ($query) use($idKhoa) {
+                    $query->where('id_khoa', $idKhoa);
+                });
+            })
+            ->orderBy('id', 'desc')
+            ->get();
 
-        return view('admin.phieulenlop.manage', compact('phieuLenLop'));
+        $today = now();
+
+         $tuanHienTai = Tuan::whereDate('ngay_bat_dau', '<=', $today)
+            ->whereDate('ngay_ket_thuc', '>=', $today)
+            ->first();
+        $phieuLenLop = PhieuLenLop::with('lopHocPhan')->where('id_tuan', $tuanHienTai->id)
+        ->get();
+        
+        return view('admin.phieulenlop.manage', compact('phieuLenLop', 'users','dsKhoa', 'idKhoa'));
+    }
+    public function details(int $id)
+    {
+
+        $today = now();
+        $tuanHienTai = Tuan::whereDate('ngay_bat_dau', '<=', $today)
+            ->whereDate('ngay_ket_thuc', '>=', $today)
+            ->first();
+
+        $phieuLenLop = PhieuLenLop::where('id_tuan',$tuanHienTai->id)
+        ->whereHas('lopHocPhan', function ($query) use ($id) {
+             $query->where('id_giang_vien', $id);
+             })->get();
+        
+        $ngayTrongTuan = collect();
+        
+        $bat_dau = \Carbon\Carbon::parse($tuanHienTai->ngay_bat_dau);
+        $ket_thuc = \Carbon\Carbon::parse($tuanHienTai->ngay_ket_thuc);
+        while ($bat_dau->lte($ket_thuc)) {
+            $ngayTrongTuan->push($bat_dau->copy());
+            $bat_dau->addDay();
+        }
+        return view('admin.phieulenlop.details',compact('phieuLenLop', 'tuanHienTai','ngayTrongTuan'));
     }
 }

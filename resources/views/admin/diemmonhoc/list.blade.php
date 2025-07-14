@@ -22,40 +22,49 @@
                                     <button class="btn btn-success">Xuất excel</button>
                                 </form>
 
-                                <button type="button" class="btn btn-dark ms-2" data-bs-toggle="modal" data-bs-target="#uploadModal">
+                                <button type="button" class="btn btn-dark ms-2" data-bs-toggle="modal"
+                                    data-bs-target="#uploadModal">
                                     Gửi bảng điểm tới Sinh Viên
                                 </button>
 
-                                <div class="modal fade" id="uploadModal" tabindex="-1" aria-labelledby="uploadModalLabel" aria-hidden="true">
+                                <div class="modal fade" id="uploadModal" tabindex="-1" aria-labelledby="uploadModalLabel"
+                                    aria-hidden="true">
                                     <div class="modal-dialog">
-                                    <div class="modal-content shadow text-start">
-                                        <div class="modal-header bg-dark text-white">
-                                            <h5 class="modal-title" id="uploadModalLabel">Gửi bảng điểm</h5>
-                                            <button type="button" class="btn-close btn-close-white" data-bs-dismiss="modal" aria-label="Close"></button>
+                                        <div class="modal-content shadow text-start">
+                                            <div class="modal-header bg-dark text-white">
+                                                <h5 class="modal-title" id="uploadModalLabel">Gửi bảng điểm</h5>
+                                                <button type="button" class="btn-close btn-close-white"
+                                                    data-bs-dismiss="modal" aria-label="Close"></button>
+                                            </div>
+                                            <form action="{{ route('giangvien.diemmonhoc.guibandiem') }}" method="POST"
+                                                enctype="multipart/form-data">
+                                                @csrf
+                                                <input type="hidden" name="danhSachHocPhan"
+                                                    value="{{ json_encode($sinhviens) }}">
+                                                <div class="modal-body">
+                                                    <div class="mb-3">
+                                                        <label for="tieu_de" class="form-label">Tiêu đề</label>
+                                                        <input class="form-control"
+                                                            value="Bảng điểm môn {{ $lop_HP->ten_hoc_phan ?? '' }} - Lớp {{ $lop_HP->lop->ten_lop }}"
+                                                            type="text" id="tieu_de" name="tieu_de" readonly>
+                                                    </div>
+                                                    <div class="mb-3">
+                                                        <label for="file" class="form-label">Chọn tệp bảng điểm</label>
+                                                        <input class="form-control" type="file" name="files"
+                                                            id="file" required>
+                                                    </div>
+                                                    <div class="mb-3">
+                                                        <label for="file" class="form-label">Lời nhắn</label>
+                                                        <textarea class="form-control" name="noi_dung" id="" cols="30" rows="10" required></textarea>
+                                                    </div>
+                                                </div>
+                                                <div class="modal-footer">
+                                                    <button type="button" class="btn btn-secondary"
+                                                        data-bs-dismiss="modal">Hủy</button>
+                                                    <button type="submit" class="btn btn-primary">Gửi</button>
+                                                </div>
+                                            </form>
                                         </div>
-                                        <form action="{{ route('giangvien.diemmonhoc.guibandiem')}}" method="POST" enctype="multipart/form-data">
-                                            @csrf
-                                            <input type="hidden" name="danhSachHocPhan" value="{{ json_encode($sinhviens) }}">
-                                            <div class="modal-body">
-                                                <div class="mb-3">
-                                                    <label for="tieu_de" class="form-label">Tiêu đề</label>
-                                                    <input class="form-control" value="Bảng điểm môn {{ $lop_HP->ten_hoc_phan ?? '' }} - Lớp {{ $lop_HP->lop->ten_lop }}" type="text" id="tieu_de" name="tieu_de" readonly>
-                                                </div>
-                                                <div class="mb-3">
-                                                    <label for="file" class="form-label">Chọn tệp bảng điểm</label>
-                                                    <input class="form-control" type="file" name="files" id="file" required>
-                                                </div>
-                                                <div class="mb-3">
-                                                    <label for="file" class="form-label">Lời nhắn</label>
-                                                    <textarea class="form-control" name="noi_dung" id="" cols="30" rows="10" required></textarea>
-                                                </div>
-                                            </div>
-                                            <div class="modal-footer">
-                                                <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">Hủy</button>
-                                                <button type="submit" class="btn btn-primary">Gửi</button>
-                                            </div>
-                                        </form>
-                                    </div>
                                     </div>
                                 </div>
                             </div>
@@ -68,7 +77,8 @@
                                             <option value="{{ $nextOption->value }}">{{ $nextOption->getLabel() }}</option>
                                         </select>
 
-                                        <button type="submit" class="btn btn-primary mt-2">{{ $nextOption->getLabel() }}</button>
+                                        <button type="submit"
+                                            class="btn btn-primary mt-2">{{ $nextOption->getLabel() }}</button>
                                     </div>
                                 </form>
                                 <div class="d-flex justify-content-end mb-3">
@@ -81,7 +91,7 @@
                                     <strong>Thông báo:</strong> Lớp học phần này đã hoàn thành.
                                 </div>
                             @endif
-                           
+
 
                             <form action="{{ route('giangvien.diemmonhoc.cap-nhat-diem') }}" method="POST" data-confirm>
                                 @csrf
@@ -123,7 +133,8 @@
                                                     </td>
                                                     <td>
                                                         <span class="score-view">{{ $dshp->diem_qua_trinh }}</span>
-                                                        <input type="number" step="0.1" min="0" max="10"
+                                                        <input type="number" step="0.1" min="0"
+                                                            max="10"
                                                             name="diem_qua_trinh[{{ $dshp->id_sinh_vien }}]"
                                                             value="{{ $dshp->diem_qua_trinh }}"
                                                             class="form-control score-input" style="display:none;"
@@ -131,7 +142,8 @@
                                                     </td>
                                                     <td>
                                                         <span class="score-view">{{ $dshp->diem_thi_lan_1 }}</span>
-                                                        <input type="number" step="0.1" min="0" max="10"
+                                                        <input type="number" step="0.1" min="0"
+                                                            max="10"
                                                             name="diem_thi_lan_1[{{ $dshp->id_sinh_vien }}]"
                                                             value="{{ $dshp->diem_thi_lan_1 }}"
                                                             class="form-control score-input" style="display:none;"
@@ -139,11 +151,21 @@
                                                     </td>
                                                     <td>
                                                         <span class="score-view">{{ $dshp->diem_thi_lan_2 }}</span>
-                                                        <input type="number" step="0.1" min="0" max="10"
-                                                            name="diem_thi_lan_2[{{ $dshp->id_sinh_vien }}]"
-                                                            value="{{ $dshp->diem_thi_lan_2 }}"
-                                                            class="form-control score-input" style="display:none;"
-                                                            {{ $nextOption->value - 1 == 2 ? '' : 'readonly' }} />
+                                                        @php
+                                                            $dktl = $sv->dangKyHocGhepThiLai
+                                                                ->where('loai_dong', 1)
+                                                                ->where('trang_thai', 1)
+                                                                ->first();
+                                                        @endphp
+                                                        @if ($dktl)
+                                                            <input type="number" step="0.1" min="0"
+                                                                max="10"
+                                                                name="diem_thi_lan_2[{{ $dshp->id_sinh_vien }}]"
+                                                                value="{{ $dshp->diem_thi_lan_2 }}"
+                                                                class="form-control score-input" style="display:none;"
+                                                                {{ $nextOption->value - 1 == 2 ? '' : 'readonly' }} />
+                                                        @endif
+
                                                     </td>
                                                     <td>{{ $dshp->diem_tong_ket ?? '' }}</td>
                                                     <td>{{ $dshp->loai_hoc == 0 ? 'Chính quy' : 'Học ghép' }}</td>

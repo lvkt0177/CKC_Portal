@@ -13,42 +13,16 @@
             <div class="card shadow-sm">
                 <div class="card-header d-flex justify-content-between align-items-center">
                     <h3 class="card-title mb-0">Thời khóa biểu tuần thứ
-                        {{ $tuan->tuan }}
-                        ({{ $tuan->ngay_bat_dau->format('d/m/Y') }}
+                        {{ $tuanDangChon->tuan }}
+                        ({{ $tuanDangChon->ngay_bat_dau->format('d/m/Y') }}
                         -
-                        {{ $tuan->ngay_ket_thuc->format('d/m/Y') }})
+                        {{ $tuanDangChon->ngay_ket_thuc->format('d/m/Y') }})
                     </h3>
                 </div>
 
                 <form method="GET" action="{{ route('sinhvien.thoikhoabieu.index') }}" id="week-form">
                     <input type="hidden" name="action" id="week-action" value="">
 
-
-                    @php
-                        use App\Models\Nam;
-                        use App\Models\Tuan;
-
-                        $today = now();
-                        $namHienTai = $today->month <= 7 ? $today->year : $today->year;
-
-                        $namDangChon = request('nam', $namHienTai);
-
-                        $nam = Nam::where('nam_bat_dau', $namDangChon)->first();
-
-                        if (!$nam) {
-                            $nam = Nam::where('nam_bat_dau', $namHienTai)->first();
-                        }
-
-                        $tuanHienTai =
-                            Tuan::where('id_nam', $nam->id ?? 0)
-                                ->whereDate('ngay_bat_dau', '<=', $today)
-                                ->whereDate('ngay_ket_thuc', '>=', $today)
-                                ->first()?->tuan ?? 1;
-
-                        $tuanDangChon = request('id_tuan', $tuanHienTai);
-
-                        $soTuan = Tuan::where('id_nam', $nam->id ?? 0)->count();
-                    @endphp
 
                     <div class="d-flex justify-content-end align-items-center">
                         <div class="nav-buttons w-100">
@@ -57,12 +31,12 @@
                                 <label class="p-1">Năm:</label>
                                 <select class="form-control" name="nam"
                                     onchange="document.getElementById('week-form').submit()">
-                                    @for ($i = 0; $i < 4; $i++)
-                                        @php $nam = $namHienTai - $i; @endphp
-                                        <option value="{{ $nam }}" {{ $namDangChon == $nam ? 'selected' : '' }}>
-                                            {{ $nam }}-{{ $nam + 1 }}
+                                    @foreach ($dsNam as $nam)
+                                        <option value="{{ $nam->id }}"
+                                            {{ optional($namDangChon)->id == $nam->id ? 'selected' : '' }}>
+                                            {{ $nam->nam_bat_dau }} - {{ $nam->nam_bat_dau + 1 }}
                                         </option>
-                                    @endfor
+                                    @endforeach
                                 </select>
                             </div>
 
@@ -70,11 +44,12 @@
                                 <label class="p-1">Tuần:</label>
                                 <select class="form-control" name="id_tuan"
                                     onchange="document.getElementById('week-form').submit()">
-                                    @for ($i = 1; $i <= $soTuan; $i++)
-                                        <option value="{{ $i }}" {{ $tuanDangChon == $i ? 'selected' : '' }}>
-                                            Tuần {{ $i }}
+                                    @foreach ($dsTuan as $tuan)
+                                        <option value="{{ $tuan->tuan }}"
+                                            {{ optional($tuanDangChon)->tuan == $tuan->tuan ? 'selected' : '' }}>
+                                            Tuần {{ $tuan->tuan }}
                                         </option>
-                                    @endfor
+                                    @endforeach
                                 </select>
                             </div>
                         </div>

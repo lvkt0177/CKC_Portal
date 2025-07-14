@@ -28,7 +28,7 @@
                                         {{ \Carbon\Carbon::parse($item->ngay_dang_ky)->format('d/m/Y') }}</span>
                                     <span>📅 Ngày nhận:
                                         {{ \Carbon\Carbon::parse($item->ngay_nhan)->format('d/m/Y') }}</span>
-                                    <span>👤Phòng Công Tác Chính Trị Học Sinh Sinh Viên</span>
+                                    <span>👤Phòng: Công Tác Chính Trị Học Sinh Sinh Viên(F7.5)</span>
                                 </div>
                             </div>
                             <div class="status-badge {{ $item->trang_thai == 0 ? 'status-pending' : 'status-approved' }}">

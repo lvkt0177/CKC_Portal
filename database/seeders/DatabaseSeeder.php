@@ -29,7 +29,6 @@ class DatabaseSeeder extends Seeder
             HocKySeeder::class,
             MonHocSeeder::class,
             ChiTietChuongTrinhDaoTaoSeeder::class,
-            ChuyenNganhSeeder::class,
             UserSeeder::class,
             LopSeeder::class,
             LopHocPhanSeeder::class,

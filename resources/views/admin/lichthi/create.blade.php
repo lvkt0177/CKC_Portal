@@ -81,7 +81,7 @@
                                             </option>
                                         @endforeach
                                     </select>
-                                    @error('ngay_thi')
+                                    @error('thu')
                                         <span class="text-danger">{{ $message }}</span>
                                     @enderror
                                 </div>

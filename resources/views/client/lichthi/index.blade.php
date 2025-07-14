@@ -29,22 +29,7 @@
 
                 </div>
                 @if ($lichThi->count() > 0)
-                    <form action="{{ route('sinhvien.lichthi.index') }}" method="GET" class="form-inline mb-3">
-                        <div class="form-group me-2">
-                            <label for="id_tuan" class="me-2">🗓️ Chọn tuần:</label>
-                            <select name="id_tuan" id="id_tuan" class="form-control" onchange="this.form.submit()">
 
-                                @foreach ($dsTuan as $tuan)
-                                    <option value="{{ $tuan->tuan->id }}"
-                                        {{ request('id_tuan') == $tuan->tuan->id ? 'selected' : '' }}>
-                                        Tuần {{ $loop->index + 1 }}
-                                        ({{ \Carbon\Carbon::parse($tuan->tuan->ngay_bat_dau)->format('d/m') }} -
-                                        {{ \Carbon\Carbon::parse($tuan->tuan->ngay_ket_thuc)->format('d/m') }})
-                                    </option>
-                                @endforeach
-                            </select>
-                        </div>
-                    </form>
                     @foreach ($dsNgay as $ngay => $dsLich)
                         <div class="schedule-day">
                             <h3 class="date-header">
@@ -79,6 +64,7 @@
                                     </table>
                                 </div>
                             </div>
+                        </div>
                     @endforeach
                 @else
                     <div class="card-body">
@@ -88,6 +74,7 @@
             </div>
         </div>
     </div>
+
 
 @endsection
 

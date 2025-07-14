@@ -7,6 +7,8 @@ use Illuminate\Http\Request;
 use App\Models\SinhVien;
 use App\Models\LichThi;
 use App\Models\Lop;
+use App\Models\Tuan;
+use App\Models\HocKy;
 use App\Models\LopHocPhan;
 use Illuminate\Support\Facades\Auth;
 use App\Models\DangKyHGTL;
@@ -25,33 +27,21 @@ class LichThiController extends Controller
 
         $lopIds = $lop->pluck('id'); 
         
-        $dsTuan = LichThi::with(['lopHocPhan', 'giamThi1.hoSo', 'giamThi2.hoSo', 'phong'])
-        ->where('lan_thi', 1)
-        ->whereHas('lopHocPhan', function ($query) use ($lopIds) {
-            $query->whereIn('id_lop', $lopIds);
-        })
-        ->orderBy('ngay_thi', 'asc')
-        ->get();
-
-        $idTuan = $request->id_tuan; 
-        if (!$idTuan && !$dsTuan->isEmpty()) {
-            $idTuan = $dsTuan->first()->id_tuan;
-        }
-
         
-        $lichThi = LichThi::with(['lopHocPhan', 'giamThi1.hoSo', 'giamThi2.hoSo', 'phong'])
-        ->where('id_tuan', $idTuan)
-        ->whereHas('lopHocPhan', function ($query) use ($lopIds) {
-            $query->whereIn('id_lop', $lopIds);
-        })
-        ->orderBy('ngay_thi', 'asc')
-        ->get();    
+    
+            $lichThi = LichThi::with(['lopHocPhan', 'giamThi1.hoSo', 'giamThi2.hoSo', 'phong'])
+            ->where('lan_thi', 1)
+            ->whereHas('lopHocPhan', function ($query) use ($lopIds) {
+                $query->whereIn('id_lop', $lopIds);
+            })
+            ->orderBy('ngay_thi', 'asc')
+            ->get();    
        
         
         $dsNgay = $lichThi->groupBy('ngay_thi');
        
         
-        return view("client.lichthi.index",  compact('dsNgay', 'lichThi','lop','dsTuan'));
+        return view("client.lichthi.index",  compact('dsNgay', 'lichThi','lop'));
     }
 
     public function listLichThiLanHai()

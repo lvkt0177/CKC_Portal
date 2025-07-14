@@ -56,27 +56,49 @@ class GiangVienController extends Controller
     public function xemLichDay(Request $request)
     {
         $today = now();
-        $namDangChon = $request->nam ?? $today->year;
 
-        $nam = Nam::where('nam_bat_dau', $namDangChon)->first();
-        if (!$nam) {
-            $nam = Nam::where('nam_bat_dau', $today->year)->first();
+        $dsNam = Nam::all();
+
+        
+        $namDangChon = Nam::where('id', $request->nam)->first();
+        if (!$namDangChon) {
+            
+            $namHocHienTai = $today->month >= 9 ? $today->year : $today->year - 1;
+
+            $namDangChon = Nam::where('nam_bat_dau', $namHocHienTai)->first();
+
+            
+            if (!$namDangChon) {
+                $namDangChon = Nam::orderByDesc('nam_bat_dau')->first();
+            }
         }
 
-        $tuanDangChon = $request->id_tuan;
-        $tuan = Tuan::where('id_nam', $nam->id)
-                    ->where('tuan', $tuanDangChon)
-                    ->first();
+        $dsTuan = Tuan::where('id_nam', $namDangChon->id)->get();
 
-        if (!$tuan) {
-            $tuan = Tuan::where('id_nam', $nam->id)
-                        ->whereDate('ngay_bat_dau', '<=', $today)
-                        ->whereDate('ngay_ket_thuc', '>=', $today)
-                        ->first();
+       
+        $tuanDangChon = Tuan::where('id_nam', $namDangChon->id)
+                            ->where('tuan', $request->id_tuan)  
+                            ->first();
+
+        if (!$tuanDangChon) {
+            $tuanDangChon = Tuan::where('id_nam', $namDangChon->id)
+                                ->whereDate('ngay_bat_dau', '<=', $today)
+                                ->whereDate('ngay_ket_thuc', '>=', $today)
+                                ->first();
+
+           
+            if (!$tuanDangChon) {
+                $tuanDangChon = Tuan::where('id_nam', $namDangChon->id)
+                                    ->orderBy('tuan')
+                                    ->first();
+            }
         }
+        
         $ngayTrongTuan = collect();
-        $bat_dau = \Carbon\Carbon::parse($tuan->ngay_bat_dau);
-        $ket_thuc = \Carbon\Carbon::parse($tuan->ngay_ket_thuc);
+        
+        $bat_dau = \Carbon\Carbon::parse($tuanDangChon->ngay_bat_dau);
+        $ket_thuc = \Carbon\Carbon::parse($tuanDangChon->ngay_ket_thuc);
+        
         while ($bat_dau->lte($ket_thuc)) {
             $ngayTrongTuan->push($bat_dau->copy());
             $bat_dau->addDay();
@@ -91,9 +113,9 @@ class GiangVienController extends Controller
         ->whereHas('lopHocPhan', function ($query) use ($id_gv) {
             $query->where('id_giang_vien', $id_gv);
         })
-        ->where('id_tuan', $tuan->id)
+        ->where('id_tuan', $tuanDangChon->id)
         ->get();
        
-        return view('admin.teacher.lichday',compact('ngayTrongTuan','tuan','thoikhoabieu'));
+        return view('admin.teacher.lichday',compact('ngayTrongTuan','dsTuan','tuanDangChon','dsNam','namDangChon','thoikhoabieu'));
     }
 }

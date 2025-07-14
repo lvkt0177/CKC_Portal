@@ -95,7 +95,7 @@
                                             @if ($diemThang)
                                                 {{ $diemThang->xep_loai->getLabel() }}
                                             @else
-                                                <em class="text-muted">Đang cập nhật...</em>
+                                                <em class="text-muted">Chưa có</em>
                                             @endif
                                         </td>
                                     </tr>

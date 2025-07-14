@@ -16,6 +16,8 @@ use App\Models\LopHocPhan;
 use App\Models\Lop;
 use App\Models\Nam;
 use App\Models\Tuan;
+use App\Models\HocKy;
+
 use Illuminate\Support\Facades\Log;
 use \Spatie\Permission\Models\Permission;
 use \Spatie\Permission\Models\Role;
@@ -31,59 +33,70 @@ class CTDTController extends Controller
 
     public function index(Request $request)
     {
-        $id_nganh_hoc = $request->input('id_nganh_hoc');
+        $id_chuyen_nganh_cha = $request->input('id_chuyen_nganh_cha');
+        $id_chuyen_nganh = $request->input('id_chuyen_nganh');
         $id_nien_khoa = $request->input('id_nien_khoa');
-        $id_chuong_trinh_dao_tao = $request->input('id_chuong_trinh_dao_tao');
 
-        $dsNganh = ChuyenNganh::all();
+        $dsChuyenNganhCha = ChuyenNganh::whereNull('id_chuyen_nganh_cha')->get();
+        
+        $dsChuyenNganhCon = collect();
+        if ($id_chuyen_nganh_cha) {
+            $dsChuyenNganhCon = ChuyenNganh::where('id_chuyen_nganh_cha', $id_chuyen_nganh_cha)
+            ->get();
+        }
+        
         $dsNienKhoa = NienKhoa::orderByDesc('nam_bat_dau')->get();
 
-        $chuyenNganhs = collect();
-        if ($id_nganh_hoc) {
-            $chuyenNganhs = ChuyenNganh::where('id_nganh_hoc', $id_nganh_hoc)->get();
-        }
-
-        $nienkhoa = null;
-        if ($id_nien_khoa) {
-            $nienkhoa = NienKhoa::find($id_nien_khoa);
-        }
-
         $ctdt = collect();
-        if ($chuyenNganhs->isNotEmpty()) {
-            $ctdtQuery = ChuongTrinhDaoTao::whereIn('id_chuyen_nganh', $chuyenNganhs->pluck('id'));
+        $ct_ctdt = collect();
+        if ($dsChuyenNganhCha->isNotEmpty()) {
+            $ctdtQuery = ChuongTrinhDaoTao::whereIn('id_chuyen_nganh', $dsChuyenNganhCha->pluck('id'));
 
-            if ($nienkhoa) {
-                $ctdtQuery->whereHas('chiTietChuongTrinhDaoTao.hocKy', function ($q) use ($nienkhoa) {
-                    $q->where('id_nien_khoa', $nienkhoa->id);
+            if ($id_nien_khoa) {
+                $ctdtQuery->whereHas('chiTietChuongTrinhDaoTao.hocKy', function ($q) use ($id_nien_khoa) {
+                    $q->where('id_nien_khoa', $id_nien_khoa);
                 });
             }
 
             $ctdt = $ctdtQuery->orderByDesc('id')->get();
         }
-
-        if (!$id_chuong_trinh_dao_tao && $ctdt->isNotEmpty()) {
-            $id_chuong_trinh_dao_tao = $ctdt->first()->id;
-        }
-
+        $chuong_trinh_dao_tao_md = CHuongTrinhDaoTao::where('id_chuyen_nganh', $id_chuyen_nganh_cha)->first();
+        
+        $chuong_trinh_dao_tao_cn = CHuongTrinhDaoTao::where('id_chuyen_nganh', $id_chuyen_nganh)->first();
+       
+        if ($chuong_trinh_dao_tao_md && $chuong_trinh_dao_tao_cn && $id_nien_khoa) {
+        $ct_ctdt_md = collect();
+        $ct_ctdt_cn = collect();
         $ct_ctdt = collect();
-        if ($id_chuong_trinh_dao_tao && $nienkhoa) {
-            $ct_ctdt = ChiTietChuongTrinhDaoTao::with(['monHoc', 'chuongTrinhDaoTao', 'hocKy'])
-                ->where('id_chuong_trinh_dao_tao', $id_chuong_trinh_dao_tao)
-                ->whereHas('hocKy', function ($q) use ($nienkhoa) {
-                    $q->where('id_nien_khoa', $nienkhoa->id);
-                })
-                ->get()
-                ->groupBy('id_hoc_ky');
+        
+        $ct_ctdt_md = ChiTietChuongTrinhDaoTao::with(['monHoc', 'chuongTrinhDaoTao', 'hocKy'])
+            ->where('id_chuong_trinh_dao_tao', $chuong_trinh_dao_tao_md->id)
+            ->whereHas('hocKy', function ($q) use ($id_nien_khoa) {
+                $q->where('id_nien_khoa', $id_nien_khoa);
+            })
+            ->get();
+        
+        $ct_ctdt_cn = $chuong_trinh_dao_tao_cn ? ChiTietChuongTrinhDaoTao::with(['monHoc', 'chuongTrinhDaoTao', 'hocKy'])
+            ->where('id_chuong_trinh_dao_tao', $chuong_trinh_dao_tao_cn->id)
+            ->whereHas('hocKy', function ($q) use ($id_nien_khoa) {
+                $q->where('id_nien_khoa', $id_nien_khoa);
+            })
+            ->get()
+            :collect();    
+           
+        $ct_ctdt = $ct_ctdt_md->merge($ct_ctdt_cn);
+        $ct_ctdt = $ct_ctdt->flatten(1);
+        $ct_ctdt = $ct_ctdt->groupBy('id_hoc_ky');
         }
 
         return view('admin.ctdt.index', compact(
-            'dsNganh',
+            'dsChuyenNganhCha',
+            'dsChuyenNganhCon',
             'dsNienKhoa',
-            'chuyenNganhs',
-            'ctdt',
-            'id_nganh_hoc',
+            'id_chuyen_nganh_cha',
+            'id_chuyen_nganh',
             'id_nien_khoa',
-            'id_chuong_trinh_dao_tao',
+            'ctdt',
             'ct_ctdt'
         ));
     }
@@ -96,13 +109,26 @@ class CTDTController extends Controller
         }
         $nam = Nam::where('nam_bat_dau', $nam_bat_dau)->firstOrFail();
         $dsTuan = Tuan::where('id_nam', $nam->id)->orderBy('tuan')->get();
-
+        
         return view('admin.ctdt.dstuan', compact('nam', 'dsTuan'));
     }
 
     public function create()
     {
-        return view('admin.ctdt.khoitaotuan');
+        
+        $namHienTai = now()->year;
+
+        $nienKhoa = NienKhoa::where('nam_bat_dau', '<=', $namHienTai)
+                    ->where('nam_ket_thuc', '>=', $namHienTai)
+                    ->get();
+                    
+        $nam = Nam::where('nam_bat_dau', $namHienTai)->first();  
+
+        $ngayKetThucNamHoc = Tuan::where('tuan', 52)
+                        ->where('id_nam', $nam->id)        
+                        ->first(); 
+                    
+        return view('admin.ctdt.khoitaotuan',compact('ngayKetThucNamHoc'));
     }
 
     public function store(TuanRequest $request)
@@ -111,8 +137,9 @@ class CTDTController extends Controller
         [$year, $month, $day] = explode('-', $ngay->format('Y-m-d')); 
         $namBatDau = Nam::where('nam_bat_dau', $year)->first();
 
-        if ($year < now()->year) {
-            return redirect()->back()->with('error', 'Không được khởi tạo tuần ở năm này!');
+        // ✅ Chặn năm hiện tại trở xuống
+        if ($year <= now()->year) {
+            return redirect()->back()->with('error', 'Chỉ được khởi tạo tuần cho năm lớn hơn năm hiện tại!');
         }
         
         for ($namVongLap = $year; $namVongLap <= $year + 1; $namVongLap++) {
@@ -122,6 +149,7 @@ class CTDTController extends Controller
             for ($tuan = 1; $tuan <= 52; $tuan++) {
                 $ngay_bat_dau = $startDate->copy();
                 $ngay_ket_thuc = $startDate->copy()->addDays(6);
+
                 Tuan::updateOrCreate(
                     [
                         'id_nam' => $namModel->id,
@@ -138,4 +166,5 @@ class CTDTController extends Controller
 
         return back()->with('success', 'Khởi tạo thành công!');
     }
+
 }
