@@ -68,8 +68,6 @@
                                     <i class="fas fa-pen-square me-2"></i>Nhập điểm môn học</a></li>
                                 <li><a class="dropdown-item" href="{{ route('giangvien.phieulenlop.index') }}">
                                     <i class="fas fa-file-alt me-2"></i>Phiếu lên lớp</a></li>
-                                <li><a class="dropdown-item" href="{{ route('giangvien.phieulenlop.manage') }}">
-                                    <i class="fas fa-tasks me-2"></i>Quản lý phiếu lên lớp</a></li>
                             </ul>
                         </div>
                     @endif
@@ -148,7 +146,7 @@
                         
                     @if(checkPermissions(Acl()::PERMISSION_STUDENT_PASSWORD_LIST) || checkPermissions(Acl()::PERMISSION_STUDENT_CONFIRMATION_LIST))
                         <div class="dropdown">
-                            <a class="nav-link dropdown-toggle {{ isActiveRoute('giangvien/testimonial') }} {{ isActiveRoute('giangvien/capmatkhausinhvien') }}"
+                            <a class="nav-link dropdown-toggle {{ isActiveRoute('giangvien/testimonial') }} {{ isActiveRoute('giangvien/capmatkhausinhvien') }} {{ isActiveRoute('giangvien/phieu-len-lop') }}"
                                 href="#" data-bs-toggle="dropdown" aria-expanded="false">
                                 Công tác Chính trị HS - SV
                             </a>
@@ -159,6 +157,8 @@
                                     <i class="fas fa-key me-2"></i>Liên hệ cấp mật khẩu</a></li>
                                 <li><a class="dropdown-item" href="{{ route('giangvien.bienbanshcn.manage') }}">
                                     <i class="fas fa-file-text me-2"></i>Biên bản SHCN của các lớp</a></li>
+                                <li><a class="dropdown-item" href="{{ route('giangvien.phieulenlop.manage') }}">
+                                    <i class="fas fa-tasks me-2"></i>Quản lý phiếu lên lớp</a></li>
                             </ul>
                         </div>
                     @endif
