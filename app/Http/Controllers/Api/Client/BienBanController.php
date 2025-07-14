@@ -10,6 +10,7 @@ use App\Models\User;
 use App\Models\Tuan;
 use App\Models\Lop;
 use App\Models\HoSo;
+use App\Models\DanhSachSinhVien;
 use App\Models\ChiTietBienBanSHCN;
 use App\Enum\RoleStudent;
 use App\Enum\BienBanStatus;
@@ -73,11 +74,21 @@ class BienBanController extends Controller
         ]);
     }
     
+    public function create()
+    {
+        $sinhVien = Auth::user();
+        $thongTin = $sinhVien->danhSachSinhVien->last();
+        $danhSachSinhVien = DanhSachSinhVien::with('sinhVien.hoSo')->where('id_lop', $thongTin->id_lop)->get();
+
+        return response()->json([
+            'status' => 'success',
+            'thongTin' => $thongTin,
+            'danhSachSinhVien' => $danhSachSinhVien
+        ]);
+    }
     /**
      * Show the form for creating a new resource.
      */
-
- 
     public function store(BienBanRequest $request, Lop $lop, BienBanService $bienBanService)
     {
         $data = $request->validated();

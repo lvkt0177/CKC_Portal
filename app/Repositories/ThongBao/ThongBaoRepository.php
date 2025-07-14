@@ -32,7 +32,7 @@ class ThongBaoRepository extends BaseRepository implements ThongBaoRepositoryInt
 
     public function all()
     {
-        return $this->model->with('giangVien.hoSo')->where('id_gv', auth()->user()->id)->orderBy('ngay_gui', 'desc')->get();
+        return $this->model->with('giangVien.hoSo')->where('id_gv', auth()->user()->id)->orderBy('created_at', 'desc')->get();
     }
 
     public function thongBaoSinhVien($sinhVienId)

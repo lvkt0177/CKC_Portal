@@ -58,7 +58,7 @@
                                                 class="badge bg-{{ $thongbao->trang_thai->getBadge() }}">{{ $thongbao->trang_thai->getLabel() }}</span>
                                         </td>
                                         <td class="d-flex justify-content-center">
-                                            @if(!$thongbao->tu_ai == 'Giáo viên bộ môn')
+                                            @if($thongbao->tu_ai !== 'Giáo viên bộ môn')
                                                 <button type="button" class="btn btn-success mx-1" data-bs-toggle="modal"
                                                     data-bs-target="#modalChonLop{{ $thongbao->id }}">
                                                     <i class="fa-solid fa-paper-plane"></i>

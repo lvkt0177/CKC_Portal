@@ -60,7 +60,7 @@ class ThongBaoController extends Controller
     public function show(ThongBao $thongbao)
     {
         ChiTietThongBao::where('id_thong_bao', $thongbao->id)
-            ->where('id_sinh_vien', Auth::guard('student')->user()->id)
+            ->where('id_sinh_vien', Auth::user()->id)
             ->where('trang_thai', '!=', DocThongBao::DADOC)
             ->update(['trang_thai' => DocThongBao::DADOC]);
 
@@ -71,7 +71,10 @@ class ThongBaoController extends Controller
                     ->orderBy('created_at', 'desc'); 
             }
         ]);
-        return view('client.thongbao.show', compact('thongbao'));
+        return response()->json([
+            'status' => 'success',
+            'data' => $thongbao
+        ]);
     }
 
     /**
@@ -122,12 +125,7 @@ class ThongBaoController extends Controller
 
     public function destroyComment(BinhLuan $binhLuan)
     {
-        if (Auth::id() !== $binhLuan->nguoi_binh_luan_id) {
-            return response()->json(['message' => 'Không có quyền xoá'], 403);
-        }
-
         $binhLuan->delete();
-
         return response()->json(['message' => 'Xoá bình luận thành công']);
     }
 }
