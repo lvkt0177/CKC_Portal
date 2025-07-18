@@ -40,17 +40,21 @@ class DiemMonHocController extends Controller
     {
         $sinhviens = SinhVien::with([
             'hoSo',
-            'danhSachHocPhans.lopHocPhan',
-            'danhSachHocPhans.sinhVien.hoSo'
+            'danhSachHocPhans' => function ($query) use ($id) {
+                $query->where('id_lop_hoc_phan', $id);
+            },
+            'dangKyHocGhepThiLai' => function ($query) use ($id) {
+                $query->where('id_lop_hoc_phan', $id);
+            }
         ])
-            ->whereHas('danhSachHocPhans.lopHocPhan', function ($query) use ($id) {
+            ->whereHas('danhSachHocPhans', function ($query) use ($id) {
                 $query->where('id_lop_hoc_phan', $id);
             })
             ->orderBy('ma_sv', 'asc')
             ->get();
-
-        $lop_HP = LopHocPhan::with('chuongTrinhDaoTao', 'lop')->find($id);
-
+    
+        $lop_HP = LopHocPhan::with(['chuongTrinhDaoTao', 'lop'])->find($id);
+    
         return response()->json([
             'status' => true,
             'lop_hoc_phan' => $lop_HP,

@@ -68,6 +68,7 @@ class DangKyHocGhepController extends Controller
     public function list($id_mon_hoc)
     {
         $monHoc = MonHoc::find($id_mon_hoc);
+        $sinhVien = Auth::user();
 
         $lopHocPhanDangMo = LopHocPhan::with('lop','giangVien.hoSo','thoiKhoaBieu.phong')->where('trang_thai', 1)
             ->where('ten_hoc_phan', 'LIKE', '%' . $monHoc->ten_mon . '%')
@@ -78,7 +79,7 @@ class DangKyHocGhepController extends Controller
         })->filter();
 
         $checkDKHG = DangKyHGTL::whereIn('id_lop_hoc_phan', $lopHocPhanDangMo->pluck('id'))
-            ->where('id_sinh_vien', Auth::guard('student')->id())
+            ->where('id_sinh_vien', $sinhVien->id)
             ->where('trang_thai', 1)
             ->where('loai_dong', 0)
             ->exists();

@@ -26,18 +26,15 @@ class LichThiController extends Controller
             ->get();
 
         $lopIds = $lop->pluck('id'); 
-        
-        
     
-            $lichThi = LichThi::with(['lopHocPhan', 'giamThi1.hoSo', 'giamThi2.hoSo', 'phong'])
-            ->where('lan_thi', 1)
-            ->whereHas('lopHocPhan', function ($query) use ($lopIds) {
-                $query->whereIn('id_lop', $lopIds);
-            })
-            ->orderBy('ngay_thi', 'asc')
-            ->get();    
+        $lichThi = LichThi::with(['lopHocPhan', 'giamThi1.hoSo', 'giamThi2.hoSo', 'phong'])
+        ->where('lan_thi', 1)
+        ->whereHas('lopHocPhan', function ($query) use ($lopIds) {
+            $query->whereIn('id_lop', $lopIds);
+        })
+        ->orderBy('ngay_thi', 'asc')
+        ->get();    
        
-        
         $dsNgay = $lichThi->groupBy('ngay_thi');
        
         

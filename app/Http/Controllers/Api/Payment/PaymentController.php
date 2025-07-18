@@ -92,7 +92,7 @@ class PaymentController extends Controller
                 'message' => 'Thanh toán học ghép '.$lopHocPhan->ten_hoc_phan,
                 'type' => 'hoc_ghep',
                 'id_lop_hoc_phan' => $lopHocPhan->id,
-                'id_sinh_vien' => $sinhVien->id
+                'id_sinh_vien' => $sinhVien->id8|nztwVvbsyagdT8ZNLHSbAqhic0ymUkqtPGv8lX2D6511dc7e
             ]),
             'total_vnpay' => number_format($tien, 2, '.', ''),
         ];
