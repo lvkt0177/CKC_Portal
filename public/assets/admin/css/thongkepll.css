@@ -1,0 +1,214 @@
+ .container {
+     max-width: 1200px;
+     margin: 0 auto;
+     background: rgba(255, 255, 255, 0.95);
+     border-radius: 20px;
+     box-shadow: 0 20px 40px rgba(0, 0, 0, 0.1);
+     overflow: hidden;
+ }
+
+ .filters {
+     padding: 30px;
+     background: #f8f9fa;
+     border-bottom: 1px solid #e9ecef;
+ }
+
+ .filter-group {
+     display: flex;
+     gap: 20px;
+     align-items: center;
+     flex-wrap: wrap;
+ }
+
+ .filter-item {
+     display: flex;
+     flex-direction: column;
+     gap: 8px;
+ }
+
+ .filter-item label {
+     font-weight: 600;
+     color: #495057;
+     font-size: 0.9rem;
+ }
+
+ .filter-select {
+     padding: 12px 16px;
+     border: 2px solid #e9ecef;
+     border-radius: 10px;
+     font-size: 1rem;
+     background: white;
+     color: #495057;
+     transition: all 0.3s ease;
+     min-width: 200px;
+ }
+
+ .filter-select:focus {
+     outline: none;
+     border-color: #667eea;
+     box-shadow: 0 0 0 3px rgba(102, 126, 234, 0.1);
+ }
+
+ .content {
+     padding: 40px;
+ }
+
+ .stats-grid {
+     display: grid;
+     grid-template-columns: repeat(auto-fit, minmax(300px, 1fr));
+     gap: 25px;
+     margin-bottom: 40px;
+ }
+
+ .teacher-card {
+     background: white;
+     border-radius: 15px;
+     padding: 25px;
+     box-shadow: 0 10px 30px rgba(0, 0, 0, 0.08);
+     transition: all 0.3s ease;
+     position: relative;
+     overflow: hidden;
+ }
+
+ .teacher-card::before {
+     content: '';
+     position: absolute;
+     top: 0;
+     left: 0;
+     right: 0;
+     height: 4px;
+     background: linear-gradient(90deg, #0303fd, #bac5ff);
+ }
+
+ .teacher-card:hover {
+     transform: translateY(-5px);
+     box-shadow: 0 15px 40px rgba(0, 0, 0, 0.12);
+ }
+
+ .teacher-info {
+     display: flex;
+     align-items: center;
+     margin-bottom: 20px;
+ }
+
+ .teacher-avatar {
+     width: 60px;
+     height: 60px;
+     border-radius: 50%;
+     display: flex;
+     align-items: center;
+     justify-content: center;
+     color: white;
+     font-weight: bold;
+     font-size: 1.2rem;
+     margin-right: 15px;
+     object-fit: cover;
+ }
+
+ .teacher-details h3 {
+     font-size: 1.3rem;
+     color: #2d3561;
+     margin-bottom: 5px;
+ }
+
+ .teacher-details p {
+     color: #6c757d;
+     font-size: 0.9rem;
+ }
+
+ .stats-number {
+     font-size: 3rem;
+     font-weight: bold;
+     color: #667eea;
+     text-align: center;
+     margin: 20px 0;
+ }
+
+ .stats-label {
+     text-align: center;
+     color: #6c757d;
+     font-size: 1rem;
+     margin-bottom: 15px;
+ }
+
+ .detail-btn {
+     background: linear-gradient(135deg, #0303fd, #bac5ff);
+     color: white;
+     border: none;
+     padding: 10px 20px;
+     border-radius: 8px;
+     font-size: 0.9rem;
+     cursor: pointer;
+     transition: all 0.3s ease;
+     width: 100%;
+     margin-top: 10px;
+ }
+
+ .detail-btn:hover {
+     transform: translateY(-2px);
+     box-shadow: 0 5px 15px rgba(102, 126, 234, 0.3);
+ }
+
+ .summary-section {
+     background: white;
+     border-radius: 15px;
+     padding: 30px;
+     box-shadow: 0 10px 30px rgba(0, 0, 0, 0.08);
+ }
+
+ .summary-title {
+     font-size: 1.5rem;
+     color: #2d3561;
+     margin-bottom: 20px;
+     text-align: center;
+ }
+
+ .summary-stats {
+     display: grid;
+     grid-template-columns: repeat(auto-fit, minmax(150px, 1fr));
+     gap: 20px;
+ }
+
+ .summary-item {
+     text-align: center;
+     padding: 20px;
+     background: #f8f9fa;
+     border-radius: 10px;
+ }
+
+ .summary-item .number {
+     font-size: 2rem;
+     font-weight: bold;
+     color: #667eea;
+     margin-bottom: 5px;
+ }
+
+ .summary-item .label {
+     color: #6c757d;
+     font-size: 0.9rem;
+ }
+
+ .no-data {
+     text-align: center;
+     color: #6c757d;
+     font-size: 1.1rem;
+     margin: 40px 0;
+ }
+
+ @media (max-width: 768px) {
+     .filter-group {
+         flex-direction: column;
+     }
+
+     .filter-select {
+         min-width: 100%;
+     }
+
+     .stats-grid {
+         grid-template-columns: 1fr;
+     }
+
+     .header h1 {
+         font-size: 2rem;
+     }
+ }

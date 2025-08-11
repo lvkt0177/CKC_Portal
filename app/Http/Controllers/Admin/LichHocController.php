@@ -139,7 +139,7 @@ class LichHocController extends Controller
        
         $dsgv = User::with('boMon.chuyenNganh.khoa')
             ->whereHas('roles', function ($q) {
-                $q->whereIn('name', [Acl::ROLE_GIANG_VIEN_BO_MON, Acl::ROLE_SUPER_ADMIN]);
+                $q->whereIn('name', [Acl::ROLE_GIANG_VIEN_BO_MON]);
             })
             ->whereHas('boMon.chuyenNganh.khoa', function ($query) use ($lop) {
                 $query->where('id', $lop->chuyenNganh->id_khoa);
