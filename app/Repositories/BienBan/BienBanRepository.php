@@ -30,7 +30,7 @@ class BienBanRepository implements BienBanRepositoryInterface
 
     public function getByLopWithRelations(Lop $lop)
     {
-        return BienBanSHCN::with(['thuky.hoSo', 'tuan', 'gvcn.hoSo'])
+        return BienBanSHCN::with(['lop', 'thuky.hoSo', 'tuan', 'gvcn.hoSo'])
             ->where('id_lop', $lop->id)
             ->where('trang_thai',  '>',BienBanStatus::THUKY)
             ->orderBy('id', 'desc')

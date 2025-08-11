@@ -12,14 +12,14 @@ use App\Models\ChiTietBienBanSHCN;
 use App\Models\BienBanSHCN;
 use Carbon\Carbon;
 use App\Enum\RoleStudent;
+use App\Enum\BienBanStatus;
 
-class BienBanService
+class BienBanAPIService
 {
     public function __construct(
         protected BienBanRepositoryInterface $bienBanRepository,
         protected ChiTietBienBanRepositoryInterface $chiTietRepository
     ) {
-       //
     }
 
     public function storeBienBanVaChiTiet(array $data, Lop $lop)
@@ -34,7 +34,7 @@ class BienBanService
             'thoi_gian_bat_dau' => Carbon::createFromFormat('Y-m-d\TH:i', $data['thoi_gian_bat_dau']),
             'thoi_gian_ket_thuc' => Carbon::createFromFormat('Y-m-d\TH:i', $data['thoi_gian_ket_thuc']),
             'so_luong_sinh_vien' => $data['so_luong_sinh_vien'],
-            'vang_mat' => $data['vang_mat'] ?? 0,
+            'vang_mat' => $data['vang_mat'],
             'trang_thai' => $data['trang_thai'],
         ]);
         if ($bienBan && !empty($data['sinh_vien_vang'])) {
@@ -53,8 +53,8 @@ class BienBanService
 
     public function updateBienBanVaChiTiet(array $data, BienBanSHCN $bienBan)
     {
-        if($bienBan->trang_thai == 1) {
-            return false;
+      if ($bienBan->trang_thai == BienBanStatus::CTCT) {  
+
         }
         $this->bienBanRepository->update($bienBan, [
             'id_lop' => $bienBan->id_lop,

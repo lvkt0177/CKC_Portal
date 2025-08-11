@@ -6,10 +6,11 @@ use Illuminate\Database\Eloquent\Model;
 use App\Enum\RoleStudent;
 use Spatie\Permission\Traits\HasPermissions;
 use Laravel\Sanctum\HasApiTokens;
+use App\Traits\CastsIntegerIds;
 
 class DanhSachSinhVien extends Model
 {
-    use HasApiTokens, HasPermissions;
+    use HasApiTokens, HasPermissions, CastsIntegerIds;
 
     protected $table = "danh_sach_sinh_vien";
     protected $fillable = [

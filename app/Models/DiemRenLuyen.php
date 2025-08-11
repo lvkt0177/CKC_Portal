@@ -4,9 +4,13 @@ namespace App\Models;
 
 use Illuminate\Database\Eloquent\Model;
 use App\Enum\XepLoaiDRL;
+use App\Traits\CastsIntegerIds;
+
 
 class DiemRenLuyen extends Model
 {
+    use CastsIntegerIds;
+
     protected $table = "diem_ren_luyen";
     protected $fillable = [
         "id_gvcn",

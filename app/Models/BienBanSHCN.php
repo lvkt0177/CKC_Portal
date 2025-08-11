@@ -4,10 +4,12 @@ namespace App\Models;
 
 use Illuminate\Database\Eloquent\Model;
 use App\Enum\BienBanStatus;
+use App\Traits\CastsIntegerIds;
 
 class BienBanSHCN extends Model
 {
-    //
+    use CastsIntegerIds;
+    
     protected $table = 'bien_ban_shcn';
     
     protected $fillable = [
@@ -53,6 +55,11 @@ class BienBanSHCN extends Model
         return $this->belongsTo(SinhVien::class, 'id_sv', 'id');
     }
 
+    /**
+     * Chi ti t c a biên b n sinh ho t ch  nhi m
+     *
+     * @return \Illuminate\Database\Eloquent\Relations\HasMany
+     */
     public function chiTietBienBanSHCN()
     {
         return $this->hasMany(ChiTietBienBanSHCN::class, 'id_bien_ban_shcn', 'id');

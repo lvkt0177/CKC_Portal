@@ -3,9 +3,12 @@
 namespace App\Models;
 
 use Illuminate\Database\Eloquent\Model;
+use App\Traits\CastsIntegerIds;
 
 class Lop extends Model
 {
+    use CastsIntegerIds;
+
     protected $table = 'lop';
     protected $fillable = [
         'ten_lop',

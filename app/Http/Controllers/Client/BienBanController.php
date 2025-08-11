@@ -78,7 +78,9 @@ class BienBanController extends Controller
      */
     public function store(BienBanRequest $request, Lop $lop, BienBanService $bienBanService)
     {
-        $result = $bienBanService->storeBienBanVaChiTiet($request->all(), $lop);
+        $data = $request->validated();
+        $data['trang_thai'] = BienBanStatus::THUKY;
+        $result = $bienBanService->storeBienBanVaChiTiet($data, $lop);
         
         if($result) {
             return redirect()->route('sinhvien.bienbanshcn.list', $lop->id)->with('success', 'Thêm biên bản thành công');

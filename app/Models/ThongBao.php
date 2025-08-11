@@ -5,9 +5,12 @@ namespace App\Models;
 use Illuminate\Database\Eloquent\Model;
 use App\Enum\ThongBaoStatus;
 use App\Enum\CapTren;
+use App\Traits\CastsIntegerIds;
 
 class ThongBao extends Model
 {
+    use CastsIntegerIds;
+
     protected $table = 'thong_bao';
     
     protected $fillable = [

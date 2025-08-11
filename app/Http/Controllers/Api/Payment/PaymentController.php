@@ -26,7 +26,7 @@ class PaymentController extends Controller
         $this->paymentService = $paymentService;
     }
 
-    public function vnpay_payment(PaymentRequest $request)
+    public function vnpay_payment(PaymentRequest $request, HocPhi $hocPhi)
     {
         $sinhVien = Auth::user();
         $data = $request->validated();

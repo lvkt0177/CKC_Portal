@@ -6,8 +6,12 @@ use Illuminate\Database\Eloquent\Model;
 use App\Enum\LoaiMonHoc;
 use App\Enum\NopBangDiemStatus;
 use App\Enum\ActiveOrNotStatus;
+use App\Traits\CastsIntegerIds;
+
 class LopHocPhan extends Model
 {
+    use CastsIntegerIds;
+
     protected $table = "lop_hoc_phan";
     protected $fillable = [
         'ten_hoc_phan',

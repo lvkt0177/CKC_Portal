@@ -4,10 +4,12 @@ namespace App\Models;
 
 use Illuminate\Database\Eloquent\Model;
 use App\Enum\LoaiPhong;
+use App\Traits\CastsIntegerIds;
 
 class Phong extends Model
 {
-    //
+    use CastsIntegerIds;
+
     protected $table = 'phong';
 
     protected $fillable = [
@@ -32,6 +34,6 @@ class Phong extends Model
     }
     public function lichThi()
     {
-        return $this->hasMany(LichThi::class,'id_phong','id');
+        return $this->hasMany(LichThi::class,'id_phong_thi','id');
     }
 }

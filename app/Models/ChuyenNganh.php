@@ -3,9 +3,12 @@
 namespace App\Models;
 
 use Illuminate\Database\Eloquent\Model;
+use App\Traits\CastsIntegerIds;
 
 class ChuyenNganh extends Model
 {
+    use CastsIntegerIds;
+
     protected $table = "chuyen_nganh";
     
     protected $fillable = [

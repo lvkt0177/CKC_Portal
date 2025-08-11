@@ -5,9 +5,12 @@ namespace App\Models;
 use Illuminate\Database\Eloquent\Model;
 use App\Enum\LoaiTaiKhoan;
 use App\Enum\TrangThaiYeuCau;
+use App\Traits\CastsIntegerIds;
 
 class YeuCauCapLaiMatKhau extends Model
 {
+    use CastsIntegerIds;
+
     protected $table = 'yeu_cau_cap_lai_mat_khau';
 
     protected $fillable = [

@@ -9,7 +9,9 @@ use App\Models\File;
 use App\Models\ChiTietThongBao;
 use App\Models\Lop;
 use App\Repositories\ThongBao\ThongBaoRepository;
+use App\Http\Requests\ThongBao\ThongBaoRequestAPI;
 use App\Http\Requests\ThongBao\ThongBaoRequest;
+
 use App\Http\Requests\ThongBao\SendToStudentRequest;
 use Illuminate\Support\Facades\Storage;
 use App\Models\BinhLuan;
@@ -25,29 +27,30 @@ class ThongBaoController extends Controller
     }
 
     public function index()
-    {
-        $thongBaos = $this->thongBaoRepository->all();
-        $thongBaos->load('chiTietThongBao.sinhVien.danhSachSinhVien');
-        foreach ($thongBaos as $thongbao) {
-            $lopIds = $thongbao->chiTietThongBao
-                ->map(function ($ct) {
-                    $ds = $ct->sinhVien?->danhSachSinhVien;
-        
-                    return $ds?->sortByDesc('id')->first()?->id_lop;
-                })
-                ->filter()
-                ->unique()
-                ->values();
+{
+    $thongBaos = $this->thongBaoRepository->all();
+    $thongBaos->load('file');
 
-            $thongbao->ds_lops = Lop::whereIn('id', $lopIds)->get();
-        }
-        $lops = Lop::orderBy('id', 'desc')->get();
+    $result = $thongBaos->map(function ($thongbao) {
+        $data = $thongbao->toArray();
 
-        return response()->json([
-            'status' => 'success',
-            'data' => $thongBaos
-        ]);
-    }
+        $data['file'] = $thongbao->file->map(function ($f) {
+            return [
+                'id' => $f->id,
+                'ten_file' => $f->ten_file,
+                'url' => $f->url,
+            ];
+        });
+
+        return $data;
+    });
+
+    return response()->json([
+        'status' => 'success',
+        'data' => $result
+    ]);
+}
+
 
     public function prepareCreateData()
     {
@@ -61,7 +64,7 @@ class ThongBaoController extends Controller
         ]);
     }
 
-    public function store(ThongBaoRequest $request)
+    public function store(ThongBaoRequestAPI $request)
     {
         $data = $request->validated();
         if(empty($data['ngay_gui']))
@@ -83,44 +86,85 @@ class ThongBaoController extends Controller
         ], 500);
     }
 
-    public function show(ThongBao $thongbao)
-    {
-        $thongbao->load([
-            'binhLuans' => function ($q) {
-                $q->whereNull('id_binh_luan_cha')
-                    ->with(['nguoiBinhLuan.hoSo', 'binhLuanCon.nguoiBinhLuan.hoSo',])
-                    ->orderBy('created_at', 'desc');
-            },'file'
-        ]);
+   public function show(ThongBao $thongbao)
+{
+    $thongbao->load([
+        'binhLuans' => function ($q) {
+            $q->whereNull('id_binh_luan_cha')
+                ->with(['nguoiBinhLuan.hoSo', 'binhLuanCon.nguoiBinhLuan.hoSo'])
+                ->orderBy('created_at', 'desc');
+        },
+        'file'
+    ]);
 
-        return response()->json([
-            'data' => $thongbao
-        ]);
-    }
+    $data = $thongbao->toArray();
+    $data['file'] = $thongbao->file->map(function ($f) {
+        return [
+            'id' => $f->id,
+            'ten_file' => $f->ten_file,
+            'url' => $f->url,
+        ];
+    });
+
+    return response()->json([
+        'data' => $data
+    ]);
+}
+
 
     public function edit(ThongBao $thongbao)
     {
-        // API không dùng form edit
         return response()->json([
             'message' => 'Not supported via API.'
         ], 405);
     }
-
-    public function update(ThongBaoRequest $request, ThongBao $thongbao)
+    public function update(Request $request, ThongBao $thongbao)
     {
-        $updated = $this->thongBaoRepository->update($thongbao, $request->validated());
+        $validated = $request->validate([
+            'tieu_de' => 'required|string|max:255',
+            'noi_dung' => 'required|string',
+            'tu_ai' => 'required|string',
+            'ngay_gui' => 'required|date',
+            'files.*' => 'mimes:doc,docx,xls,xlsx,pdf|max:10240',
+            'old_files' => 'nullable|string',
+        ]);
 
-        if ($updated) {
-            return response()->json([
-                'message' => 'Cập nhật thông báo thành công',
-                'data' => $updated
-            ]);
+        $thongbao->update([
+            'tieu_de' => $validated['tieu_de'],
+            'noi_dung' => $validated['noi_dung'],
+            'tu_ai' => $validated['tu_ai'],
+            'ngay_gui' => $validated['ngay_gui'],
+            'trang_thai' => $request->input('trang_thai'),
+        ]);
+
+        $oldFiles = json_decode($validated['old_files'] ?? '[]', true);
+        $currentFileIds = $thongbao->file()->pluck('id')->toArray();
+        $fileToDelete = array_diff($currentFileIds, $oldFiles);
+        foreach ($fileToDelete as $id) {
+            $file = File::find($id);
+            if ($file) {
+                Storage::disk('public')->delete($file->url);
+                $file->delete();
+            }
+        }
+
+    if ($request->file('files')) {
+
+            foreach ($request->file('files') as $file) {
+                $path = $file->store('thongbao', 'public');
+                $thongbao->file()->create([
+                    'ten_file' => $file->getClientOriginalName(),
+                    'url' => $path,
+                ]);
+            }
         }
 
         return response()->json([
-            'message' => 'Cập nhật thông báo thất bại'
-        ], 500);
+            'message' => 'Cập nhật thông báo thành công',
+            'data' => $thongbao->load('file'),
+        ]);
     }
+
 
     public function destroy(ThongBao $thongbao)
     {
@@ -158,15 +202,14 @@ class ThongBaoController extends Controller
 
         return response()->download($path, $file->ten_file);
     }
-
     public function sendToStudent(SendToStudentRequest $request, ThongBao $thongbao)
     {
         $data = $request->validated();
-
         foreach($data['lop_ids'] as $lop_id){
             $lop = Lop::find($lop_id);
             $lop->load('danhSachSinhVien');
             foreach ($lop->danhSachSinhVien as $sinhvien) {
+
                 ChiTietThongBao::firstOrCreate([
                     'id_thong_bao' => $thongbao->id,
                     'id_sinh_vien' => $sinhvien->id_sinh_vien,
@@ -213,12 +256,7 @@ class ThongBaoController extends Controller
 
     public function destroyComment(BinhLuan $binhLuan)
     {
-        if (Auth::id() !== $binhLuan->nguoi_binh_luan_id && Auth::user()->chuc_vu != 1) {
-            return response()->json(['message' => 'Không có quyền xoá'], 403);
-        }
-
         $binhLuan->delete();
-
         return response()->json(['message' => 'Xoá bình luận thành công']);
     }
 }

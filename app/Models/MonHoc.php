@@ -3,9 +3,12 @@
 namespace App\Models;
 
 use Illuminate\Database\Eloquent\Model;
+use App\Traits\CastsIntegerIds;
 
 class MonHoc extends Model
 {
+    use CastsIntegerIds;
+
     protected $table = "mon_hoc";
     protected $fillable = [
         'ten_mon',

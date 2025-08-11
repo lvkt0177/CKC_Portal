@@ -15,13 +15,53 @@
                     </div>
 
                     <div class="card-body">
+<<<<<<< HEAD
 
+=======
+>>>>>>> origin/master
                         <div class="">
-                            <div class="text-end my-3">
+                            <div class="text-end my-3 d-flex">
                                 <form action="{{ route('giangvien.diemmonhoc.export', $lop_HP) }}" method="get">
                                     @csrf
                                     <button class="btn btn-success">Xuất excel</button>
                                 </form>
+
+                                <button type="button" class="btn btn-dark ms-2" data-bs-toggle="modal" data-bs-target="#uploadModal">
+                                    Gửi bảng điểm tới Sinh Viên
+                                </button>
+
+                                <div class="modal fade" id="uploadModal" tabindex="-1" aria-labelledby="uploadModalLabel" aria-hidden="true">
+                                    <div class="modal-dialog">
+                                    <div class="modal-content shadow text-start">
+                                        <div class="modal-header bg-dark text-white">
+                                            <h5 class="modal-title" id="uploadModalLabel">Gửi bảng điểm</h5>
+                                            <button type="button" class="btn-close btn-close-white" data-bs-dismiss="modal" aria-label="Close"></button>
+                                        </div>
+                                        <form action="{{ route('giangvien.diemmonhoc.guibandiem')}}" method="POST" enctype="multipart/form-data">
+                                            @csrf
+                                            <input type="hidden" name="danhSachHocPhan" value="{{ json_encode($sinhviens) }}">
+                                            <div class="modal-body">
+                                                <div class="mb-3">
+                                                    <label for="tieu_de" class="form-label">Tiêu đề</label>
+                                                    <input class="form-control" value="Bảng điểm môn {{ $lop_HP->ten_hoc_phan ?? '' }} - Lớp {{ $lop_HP->lop->ten_lop }}" type="text" id="tieu_de" name="tieu_de" readonly>
+                                                </div>
+                                                <div class="mb-3">
+                                                    <label for="file" class="form-label">Chọn tệp bảng điểm</label>
+                                                    <input class="form-control" type="file" name="files" id="file" required>
+                                                </div>
+                                                <div class="mb-3">
+                                                    <label for="file" class="form-label">Lời nhắn</label>
+                                                    <textarea class="form-control" name="noi_dung" id="" cols="30" rows="10" required></textarea>
+                                                </div>
+                                            </div>
+                                            <div class="modal-footer">
+                                                <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">Hủy</button>
+                                                <button type="submit" class="btn btn-primary">Gửi</button>
+                                            </div>
+                                        </form>
+                                    </div>
+                                    </div>
+                                </div>
                             </div>
                             @if (!is_null($nextOption) && $nextOption->value != 4)
                                 <form action="{{ route('giangvien.diemmonhoc.updateTrangThai', $lop_HP) }}" method="POST"
@@ -63,7 +103,6 @@
                                             <th>Điểm thi lần 2</th>
                                             <th>Điểm trung bình</th>
                                             <th>Loại sinh viên</th>
-
                                         </tr>
                                     </thead>
                                     <tbody>

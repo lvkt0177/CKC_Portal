@@ -4,10 +4,12 @@ namespace App\Models;
 
 use Illuminate\Database\Eloquent\Model;
 use App\Enum\LoaiVang;
+use App\Traits\CastsIntegerIds;
 
 class ChiTietBienBanSHCN extends Model
 {
-    //
+    use CastsIntegerIds;
+
     protected $table = 'chi_tiet_bien_ban_shcn';
 
     protected $fillable = [
@@ -31,5 +33,5 @@ class ChiTietBienBanSHCN extends Model
         return $this->belongsTo(SinhVien::class, 'id_sinh_vien', 'id');
     }
 
-
+    // public function 
 }

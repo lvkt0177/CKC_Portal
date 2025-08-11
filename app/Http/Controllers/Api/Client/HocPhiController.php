@@ -19,47 +19,35 @@ class HocPhiController extends Controller
     public function index()
     {
         $sinhVien = Auth::user();
-
         $sinhVien->load('danhSachSinhVien.lop');
         $now = now()->toDateString();
-        $nienKhoa = NienKhoa::find($sinhVien->danhSachSinhVien->last()->lop->nienKhoa->id);
+        $lop = $sinhVien->danhSachSinhVien[0]->lop;
 
-        $hocKyHienTai = HocKy::whereDate('ngay_bat_dau', '<=', $now)
-            ->whereDate('ngay_ket_thuc', '>=', $now)
-            ->where('id_nien_khoa', $nienKhoa->id)
-            ->first();
+        $nienKhoa = $lop->nienKhoa;
 
-        $hocPhi = null;
-        
-        if ($hocKyHienTai) {
-            $hocPhi = HocPhi::firstOrCreate(
-                [
-                    'id_sinh_vien' => $sinhVien->id,
-                    'id_hoc_ky' => $hocKyHienTai->id,
-                ],
-                [
-                    'tong_tien' => 7700000,
-                    'trang_thai' => 0,
-                ]
-            );
-            
-            if($hocPhi->trang_thai->value == 1)
-            {
-                $hocPhi = [];
+        $tatCaHocKy = HocKy::where('id_nien_khoa', $nienKhoa->id)
+            ->orderBy('ngay_bat_dau')
+            ->get();
+
+        foreach ($tatCaHocKy as $hocKy) {
+            if ($hocKy->ngay_bat_dau <= $now) {
+                $hocPhi = HocPhi::firstOrCreate(
+                    [
+                        'id_sinh_vien' => $sinhVien->id,
+                        'id_hoc_ky' => $hocKy->id,
+                    ],
+                    [
+                        'tong_tien' => 7700000,
+                        'trang_thai' => 0,
+                    ]
+                );
             }
         }
-        else
-        {
-            $hocPhi = HocPhi::with('hocKy')
-                    ->where('id_sinh_vien', $sinhVien->id)
-                    ->where('trang_thai', 0)
-                    ->first();
-        }
+        $hocPhiCuaSinhVien = HocPhi::with('hocKy')->where('id_sinh_vien', $sinhVien->id)->orderBy('id_hoc_ky','asc')->get();
     
         return response()->json([
             'sinhVien' => $sinhVien,
-            'hocKyHienTai' => $hocKyHienTai,
-            'hocPhi' => $hocPhi,
+            'hocPhi' => $hocPhiCuaSinhVien,
         ]);
     }
 

@@ -8,7 +8,6 @@ use App\Http\Controllers\Api\Auth\AuthLoginController;
 
 Route::prefix('admin')->name('api.admin.')->group(function () {
 
-    include('profile.php');
     // include('portal.php');
     Route::post('/login', [AuthLoginController::class, 'login']);
     //--------------------------------------------------------
@@ -36,5 +35,7 @@ Route::prefix('admin')->name('api.admin.')->group(function () {
         include('chuongtrinhdaotao.php');
         include('thoikhoabieu.php');
         include('lichthi.php');
+        include('profile.php');
+
     });
 });

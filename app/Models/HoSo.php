@@ -4,10 +4,12 @@ namespace App\Models;
 
 use Illuminate\Database\Eloquent\Model;
 use App\Enum\Gender;
+use App\Traits\CastsIntegerIds;
 
 class HoSo extends Model
 {
-    //
+    use CastsIntegerIds;
+
     protected $table = 'ho_so';
 
     protected $fillable = [

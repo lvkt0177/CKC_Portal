@@ -68,7 +68,7 @@
                         style="width: 28px; height: 28px; font-weight: bold;">N</div>
                     {{ Auth::guard('student')->user()->hoSo->ho_ten }}
                 </li>
-                <li><a href="{{ route('studentLogout') }}"><i class="fa-solid fa-right-from-bracket text-danger"></i>
+                <li><a class="text-decoration-none text-dark ms-3 mt-3" href="{{ route('studentLogout') }}"><i class="fa-solid fa-right-from-bracket text-danger"></i>
                         Đăng xuất</a></li>
             </ul>
         </div>

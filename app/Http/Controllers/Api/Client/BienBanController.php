@@ -60,14 +60,11 @@ class BienBanController extends Controller
     {
         $sinhVien = Auth::user();
         $thongTin = $sinhVien->danhSachSinhVien->last();
-        $thuKy = $sinhVien->chuc_vu == RoleStudent::SECRETARY;
-        return response()->json([
-            'sinhVien' => $sinhVien
-        ]);
+        $thuKy = $thongTin->chuc_vu == RoleStudent::SECRETARY;
         $lop = Lop::find($thongTin->id_lop);
         $bienBanSHCN = $this->bienBanRepository
             ->getByLopWithRelations($lop);
-
+        $bienBanSHCN->load('chiTietBienBanSHCN.sinhVien.hoSo');
         return response()->json([
             'status' => 'success',
             'bienBanSHCN' => $bienBanSHCN,
@@ -83,7 +80,9 @@ class BienBanController extends Controller
  
     public function store(BienBanRequest $request, Lop $lop, BienBanService $bienBanService)
     {
-        $result = $bienBanService->storeBienBanVaChiTiet($request->all(), $lop);
+        $data = $request->validated();
+        $data['trang_thai'] = BienBanStatus::THUKY;
+        $result = $bienBanService->storeBienBanVaChiTiet($data, $lop);
         
         if($result) {
             return response()->json([

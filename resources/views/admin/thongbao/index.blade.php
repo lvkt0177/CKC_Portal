@@ -44,20 +44,26 @@
                                         <td>{{ $thongbao->tu_ai }}</td>
                                         <td>{{ $thongbao->ngay_gui->format('d/m/Y') }}</td>
                                         <td class="d-flex justify-content-center">
+                                            @if($thongbao->tu_ai === 'Giáo viên bộ môn')
+                                                <p>Gửi tới lớp học phần</p>
+                                            @else
                                             <div class="lop-gui-toi" title="{{ $thongbao->ds_lops->pluck('ten_lop')->join(', ') }}">
                                                 @foreach ($thongbao->ds_lops as $lop)
                                                     <span class="badge bg-info text-dark my-1">{{ $lop->ten_lop }}</span>
                                                 @endforeach
                                             </div>
+                                            @endif
                                         </td>
                                         <td><span
                                                 class="badge bg-{{ $thongbao->trang_thai->getBadge() }}">{{ $thongbao->trang_thai->getLabel() }}</span>
                                         </td>
                                         <td class="d-flex justify-content-center">
-                                            <button type="button" class="btn btn-success mx-1" data-bs-toggle="modal"
-                                                data-bs-target="#modalChonLop{{ $thongbao->id }}">
-                                                <i class="fa-solid fa-paper-plane"></i>
-                                            </button>
+                                            @if(!$thongbao->tu_ai == 'Giáo viên bộ môn')
+                                                <button type="button" class="btn btn-success mx-1" data-bs-toggle="modal"
+                                                    data-bs-target="#modalChonLop{{ $thongbao->id }}">
+                                                    <i class="fa-solid fa-paper-plane"></i>
+                                                </button>
+                                            @endif
 
                                             <div class="text-start">
                                                 <div class="modal fade" id="modalChonLop{{ $thongbao->id }}" tabindex="-1"

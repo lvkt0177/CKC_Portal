@@ -3,10 +3,12 @@
 namespace App\Models;
 
 use Illuminate\Database\Eloquent\Model;
-
+use App\Traits\CastsIntegerIds;
 
 class PhieuLenLop extends Model
 {
+    use CastsIntegerIds;
+
     protected $table = 'phieu_len_lop';
     protected $fillable  =[
         'id_lop_hoc_phan',

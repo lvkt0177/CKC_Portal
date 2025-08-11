@@ -186,7 +186,6 @@
                 </div>
             </div>
         </div>
-        @livewireStyles
     </header>
 
     <!-- Mobile Navigation -->

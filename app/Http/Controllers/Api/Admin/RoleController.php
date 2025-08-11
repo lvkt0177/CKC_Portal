@@ -29,4 +29,19 @@ class RoleController extends Controller
             'roles' => $roles
         ]);
     }
+    public function updateRole(Request $request, $id)
+    {
+        $request->validate([
+            'role_id' => 'required|integer|exists:roles,id',
+        ]);
+
+        $user = User::findOrFail($id);
+        $user->roles()->sync([$request->role_id]);
+
+        return response()->json([
+            'status' => 'success',
+            'message' => 'Cập nhật chức vụ thành công',
+        ]);
+    }
+
 }

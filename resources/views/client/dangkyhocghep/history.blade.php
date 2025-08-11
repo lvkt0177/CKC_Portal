@@ -17,7 +17,7 @@
                             <p>Vui lòng kiểm tra kỹ thông tin cá nhân</p>
                         </div>
                         <div class="container">
-                            <div class="main-content" style=" margin: 0 !important;">
+                            <div class="main-content p-0" style=" margin: 0 !important;">
                                 <div class="student-thongtin">
                                     <div class="thongtin-grid">
                                         <div class="thongtin-item">

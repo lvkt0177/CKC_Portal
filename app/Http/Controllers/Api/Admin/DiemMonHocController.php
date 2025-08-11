@@ -10,6 +10,7 @@ use App\Models\HoSo;
 use App\Models\DanhSachHocPhan;
 use Illuminate\Support\Facades\Auth;
 use App\Http\Requests\GiangVien\NhapDiemRequest;
+use App\Http\Requests\GiangVien\GuiBangDiemRequest;
 use App\Enum\NopBangDiemStatus;
 
 class DiemMonHocController extends Controller
@@ -57,7 +58,7 @@ class DiemMonHocController extends Controller
         ]);
     }
 
-    public function updateTrangThai(LopHocPhan $lopHocPhan)
+      public function updateTrangThai(LopHocPhan $lopHocPhan)
     {
         $result = $this->capNhatTheoTrangThai($lopHocPhan->trang_thai_nop_bang_diem->value, $lopHocPhan) ? true : false;     
         
@@ -75,7 +76,7 @@ class DiemMonHocController extends Controller
         ]);
     }
 
-    public function capNhat(NhapDiemRequest $request)
+   public function capNhat(NhapDiemRequest $request)
     {
         $validated = $request->validated();
         $Students = $validated['students'] ?? [];
@@ -131,10 +132,10 @@ class DiemMonHocController extends Controller
     }
 
     public function capNhatTheoTrangThai(int $trangThai,LopHocPhan $lopHocPhan){
-       if($lopHocPhan->danhSachHocPhan->count() == 0) {
+        if($lopHocPhan->danhSachHocPhan->count() == 0) {
            return false;
        }
-
+       
         foreach ($lopHocPhan->danhSachHocPhan as $sinhVien) {
             $idSinhVien = (int)$sinhVien->id_sinh_vien;
 
@@ -176,5 +177,36 @@ class DiemMonHocController extends Controller
             }
         }
         return true;
+    }
+
+    public function guiBangDiemToiSinhVien(GuiBangDiemRequest $request)
+    {
+        $data = $request->validated();
+        $files = $request->file('files');
+        $data['files'] = is_array($files) ? $files : [$files];
+        $today = now();
+        $thongBao = $this->thongBaoRepository->create([
+            'tieu_de' => $data['tieu_de'],
+            'tu_ai' => 'Giáo viên bộ môn',
+            'ngay_gui' => $today,
+            'noi_dung' => $data['noi_dung'],
+            'files' => $data['files'],
+            'trang_thai' => 1,
+        ]);
+        $danhSachHocPhan = json_decode($data['danhSachHocPhan'], true);
+        
+        foreach ($danhSachHocPhan as $sinhVien) {
+            ChiTietThongBao::firstOrCreate([
+                'id_thong_bao' => $thongBao->id,
+                'id_sinh_vien' => $sinhVien['id'],
+            ], [
+                'trang_thai' => 0,
+            ]);
+        }
+
+        return response()->json([
+            'status' => true,
+            'message' => 'Gửi bảng điểm tới Sinh viên thành công!',
+        ]);
     }
 }

@@ -5,9 +5,12 @@ namespace App\Models;
 use Illuminate\Database\Eloquent\Model;
 use App\Enum\HocPhiStatus;
 use App\Enum\LoaiDangKy;
+use App\Traits\CastsIntegerIds;
 
 class DangKyHGTL extends Model
 {
+    use CastsIntegerIds;
+
     protected $table = 'dang_ky_hg_tl';
 
     protected $fillable = [

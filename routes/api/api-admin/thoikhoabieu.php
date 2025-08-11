@@ -3,6 +3,7 @@
 use Illuminate\Support\Facades\Route;
 
 use App\Http\Controllers\Api\Admin\ThoiKhoaBieuController;
+Route::post('/thoi-khoa-bieu/copy-nhieu-tuan', [ThoiKhoaBieuController::class, 'copyWeekToWeeks']);
 
 Route::get('/thoi-khoa-bieu', [ThoiKhoaBieuController::class, 'index']);
 Route::get('/thoi-khoa-bieu/giang-vien', [ThoiKhoaBieuController::class, 'thoiKhoaBieuCuaGiangVien']);

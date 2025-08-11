@@ -3,9 +3,12 @@
 namespace App\Models;
 
 use Illuminate\Database\Eloquent\Model;
+use App\Traits\CastsIntegerIds;
 
 class File extends Model
 {
+    use CastsIntegerIds;
+
     protected $table = 'files';
 
     protected $fillable = [
