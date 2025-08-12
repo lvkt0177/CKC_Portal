@@ -35,6 +35,7 @@ class BienBanService
             'thoi_gian_ket_thuc' => Carbon::createFromFormat('Y-m-d\TH:i', $data['thoi_gian_ket_thuc']),
             'so_luong_sinh_vien' => $data['so_luong_sinh_vien'],
             'vang_mat' => $data['vang_mat'],
+            'trang_thai' => $data['trang_thai'],
         ]);
         if ($bienBan && !empty($data['sinh_vien_vang'])) {
             foreach ($data['sinh_vien_vang'] as $id => $value) {

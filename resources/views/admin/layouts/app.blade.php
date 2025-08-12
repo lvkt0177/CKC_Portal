@@ -157,6 +157,8 @@
                                     <i class="fas fa-file-signature me-2"></i>Quản lý đăng ký giấy</a></li>
                                 <li><a class="dropdown-item" href="{{ route('giangvien.capmatkhausinhvien.index') }}">
                                     <i class="fas fa-key me-2"></i>Liên hệ cấp mật khẩu</a></li>
+                                <li><a class="dropdown-item" href="{{ route('giangvien.bienbanshcn.manage') }}">
+                                    <i class="fas fa-file-text me-2"></i>Biên bản SHCN của các lớp</a></li>
                             </ul>
                         </div>
                     @endif

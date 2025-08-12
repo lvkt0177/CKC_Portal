@@ -111,5 +111,22 @@ class BienBanController extends Controller
         ]);
     }
 
-    
+    public function guiBienBanDenGVCN(BienBanSHCN $bienBanSHCN)
+    {
+        $bienBanSHCN->trang_thai = BienBanStatus::GIANGVIEN;
+        $bienBanSHCN->save();        
+        return response()->json([
+            'status' => 'success',
+            'message' => 'Gửi biên bản tới Giảng Viên Chủ nhiệm thành công!'
+        ]);
+    }
+
+    public function destroy(BienBanSHCN $bienbanshcn)
+    {
+        $bienbanshcn->delete();
+        return response()->json([
+            'status' => 'success',
+            'message' => 'Xoá biên bản thành công'
+        ]);
+    }
 }

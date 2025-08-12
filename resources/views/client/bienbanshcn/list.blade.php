@@ -140,15 +140,31 @@
                                                         <span class="badge bg-{{ $bienBan->trang_thai->getBadge() }}">{{ $bienBan->trang_thai->getLabel() }}</div></span>
                                                 </div>
                                             </td>
-                                            <td class="text-center">
-                                                <a href="{{ route('sinhvien.bienbanshcn.show', $bienBan->id) }}"
-                                                    class="btn btn-outline-primary btn-sm" target="_blank"
-                                                    data-bs-toggle="tooltip" data-bs-placement="top" title="Xem chi tiết"><i class="fas fa-eye"></i></a>
-                                                @if($bienBan->trang_thai->getLabel() == 'Chưa gửi')
-                                                <a href="{{ route('sinhvien.bienbanshcn.edit', $bienBan->id) }}"
-                                                    class="btn btn-outline-success btn-sm" data-bs-toggle="tooltip"
-                                                    data-bs-placement="top" title="Sửa"><i class="fa fa-pencil" aria-hidden="true"></i></a>
-                                                @endif
+                                            <td class="text-center ">
+                                                <div class="d-flex gap-2">
+                                                    <a href="{{ route('sinhvien.bienbanshcn.show', $bienBan->id) }}"
+                                                        class="btn btn-outline-primary btn-sm" target="_blank"
+                                                        data-bs-toggle="tooltip" data-bs-placement="top" title="Xem chi tiết"><i class="fas fa-eye"></i></a>
+                                                        @if($bienBan->trang_thai->getLabel() == 'Thư ký tạo')
+                                                        <form action="{{ route('sinhvien.bienbanshcn.confirm', $bienBan) }}" data-confirm
+                                                            method="POST">
+                                                            @csrf
+                                                            <button type="submit" class="btn btn-outline-success btn-sm"><i class="fa fa-paper-plane"
+                                                                    aria-hidden="true"></i></button>
+                                                        </form>
+                                                        <a href="{{ route('sinhvien.bienbanshcn.edit', $bienBan->id) }}"
+                                                            class="btn btn-outline-warning btn-sm" data-bs-toggle="tooltip"
+                                                            data-bs-placement="top" title="Sửa"><i class="fa fa-pencil" aria-hidden="true"></i></a>
+
+                                                            <form action="{{ route('sinhvien.bienbanshcn.destroy', $bienBan) }}" data-confirm
+                                                            method="POST">
+                                                            @csrf
+                                                            @method('DELETE')
+                                                            <button type="submit" class="btn btn-outline-danger btn-sm"><i
+                                                                    class="fa fa-trash" aria-hidden="true"></i></button>
+                                                        </form>
+                                                    @endif
+                                                </div>
                                             </td>
                                         </tr>
                                     @empty

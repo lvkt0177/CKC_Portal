@@ -2,8 +2,6 @@
 
 use Illuminate\Support\Facades\Route;
 use App\Acl\Acl;
-
-
 use App\Http\Controllers\Api\Client\BienBanController;
 
 Route::get('/bienbanshcn', [BienBanController::class, 'index'])->name('bienbanshcn.index');
@@ -17,3 +15,5 @@ Route::delete('/bienbanshcn/sinhvienvang/{id}', [BienBanController::class, 'dele
 Route::get('/bienbanshcn/thuky', [BienBanController::class, 'list'])->name('bienbanshcn.list');
 
 Route::resource('bienbanshcn', BienBanController::class)->except(['index','create','store','show']);
+
+Route::delete('/bienbanshcn/{bienBanSHCN}', [BienBanController::class, 'destroy'])->name('bienbanshcn.destroy');

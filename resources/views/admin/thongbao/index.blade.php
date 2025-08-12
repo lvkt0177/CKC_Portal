@@ -4,6 +4,11 @@
 
 @section('css')
     <link href="https://cdn.jsdelivr.net/npm/select2@4.1.0-rc.0/dist/css/select2.min.css" rel="stylesheet" />
+    <style>
+        .lop-gui-toi {
+            max-width: 450px;     
+        }
+    </style>
 @endsection
 
 @section('content')
@@ -38,10 +43,12 @@
                                         <td>{{ $thongbao->giangVien->hoSo->ho_ten }}</td>
                                         <td>{{ $thongbao->tu_ai }}</td>
                                         <td>{{ $thongbao->ngay_gui->format('d/m/Y') }}</td>
-                                        <td>
-                                            @foreach ($thongbao->ds_lops as $lop)
-                                                <span class="badge bg-info text-dark">{{ $lop->ten_lop }}</span>
-                                            @endforeach
+                                        <td class="d-flex justify-content-center">
+                                            <div class="lop-gui-toi" title="{{ $thongbao->ds_lops->pluck('ten_lop')->join(', ') }}">
+                                                @foreach ($thongbao->ds_lops as $lop)
+                                                    <span class="badge bg-info text-dark my-1">{{ $lop->ten_lop }}</span>
+                                                @endforeach
+                                            </div>
                                         </td>
                                         <td><span
                                                 class="badge bg-{{ $thongbao->trang_thai->getBadge() }}">{{ $thongbao->trang_thai->getLabel() }}</span>
@@ -82,6 +89,10 @@
                                                                                     {{ $lop->ten_lop }}</option>
                                                                             @endforeach
                                                                         </select>
+                                                                    </div>
+                                                                    <div class="d-flex gap-2 mb-2">
+                                                                        <button type="button" class="btn btn-sm btn-success btn-select-all" data-target="#selectLop{{ $thongbao->id }}">Chọn tất cả</button>
+                                                                        <button type="button" class="btn btn-sm btn-secondary btn-deselect-all" data-target="#selectLop{{ $thongbao->id }}">Bỏ chọn tất cả</button>
                                                                     </div>
                                                                     <div class="modal-footer">
                                                                         <button type="button" class="btn btn-secondary"
@@ -145,8 +156,31 @@
                 });
             });
         });
-       
+
+        $(document).ready(function () {
+        $('.js-select2').select2({
+            placeholder: 'Chọn lớp',
+            allowClear: true,
+            theme: 'bootstrap-5',
+            width: '100%'
+        });
+
+        $('.btn-select-all').click(function () {
+            const target = $(this).data('target');
+            const $select = $(target);
+            $select.find('option').prop('selected', true);
+            $select.trigger('change');
+        });
+
+        $('.btn-deselect-all').click(function () {
+            const target = $(this).data('target');
+            const $select = $(target);
+            $select.val(null).trigger('change');
+        });
+    });
+
     </script>
+
 
     <script src="https://cdn.datatables.net/1.13.6/js/jquery.dataTables.min.js"></script>
     <script>
